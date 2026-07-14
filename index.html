@@ -368,6 +368,15 @@
   .wf-bar .add{position:absolute; top:0; bottom:0; background:rgba(178,59,46,0.5);}
   .wf-bar .tick{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink);}
   .wf-warn{color:var(--stamp-red); font-family:'IBM Plex Mono',monospace; font-size:11px; margin:8px 2px 0;}
+  /* api key bar */
+  .keybar{max-width:760px; margin:8px auto 0; background:#1b241c; border:1px solid rgba(234,238,226,0.12); border-radius:6px; padding:8px 12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(234,238,226,0.8);}
+  .keybar .kb-label{color:rgba(234,238,226,0.6);}
+  .keybar input{flex:1; min-width:150px; background:#0f150f; border:1px solid rgba(234,238,226,0.15); border-radius:4px; color:var(--paper); padding:6px 9px; font-family:'IBM Plex Mono',monospace; font-size:11px;}
+  .keybar button{background:var(--brass-light); color:var(--ink); border:none; border-radius:4px; padding:6px 12px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; cursor:pointer; white-space:nowrap;}
+  .keybar button:hover{background:#d8bd7e;}
+  .keybar a{color:var(--brass-light); text-decoration:none; font-size:10.5px; white-space:nowrap;}
+  .keybar a:hover{text-decoration:underline;}
+  .keybar .kb-state{font-size:10px;}
 </style>
 </head>
 <body>
@@ -383,6 +392,15 @@
 
 <!-- TICKER -->
 <div class="ticker-wrap"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<!-- API KEY BAR -->
+<div class="keybar" id="keybar">
+  <span class="kb-label">실시간 키 (Finnhub·무료):</span>
+  <input id="keyInput" type="text" placeholder="API 키 붙여넣기" autocomplete="off" spellcheck="false">
+  <button id="keySave">저장 &amp; 갱신</button>
+  <a href="https://finnhub.io/register" target="_blank" rel="noopener">무료 발급 ↗</a>
+  <span id="keyState" class="kb-state"></span>
+</div>
 
 <div class="book">
 
@@ -411,7 +429,7 @@
   <div class="page">
     <div class="page-head"><h2><span class="idx">◫</span>시장 지수</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="idxAsOf">실시간</div></div>
     <div class="idx-grid" id="idxGrid"></div>
-    <div class="note">지수는 참고용 시장 컨텍스트입니다. 새로고침 시 웹 실시간값으로 갱신됩니다.</div>
+    <div class="note">S&amp;P500·나스닥·다우는 갱신 시 ETF(SPY·QQQ·DIA) 실시간 시세로 대체 표시됩니다. KOSPI·VIX는 스냅샷 유지(무료 브라우저 API 미지원).</div>
   </div>
 
   <div class="perf"></div>
@@ -615,7 +633,8 @@
   </div>
 
   <div class="footer" id="footer">
-    미국 주식·환율·지수는 웹 검색 기반 실시간 조회값이며, 국내 ETF·계좌 잔고는 최근 스냅샷입니다.<br>
+    실시간: 환율(open.er-api·무료) · 미국주식·뉴스(Finnhub·무료 키) · 지수(SPY·QQQ·DIA) — GitHub 등 웹호스트에서 ⟳ 버튼으로 갱신.<br>
+    국내 ETF·KOSPI·VIX·계좌 잔고는 최근 스냅샷입니다.<br>
     <span class="warn">투자 참고용이며 실제 계좌 화면과 오차가 있을 수 있습니다.</span>
   </div>
 </div>
@@ -1213,91 +1232,95 @@ function extractJSON(data){
   else if(a2>=0&&b2>a2) cand=s.slice(a2,b2+1);
   return JSON.parse(cand);
 }
-async function callClaude(userContent){
-  const body={ model:'claude-sonnet-4-6', max_tokens:1000,
-    messages:[{role:'user',content:userContent}],
-    tools:[{type:'web_search_20250305',name:'web_search'}] };
-  let res;
-  try{
-    res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
-    });
-  }catch(e){ throw new Error('네트워크 오류: '+(e&&e.message||e)); }
-  let data=null;
-  try{ data=await res.json(); }catch(e){ /* non-json */ }
-  if(!res.ok || (data&&data.error)){
-    throw new Error((data&&data.error&&data.error.message) || ('HTTP '+res.status));
-  }
-  if(!data) throw new Error('빈 응답');
-  return data;
-}
-async function callRetry(userContent, tries=2){
-  let last;
-  for(let i=0;i<tries;i++){
-    try{ return await callClaude(userContent); }
-    catch(e){ last=e; if(i<tries-1) await new Promise(r=>setTimeout(r,700*(i+1))); }
-  }
-  throw last;
-}
+/* ===== LIVE DATA via free browser APIs (GitHub Pages 등 웹호스트에서 직접 동작) =====
+   환율: open.er-api.com (무료·키 불필요) / 미국주식·뉴스: Finnhub (무료 키)
+   국내 ETF·KOSPI·VIX는 무료 브라우저 API로 안정 조회가 어려워 스냅샷 유지 */
+const FH_KEY='finnhub_key';
+function getKey(){ try{ return (localStorage.getItem(FH_KEY)||'').trim(); }catch(e){ return ''; } }
+function setKey(k){ try{ localStorage.setItem(FH_KEY,k); }catch(e){} }
 
-async function fetchCore(){
-  const user='Use web_search for TODAY\'S latest values, then respond with ONLY one compact minified JSON object (no markdown, no prose, no code fences):\n'
-    +'{"fx":<USD/KRW rate>,"fxPrev":<previous close>,"idx":{"sp":{"v":<S&P500>,"c":<day % change>},"ndq":{"v":<Nasdaq Composite>,"c":<%>},"dow":{"v":<Dow>,"c":<%>},"kospi":{"v":<KOSPI>,"c":<%>},"vix":{"v":<VIX>,"c":<%>}}}\n'
-    +'All values must be numbers, not strings.';
-  const j=extractJSON(await callRetry(user));
-  if(typeof j.fx==='number'&&j.fx>500&&j.fx<3000){ FX_PREV=(typeof j.fxPrev==='number'?j.fxPrev:FX); FX=j.fx; }
-  if(j.idx){ const map={sp:'S&P 500',ndq:'NASDAQ',dow:'DOW',kospi:'KOSPI',vix:'VIX'};
-    Object.keys(map).forEach(k=>{ const d=j.idx[k]; if(d&&typeof d.v==='number') INDICES[k]={v:d.v,c:(typeof d.c==='number'?d.c:0),label:map[k]}; }); }
+async function fetchFX(){
+  const r=await fetch('https://open.er-api.com/v6/latest/USD');
+  if(!r.ok) throw new Error('환율 HTTP '+r.status);
+  const j=await r.json();
+  const v=j&&j.rates&&j.rates.KRW;
+  if(typeof v==='number'&&v>500&&v<3000){ FX_PREV=FX; FX=v; return true; }
+  throw new Error('환율 데이터 없음');
 }
-async function fetchStockBatch(tickers){
-  const user='Use web_search for TODAY\'S latest US stock prices for: '+tickers.join(', ')
-    +'. Respond with ONLY one compact minified JSON object (no markdown/prose):\n{'
-    +tickers.map(t=>'"'+t+'":{"p":<price in USD>,"c":<day % change>}').join(',')+'}\nAll numeric.';
-  const j=extractJSON(await callRetry(user));
+async function fhQuote(sym,key){
+  const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${key}`);
+  if(r.status===401||r.status===403) throw new Error('키 인증 실패');
+  if(r.status===429) throw new Error('요청 한도 초과');
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const j=await r.json();
+  if(j&&typeof j.c==='number'&&j.c>0) return j;   // {c:현재가, dp:등락%, pc:전일종가...}
+  throw new Error('시세 없음('+sym+')');
+}
+async function fetchUSStocks(key){
+  const us=HOLDINGS.filter(h=>h.cur==='USD');
+  const res=await Promise.allSettled(us.map(h=>fhQuote(h.ticker,key)));
+  let n=0, firstErr='';
+  res.forEach((r,i)=>{ if(r.status==='fulfilled'){ const q=r.value; us[i].price=q.c; if(typeof q.dp==='number')DAY_CHG[us[i].ticker]=q.dp; n++; } else if(!firstErr) firstErr=(r.reason&&r.reason.message)||''; });
+  if(n===0) throw new Error(firstErr||'미국주식 실패');
+  HEAT_LIVE=true; return n;
+}
+async function fetchIndices(key){
+  const map=[['sp','SPY','S&P500·SPY'],['ndq','QQQ','나스닥·QQQ'],['dow','DIA','다우·DIA']];
+  const res=await Promise.allSettled(map.map(m=>fhQuote(m[1],key)));
   let n=0;
-  HOLDINGS.forEach(h=>{ const s=j[h.ticker]; if(s&&typeof s.p==='number'&&s.p>0){ h.price=s.p; if(typeof s.c==='number')DAY_CHG[h.ticker]=s.c; n++; } });
-  if(n===0) throw new Error('가격 파싱 실패');
-  return n;
+  res.forEach((r,i)=>{ if(r.status==='fulfilled'){ const q=r.value; INDICES[map[i][0]]={v:q.c,c:(typeof q.dp==='number'?q.dp:0),label:map[i][2]}; n++; } });
+  if(n===0) throw new Error('지수 실패');
 }
-async function fetchEtfs(){
-  const user='Use web_search for TODAY\'S latest Korean ETF prices in KRW. '
-    +'KODEX_SEMI=KODEX 미국반도체, TIGER_NDX=TIGER 미국나스닥100, RISE_NDX=RISE 미국나스닥100, TIGER_SPX=TIGER 미국S&P500. '
-    +'Respond with ONLY one compact minified JSON (no prose):\n'
-    +'{"KODEX_SEMI":{"p":<krw>,"c":<%>},"TIGER_NDX":{"p":<krw>,"c":<%>},"RISE_NDX":{"p":<krw>,"c":<%>},"TIGER_SPX":{"p":<krw>,"c":<%>}}\nAll numeric.';
-  const j=extractJSON(await callRetry(user));
-  HOLDINGS.forEach(h=>{ const s=j[h.ticker]; if(s&&typeof s.p==='number'&&s.p>0){ h.price=s.p; if(typeof s.c==='number')DAY_CHG[h.ticker]=s.c; } });
-}
-async function fetchNews(){
-  const user='Use web_search to find up to 6 recent notable news headlines about these holdings: '
-    +'PLTR NVDA AAPL GOOGL MSFT TSLA NFLX RKLB INTC SMR IONQ IREN. '
-    +'Respond with ONLY a compact minified JSON array (no prose):\n'
-    +'[{"tk":"<ticker>","t":"<short headline>","s":"<source>","u":"<article url>"}]\nDiverse across tickers, most market-relevant.';
-  const j=extractJSON(await callRetry(user));
-  if(Array.isArray(j)&&j.length) NEWS=j.slice(0,6);
+async function fetchNewsFH(key){
+  const syms=['AAPL','NVDA','PLTR','TSLA','MSFT','GOOGL'];
+  const to=new Date().toISOString().slice(0,10);
+  const from=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+  const res=await Promise.allSettled(syms.map(s=>
+    fetch(`https://finnhub.io/api/v1/company-news?symbol=${s}&from=${from}&to=${to}&token=${key}`)
+      .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }).then(a=>({s,a}))
+  ));
+  const out=[];
+  res.forEach(r=>{ if(r.status==='fulfilled'&&Array.isArray(r.value.a)&&r.value.a.length){ const it=r.value.a[0]; out.push({tk:r.value.s,t:it.headline,s:it.source,u:it.url}); } });
+  if(out.length){ NEWS=out.slice(0,6); return; }
+  throw new Error('뉴스 없음');
 }
 
 let refreshing=false;
 async function refresh(){
   if(refreshing) return; refreshing=true;
   const btn=document.getElementById('refreshBtn'); btn.classList.add('loading'); btn.disabled=true;
-  setStatus('stale','<b>실시간 조회 중…</b> 분할 요청 처리 (10~40초)');
-  const A=['PLTR','NVDA','AAPL','GOOGL','SPYM','MSFT','RKLB'];
-  const B=['NFLX','IONQ','IREN','KEEL','INTC','TSLA','SMR'];
-  const labels=['지수/환율','미국주식A','미국주식B','국내ETF','뉴스'];
-  const results=await Promise.allSettled([ fetchCore(), fetchStockBatch(A), fetchStockBatch(B), fetchEtfs(), fetchNews() ]);
+  const key=getKey();
+  setStatus('stale', key?'<b>실시간 조회 중…</b> 환율·미국주식·뉴스':'<b>환율 조회 중…</b> (미국주식·뉴스는 Finnhub 키 필요)');
+  const labels=[], jobs=[];
+  jobs.push(fetchFX()); labels.push('환율');
+  if(key){ jobs.push(fetchUSStocks(key)); labels.push('미국주식');
+           jobs.push(fetchIndices(key));  labels.push('지수');
+           jobs.push(fetchNewsFH(key));   labels.push('뉴스'); }
+  const results=await Promise.allSettled(jobs);
   const failed=[]; let firstErr='';
   results.forEach((r,i)=>{ if(r.status==='rejected'){ failed.push(labels[i]); if(!firstErr) firstErr=(r.reason&&r.reason.message)||'unknown'; console.error(labels[i], r.reason); } });
-  if(results[1].status==='fulfilled'||results[2].status==='fulfilled') HEAT_LIVE=true;
-  const anyPrice = ['fulfilled'].includes(results[1].status)||results[2].status==='fulfilled'||results[3].status==='fulfilled';
   LAST_UPDATED=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
   renderAll();
-  if(anyPrice||results[0].status==='fulfilled') await recordTrendPoint();
+  if(results.some(r=>r.status==='fulfilled')) await recordTrendPoint();
   btn.classList.remove('loading'); btn.disabled=false; refreshing=false;
-  if(failed.length===0){ setStatus('live', `<b>실시간</b> ${LAST_UPDATED} 전체 갱신 완료`); }
+  if(!key){ setStatus('stale', `환율만 갱신 ${LAST_UPDATED} · <b>Finnhub 무료 키</b> 입력 시 미국주식·뉴스도 실시간 (아래 설정칸)`); return; }
+  if(failed.length===0){ setStatus('live', `<b>실시간</b> ${LAST_UPDATED} 갱신 완료 · 미국주식·환율·뉴스`); }
   else if(failed.length<results.length){ setStatus('live', `<b>부분 갱신</b> ${LAST_UPDATED} · 실패: ${failed.join('·')}`); }
-  else { setStatus('err', `<b>연결 실패</b> · 스냅샷 유지 · 원인: ${escapeHtml(firstErr)} · 로컬 파일이면 Claude.ai에서 열어야 작동`); }
+  else { setStatus('err', `<b>갱신 실패</b> · 스냅샷 유지 · 원인: ${escapeHtml(firstErr)}`); }
 }
 document.getElementById('refreshBtn').onclick=refresh;
+
+/* API key 설정 바 */
+function initKeyBar(){
+  const inp=document.getElementById('keyInput'), st=document.getElementById('keyState');
+  if(!inp) return;
+  inp.value=getKey();
+  const show=()=>{ const has=!!getKey(); st.textContent=has?'✓ 키 저장됨':'키 없음 · 환율만 실시간'; st.style.color=has?'#7bbf6a':'rgba(234,238,226,0.6)'; };
+  show();
+  const save=()=>{ setKey(inp.value.trim()); show(); refresh(); };
+  document.getElementById('keySave').onclick=save;
+  inp.onkeydown=e=>{ if(e.key==='Enter') save(); };
+}
 
 /* auto refresh */
 let autoTimer=null;
@@ -1311,6 +1334,7 @@ renderAll();
 initTax();
 initWhatif();
 renderStrat();
+initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 loadTrend();
 </script>
