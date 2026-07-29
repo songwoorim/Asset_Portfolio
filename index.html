@@ -530,24 +530,49 @@
   .bm-legend .p i{background:var(--stamp-red);} .bm-legend .b i{background:#7d97c4;}
 
   /* review */
-  .rv-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(138px,1fr)); gap:10px; padding:4px 2px 14px;}
-  .rv-card{background:var(--paper); border-radius:6px; padding:11px 12px; border-left:3px solid var(--brass);}
-  .rv-card.red{border-left-color:var(--stamp-red);}
-  .rv-card .k{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft);}
-  .rv-card .v{font-family:'Inter',-apple-system,sans-serif; font-size:16.5px; font-weight:700; margin:3px 0 1px;}
-  .rv-card .s{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft);}
-  .rv-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); margin:4px 2px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-  .rv-lbl b{color:var(--ink);}
-  .rv-toggle{margin-left:auto; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; background:none; border:1px solid var(--brass); border-radius:9999px; padding:5px 11px; cursor:pointer; color:var(--brass);}
-  .rv-toggle:hover{background:rgba(0,102,204,0.06);}
-  .rv-bars{display:flex; align-items:flex-end; gap:4px; height:96px; padding:8px 2px 0;}
-  .rv-b{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:3px; cursor:pointer;}
-  .rv-b .bar{width:100%; background:var(--brass); border-radius:2px 2px 0 0; min-height:2px; transition:.12s;}
+  /* 리뷰 히어로 (선택된 카드 내용으로 전환) */
+  .rv-hero{border-radius:14px; padding:16px 16px; margin:2px 2px 16px; transition:background .18s ease;}
+  .rv-hero-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
+  .rv-hero-num{font-family:'Inter',-apple-system,sans-serif; font-size:27px; font-weight:800; letter-spacing:-0.02em; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+  .rv-hero-num .sub{font-size:11.5px; font-weight:600; color:var(--ink-soft);}
+  .rv-hero-range{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); margin-top:7px; display:flex; align-items:center; gap:6px;}
+  .rv-hero-range .bar{flex:1; height:5px; background:var(--line); border-radius:9999px; position:relative; overflow:hidden;}
+  .rv-hero-range .bar i{position:absolute; left:0; top:0; bottom:0; border-radius:9999px; transition:width .2s ease, background .15s;}
+  /* 스탯 카드 그리드 */
+  .rv-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 2px;}
+  .rv-stat{background:var(--paper); border-radius:13px; padding:12px 12px; cursor:pointer; border:1.5px solid transparent; transition:.12s; min-width:0;}
+  .rv-stat:active{transform:scale(0.98);}
+  .rv-stat.sel{border-color:var(--brass); background:rgba(0,102,204,.05);}
+  .rv-stat-top{display:flex; align-items:center; gap:7px; margin-bottom:8px; min-width:0;}
+  .rv-stat-ic{width:24px; height:24px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .rv-stat-ic svg{width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+  .rv-stat-k{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rv-stat-v{font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rv-stat-s{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  /* 보너스 인사이트 토글 */
+  .rv-bonus-toggle{width:calc(100% - 4px); margin:10px 2px 0; display:flex; align-items:center; justify-content:center; gap:6px;
+    background:rgba(180,83,9,.08); border:1px dashed rgba(180,83,9,.4); border-radius:11px; padding:10px; cursor:pointer;
+    font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:700; color:#b45309;}
+  .rv-bonus-toggle svg{width:13px; height:13px; stroke:#b45309; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s;}
+  .rv-bonus-toggle.open svg{transform:rotate(180deg);}
+  .rv-bonus-wrap{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .rv-bonus-wrap.open{max-height:700px;}
+  .rv-bonus-inner{padding-top:12px;}
+  .rv-sec-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin:0 2px 8px; display:flex; align-items:center; gap:6px;}
+  .rv-sec-lbl .tag{font-size:9px; font-weight:700; padding:1px 7px; border-radius:9999px; background:rgba(180,83,9,.1); color:#b45309;}
+  /* 세그먼트 탭 (총자산 / 증감 / 매수 금액) */
+  .rv-seg{display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; margin:0 2px 12px;}
+  .rv-seg button{flex:1; border:none; background:transparent; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); padding:8px 4px; border-radius:9px; cursor:pointer; white-space:nowrap;}
+  .rv-seg button.on{background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .rv-seg button:active{transform:scale(0.96);}
+  .rv-bars{display:flex; align-items:flex-end; gap:5px; height:104px; padding:6px 2px 0;}
+  .rv-b{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:4px; cursor:pointer; min-width:0;}
+  .rv-b .bar{width:100%; background:var(--brass); border-radius:6px 6px 2px 2px; min-height:3px; transition:.12s;}
   .rv-b.neg .bar{background:var(--stamp-blue);}
   .rv-b.hi .bar{background:var(--stamp-red);}
   .rv-b.sel .bar{outline:2px solid var(--ink); outline-offset:1px;}
   .rv-b:hover .bar{filter:brightness(1.15);}
-  .rv-b .lb{font-family:'Inter',-apple-system,sans-serif; font-size:8px; color:var(--ink-soft); white-space:nowrap;}
+  .rv-b .lb{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; color:var(--ink-soft); white-space:nowrap;}
   .rv-b .vl{font-family:'Inter',-apple-system,sans-serif; font-size:8px; color:var(--ink); font-weight:600; white-space:nowrap;}
   .rv-detail{margin:14px 2px 4px; background:var(--paper); border-radius:6px; padding:12px 14px;}
   .rv-dh{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; border-bottom:1px dashed var(--line); padding-bottom:8px; margin-bottom:8px;}
@@ -823,17 +848,29 @@
   <!-- MONTHLY / ANNUAL REVIEW -->
   <div class="page collapsible" id="sec-review" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></span>월간·연간 리뷰</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">2026년</div></div>
+    <div class="rv-hero" id="rvHero"></div>
     <div class="rv-grid" id="rvCards"></div>
 
-    <div class="rv-lbl">최근 12개월 <b>총자산</b> <span id="rvAssetMode">(월말 기준)</span>
-      <button class="rv-toggle" id="rvModeBtn">증감으로 보기</button></div>
-    <div class="rv-bars" id="rvAssetBars"></div>
+    <button class="rv-bonus-toggle" id="rvBonusBtn">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      <span id="rvBonusLbl">재미있는 인사이트 더보기</span>
+    </button>
+    <div class="rv-bonus-wrap" id="rvBonusWrap">
+      <div class="rv-bonus-inner">
+        <div class="rv-sec-lbl"><span class="tag">보너스</span>재미있는 인사이트</div>
+        <div class="rv-grid" id="rvBonusCards"></div>
+      </div>
+    </div>
 
-    <div class="rv-lbl" style="margin-top:16px;">최근 12개월 <b>매수 금액</b> <span>(막대를 눌러 상세 보기)</span></div>
-    <div class="rv-bars" id="rvBuyBars"></div>
+    <div class="rv-seg" id="rvSeg" style="margin-top:18px;">
+      <button data-c="level" class="on">총자산</button>
+      <button data-c="delta">증감</button>
+      <button data-c="buy">매수 금액</button>
+    </div>
+    <div class="rv-bars" id="rvBars"></div>
 
     <div class="rv-detail" id="rvDetail"></div>
-    <div class="note">전 계좌 실거래 기준 · 매수 금액은 시점 환율 적용 원화 환산 · 막대를 클릭하면 그 달에 <b>무엇을 얼마나 샀는지</b>와 자산 변화가 표시됩니다.</div>
+    <div class="note">전 계좌 실거래 기준 · 매수 금액은 시점 환율 적용 원화 환산 · 카드를 누르면 위 요약이 바뀌고, 막대를 클릭하면 그 달에 <b>무엇을 얼마나 샀는지</b>와 자산 변화가 표시됩니다.</div>
   </div>
 
   <div class="perf"></div>
@@ -2030,59 +2067,170 @@ function initBench(){
 }
 
 /* ===== MONTHLY / ANNUAL REVIEW ===== */
-let rvAssetMode='level';  // level | delta
+let rvChart='level';      // level | delta | buy
 let rvSel=null;
+let rvHeroKey='growth';   // 히어로에 표시 중인 카드 키
 function rv12(){ return RV.months.slice(-12); }
-function renderRvCards(){
-  const el=document.getElementById('rvCards'); if(!el) return;
+
+const RV_TONE={
+  red:{c:'#c0392b', b:'rgba(192,57,43,.1)', g:'linear-gradient(135deg, rgba(178,59,46,.09), rgba(178,59,46,.02))'},
+  blue:{c:'#0066cc', b:'rgba(0,102,204,.1)', g:'linear-gradient(135deg, rgba(0,102,204,.09), rgba(0,102,204,.02))'},
+  green:{c:'#15803d', b:'rgba(21,128,61,.1)', g:'linear-gradient(135deg, rgba(21,128,61,.09), rgba(21,128,61,.02))'},
+  gray:{c:'#6e6e73', b:'rgba(110,110,115,.1)', g:'linear-gradient(135deg, rgba(110,110,115,.09), rgba(110,110,115,.02))'},
+  amber:{c:'#b45309', b:'rgba(180,83,9,.1)', g:'linear-gradient(135deg, rgba(180,83,9,.09), rgba(180,83,9,.02))'}
+};
+const RV_ICON={
+  wallet:'<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg>',
+  bars:'<svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+  trend:'<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>',
+  check:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg>',
+  list:'<svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.7 13.4L7 22l5-3 5 3-1.7-8.6"/></svg>',
+  flame:'<svg viewBox="0 0 24 24"><path d="M12 22c4 0 7-3 7-7 0-3-2-5-3-7-.5 2-2 3-2 3 0-3-2-6-4-7 0 3-1 5-3 7-1 1-2 3-2 4 0 4 3 7 7 7z"/></svg>',
+  zap:'<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  down:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>',
+  target:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
+  mult:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>'
+};
+
+/* 보너스 인사이트: RV.months 실거래 데이터에서 직접 계산 (새 데이터 소스 없음) */
+function rvInsights(){
+  const M=RV.months, YR=M[M.length-1].m.slice(0,4);
+  const cur=M.filter(m=>m.m.slice(0,4)===YR);
+  const src=cur.length?cur:M.slice(-7);
+  let bestBuy=M[0], bestChg=M[0];
+  M.forEach(m=>{ if(m.buy>bestBuy.buy) bestBuy=m; if(m.chgp>bestChg.chgp) bestChg=m; });
+  let streak=0; for(let i=M.length-1;i>=0;i--){ if(M[i].buy>0) streak++; else break; }
+  let sold=0; src.forEach(m=>(m.sell||[]).forEach(s=>sold+=s.amt));
+  const agg={}; src.forEach(m=>(m.items||[]).forEach(it=>{ if(!agg[it.tk]) agg[it.tk]={tk:it.tk,n:it.n,amt:0}; agg[it.tk].amt+=it.amt; }));
+  let topTk=null; Object.keys(agg).forEach(t=>{ if(!topTk||agg[t].amt>topTk.amt) topTk=agg[t]; });
+  const mult=RV.costNow? RV.now/RV.costNow : 0;
+  return {YR, nCur:src.length, bestBuy, bestChg, streak, sold, topTk, mult};
+}
+
+/* 카드 12장 정의: 앞 6장=핵심(기본 노출), 뒤 6장=보너스(토글) */
+function rvModel(){
   const R=rv12(), tot12=R.reduce((s,m)=>s+m.buy,0);
   const yg=(RV.now/RV.jan1-1)*100, y1g=(RV.now/RV.y1-1)*100;
-  el.innerHTML=`
-    <div class="rv-card"><div class="k">이번 달 매수</div><div class="v">${won(RV.thisM)}원</div><div class="s">${R[R.length-1].m.replace('-','년 ')}월</div></div>
-    <div class="rv-card"><div class="k">올해 매수 누적</div><div class="v">${won(RV.ytd)}원</div><div class="s">월평균 ${won(RV.ytd/7)}원</div></div>
-    <div class="rv-card red"><div class="k">올해 자산 성장</div><div class="v up">+${yg.toFixed(1)}%</div><div class="s">₩${(RV.jan1/1e6).toFixed(1)}M → ₩${(RV.now/1e6).toFixed(1)}M</div></div>
-    <div class="rv-card red"><div class="k">1년 전 대비</div><div class="v up">+${y1g.toFixed(1)}%</div><div class="s">₩${(RV.y1/1e6).toFixed(1)}M → ₩${(RV.now/1e6).toFixed(1)}M</div></div>
-    <div class="rv-card"><div class="k">올해 실현손익</div><div class="v up">+${won(RV.rz_ytd)}원</div><div class="s">RKLB 18주 매도</div></div>
-    <div class="rv-card"><div class="k">12개월 매수</div><div class="v">${won(tot12)}원</div><div class="s">누적 실현 +${won(RV.rz_all)}원</div></div>`;
+  const I=rvInsights(), M=RV.months, lastM=M[M.length-1];
+  const cap=v=>Math.max(2,Math.min(100,v));
+  const mm=s=>(+s.slice(5))+'월', ym=s=>s.slice(0,4)+'년 '+(+s.slice(5))+'월';
+  const M2=n=>'₩'+(n/1e6).toFixed(1)+'M';
+  const avg=RV.ytd/(I.nCur||1);
+  const pctOf=(a,b)=> b? a/b*100 : 0;
+  return [
+    {k:'thism', bonus:false, tone:'blue', ic:'wallet', lbl:'이번 달 매수',
+      val:wonPlain(RV.thisM), vc:'', sub:mm(lastM.m),
+      hn:wonPlain(RV.thisM), hs:mm(lastM.m)+' · '+((lastM.items||[]).length)+'종목',
+      rg:'올해 매수 누적 대비 '+pctOf(RV.thisM,RV.ytd).toFixed(1)+'%', pct:cap(pctOf(RV.thisM,RV.ytd))},
+    {k:'ytdbuy', bonus:false, tone:'blue', ic:'bars', lbl:'올해 매수 누적',
+      val:wonPlain(RV.ytd), vc:'', sub:'월평균 '+wonPlain(avg),
+      hn:wonPlain(RV.ytd), hs:I.YR+'년 '+I.nCur+'개월 · 월평균 '+wonPlain(avg),
+      rg:'최근 12개월 매수 대비 '+pctOf(RV.ytd,tot12).toFixed(1)+'%', pct:cap(pctOf(RV.ytd,tot12))},
+    {k:'growth', bonus:false, tone:'red', ic:'trend', lbl:'올해 자산 성장',
+      val:sign(yg), vc:clsOf(yg), sub:M2(RV.jan1)+' → '+M2(RV.now),
+      hn:sign(yg), hs:M2(RV.jan1)+' → '+M2(RV.now),
+      rg:'1년 전 대비 '+sign(y1g), pct:cap(yg)},
+    {k:'y1', bonus:false, tone:'red', ic:'clock', lbl:'1년 전 대비',
+      val:sign(y1g), vc:clsOf(y1g), sub:M2(RV.y1)+' → '+M2(RV.now),
+      hn:sign(y1g), hs:M2(RV.y1)+' → '+M2(RV.now),
+      rg:'올해 자산 성장 '+sign(yg), pct:cap(y1g)},
+    {k:'realized', bonus:false, tone:'green', ic:'check', lbl:'올해 실현손익',
+      val:(RV.rz_ytd>=0?'+':'')+wonPlain(RV.rz_ytd), vc:clsOf(RV.rz_ytd), sub:'매도로 확정된 손익',
+      hn:(RV.rz_ytd>=0?'+':'')+wonPlain(RV.rz_ytd), hs:'매도로 확정된 손익',
+      rg:'누적 실현손익 대비 '+pctOf(RV.rz_ytd,RV.rz_all).toFixed(1)+'%', pct:cap(pctOf(RV.rz_ytd,RV.rz_all))},
+    {k:'buy12', bonus:false, tone:'gray', ic:'list', lbl:'12개월 매수',
+      val:wonPlain(tot12), vc:'', sub:'누적 실현 +'+wonPlain(RV.rz_all),
+      hn:wonPlain(tot12), hs:'최근 12개월 합계 · 누적 실현 +'+wonPlain(RV.rz_all),
+      rg:'이 중 올해 매수 '+pctOf(RV.ytd,tot12).toFixed(1)+'%', pct:cap(pctOf(RV.ytd,tot12))},
+    {k:'bestbuy', bonus:true, tone:'amber', ic:'trophy', lbl:'최고 매수월',
+      val:ym(I.bestBuy.m), vc:'', sub:wonPlain(I.bestBuy.buy),
+      hn:ym(I.bestBuy.m), hs:wonPlain(I.bestBuy.buy)+' · 한 달 최대 매수',
+      rg:'최근 12개월 매수 대비 '+pctOf(I.bestBuy.buy,tot12).toFixed(1)+'%', pct:cap(pctOf(I.bestBuy.buy,tot12))},
+    {k:'streak', bonus:true, tone:'amber', ic:'flame', lbl:'매수 연속 개월',
+      val:I.streak+'개월', vc:'', sub:'한 번도 안 거름',
+      hn:I.streak+'개월 연속', hs:'매수를 한 번도 거르지 않았어요',
+      rg:'전체 '+M.length+'개월 중 '+I.streak+'개월 연속', pct:cap(pctOf(I.streak,M.length))},
+    {k:'bestgrowth', bonus:true, tone:'amber', ic:'zap', lbl:'최고 상승월',
+      val:ym(I.bestChg.m), vc:clsOf(I.bestChg.chgp), sub:sign(I.bestChg.chgp),
+      hn:sign(I.bestChg.chgp), hs:ym(I.bestChg.m)+' · 전월 대비',
+      rg:'전체 기간 중 월간 최고 상승률', pct:cap(I.bestChg.chgp)},
+    {k:'sold', bonus:true, tone:'amber', ic:'down', lbl:'올해 총 매도',
+      val:wonPlain(I.sold), vc:'', sub:I.YR+'년 매도 금액',
+      hn:wonPlain(I.sold), hs:I.YR+'년 매도 총액 (실현손익과 별개)',
+      rg:'올해 매수 대비 '+pctOf(I.sold,RV.ytd).toFixed(1)+'%', pct:cap(pctOf(I.sold,RV.ytd))},
+    {k:'topbuy', bonus:true, tone:'amber', ic:'target', lbl:'올해 최다매수 종목',
+      val:I.topTk?I.topTk.n:'—', vc:'', sub:I.topTk?(I.topTk.tk+' · '+wonPlain(I.topTk.amt)):'거래 없음',
+      hn:I.topTk?I.topTk.n:'—', hs:I.topTk?(I.topTk.tk+' · '+wonPlain(I.topTk.amt)):'거래 없음',
+      rg:I.topTk?('올해 매수 누적 대비 '+pctOf(I.topTk.amt,RV.ytd).toFixed(1)+'%'):'—',
+      pct:cap(I.topTk?pctOf(I.topTk.amt,RV.ytd):0)},
+    {k:'multiple', bonus:true, tone:'amber', ic:'mult', lbl:'원금 대비 배율',
+      val:I.mult.toFixed(2)+'배', vc:clsOf(I.mult-1), sub:M2(RV.costNow)+' → '+M2(RV.now),
+      hn:I.mult.toFixed(2)+'배', hs:'투자원금 '+M2(RV.costNow)+' → 평가 '+M2(RV.now),
+      rg:'원금 대비 순수익 '+sign((I.mult-1)*100), pct:cap((I.mult-1)*100)}
+  ];
 }
+
+function rvCardHtml(d){
+  const t=RV_TONE[d.tone];
+  return `<div class="rv-stat ${rvHeroKey===d.k?'sel':''}" data-k="${d.k}">
+    <div class="rv-stat-top"><div class="rv-stat-ic" style="background:${t.b}; color:${t.c};">${RV_ICON[d.ic]}</div><span class="rv-stat-k">${d.lbl}</span></div>
+    <div class="rv-stat-v ${d.vc}">${d.val}</div><div class="rv-stat-s">${d.sub}</div></div>`;
+}
+function renderRvHero(){
+  const el=document.getElementById('rvHero'); if(!el) return;
+  const d=rvModel().find(x=>x.k===rvHeroKey) || rvModel()[2];
+  const t=RV_TONE[d.tone];
+  el.style.background=t.g;
+  el.innerHTML=`<div class="rv-hero-lbl">${d.lbl}</div>
+    <div class="rv-hero-num"><span style="color:${t.c};">${d.hn}</span><span class="sub">${d.hs}</span></div>
+    <div class="rv-hero-range"><span>${d.rg}</span><div class="bar"><i style="width:${d.pct.toFixed(1)}%; background:${t.c};"></i></div></div>`;
+}
+function renderRvCards(){
+  const core=document.getElementById('rvCards'), bonus=document.getElementById('rvBonusCards');
+  const A=rvModel();
+  if(core) core.innerHTML=A.filter(d=>!d.bonus).map(rvCardHtml).join('');
+  if(bonus) bonus.innerHTML=A.filter(d=>d.bonus).map(rvCardHtml).join('');
+  document.querySelectorAll('#sec-review .rv-stat').forEach(el=>el.onclick=()=>{
+    rvHeroKey=el.dataset.k;
+    document.querySelectorAll('#sec-review .rv-stat').forEach(c=>c.classList.toggle('sel', c===el));
+    renderRvHero();
+  });
+  renderRvHero();
+}
+
 function renderRvBars(){
-  const R=rv12();
-  // 총자산 막대
-  const ab=document.getElementById('rvAssetBars');
-  if(ab){
-    document.getElementById('rvAssetMode').textContent = rvAssetMode==='level'?'(월말 기준)':'(전월 대비 증감)';
-    document.getElementById('rvModeBtn').textContent = rvAssetMode==='level'?'증감으로 보기':'총액으로 보기';
-    if(rvAssetMode==='level'){
-      const mx=Math.max(...R.map(m=>m.a));
-      ab.innerHTML=R.map(m=>{
-        const h=Math.max(2,m.a/mx*64);
-        return `<div class="rv-b ${m.a===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${won(m.a)}원 (${m.chgp>=0?'+':''}${m.chgp}%)">
-          <div class="vl">${(m.a/1e6).toFixed(0)}M</div><div class="bar" style="height:${h.toFixed(0)}px"></div>
-          <div class="lb">${m.m.slice(5)}월</div></div>`;
-      }).join('');
-    } else {
-      const mx=Math.max(...R.map(m=>Math.abs(m.chg)));
-      ab.innerHTML=R.map(m=>{
-        const h=Math.max(2,Math.abs(m.chg)/mx*64);
-        return `<div class="rv-b ${m.chg<0?'neg':''} ${Math.abs(m.chg)===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${m.chg>=0?'+':''}${won(m.chg)}원">
-          <div class="vl ${m.chg>=0?'up':'down'}">${m.chg>=0?'+':''}${(m.chg/1e6).toFixed(1)}</div>
-          <div class="bar" style="height:${h.toFixed(0)}px"></div><div class="lb">${m.m.slice(5)}월</div></div>`;
-      }).join('');
-    }
-    ab.querySelectorAll('.rv-b').forEach(el=>el.onclick=()=>selectMonth(el.dataset.m));
-  }
-  // 매수 막대
-  const bb=document.getElementById('rvBuyBars');
-  if(bb){
+  const R=rv12(), box=document.getElementById('rvBars'); if(!box) return;
+  document.querySelectorAll('#rvSeg button').forEach(b=>b.classList.toggle('on', b.dataset.c===rvChart));
+  let html='';
+  if(rvChart==='level'){
+    const mx=Math.max(...R.map(m=>m.a));
+    html=R.map(m=>{
+      const h=Math.max(3,m.a/mx*66);
+      return `<div class="rv-b ${m.a===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${wonPlain(m.a)} (${m.chgp>=0?'+':''}${m.chgp}%)">
+        <div class="vl">${(m.a/1e6).toFixed(0)}M</div><div class="bar" style="height:${h.toFixed(0)}px"></div>
+        <div class="lb">${m.m.slice(5)}월</div></div>`;
+    }).join('');
+  } else if(rvChart==='delta'){
+    const mx=Math.max(...R.map(m=>Math.abs(m.chg)),1);
+    html=R.map(m=>{
+      const h=Math.max(3,Math.abs(m.chg)/mx*66);
+      return `<div class="rv-b ${m.chg<0?'neg':''} ${Math.abs(m.chg)===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${m.chg>=0?'+':''}${wonPlain(m.chg)}">
+        <div class="vl ${clsOf(m.chg)}">${m.chg>=0?'+':''}${(m.chg/1e6).toFixed(1)}</div>
+        <div class="bar" style="height:${h.toFixed(0)}px"></div><div class="lb">${m.m.slice(5)}월</div></div>`;
+    }).join('');
+  } else {
     const mx=Math.max(...R.map(m=>m.buy),1);
-    bb.innerHTML=R.map(m=>{
-      const h=Math.max(2,m.buy/mx*64);
-      return `<div class="rv-b ${m.buy===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${won(m.buy)}원">
+    html=R.map(m=>{
+      const h=Math.max(3,m.buy/mx*66);
+      return `<div class="rv-b ${m.buy===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${wonPlain(m.buy)}">
         <div class="vl">${m.buy?(m.buy/1e4).toFixed(0):'0'}</div><div class="bar" style="height:${h.toFixed(0)}px"></div>
         <div class="lb">${m.m.slice(5)}월</div></div>`;
     }).join('');
-    bb.querySelectorAll('.rv-b').forEach(el=>el.onclick=()=>selectMonth(el.dataset.m));
   }
+  box.innerHTML=html;
+  box.querySelectorAll('.rv-b').forEach(el=>el.onclick=()=>selectMonth(el.dataset.m));
 }
 function selectMonth(m){ rvSel=(rvSel===m)?null:m; renderRvBars(); renderRvDetail(); }
 function renderRvDetail(){
@@ -2101,8 +2249,15 @@ function renderRvDetail(){
     <div class="rv-sub">월말 총자산 <b>${won(m.a)}원</b> · 전월 대비 <span class="${m.chg>=0?'up':'down'}">${m.chg>=0?'+':''}${won(m.chg)}원 (${m.chgp>=0?'+':''}${m.chgp}%)</span></div>`;
 }
 function initReview(){
-  const btn=document.getElementById('rvModeBtn');
-  if(btn) btn.onclick=()=>{ rvAssetMode=(rvAssetMode==='level')?'delta':'level'; renderRvBars(); };
+  document.querySelectorAll('#rvSeg button').forEach(b=>b.onclick=()=>{ rvChart=b.dataset.c; renderRvBars(); });
+  const bBtn=document.getElementById('rvBonusBtn'), bWrap=document.getElementById('rvBonusWrap'), bLbl=document.getElementById('rvBonusLbl');
+  if(bBtn && bWrap){
+    bBtn.onclick=()=>{
+      const open=bWrap.classList.toggle('open');
+      bBtn.classList.toggle('open', open);
+      if(bLbl) bLbl.textContent = open ? '재미있는 인사이트 접기' : '재미있는 인사이트 더보기';
+    };
+  }
   renderRvCards(); renderRvBars(); renderRvDetail();
 }
 
