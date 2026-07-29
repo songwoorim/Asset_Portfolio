@@ -206,7 +206,8 @@
   .page + .page{margin-top:16px;}
   .page-head{display:flex; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:16px;}
   .page-head h2{font-family:'Inter',-apple-system,sans-serif; font-size:17px; font-weight:600; margin:0; display:flex; align-items:center; gap:8px; letter-spacing:-0.01em;}
-  .page-head .idx{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--brass); border:1px solid var(--brass); border-radius:3px; padding:1px 5px;}
+  .page-head .idx{width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .page-head .idx svg{width:15px; height:15px; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; display:block;}
   .page-head .total{font-family:'Inter',-apple-system,sans-serif; font-weight:600; font-size:15px;}
   .page-sub{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); margin:6px 0 12px; display:flex; gap:14px; flex-wrap:wrap;}
 
@@ -724,7 +725,7 @@
 
   <!-- STOCK WEIGHT DONUT -->
   <div class="page collapsible" data-panel="home">
-    <div class="page-head"><h2><span class="idx">◔</span>종목별 보유비중</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 14종목</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span>종목별 보유비중</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 14종목</div></div>
     <div class="stock-donut-grid">
       <div class="donut-wrap"><div id="stockDonut"></div><div class="donut-center-label">해외주식 내 비중</div></div>
       <div class="legend-2col" id="stockDonutLegend"></div>
@@ -736,7 +737,7 @@
 
   <!-- HEATMAP -->
   <div class="page collapsible" data-panel="home">
-    <div class="page-head"><h2><span class="idx">▦</span>수익률 히트맵</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="heatMode">누적 기준</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>수익률 히트맵</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="heatMode">누적 기준</div></div>
     <div class="heat-grid" id="heatGrid"></div>
     <div class="heat-legend" id="heatLegend"></div>
     <div class="note">기본은 누적 수익률. 실시간 갱신 후에는 전일대비(당일 등락, 3단계 색상)로 전환됩니다 · 빨강=상승 파랑=하락 · 타일 클릭 시 상세.</div>
@@ -746,7 +747,7 @@
 
   <!-- MARKET INDICES -->
   <div class="page collapsible" id="sec-market" data-panel="home">
-    <div class="page-head"><h2><span class="idx">◫</span>시장 지수</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="idxAsOf">실시간</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>시장 지수</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="idxAsOf">실시간</div></div>
     <div class="idx-grid" id="idxGrid"></div>
     <div class="note">S&amp;P500·나스닥·다우는 갱신 시 ETF(SPY·QQQ·DIA) 실시간 시세로 대체 표시됩니다. KOSPI·VIX는 스냅샷 유지(무료 브라우저 API 미지원).</div>
   </div>
@@ -755,7 +756,7 @@
 
   <!-- FX -->
   <div class="page collapsible" data-panel="home">
-    <div class="page-head"><h2><span class="idx">₩</span>실시간 환율</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">USD/KRW</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>실시간 환율</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">USD/KRW</div></div>
     <div class="fx-box">
       <div class="fx-main"><span class="pair">USD/KRW</span><span class="rate" id="fxRate">—</span><span class="chg" id="fxChg"></span></div>
       <div class="fx-meta" id="fxMeta"></div>
@@ -767,7 +768,7 @@
 
   <!-- DAILY P&L -->
   <div class="page collapsible" id="sec-daily" data-panel="pnl">
-    <div class="page-head"><h2><span class="idx">☀</span>수익 현황</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="dailyAsOf">전일대비</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>수익 현황</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="dailyAsOf">전일대비</div></div>
     <div class="pnl-tabs" id="pnlTabs">
       <button data-p="today" class="on">오늘</button>
       <button data-p="week">이번주</button>
@@ -786,7 +787,7 @@
 
   <!-- ASSET TREND -->
   <div class="page collapsible" id="sec-trend" data-panel="pnl">
-    <div class="page-head"><h2><span class="idx">◠</span>자산 추이</h2><span class="tr-hint">👆 그래프를 드래그</span></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>자산 추이</h2><span class="tr-hint">👆 그래프를 드래그</span></div>
     <div class="hd-label">투자 자산</div>
     <div class="hd-total" id="trTotal">—<span class="u">원</span></div>
     <div class="hd-delta" id="trDelta"></div>
@@ -805,7 +806,7 @@
 
   <!-- BENCHMARK -->
   <div class="page collapsible" id="sec-bench" data-panel="pnl">
-    <div class="page-head"><h2><span class="idx">⚔</span>벤치마크 비교</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">vs S&amp;P500</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><line x1="5" y1="21" x2="5" y2="10"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="19" y1="21" x2="19" y2="14"/><line x1="2" y1="8" x2="22" y2="8" stroke-dasharray="2 2"/></svg></span>벤치마크 비교</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">vs S&amp;P500</div></div>
     <div class="bm-hero">
       <div><div class="bm-k">내 포트폴리오</div><div class="bm-v up" id="bmP">—</div></div>
       <div><div class="bm-k">S&amp;P500에 넣었다면</div><div class="bm-v" style="color:#5878a8;" id="bmB">—</div></div>
@@ -821,7 +822,7 @@
 
   <!-- MONTHLY / ANNUAL REVIEW -->
   <div class="page collapsible" id="sec-review" data-panel="pnl">
-    <div class="page-head"><h2><span class="idx">▤</span>월간·연간 리뷰</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">2026년</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></span>월간·연간 리뷰</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">2026년</div></div>
     <div class="rv-grid" id="rvCards"></div>
 
     <div class="rv-lbl">최근 12개월 <b>총자산</b> <span id="rvAssetMode">(월말 기준)</span>
@@ -841,7 +842,7 @@
 
   <!-- NEWS -->
   <div class="page collapsible" data-panel="hist">
-    <div class="page-head"><h2><span class="idx">✦</span>종목 뉴스</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">보유 종목 헤드라인</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M4 4h13a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H4z"/><path d="M4 4v16"/><line x1="8" y1="9" x2="15" y2="9"/><line x1="8" y1="13" x2="15" y2="13"/></svg></span>종목 뉴스</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">보유 종목 헤드라인</div></div>
     <div class="news-list" id="newsList"><div class="news-empty">새로고침하면 보유 종목 관련 최신 뉴스를 불러옵니다.</div></div>
   </div>
 
@@ -853,7 +854,7 @@
 
   <!-- ALLOCATION DONUT -->
   <div class="page collapsible" id="sec-analysis" data-panel="hold">
-    <div class="page-head"><h2><span class="idx">◷</span>자산 배분</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">계좌별 비중</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span>자산 배분</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">계좌별 비중</div></div>
     <div class="insight-grid">
       <div class="donut-wrap"><div id="allocDonut"></div><div class="donut-center-label">4개 계좌 통합</div></div>
       <div class="donut-legend" id="allocDonutLegend"></div>
@@ -864,7 +865,7 @@
 
   <!-- CURRENCY EXPOSURE -->
   <div class="page collapsible" data-panel="home">
-    <div class="page-head"><h2><span class="idx">$</span>통화 노출</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">USD vs KRW</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg></span>통화 노출</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">USD vs KRW</div></div>
     <div id="curBox" class="cur-box"></div>
     <div class="note">달러 표시 자산은 원/달러 환율에 노출됩니다. 원화 강세 시 환차손, 약세 시 환차익 · 오늘처럼 원화가 강해지면 달러 자산 평가액이 눌립니다.</div>
   </div>
@@ -875,7 +876,7 @@
 
   <!-- SECTOR / THEME -->
   <div class="page collapsible" data-panel="hold">
-    <div class="page-head"><h2><span class="idx">◑</span>섹터·테마 비중</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">위험 성격별</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>섹터·테마 비중</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">위험 성격별</div></div>
     <div class="insight-grid">
       <div class="donut-wrap"><div id="sectorDonut"></div><div class="donut-center-label">세부 섹터별</div></div>
       <div class="donut-legend" id="sectorLegend"></div>
@@ -889,7 +890,7 @@
 
   <!-- P&L BARS -->
   <div class="page collapsible" data-panel="hold">
-    <div class="page-head"><h2><span class="idx">±</span>종목별 손익률</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 기준</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M7 17V3M7 3l-3 3M7 3l3 3"/><path d="M17 7v14M17 21l3-3M17 21l-3-3"/></svg></span>종목별 손익률</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 기준</div></div>
     <div class="pnl-list" id="pnlList"></div>
     <div class="note">가운데 세로선 기준 · 오른쪽(빨강) 수익 · 왼쪽(파랑) 손실</div>
   </div>
@@ -898,7 +899,7 @@
 
   <!-- REALIZED P&L -->
   <div class="page collapsible" data-panel="pnl">
-    <div class="page-head"><h2><span class="idx">✓</span>실현손익</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">매도로 확정된 손익</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg></span>실현손익</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">매도로 확정된 손익</div></div>
     <div class="rz-hero"><span class="big up" id="rzTotal">—</span><span style="font-family:'Inter',-apple-system,sans-serif;font-size:11.5px;color:var(--ink-soft);">누적 확정</span></div>
     <div class="rz-list" id="rzList"></div>
     <div class="note">평가손익(보유 중 미실현)과 별개로, <b>매도로 확정된 손익</b>만 모았습니다 · TSLA는 매도 시점 환율 근사 · 양도세는 별도(위 시뮬레이터 참고).</div>
@@ -908,7 +909,7 @@
 
   <!-- TX TIMELINE -->
   <div class="page collapsible" id="sec-tx" data-panel="hist">
-    <div class="page-head"><h2><span class="idx">⌸</span>거래 이력</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="txTotal">—</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(110,110,115,.1);"><svg viewBox="0 0 24 24" style="stroke:#6e6e73;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>거래 이력</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="txTotal">—</div></div>
     <div class="tx-filter">
       <select id="txSel"></select>
       <span class="tx-count" id="txCount"></span>
@@ -923,7 +924,7 @@
 
   <!-- REBALANCING -->
   <div class="page collapsible" id="sec-rebal" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx">⇄</span>리밸런싱 제안</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">현재 → 목표</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>리밸런싱 제안</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">현재 → 목표</div></div>
     <div class="rebal-head-note">자산군 기준 목표 배분. 막대는 <b style="color:#b7813f;">현재(갈색)</b> vs <b style="color:#8a9280;">목표(회녹색)</b>. 한 번에 옮기지 말고 수개월 분할 권장.</div>
     <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#b23b2e;"></span>고위험 테마주</span><span class="rebal-move cut">▼ 축소 −15%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:69.8%;"></div></div><span class="v">34.9%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:36%;"></div></div><span class="v">~18%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">PLTR·RKLB·KEEL·IONQ·IREN·SMR·TSLA · 약 ₩29M → ₩15M</div></div>
     <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#cf8a5c;"></span>대형 우량주</span><span class="rebal-move cut">▼ 소폭 −9%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:77.6%;"></div></div><span class="v">38.8%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:58%;"></div></div><span class="v">~29%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">AAPL·NVDA·GOOGL·MSFT·NFLX·SPYM·INTC · 승자 비중 10% 상한</div></div>
@@ -939,7 +940,7 @@
 
   <!-- REBAL CHECKPOINT (interactive) -->
   <div class="page collapsible" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx">⚖</span>리밸런싱 체크포인트</h2><div class="total ok" id="rebalSum" style="font-size:12px;">목표 합계 —</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M12 3v18M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0zM3 7h18M8 7l4-4 4 4"/></svg></span>리밸런싱 체크포인트</h2><div class="total ok" id="rebalSum" style="font-size:12px;">목표 합계 —</div></div>
     <div class="rebal-head-note">각 종목 <b>목표비중</b>을 슬라이더로 조절하면 현재비중과 비교해 <b style="color:var(--stamp-red)">과대</b>/<b style="color:var(--stamp-blue)">과소</b>를 판정하고, 총자산 100% 기준 <b>조정 금액·주수</b>를 계산합니다. 목표 합계를 100%에 맞춰보세요.</div>
     <div class="cp-table" id="cpTable"></div>
     <div class="cp-reset-row"><button class="cp-reset" id="cpReset">↺ 목표비중 기본값으로 초기화</button></div>
@@ -956,7 +957,7 @@
 
   <!-- WHAT-IF BUY SIM -->
   <div class="page collapsible collapsed" id="sec-sim" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx">＋</span>What-if 매수 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">추가 매수 가정</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>What-if 매수 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">추가 매수 가정</div></div>
     <div class="rebal-head-note">종목과 매수 수량을 정하면 <b>예상 비중·목표 대비·신규 평단·총자산 변화</b>를 계산합니다. 리밸런싱 체크포인트의 실행 짝입니다.</div>
     <div class="tax-ctrl">
       <select id="wfSel"></select>
@@ -974,7 +975,7 @@
 
   <!-- CAPITAL GAINS TAX SIM -->
   <div class="page collapsible collapsed" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx">%</span>양도세 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 익절</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>양도세 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 익절</div></div>
     <div class="tax-ctrl">
       <select id="taxSel"></select>
       <div class="tax-slider-row"><input type="range" id="taxRange" min="0" max="0" value="0"><span id="taxShares" class="tax-shares">0주</span></div>
@@ -988,7 +989,7 @@
 
   <!-- DIAGNOSIS -->
   <div class="page collapsible" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx">✎</span>진단 &amp; 조언</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">냉정한 점검</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 14 11 16 15 12"/></svg></span>진단 &amp; 조언</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">냉정한 점검</div></div>
     <div class="advice-num-row">
       <div class="advice-num"><div class="k">총자산</div><div class="v" id="dxTotal">—</div></div>
       <div class="advice-num"><div class="k">추정 수익률</div><div class="v up" id="dxRet">—</div></div>
@@ -1407,7 +1408,7 @@ function renderTables(){
       ? `달러 자산 · 적용환율 ${FX.toLocaleString('en-US',{maximumFractionDigits:2})}원/USD · 환차손익은 매입환율 대비 별도`
       : '국내 ETF · 현재가는 스냅샷, pykrx 연동 시 자동 갱신';
     cont.innerHTML+=`<div class="page">
-      <div class="page-head"><h2><span class="idx">${m.idx}</span>${m.name}</h2><div class="total">${won(ev)}</div></div>
+      <div class="page-head"><h2><span class="idx" style="background:${m.color}1a; color:${m.color};">${ACCT_ICONS[a]}</span>${m.name}</h2><div class="total">${won(ev)}</div></div>
       <div class="acct-chiprow">
         <div class="acct-chip"><div class="k">매입금액</div><div class="v">${won(cost)}</div></div>
         <div class="acct-chip ${clsOf(ret)}"><div class="k">평가손익</div><div class="v">${pnl>=0?'+':''}${won(pnl)}</div><div class="p">${sign(ret)}</div></div>
@@ -1419,7 +1420,7 @@ function renderTables(){
   // 예수금
   const cash=cashKRW(), usdKRW=CASH.usd*FX, total=cash;
   cont.innerHTML+=`<div class="page">
-    <div class="page-head"><h2><span class="idx">04</span>예수금</h2><div class="total">${won(cash)}</div></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(110,110,115,.1); color:#6e6e73;">${ACCT_ICONS.cash}</span>예수금</h2><div class="total">${won(cash)}</div></div>
     <table><thead><tr><th>계좌</th><th class="num">보유액</th><th class="num">원화 환산</th><th class="num">비중</th></tr></thead><tbody>
       <tr><td class="name">미국 달러 (Super365)</td><td class="num">${CASH.usd.toLocaleString('en-US',{minimumFractionDigits:2})} USD</td><td class="num">${wonPlain(usdKRW)}</td><td class="num">${(usdKRW/total*100).toFixed(1)}%</td></tr>
       <tr><td class="name">발행어음CMA (미래에셋)</td><td class="num">${wonPlain(CASH.krwCMA)}</td><td class="num">${wonPlain(CASH.krwCMA)}</td><td class="num">${(CASH.krwCMA/total*100).toFixed(1)}%</td></tr>
