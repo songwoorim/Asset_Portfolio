@@ -403,26 +403,48 @@
   .m-txbtn:hover{background:#2b3a2c;}
 
   /* daily p&l */
-  .daily-hero{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; padding:6px 2px 12px;}
-  .daily-hero .big{font-family:'Inter',-apple-system,sans-serif; font-size:30px; font-weight:700;}
-  .daily-hero .pctbig{font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:600;}
-  .pnl-tabs{display:flex; gap:5px; overflow-x:auto; scrollbar-width:none; padding:2px 2px 12px;}
-  .pnl-tabs::-webkit-scrollbar{display:none;}
-  .pnl-tabs button{flex-shrink:0; font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:500; padding:7px 14px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:9999px; cursor:pointer;}
-  .pnl-tabs button.on{background:var(--ink); border-color:var(--ink); color:#fff; font-weight:600;}
-  .pnl-tabs button:active{transform:scale(0.95);}
-  .pnl-list{padding:4px 2px 8px;}
-  .pnl-item{display:flex; align-items:center; gap:12px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer;}
-  .pnl-item:last-child{border-bottom:none;}
-  .pnl-item:hover{background:var(--paper);}
-  .pnl-avatar{width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; color:#fff; overflow:hidden;}
-  .pnl-avatar svg{width:20px; height:20px; display:block; fill:#fff;}
-  .pnl-avatar img{width:100%; height:100%; object-fit:contain; padding:9px; display:block;}
-  .pnl-name{flex:1; font-size:13.5px; font-weight:600; min-width:0;}
-  .pnl-name span{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); font-weight:400; margin-top:1px;}
-  .pnl-amt{text-align:right; font-family:'Inter',-apple-system,sans-serif; flex-shrink:0;}
-  .pnl-amt .a{font-size:13.5px; font-weight:700;}
-  .pnl-amt .p{font-size:11px; font-weight:500; margin-top:1px;}
+  .dp-hero{border-radius:14px; padding:16px 16px; margin:2px 2px 16px; position:relative; overflow:hidden;}
+  .dp-hero.up{background:linear-gradient(135deg, rgba(178,59,46,.09), rgba(178,59,46,.02));}
+  .dp-hero.down{background:linear-gradient(135deg, rgba(44,74,124,.09), rgba(44,74,124,.02));}
+  .dp-hero.flat{background:var(--paper);}
+  .dp-hero .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
+  .dp-hero .num{font-family:'Inter',-apple-system,sans-serif; font-size:28px; font-weight:800; letter-spacing:-0.02em; display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;}
+  .dp-hero.up .num{color:var(--stamp-red);} .dp-hero.down .num{color:var(--stamp-blue);}
+  .dp-hero .num .pct{font-size:14px; font-weight:700;}
+  .dp-hero .sub{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); margin-top:7px;}
+  .pnl-tabs{display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; margin:2px 2px 16px;}
+  .pnl-tabs button{flex:1; border:none; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); background:transparent; padding:8px 2px; border-radius:9px; cursor:pointer; white-space:nowrap;}
+  .pnl-tabs button.on{background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .pnl-tabs button:active{transform:scale(0.96);}
+  .dp-sec-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin:0 2px 8px;}
+  .dp-spot-row{display:flex; gap:8px; margin:0 0 18px;}
+  .dp-spot{flex:1; border-radius:13px; padding:12px 11px; cursor:pointer; min-width:0;}
+  .dp-spot.up{background:rgba(178,59,46,.07);}
+  .dp-spot.down{background:rgba(44,74,124,.07);}
+  .dp-spot .tag{font-family:'Inter',-apple-system,sans-serif; font-size:9px; font-weight:700; padding:2px 7px; border-radius:9999px; display:inline-block; margin-bottom:7px;}
+  .dp-spot.up .tag{background:var(--stamp-red); color:#fff;}
+  .dp-spot.down .tag{background:var(--stamp-blue); color:#fff;}
+  .dp-spot-top{display:flex; align-items:center; gap:7px; margin-bottom:7px; min-width:0;}
+  .dp-spot-lg{width:24px; height:24px; border-radius:50%; overflow:hidden; flex-shrink:0; font-family:'Inter',-apple-system,sans-serif; font-size:9px; font-weight:800; color:#fff; display:flex; align-items:center; justify-content:center;}
+  .dp-spot-lg img{width:100%; height:100%; object-fit:contain; padding:20%; display:block;}
+  .dp-spot-nm{font-size:11.5px; font-weight:700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .dp-spot-nm span{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:400; margin-top:1px;}
+  .dp-spot-v{font-family:'Inter',-apple-system,sans-serif; font-size:13.5px; font-weight:800;}
+  .dp-spot-p{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; margin-top:1px;}
+  .dp-contrib{padding:0 2px;}
+  .dp-c-row{display:grid; grid-template-columns:28px 54px 1fr 76px; gap:8px; align-items:center; padding:9px 0; cursor:pointer;}
+  .dp-c-lg{width:24px; height:24px; border-radius:50%; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; color:#fff; display:flex; align-items:center; justify-content:center;}
+  .dp-c-lg img{width:100%; height:100%; object-fit:contain; padding:20%; display:block;}
+  .dp-c-tk{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .dp-c-tk span{display:block; font-size:9px; color:var(--ink-soft); font-weight:400; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .dp-c-track{position:relative; height:7px; background:var(--paper); border-radius:9999px; overflow:hidden;}
+  .dp-c-fill{position:absolute; top:0; bottom:0; border-radius:9999px;}
+  .dp-c-fill.up{background:var(--stamp-red); left:50%;}
+  .dp-c-fill.down{background:var(--stamp-blue); right:50%;}
+  .dp-c-mid{position:absolute; left:50%; top:-2px; bottom:-2px; width:1px; background:var(--line);}
+  .dp-c-val{text-align:right; font-family:'Inter',-apple-system,sans-serif;}
+  .dp-c-val .a{font-size:11px; font-weight:700;}
+  .dp-c-val .p{font-size:9.5px; font-weight:600;}
   .pnl-empty{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); text-align:center; padding:24px 10px;}
   .daily-movers{display:grid; grid-template-columns:1fr 1fr; gap:14px 20px; padding:4px 2px 8px;}
   .mover-col h4{font-family:'Inter',-apple-system,sans-serif; font-size:10px; letter-spacing:0.04em; color:var(--ink-soft); text-transform:uppercase; margin:0 0 6px;}
@@ -1427,33 +1449,66 @@ function renderDailyPnl(){
   as.textContent = (pnlPeriod==='today' && LAST_UPDATED) ? ('실시간 '+LAST_UPDATED) : LBL[pnlPeriod];
   const {total, pct, rows, approx}=computePeriodPL(pnlPeriod);
   const cls=clsOf(total);
-  const rowHtml=r=>{
-    const initial=r.tk.slice(0,2);
-    const bg=PNL_COLOR[r.tk]||'#8a8f98';
-    const icon=ICONS[r.tk], custom=CUSTOM_LOGOS[r.tk];
-    let inner, style;
-    if(icon){                       // 1순위: Simple Icons 인라인 SVG (흰 글리프 + 브랜드색 원, CC0)
-      inner=icon; style=`background:${bg};`;
-    } else if(custom){               // 2순위: 사용자가 넣어준 로고(base64, API 호출 없음)
-      const cbg=CUSTOM_BG[r.tk]||'#fff';
-      const cpad=CUSTOM_PAD[r.tk];
+  const avatarPiece=tk=>{
+    const initial=tk.slice(0,2);
+    const bg=PNL_COLOR[tk]||'#8a8f98';
+    const icon=ICONS[tk], custom=CUSTOM_LOGOS[tk];
+    if(icon) return {inner:icon, style:`background:${bg};`};
+    if(custom){
+      const cbg=CUSTOM_BG[tk]||'#fff';
+      const cpad=CUSTOM_PAD[tk];
       const padStyle=cpad?` style="padding:${cpad};"`:'';
-      inner=`<img${padStyle} src="${custom}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${initial}'}))">`;
-      style=`background:${cbg};${cbg==='#ffffff'||cbg==='#fff'?'border:1px solid var(--line);':''}`;
-    } else {                        // 3순위: 컬러 이니셜
-      inner=initial; style=`background:${bg};`;
+      return {inner:`<img${padStyle} src="${custom}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${initial}'}))">`,
+        style:`background:${cbg};${cbg==='#ffffff'||cbg==='#fff'?'border:1px solid var(--line);':''}`};
     }
-    return `<div class="pnl-item" data-tk="${r.tk}">
-      <div class="pnl-avatar" style="${style}">${inner}</div>
-      <div class="pnl-name">${r.n}<span>${r.tk}</span></div>
-      <div class="pnl-amt"><div class="a ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}원</div><div class="p ${clsOf(r.v)}">(${sign(r.pct)})</div></div>
+    return {inner:initial, style:`background:${bg};`};
+  };
+  const spotHtml=(r,tag,cls2)=>{
+    const {inner,style}=avatarPiece(r.tk);
+    return `<div class="dp-spot ${cls2}" data-tk="${r.tk}">
+      <span class="tag">${cls2==='up'?'▲':'▼'} ${tag}</span>
+      <div class="dp-spot-top">
+        <div class="dp-spot-lg" style="${style}">${inner}</div>
+        <div class="dp-spot-nm">${r.n}<span>${r.tk}</span></div>
+      </div>
+      <div class="dp-spot-v ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}원</div>
+      <div class="dp-spot-p ${clsOf(r.v)}">${sign(r.pct)}</div>
     </div>`;
   };
-  box.innerHTML=`<div class="daily-hero"><span class="big ${cls}">${arrowOf(total)} ${total>=0?'+':''}${won(total)}</span><span class="pctbig ${cls}">${sign(pct)}</span></div>
-    <div class="pnl-list">${rows.length?rows.map(rowHtml).join(''):'<div class="pnl-empty">해당 기간 데이터가 없습니다.</div>'}</div>`;
-  box.querySelectorAll('.pnl-item').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
+  const maxAbs=Math.max(1,...rows.map(r=>Math.abs(r.v)));
+  const contribHtml=r=>{
+    const {inner,style}=avatarPiece(r.tk);
+    const w=Math.min(45, Math.abs(r.v)/maxAbs*45);
+    return `<div class="dp-c-row" data-tk="${r.tk}">
+      <div class="dp-c-lg" style="${style}">${inner}</div>
+      <div class="dp-c-tk">${r.tk}<span>${r.n}</span></div>
+      <div class="dp-c-track"><div class="dp-c-mid"></div><div class="dp-c-fill ${clsOf(r.v)}" style="width:${w.toFixed(1)}%;"></div></div>
+      <div class="dp-c-val"><div class="a ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}</div><div class="p ${clsOf(r.v)}">${sign(r.pct)}</div></div>
+    </div>`;
+  };
+  const heroHtml=`<div class="dp-hero ${cls}">
+    <div class="lbl">${LBL[pnlPeriod]}${approx?' · 근사치':''}</div>
+    <div class="num">${arrowOf(total)} ${total>=0?'+':''}${won(total)}<span class="pct">${sign(pct)}</span></div>
+    <div class="sub">${rows.length}종목 반영</div>
+  </div>`;
+  let bodyHtml;
+  if(!rows.length){
+    bodyHtml='<div class="pnl-empty">해당 기간 데이터가 없습니다.</div>';
+  } else {
+    const best=rows[0], worst=rows[rows.length-1];
+    const spotSection = (rows.length>=2 && best.tk!==worst.tk)
+      ? `<div class="dp-sec-lbl">베스트 · 워스트</div>
+         <div class="dp-spot-row">${spotHtml(best,'베스트','up')}${spotHtml(worst,'워스트','down')}</div>`
+      : '';
+    bodyHtml = spotSection
+      + `<div class="dp-sec-lbl">전체 종목 · 기여도</div>`
+      + `<div class="dp-contrib">${rows.map(contribHtml).join('')}</div>`;
+  }
+  box.innerHTML = heroHtml + bodyHtml;
+  box.querySelectorAll('.dp-spot, .dp-c-row').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
 }
 function initPnlTabs(){
+
   document.querySelectorAll('#pnlTabs button').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('#pnlTabs button').forEach(x=>x.classList.toggle('on',x===b));
     pnlPeriod=b.dataset.p; renderDailyPnl();
