@@ -1360,12 +1360,34 @@ function renderCoverSpark(){
   const up = vals[vals.length-1]>=vals[0];
   el.innerHTML = `<path d="${d}" fill="none" stroke="${up?'#c0392b':'#2c4a7c'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
+let coverTotalShown = null; // 현재 화면에 굴러가고 있는(또는 안착한) 총자산 값
+let coverAnimRaf = null;
+
+function animateCoverTotal(to){
+  const el = document.getElementById('coverTotal');
+  if(!el) return;
+  const from = coverTotalShown == null ? 0 : coverTotalShown;
+  if(coverAnimRaf) cancelAnimationFrame(coverAnimRaf);
+  const dur = coverTotalShown == null ? 900 : 550; // 최초 진입 시엔 살짝 길게, 이후 보정은 짧고 빠르게
+  const t0 = performance.now();
+  function step(t){
+    const p = Math.min(1, (t - t0) / dur);
+    const eased = 1 - Math.pow(1 - p, 3); // ease-out
+    const val = from + (to - from) * eased;
+    coverTotalShown = val;
+    el.innerHTML = won(val) + '<span>KRW</span>';
+    if(p < 1) coverAnimRaf = requestAnimationFrame(step);
+    else { coverTotalShown = to; coverAnimRaf = null; }
+  }
+  coverAnimRaf = requestAnimationFrame(step);
+}
+
 function renderCover(){
   const total=grandTotal(), cost=investedCost(), cash=cashKRW();
   const invest=total-cash;
   const profit=invest-cost;
   const ret=(profit/cost*100);
-  document.getElementById('coverTotal').innerHTML = won(total)+'<span>KRW</span>';
+  animateCoverTotal(total);
 
   // 총수익 칩
   const chipTotalEl=document.getElementById('chipTotal');
@@ -2927,6 +2949,7 @@ const OVERSEAS_CODE_MAP = {
 
 const KIS_POLL_INTERVAL_MS = 5000;
 let kisPollTimer = null;
+let kisReady = false; // 첫 실시간 시세 수신 완료 여부
 
 async function pollKisQuotes(){
   try{
@@ -2964,8 +2987,11 @@ async function pollKisQuotes(){
 
     renderCover(); renderTables(); renderDailyPnl(); renderHeat();
     renderStockDonut(false);
+    kisReady = true;
   }catch(err){
     console.error('KIS 폴링 실패:', err);
+    // 첫 시도가 실패한 경우, "동기화 중" 상태로 멈춰있지 않도록 스냅샷 값으로 즉시 대체
+    if(!kisReady){ renderCover(); kisReady = true; }
   }
 }
 
