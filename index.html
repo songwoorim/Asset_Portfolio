@@ -1188,8 +1188,8 @@
   </div>
 
   <div class="footer" id="footer">
-    실시간: 환율(open.er-api·무료) · 미국주식·뉴스(Finnhub·무료 키) · 지수(SPY·QQQ·DIA) — GitHub 등 웹호스트에서 ⟳ 버튼으로 갱신.<br>
-    국내 ETF·KOSPI·VIX·계좌 잔고는 최근 스냅샷입니다.<br>
+    실시간: 국내·해외 주식(한국투자증권 KIS API, 5초 자동 갱신) · 환율(open.er-api·무료) · 지수·뉴스(Finnhub·무료 키, ⟳ 버튼으로 갱신).<br>
+    KOSPI·VIX·계좌 잔고는 최근 스냅샷입니다.<br>
     <span class="warn">투자 참고용이며 실제 계좌 화면과 오차가 있을 수 있습니다.</span>
   </div>
 </div>
@@ -1825,7 +1825,7 @@ function renderTables(){
     }
     const noteExtra = a==='overseas'
       ? `달러 자산 · 적용환율 ${FX.toLocaleString('en-US',{maximumFractionDigits:2})}원/USD · 환차손익은 매입환율 대비 별도`
-      : '국내 ETF · 현재가는 스냅샷, pykrx 연동 시 자동 갱신';
+      : '국내 ETF · 한국투자증권 KIS API로 5초마다 실시간 갱신';
     const headerEv = a==='isa' ? ev+ISA_CASH : ev;
     cont.innerHTML+=`<div class="page">
       <div class="page-head"><h2><span class="idx" style="background:${m.color}1a; color:${m.color};">${ACCT_ICONS[a]}</span>${m.name}</h2><div class="total">${won(headerEv)}</div></div>
@@ -2795,8 +2795,9 @@ function extractJSON(data){
   return JSON.parse(cand);
 }
 /* ===== LIVE DATA via free browser APIs (GitHub Pages 등 웹호스트에서 직접 동작) =====
-   환율: open.er-api.com (무료·키 불필요) / 미국주식·뉴스: Finnhub (무료 키)
-   국내 ETF·KOSPI·VIX는 무료 브라우저 API로 안정 조회가 어려워 스냅샷 유지 */
+   환율: open.er-api.com (무료·키 불필요) / 지수·뉴스: Finnhub (무료 키, ⟳ 버튼)
+   국내·해외 보유 종목 시세: 한국투자증권 KIS API → Cloudflare Worker 프록시 경유, 5초 자동 폴링 (initKisPolling 참고)
+   KOSPI·VIX는 무료 브라우저 API로 안정 조회가 어려워 스냅샷 유지 */
 /* ===== 브랜드 아이콘 (Simple Icons CDN · SVG 인라인 삽입 · 키 불필요) =====
    아이콘 파일은 CC0. 각 상표는 해당 기업 소유이며, 보유 종목 식별 목적으로만 사용. */
 const SI_SLUG={AAPL:'apple', NVDA:'nvidia', NFLX:'netflix',
@@ -2874,14 +2875,6 @@ async function fhQuote(sym,key){
   if(j&&typeof j.c==='number'&&j.c>0) return j;   // {c:현재가, dp:등락%, pc:전일종가...}
   throw new Error('시세 없음('+sym+')');
 }
-async function fetchUSStocks(key){
-  const us=HOLDINGS.filter(h=>h.cur==='USD');
-  const res=await Promise.allSettled(us.map(h=>fhQuote(h.ticker,key)));
-  let n=0, firstErr='';
-  res.forEach((r,i)=>{ if(r.status==='fulfilled'){ const q=r.value; us[i].price=q.c; if(typeof q.dp==='number')DAY_CHG[us[i].ticker]=q.dp; n++; } else if(!firstErr) firstErr=(r.reason&&r.reason.message)||''; });
-  if(n===0) throw new Error(firstErr||'미국주식 실패');
-  HEAT_LIVE=true; return n;
-}
 async function fetchIndices(key){
   const map=[['sp','SPY','S&P500·SPY'],['ndq','QQQ','나스닥·QQQ'],['dow','DIA','다우·DIA'],['sox','SOXX','반도체·SOXX']];
   const res=await Promise.allSettled(map.map(m=>fhQuote(m[1],key)));
@@ -2903,6 +2896,85 @@ async function fetchNewsFH(key){
   throw new Error('뉴스 없음');
 }
 
+/* ===== KIS(한국투자증권) 실시간 폴링 — 국내+해외 보유 종목, Cloudflare Worker 프록시 경유 ===== */
+const KIS_PROXY_URL = 'https://swr.songrainforest.workers.dev';
+
+// 국내 ETF: HOLDINGS의 ticker → KRX 6자리 종목코드
+const DOMESTIC_CODE_MAP = {
+  KODEX_SEMI: '390390',
+  TIGER_NDX: '133690',
+  RISE_NDX: '368590',
+  TIGER_SPX: '360750',
+};
+
+// 해외주식: HOLDINGS의 ticker → { excd, symb } (실측 테스트로 확인 완료)
+const OVERSEAS_CODE_MAP = {
+  PLTR:  { excd: 'NAS', symb: 'PLTR' },
+  NVDA:  { excd: 'NAS', symb: 'NVDA' },
+  AAPL:  { excd: 'NAS', symb: 'AAPL' },
+  GOOGL: { excd: 'NAS', symb: 'GOOGL' },
+  MSFT:  { excd: 'NAS', symb: 'MSFT' },
+  RKLB:  { excd: 'NAS', symb: 'RKLB' },
+  NFLX:  { excd: 'NAS', symb: 'NFLX' },
+  IONQ:  { excd: 'NYS', symb: 'IONQ' },
+  IREN:  { excd: 'NAS', symb: 'IREN' },
+  INTC:  { excd: 'NAS', symb: 'INTC' },
+  TSLA:  { excd: 'NAS', symb: 'TSLA' },
+  SMR:   { excd: 'NYS', symb: 'SMR' },
+  SPYM:  { excd: 'AMS', symb: 'SPYM' },
+  KEEL:  { excd: 'NAS', symb: 'KEEL' },
+};
+
+const KIS_POLL_INTERVAL_MS = 5000;
+let kisPollTimer = null;
+
+async function pollKisQuotes(){
+  try{
+    const domesticCodes = Object.values(DOMESTIC_CODE_MAP).filter(Boolean);
+    const overseasCodes = Object.entries(OVERSEAS_CODE_MAP).map(([tk, v]) => `${v.excd}:${v.symb}`);
+
+    const [domRes, ovRes] = await Promise.all([
+      domesticCodes.length
+        ? fetch(`${KIS_PROXY_URL}/quote/domestic?codes=${domesticCodes.join(',')}`).then(r=>r.json())
+        : Promise.resolve({ results: [] }),
+      overseasCodes.length
+        ? fetch(`${KIS_PROXY_URL}/quote/overseas?codes=${overseasCodes.join(',')}`).then(r=>r.json())
+        : Promise.resolve({ results: [] }),
+    ]);
+
+    const codeToTicker = Object.fromEntries(
+      Object.entries(DOMESTIC_CODE_MAP).filter(([, c]) => c).map(([tk, c]) => [c, tk])
+    );
+    (domRes.results || []).forEach(r=>{
+      const tk = codeToTicker[r.code];
+      const h = HOLDINGS.find(x => x.ticker === tk);
+      if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; }
+    });
+
+    (ovRes.results || []).forEach(r=>{
+      const entry = Object.entries(OVERSEAS_CODE_MAP).find(([, v]) => v.symb === r.symbol);
+      if(!entry) return;
+      const tk = entry[0];
+      const h = HOLDINGS.find(x => x.ticker === tk);
+      if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; }
+    });
+
+    HEAT_LIVE = true;
+    LAST_UPDATED = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+
+    renderCover(); renderTables(); renderDailyPnl(); renderHeat();
+    renderStockDonut(false);
+  }catch(err){
+    console.error('KIS 폴링 실패:', err);
+  }
+}
+
+function initKisPolling(){
+  pollKisQuotes();
+  if(kisPollTimer) clearInterval(kisPollTimer);
+  kisPollTimer = setInterval(pollKisQuotes, KIS_POLL_INTERVAL_MS);
+}
+
 let refreshing=false;
 async function refresh(){
   if(refreshing) return; refreshing=true;
@@ -2911,8 +2983,7 @@ async function refresh(){
   setStatus('stale', key?'<b>조회 중…</b>':'<b>환율 조회 중…</b>');
   const labels=[], jobs=[];
   jobs.push(fetchFX()); labels.push('환율');
-  if(key){ jobs.push(fetchUSStocks(key)); labels.push('미국주식');
-           jobs.push(fetchIndices(key));  labels.push('지수');
+  if(key){ jobs.push(fetchIndices(key));  labels.push('지수');
            jobs.push(fetchNewsFH(key));   labels.push('뉴스'); }
   const results=await Promise.allSettled(jobs);
   const failed=[]; let firstErr='';
@@ -2972,6 +3043,7 @@ initReview();
 loadFutureSnaps().then(initTrend);
 initUI();
 initCoverDetail();
+initKisPolling();
 fetchIcons().catch(e=>console.warn('icons',e));
 </script>
 
