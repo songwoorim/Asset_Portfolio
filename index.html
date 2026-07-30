@@ -329,13 +329,86 @@
   .donut-legend .sw{width:10px; height:10px; border-radius:2px; flex-shrink:0;}
   .donut-legend .val{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:600;}
   .donut-legend .pctx{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft);}
-  .stock-donut-grid{display:grid; grid-template-columns:auto 1fr; gap:24px; align-items:center; padding:6px 2px 16px;}
-  .legend-2col{display:grid; grid-template-columns:1fr 1fr; gap:5px 18px; font-size:11.5px;}
-  .legend-2col .row{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:3px 0; border-bottom:1px dotted var(--line);}
-  .legend-2col .lbl{display:flex; align-items:center; gap:6px; overflow:hidden;}
-  .legend-2col .sw{width:9px; height:9px; border-radius:2px; flex-shrink:0;}
-  .legend-2col .tk{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:500;}
-  .legend-2col .pctx{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink);}
+
+  /* ===== 종목별 보유비중: 탭 + 인터랙티브 도넛 ===== */
+  .sw-seg{display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; margin:2px 2px 16px;}
+  .sw-seg button{flex:1; border:none; background:transparent; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); padding:8px 4px; border-radius:9px; cursor:pointer; white-space:nowrap; transition:background .18s, color .18s;}
+  .sw-seg button.on{background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+
+  .sw-detail{display:flex; align-items:center; gap:11px; margin:0 2px 6px; transition:opacity .22s ease;}
+  .sw-lg{width:34px; height:34px; border-radius:50%; overflow:hidden; flex-shrink:0;}
+  .sw-lg img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .sw-lg span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:800; color:#fff;}
+  .sw-dnm{font-size:14px; font-weight:700;}
+  .sw-dnm span{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); font-weight:400; margin-top:1px;}
+  .sw-big{font-family:'Inter',-apple-system,sans-serif; font-size:34px; font-weight:800; letter-spacing:-0.02em; line-height:1.1; margin:0 2px;}
+  .sw-sub{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); margin:3px 2px 0; transition:opacity .22s ease;}
+  .sw-sub b{font-weight:700;}
+
+  .sw-donut-box{display:flex; justify-content:center; padding:8px 0 14px;}
+  .sw-donut{transition:opacity .16s ease;}
+  .sw-donut path{cursor:pointer; transition:transform .32s cubic-bezier(.34,1.56,.64,1), filter .15s;}
+  .sw-donut path:hover{filter:brightness(1.08);}
+
+  .sw-insight-toggle{display:flex; align-items:center; justify-content:space-between; padding:4px 2px 8px; cursor:pointer;}
+  .sw-insight-toggle .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; display:flex; align-items:center; gap:6px;}
+  .sw-insight-toggle .lbl svg{width:12px; height:12px; stroke:var(--ink-soft); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .sw-insight-toggle .chev{width:20px; height:20px; border-radius:50%; background:var(--paper); display:flex; align-items:center; justify-content:center; transition:background .15s;}
+  .sw-insight-toggle .chev svg{width:11px; height:11px; stroke:var(--ink-soft); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:transform .25s;}
+  .sw-insight-toggle.closed .chev svg{transform:rotate(180deg);}
+  .sw-insight-wrap{max-height:220px; overflow:hidden; transition:max-height .28s ease, opacity .2s ease; opacity:1;}
+  .sw-insight-wrap.closed{max-height:0; opacity:0;}
+
+  .sw-hero-chip{display:flex; align-items:center; background:var(--paper); border-radius:13px; padding:12px 14px; margin:0 2px 8px; gap:10px;}
+  .sw-hero-left{display:flex; align-items:center; gap:10px; flex:1; min-width:0;}
+  .sw-hero-lg{width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0;}
+  .sw-hero-lg img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .sw-hero-lg span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:800; color:#fff;}
+  .sw-hero-mid{min-width:0;}
+  .sw-hero-k{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:600;}
+  .sw-hero-nm{font-size:11.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;}
+  .sw-hero-pct{font-family:'Inter',-apple-system,sans-serif; font-size:19px; font-weight:800; margin-top:1px;}
+  .sw-hero-div{width:1px; align-self:stretch; background:var(--line); flex-shrink:0;}
+  .sw-hero-right{text-align:right; flex-shrink:0; padding-left:2px;}
+  .sw-hero-right .sw-hero-k{margin-bottom:3px;}
+  .sw-hero-right2{display:flex; align-items:center; justify-content:flex-end; gap:6px;}
+  .sw-hero-mini-lg{width:20px; height:20px; border-radius:50%; overflow:hidden; flex-shrink:0;}
+  .sw-hero-mini-lg img{width:100%; height:100%; object-fit:contain; padding:18%;}
+  .sw-hero-mini-lg span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:7.5px; font-weight:800; color:#fff;}
+  .sw-hero-mini-tk{font-size:10.5px; font-weight:700;}
+  .sw-hero-mini-pct{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:800; margin-top:1px;}
+
+  .sw-chips{display:flex; gap:8px; margin:0 2px;}
+  .sw-chip{flex:1; background:var(--paper); border-radius:12px; padding:11px 12px; min-width:0;}
+  .sw-chip-top{display:flex; align-items:center; gap:7px; margin-bottom:7px;}
+  .sw-chip-ic{width:22px; height:22px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden;}
+  .sw-chip-ic svg{width:12px; height:12px; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .sw-chip-ic img{width:100%; height:100%; object-fit:contain; padding:15%;}
+  .sw-chip-k{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .sw-chip-v{font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .sw-chip-s{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+  .sw-list-wrap{position:relative; margin:14px 2px 0;}
+  .sw-list-fade{position:absolute; top:0; left:0; right:0; height:14px; background:linear-gradient(var(--card), rgba(255,255,255,0)); pointer-events:none; z-index:1; border-radius:16px 16px 0 0;}
+  .sw-list-scroll{max-height:252px; overflow-y:auto; overflow-x:hidden; padding-right:2px; scrollbar-width:thin;}
+  .sw-list-scroll::-webkit-scrollbar{width:4px;}
+  .sw-list-scroll::-webkit-scrollbar-thumb{background:var(--line); border-radius:9999px;}
+  .sw-list-hint{text-align:center; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); padding-top:8px; display:flex; align-items:center; justify-content:center; gap:4px;}
+  .sw-list-hint svg{width:11px; height:11px; stroke:var(--ink-soft); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;}
+
+  .sw-row{display:flex; align-items:center; gap:9px; padding:8px 8px; margin:0 -8px; border-radius:10px; cursor:pointer; transition:background .18s;}
+  .sw-row.sel{background:var(--paper);}
+  .sw-dot{width:10px; height:10px; border-radius:3px; flex-shrink:0; transition:transform .2s;}
+  .sw-row.sel .sw-dot{transform:scale(1.25);}
+  .sw-rlg{width:24px; height:24px; border-radius:50%; overflow:hidden; flex-shrink:0;}
+  .sw-rlg img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .sw-rlg span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; color:#fff;}
+  .sw-rmid{flex:1; min-width:0;}
+  .sw-rnm{font-size:11.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .sw-rnm span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:400; margin-left:4px;}
+  .sw-rright{text-align:right; flex-shrink:0;}
+  .sw-rpct{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:800;}
+  .sw-rret{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700; margin-top:1px;}
 
   /* ---------- P&L bars ---------- */
   .pnl-list{padding:4px 2px 8px;}
@@ -502,7 +575,6 @@
 
   @media (max-width:480px){
     .insight-grid{grid-template-columns:1fr; gap:16px;}
-    .stock-donut-grid{grid-template-columns:1fr; gap:16px;}
     .pnl-row{grid-template-columns:78px 1fr 58px; gap:7px;}
     .pnl-name{font-size:11px;}
     .cover-total-value{font-size:29px;}
@@ -796,12 +868,36 @@
 
   <!-- STOCK WEIGHT DONUT -->
   <div class="page collapsible" data-panel="home">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span>종목별 보유비중</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 14종목</div></div>
-    <div class="stock-donut-grid">
-      <div class="donut-wrap"><div id="stockDonut"></div><div class="donut-center-label">해외주식 내 비중</div></div>
-      <div class="legend-2col" id="stockDonutLegend"></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span>종목별 보유비중</h2><span class="total" id="swTotal" style="font-size:12px;color:var(--ink-soft);"></span></div>
+
+    <div class="sw-seg" id="swSeg">
+      <button data-s="all" class="on">전체</button>
+      <button data-s="ov">해외주식</button>
+      <button data-s="dom">국내 ETF</button>
     </div>
-    <div class="note" id="stockDonutNote"></div>
+
+    <div class="sw-detail" id="swDetail"></div>
+    <div class="sw-big" id="swBig"></div>
+    <div class="sw-sub" id="swSub"></div>
+
+    <div class="sw-donut-box"><div class="sw-donut" id="swDonut"></div></div>
+
+    <div class="sw-insight-toggle" id="swInsightToggle">
+      <span class="lbl"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>인사이트</span>
+      <span class="chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+    </div>
+    <div class="sw-insight-wrap" id="swInsightWrap">
+      <div class="sw-hero-chip" id="swHeroChip"></div>
+      <div class="sw-chips" id="swChips"></div>
+    </div>
+
+    <div class="sw-list-wrap">
+      <div class="sw-list-fade"></div>
+      <div class="sw-list-scroll" id="swListScroll"><div id="swList"></div></div>
+    </div>
+    <div class="sw-list-hint"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>아래로 스크롤해서 전체 종목 보기</div>
+
+    <div class="note" id="swNote"></div>
   </div>
 
   <div class="perf"></div>
@@ -1409,16 +1505,201 @@ function renderAllocDonut(){
   segs.forEach(s=>{ leg.innerHTML+=`<div class="row"><span class="lbl"><span class="sw" style="background:${s.color};"></span>${s.label}</span><span><span class="val">${won(s.v)}</span> <span class="pctx">${s.pct.toFixed(1)}%</span></span></div>`; });
 }
 
-function renderStockDonut(){
-  const ov=HOLDINGS.filter(h=>h.acct==='overseas');
-  const ovTotal=ov.reduce((s,h)=>s+evalKRW(h),0);
-  const segs=ov.map(h=>({label:h.ticker, color:h.color, pct:evalKRW(h)/ovTotal*100}))
-              .sort((a,b)=>b.pct-a.pct);
-  document.getElementById('stockDonut').innerHTML = donutSVG(segs, '₩'+(ovTotal/1e6).toFixed(1)+'M', 'OVERSEAS');
-  const leg=document.getElementById('stockDonutLegend'); leg.innerHTML='';
-  segs.forEach(s=>{ leg.innerHTML+=`<div class="row"><span class="lbl"><span class="sw" style="background:${s.color};"></span><span class="tk">${s.label}</span></span><span class="pctx">${s.pct.toFixed(1)}%</span></div>`; });
-  const top=segs[0];
-  document.getElementById('stockDonutNote').textContent=`해외주식 계좌 내 종목별 평가금액 비중 · ${top.label}가 단일 최대 비중(${top.pct.toFixed(1)}%)`;
+const SW_PAL=['#1d4ed8','#3b82f6','#93c5fd','#ec4899','#f472b6','#fbcfe8','#0f766e','#14b8a6','#7dd3fc',
+  '#7c3aed','#c4b5fd','#f59e0b','#fcd34d','#15803d','#86efac','#dc2626','#fca5a5','#64748b','#cbd5e1'];
+
+function swAvatar(tk,cls){
+  const icon=ICONS[tk], custom=CUSTOM_LOGOS[tk];
+  if(icon) return `<div class="${cls}" style="background:${PNL_COLOR[tk]||'#8a8f98'};">${icon}</div>`;
+  if(custom){
+    const cbg=CUSTOM_BG[tk]||'#fff';
+    const cpad=CUSTOM_PAD[tk];
+    const padStyle=cpad?` style="padding:${cpad};"`:'';
+    const border=(cbg==='#ffffff'||cbg==='#fff')?'border:1px solid var(--line);':'';
+    return `<div class="${cls}" style="background:${cbg};${border}"><img${padStyle} src="${custom}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${tk.slice(0,2)}'}))"></div>`;
+  }
+  const i=SW_ITEMS.findIndex(x=>x.tk===tk);
+  return `<div class="${cls}" style="background:${SW_PAL[i<0?0:i%SW_PAL.length]};"><span>${tk.slice(0,2)}</span></div>`;
+}
+function swChipLogo(x){
+  if(x.cash) return {bg:'#64748b', inner:'<span style="font-size:9px;font-weight:800;color:#fff;">₩</span>'};
+  const icon=ICONS[x.tk], custom=CUSTOM_LOGOS[x.tk];
+  if(icon) return {bg:PNL_COLOR[x.tk]||'#8a8f98', inner:icon};
+  if(custom){
+    const cbg=CUSTOM_BG[x.tk]||'#fff';
+    return {bg:cbg, inner:`<img src="${custom}" alt="">`};
+  }
+  return {bg:x.color, inner:`<span style="font-size:8px;font-weight:800;color:#fff;">${x.tk.slice(0,2)}</span>`};
+}
+
+function swArcPath(cx,cy,ro,ri,a1,a2){
+  const P=(r,a)=>[(cx+r*Math.cos(a)).toFixed(2),(cy+r*Math.sin(a)).toFixed(2)];
+  const lg=(a2-a1)>Math.PI?1:0;
+  const [x1,y1]=P(ro,a1),[x2,y2]=P(ro,a2),[x3,y3]=P(ri,a2),[x4,y4]=P(ri,a1);
+  return `M${x1},${y1} A${ro},${ro} 0 ${lg} 1 ${x2},${y2} L${x3},${y3} A${ri},${ri} 0 ${lg} 0 ${x4},${y4} Z`;
+}
+
+let swScope='all', swSel=null, swItems=[], swTotal=0, swArcs=[], swNumRaf=null, swPrevPct=null;
+var SW_ITEMS=[]; // swAvatar 폴백 색상 인덱싱용 참조
+
+function swBuildItems(){
+  let list, includeCash=false;
+  if(swScope==='ov') list=HOLDINGS.filter(h=>h.acct==='overseas');
+  else if(swScope==='dom') list=HOLDINGS.filter(h=>h.acct!=='overseas');
+  else { list=HOLDINGS.slice(); includeCash=true; }
+  let items=list.map(h=>({tk:h.ticker, n:h.nameKr, ev:evalKRW(h), ret:(evalKRW(h)/h.costKRW-1)*100, cash:false}));
+  if(includeCash) items.push({tk:'CASH', n:'예수금', ev:cashKRW(), ret:null, cash:true});
+  items.sort((a,b)=>b.ev-a.ev);
+  swTotal=items.reduce((s,x)=>s+x.ev,0);
+  items.forEach((x,i)=>{ x.pct=x.ev/swTotal*100; x.color=SW_PAL[i%SW_PAL.length]; });
+  swItems=items; SW_ITEMS=items;
+  if(!swSel || !items.find(x=>x.tk===swSel)) swSel=items[0].tk;
+}
+
+function swRenderDonutBase(){
+  const cx=75,cy=75,ro=64,ri=42;
+  let a=-Math.PI/2, paths='';
+  swArcs=[];
+  swItems.forEach(x=>{
+    const sweep=x.pct/100*Math.PI*2, a2=a+sweep, mid=(a+a2)/2;
+    paths+=`<path d="${swArcPath(cx,cy,ro,ri,a,a2)}" fill="${x.color}" stroke="#fff" stroke-width="1.4" data-tk="${x.tk}"></path>`;
+    swArcs.push({tk:x.tk, dx:Math.cos(mid)*7, dy:Math.sin(mid)*7});
+    a=a2;
+  });
+  const box=document.getElementById('swDonut');
+  box.style.opacity='0';
+  setTimeout(()=>{
+    box.innerHTML=`<svg width="182" height="182" viewBox="-8 -8 166 166">${paths}
+      <text x="75" y="72" text-anchor="middle" font-size="13" font-weight="800" fill="#1d1d1f" font-family="Inter" id="swDonutTot"></text>
+      <text x="75" y="85" text-anchor="middle" font-size="7" fill="#6e6e73" font-family="Inter">${swItems.length}개 항목</text>
+    </svg>`;
+    document.getElementById('swDonutTot').textContent=`₩${(swTotal/1e6).toFixed(1)}M`;
+    document.querySelectorAll('#swDonut path').forEach(p=>p.onclick=()=>swSelectItem(p.dataset.tk));
+    swUpdateDonutSelection();
+    box.style.opacity='1';
+  }, 140);
+}
+
+function swUpdateDonutSelection(){
+  document.querySelectorAll('#swDonut path').forEach(p=>{
+    const arc=swArcs.find(x=>x.tk===p.dataset.tk);
+    if(!arc) return;
+    p.style.transform = (p.dataset.tk===swSel) ? `translate(${arc.dx}px,${arc.dy}px)` : 'translate(0,0)';
+  });
+}
+
+function swAnimateNumber(from,to,ms,onUpdate){
+  if(swNumRaf) cancelAnimationFrame(swNumRaf);
+  const t0=performance.now();
+  function step(t){
+    const p=Math.min(1,(t-t0)/ms), e=1-Math.pow(1-p,3);
+    onUpdate(from+(to-from)*e);
+    if(p<1) swNumRaf=requestAnimationFrame(step); else onUpdate(to);
+  }
+  swNumRaf=requestAnimationFrame(step);
+}
+
+function swRenderDetail(){
+  const s=swItems.find(x=>x.tk===swSel);
+  const det=document.getElementById('swDetail'), sub=document.getElementById('swSub');
+  det.style.opacity='0'; sub.style.opacity='0';
+  setTimeout(()=>{
+    det.innerHTML=`${s.cash?`<div class="sw-lg" style="background:#64748b;"><span>₩</span></div>`:swAvatar(s.tk,'sw-lg')}
+       <div class="sw-dnm">${s.tk.replace(/_/g,' ')}<span>${s.n}</span></div>`;
+    sub.innerHTML=`평가액 <b>${wonPlain(s.ev)}</b>`
+      + (s.ret!=null?` · 수익률 <b class="${clsOf(s.ret)}">${sign(s.ret)}</b>`:' · 현금성 자산');
+    det.style.opacity='1'; sub.style.opacity='1';
+  }, 110);
+  const from = swPrevPct==null? s.pct : swPrevPct;
+  const big=document.getElementById('swBig');
+  swAnimateNumber(from, s.pct, 320, v=>{ big.innerHTML=`<span style="color:${s.color};">${v.toFixed(2)}%</span>`; });
+  swPrevPct=s.pct;
+}
+
+function swSelectItem(tk){
+  if(tk===swSel) return;
+  swSel=tk;
+  swUpdateDonutSelection();
+  swRenderDetail();
+  document.querySelectorAll('#swList .sw-row').forEach(r=>r.classList.toggle('sel', r.dataset.tk===swSel));
+}
+
+function swRenderChips(){
+  const top3=swItems.slice(0,3).reduce((s,x)=>s+x.pct,0);
+  const best=swItems[0], worst=swItems[swItems.length-1];
+  const bl=swChipLogo(best), wl=swChipLogo(worst);
+  const core=swItems.filter(x=>x.pct>=5).length;
+
+  document.getElementById('swHeroChip').innerHTML=`
+    <div class="sw-hero-left">
+      <div class="sw-hero-lg" style="background:${bl.bg};">${bl.inner}</div>
+      <div class="sw-hero-mid">
+        <div class="sw-hero-k">최대 비중</div>
+        <div class="sw-hero-nm">${best.n}</div>
+        <div class="sw-hero-pct" style="color:${best.color};">${best.pct.toFixed(1)}%</div>
+      </div>
+    </div>
+    <div class="sw-hero-div"></div>
+    <div class="sw-hero-right">
+      <div class="sw-hero-k">최소 비중</div>
+      <div class="sw-hero-right2">
+        <div class="sw-hero-mini-lg" style="background:${wl.bg};">${wl.inner}</div>
+        <div><div class="sw-hero-mini-tk">${worst.tk.replace(/_/g,' ')}</div><div class="sw-hero-mini-pct">${worst.pct.toFixed(1)}%</div></div>
+      </div>
+    </div>`;
+
+  document.getElementById('swChips').innerHTML=`
+    <div class="sw-chip">
+      <div class="sw-chip-top"><div class="sw-chip-ic" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div><span class="sw-chip-k">상위 3개 집중도</span></div>
+      <div class="sw-chip-v">${top3.toFixed(1)}%</div>
+      <div class="sw-chip-s">나머지 ${swItems.length-3}종목이 ${(100-top3).toFixed(1)}%</div>
+    </div>
+    <div class="sw-chip">
+      <div class="sw-chip-top"><div class="sw-chip-ic" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><span class="sw-chip-k">핵심 포지션</span></div>
+      <div class="sw-chip-v">${core}개</div>
+      <div class="sw-chip-s">비중 5% 이상 종목</div>
+    </div>`;
+}
+
+function swRenderList(){
+  document.getElementById('swList').innerHTML=swItems.map(x=>`
+    <div class="sw-row ${x.tk===swSel?'sel':''}" data-tk="${x.tk}">
+      <span class="sw-dot" style="background:${x.color};"></span>
+      ${x.cash?`<div class="sw-rlg" style="background:#64748b;"><span>₩</span></div>`:swAvatar(x.tk,'sw-rlg')}
+      <div class="sw-rmid"><div class="sw-rnm">${x.n}<span>${x.tk.replace(/_/g,' ')}</span></div></div>
+      <div class="sw-rright"><div class="sw-rpct">${x.pct.toFixed(2)}%</div>
+        ${x.ret!=null?`<div class="sw-rret ${clsOf(x.ret)}">${sign(x.ret)}</div>`:'<div class="sw-rret" style="color:var(--ink-soft)">현금</div>'}</div>
+    </div>`).join('');
+  document.querySelectorAll('#swList .sw-row').forEach(r=>r.onclick=()=>swSelectItem(r.dataset.tk));
+}
+
+function renderStockDonut(fullRebuild){
+  if(fullRebuild===undefined) fullRebuild=true;
+  swBuildItems();
+  if(fullRebuild) swRenderDonutBase(); else swUpdateDonutSelection();
+  swRenderDetail(); swRenderChips(); swRenderList();
+  const NAME={all:'전체 자산',ov:'해외주식',dom:'국내 ETF'};
+  const tot=document.getElementById('swTotal');
+  tot.style.opacity='0';
+  setTimeout(()=>{ tot.textContent=`${NAME[swScope]} · ${swItems.length}개 · ₩${(swTotal/1e6).toFixed(1)}M`; tot.style.opacity='1'; },100);
+  const NOTE={
+    all:'해외주식·ISA·연금저축·예수금을 합한 전체 자산 대비 비중입니다. 예수금도 하나의 항목으로 포함됩니다.',
+    ov:'해외주식 계좌 내 종목별 평가금액 비중입니다.',
+    dom:'ISA·연금저축의 국내 상장 ETF 4종목 간 비중입니다.'};
+  document.getElementById('swNote').textContent=NOTE[swScope];
+  document.querySelectorAll('#swSeg button').forEach(b=>b.classList.toggle('on',b.dataset.s===swScope));
+}
+
+function initStockDonut(){
+  document.querySelectorAll('#swSeg button').forEach(b=>b.onclick=()=>{
+    if(b.dataset.s===swScope) return;
+    swScope=b.dataset.s; swSel=null; swPrevPct=null; renderStockDonut(true);
+    document.getElementById('swListScroll').scrollTop=0;
+  });
+  document.getElementById('swInsightToggle').onclick=()=>{
+    document.getElementById('swInsightWrap').classList.toggle('closed');
+    document.getElementById('swInsightToggle').classList.toggle('closed');
+  };
 }
 
 function hcardAvatar(tk){
@@ -2671,6 +2952,7 @@ renderStrat();
 initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 initPnlTabs();
+initStockDonut();
 renderRealized();
 initTxList();
 initBench();
