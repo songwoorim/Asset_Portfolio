@@ -545,10 +545,6 @@
   .mover:last-child{border-bottom:none;}
   .mover .mv{font-weight:600;}
   .daily-empty{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); text-align:center; padding:22px 10px;}
-  .dp-skeleton{background:linear-gradient(90deg, var(--paper) 25%, #e4e4e4 37%, var(--paper) 63%); background-size:400% 100%; animation:dpShimmer 1.4s ease infinite; border-radius:12px;}
-  @keyframes dpShimmer{0%{background-position:100% 50%;} 100%{background-position:0 50%;}}
-  .dp-skel-hero{height:78px; margin:2px 2px 16px;}
-  .dp-skel-row{height:52px; margin:0 2px 8px; border-radius:13px;}
   #dailyBox{transition:opacity .35s ease;}
 
   /* currency gauge */
@@ -1193,7 +1189,7 @@
   </div>
 
   <div class="footer" id="footer">
-    실시간: 국내·해외 주식(한국투자증권 KIS API, 5초 자동 갱신) · 환율(open.er-api·무료) · 지수·뉴스(Finnhub·무료 키, ⟳ 버튼으로 갱신).<br>
+    실시간: 국내·해외 주식(한국투자증권 KIS API) · 환율(open.er-api·무료) · 지수·뉴스(Finnhub·무료 키) — 전부 ⟳ 버튼으로 갱신.<br>
     KOSPI·VIX·계좌 잔고는 최근 스냅샷입니다.<br>
     <span class="warn">투자 참고용이며 실제 계좌 화면과 오차가 있을 수 있습니다.</span>
   </div>
@@ -1852,7 +1848,7 @@ function renderTables(){
     }
     const noteExtra = a==='overseas'
       ? `달러 자산 · 적용환율 ${FX.toLocaleString('en-US',{maximumFractionDigits:2})}원/USD · 환차손익은 매입환율 대비 별도`
-      : '국내 ETF · 한국투자증권 KIS API로 5초마다 실시간 갱신';
+      : '국내 ETF · 한국투자증권 KIS API, ⟳ 버튼으로 실시간 갱신';
     const headerEv = a==='isa' ? ev+ISA_CASH : ev;
     cont.innerHTML+=`<div class="page">
       <div class="page-head"><h2><span class="idx" style="background:${m.color}1a; color:${m.color};">${ACCT_ICONS[a]}</span>${m.name}</h2><div class="total">${won(headerEv)}</div></div>
@@ -1891,10 +1887,7 @@ let dailyPnlEverLoaded = false;
 function renderDailyPnl(){
   const box=document.getElementById('dailyBox'), as=document.getElementById('dailyAsOf');
   if(pnlPeriod==='today' && !HEAT_LIVE){
-    box.innerHTML='<div class="dp-skel-hero dp-skeleton"></div>'
-      + '<div class="dp-skel-row dp-skeleton"></div>'
-      + '<div class="dp-skel-row dp-skeleton"></div>'
-      + '<div class="dp-skel-row dp-skeleton"></div>';
+    box.innerHTML='<div class="daily-empty">⟳ 새로고침 버튼을 누르면 오늘의 손익이 계산됩니다.<br>(전일 종가 대비 · 주가+환율 변동 포함)</div>';
     as.textContent='전일대비'; return;
   }
   const LBL={today:'전일대비',week:'이번주',month:'이번달',quarter:'이번분기',year:'올해',all:'매입 이후 누적'};
@@ -2834,7 +2827,7 @@ function extractJSON(data){
 }
 /* ===== LIVE DATA via free browser APIs (GitHub Pages 등 웹호스트에서 직접 동작) =====
    환율: open.er-api.com (무료·키 불필요) / 지수·뉴스: Finnhub (무료 키, ⟳ 버튼)
-   국내·해외 보유 종목 시세: 한국투자증권 KIS API → Cloudflare Worker 프록시 경유, 5초 자동 폴링 (initKisPolling 참고)
+   국내·해외 보유 종목 시세: 한국투자증권 KIS API → Cloudflare Worker 프록시 경유, ⟳ 버튼 클릭 시 조회 (refresh() 함수 참고)
    KOSPI·VIX는 무료 브라우저 API로 안정 조회가 어려워 스냅샷 유지 */
 /* ===== 브랜드 아이콘 (Simple Icons CDN · SVG 인라인 삽입 · 키 불필요) =====
    아이콘 파일은 CC0. 각 상표는 해당 기업 소유이며, 보유 종목 식별 목적으로만 사용. */
@@ -2934,7 +2927,7 @@ async function fetchNewsFH(key){
   throw new Error('뉴스 없음');
 }
 
-/* ===== KIS(한국투자증권) 실시간 폴링 — 국내+해외 보유 종목, Cloudflare Worker 프록시 경유 ===== */
+/* ===== KIS(한국투자증권) 시세 — 새로고침(⟳) 버튼 클릭 시에만 조회, Cloudflare Worker 프록시 경유 ===== */
 const KIS_PROXY_URL = 'https://swr.songrainforest.workers.dev';
 
 // 국내 ETF: HOLDINGS의 ticker → KRX 6자리 종목코드
@@ -2963,58 +2956,46 @@ const OVERSEAS_CODE_MAP = {
   KEEL:  { excd: 'NAS', symb: 'KEEL' },
 };
 
-const KIS_POLL_INTERVAL_MS = 5000;
-let kisPollTimer = null;
-let kisReady = false; // 첫 실시간 시세 수신 완료 여부
-
-async function pollKisQuotes(){
-  try{
-    const domesticCodes = Object.values(DOMESTIC_CODE_MAP).filter(Boolean);
-    const overseasCodes = Object.entries(OVERSEAS_CODE_MAP).map(([tk, v]) => `${v.excd}:${v.symb}`);
-
-    const [domRes, ovRes] = await Promise.all([
-      domesticCodes.length
-        ? fetch(`${KIS_PROXY_URL}/quote/domestic?codes=${domesticCodes.join(',')}`).then(r=>r.json())
-        : Promise.resolve({ results: [] }),
-      overseasCodes.length
-        ? fetch(`${KIS_PROXY_URL}/quote/overseas?codes=${overseasCodes.join(',')}`).then(r=>r.json())
-        : Promise.resolve({ results: [] }),
-    ]);
-
-    const codeToTicker = Object.fromEntries(
-      Object.entries(DOMESTIC_CODE_MAP).filter(([, c]) => c).map(([tk, c]) => [c, tk])
-    );
-    (domRes.results || []).forEach(r=>{
-      const tk = codeToTicker[r.code];
-      const h = HOLDINGS.find(x => x.ticker === tk);
-      if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; }
-    });
-
-    (ovRes.results || []).forEach(r=>{
-      const entry = Object.entries(OVERSEAS_CODE_MAP).find(([, v]) => v.symb === r.symbol);
-      if(!entry) return;
-      const tk = entry[0];
-      const h = HOLDINGS.find(x => x.ticker === tk);
-      if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; }
-    });
-
-    HEAT_LIVE = true;
-    LAST_UPDATED = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
-
-    renderCover(); renderTables(); renderDailyPnl(); renderHeat();
-    renderStockDonut(false);
-    kisReady = true;
-  }catch(err){
-    console.error('KIS 폴링 실패:', err);
-    // 첫 시도가 실패한 경우, "동기화 중" 상태로 멈춰있지 않도록 스냅샷 값으로 즉시 대체
-    if(!kisReady){ renderCover(); kisReady = true; }
-  }
+async function fetchKisDomestic(){
+  const codes = Object.values(DOMESTIC_CODE_MAP).filter(Boolean);
+  if(!codes.length) return 0;
+  const res = await fetch(`${KIS_PROXY_URL}/quote/domestic?codes=${codes.join(',')}`);
+  if(!res.ok) throw new Error('KIS 국내 HTTP '+res.status);
+  const j = await res.json();
+  if(!j.ok) throw new Error('KIS 국내 조회 실패');
+  const codeToTicker = Object.fromEntries(
+    Object.entries(DOMESTIC_CODE_MAP).filter(([, c]) => c).map(([tk, c]) => [c, tk])
+  );
+  let n=0;
+  (j.results || []).forEach(r=>{
+    const tk = codeToTicker[r.code];
+    const h = HOLDINGS.find(x => x.ticker === tk);
+    if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; n++; }
+  });
+  if(n===0) throw new Error('KIS 국내 시세 없음');
+  if(n < codes.length) throw new Error(`KIS 국내 일부 누락 (${n}/${codes.length})`);
+  return n;
 }
 
-function initKisPolling(){
-  pollKisQuotes();
-  if(kisPollTimer) clearInterval(kisPollTimer);
-  kisPollTimer = setInterval(pollKisQuotes, KIS_POLL_INTERVAL_MS);
+async function fetchKisOverseas(){
+  const pairs = Object.entries(OVERSEAS_CODE_MAP).map(([, v]) => `${v.excd}:${v.symb}`);
+  if(!pairs.length) return 0;
+  const res = await fetch(`${KIS_PROXY_URL}/quote/overseas?codes=${pairs.join(',')}`);
+  if(!res.ok) throw new Error('KIS 해외 HTTP '+res.status);
+  const j = await res.json();
+  if(!j.ok) throw new Error('KIS 해외 조회 실패');
+  let n=0;
+  (j.results || []).forEach(r=>{
+    const entry = Object.entries(OVERSEAS_CODE_MAP).find(([, v]) => v.symb === r.symbol);
+    if(!entry) return;
+    const tk = entry[0];
+    const h = HOLDINGS.find(x => x.ticker === tk);
+    if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; n++; }
+  });
+  if(n===0) throw new Error('KIS 해외 시세 없음');
+  HEAT_LIVE = true;
+  if(n < pairs.length) throw new Error(`KIS 해외 일부 누락 (${n}/${pairs.length})`);
+  return n;
 }
 
 let refreshing=false;
@@ -3022,9 +3003,11 @@ async function refresh(){
   if(refreshing) return; refreshing=true;
   const btn=document.getElementById('refreshBtn'); btn.classList.add('spin'); btn.disabled=true;
   const key=getKey();
-  setStatus('stale', key?'<b>조회 중…</b>':'<b>환율 조회 중…</b>');
+  setStatus('stale', '<b>조회 중…</b>');
   const labels=[], jobs=[];
   jobs.push(fetchFX()); labels.push('환율');
+  jobs.push(fetchKisDomestic()); labels.push('국내 시세');
+  jobs.push(fetchKisOverseas()); labels.push('해외 시세');
   if(key){ jobs.push(fetchIndices(key));  labels.push('지수');
            jobs.push(fetchNewsFH(key));   labels.push('뉴스'); }
   const results=await Promise.allSettled(jobs);
@@ -3034,7 +3017,6 @@ async function refresh(){
   renderAll();
   if(results.some(r=>r.status==='fulfilled')) await recordTrendPoint();
   btn.classList.remove('spin'); btn.disabled=false; refreshing=false;
-  if(!key){ setStatus('stale', `환율만 갱신 · ${LAST_UPDATED}`); return; }
   if(failed.length===0){ setStatus('live', `<b>실시간</b> · ${LAST_UPDATED}`); }
   else if(failed.length<results.length){ setStatus('live', `<b>부분 갱신</b> · ${LAST_UPDATED}`); }
   else { setStatus('err', `<b>갱신 실패</b> · 스냅샷 유지`); }
@@ -3085,7 +3067,6 @@ initReview();
 loadFutureSnaps().then(initTrend);
 initUI();
 initCoverDetail();
-initKisPolling();
 fetchIcons().catch(e=>console.warn('icons',e));
 </script>
 
