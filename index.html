@@ -254,14 +254,33 @@
   .note{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); padding:12px 4px 16px; border-top:1px dashed var(--line); margin-top:4px; line-height:1.6;}
 
   /* ---------- Market index widget ---------- */
-  .idx-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:10px; padding:6px 2px 14px;}
-  .idx-card{background:var(--paper); border-radius:6px; padding:11px 12px; border-left:3px solid var(--line);}
-  .idx-card.up{border-left-color:var(--stamp-red);} .idx-card.down{border-left-color:var(--stamp-blue);}
-  .idx-card .k{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); letter-spacing:0.03em;}
-  .idx-card .v{font-family:'Inter',-apple-system,sans-serif; font-size:17px; font-weight:600; margin:3px 0 1px;}
-  .idx-card .c{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600;}
+  .mkt-insight{display:flex; align-items:center; gap:8px; background:rgba(124,58,237,.06); border-radius:11px; padding:10px 12px; margin:2px 2px 14px; font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft);}
+  .mkt-insight b{color:var(--ink); font-weight:700;}
+  .mkt-insight svg{width:15px; height:15px; stroke:#7c3aed; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+  .idx-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 2px 14px;}
+  .idx-card{background:var(--paper); border-radius:13px; padding:12px 12px; min-width:0;}
+  .idx-top{display:flex; align-items:center; gap:7px; margin-bottom:8px; min-width:0;}
+  .idx-ic{width:24px; height:24px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .idx-ic svg{width:13px; height:13px; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+  .idx-card .k{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .idx-card .v{font-family:'Inter',-apple-system,sans-serif; font-size:16px; font-weight:800;}
+  .idx-row2{display:flex; align-items:baseline; gap:6px; margin-top:3px;}
+  .idx-card .pct{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700;}
+  .idx-card .pt{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft);}
+  .idx-bar{height:4px; border-radius:9999px; background:var(--line); margin-top:8px; position:relative; overflow:hidden;}
+  .idx-bar i{position:absolute; top:0; bottom:0; left:50%; border-radius:9999px;}
+  .idx-bar i.up{background:var(--stamp-red);} .idx-bar i.down{background:var(--stamp-blue); left:auto; right:50%;}
+  .idx-card.vix-card{grid-column:span 2; background:rgba(180,83,9,.06);}
+  .vix-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px;}
+  .vix-top .nm{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .vix-top .nm svg{width:13px; height:13px; stroke:#b45309; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .vix-top .v{font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800;}
+  .vix-gauge{position:relative; height:8px; border-radius:9999px; background:linear-gradient(90deg, #15803d 0%, #15803d 45%, #b45309 45%, #b45309 70%, #c0392b 70%, #c0392b 100%); margin-bottom:6px;}
+  .vix-gauge .marker{position:absolute; top:-3px; width:3px; height:14px; background:var(--ink); border-radius:2px;}
+  .vix-scale{display:flex; justify-content:space-between; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; color:var(--ink-soft);}
 
   /* ---------- FX widget ---------- */
+
   .fx-box{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:8px 2px 16px;}
   .fx-main{display:flex; align-items:baseline; gap:8px;}
   .fx-main .pair{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft);}
@@ -615,15 +634,42 @@
   .periods button:active{transform:scale(0.95);}
 
   /* realized p&l */
-  .rz-hero{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; padding:6px 2px 12px;}
-  .rz-hero .big{font-family:'Inter',-apple-system,sans-serif; font-size:28px; font-weight:700;}
-  .rz-list{padding:2px 2px 8px;}
-  .rz-item{display:grid; grid-template-columns:74px 1fr auto; gap:10px; align-items:center; padding:9px 2px; border-bottom:1px dotted var(--line);}
-  .rz-item:last-child{border-bottom:none;}
-  .rz-d{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft);}
-  .rz-n{font-size:12.5px; font-weight:600;}
-  .rz-n span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:400; display:block;}
-  .rz-v{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:700; text-align:right;}
+  .rz-hero{border-radius:14px; padding:16px 16px; margin:2px 2px 14px; background:linear-gradient(135deg, rgba(192,57,43,.09), rgba(192,57,43,.02));}
+  .rz-hero .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
+  .rz-hero .big{font-family:'Inter',-apple-system,sans-serif; font-size:29px; font-weight:800; color:var(--stamp-red);}
+  .rz-chip-row{display:flex; gap:8px; margin:0 2px 18px;}
+  .rz-chip{flex:1; background:var(--paper); border-radius:12px; padding:10px 11px; text-align:center;}
+  .rz-chip .ic{width:20px; height:20px; border-radius:7px; margin:0 auto 6px; display:flex; align-items:center; justify-content:center;}
+  .rz-chip .ic svg{width:11px; height:11px; fill:none; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round;}
+  .rz-chip .k{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:600;}
+  .rz-chip .v{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800; margin-top:2px;}
+  .rz-sec-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin:0 2px 8px;}
+  .rz-spot{background:rgba(192,57,43,.06); border-radius:13px; padding:13px 14px; display:flex; align-items:center; gap:11px; margin:0 2px 18px; cursor:pointer;}
+  .rz-spot-lg{width:38px; height:38px; border-radius:50%; overflow:hidden; flex-shrink:0;}
+  .rz-spot-lg img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .rz-spot-lg span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:800; color:#fff;}
+  .rz-spot-mid{flex:1; min-width:0;}
+  .rz-spot-tag{font-family:'Inter',-apple-system,sans-serif; font-size:9px; font-weight:700; color:var(--stamp-red); background:rgba(192,57,43,.12); padding:1px 7px; border-radius:9999px; display:inline-block; margin-bottom:4px;}
+  .rz-spot-nm{font-size:12.5px; font-weight:700;}
+  .rz-spot-nm span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:400; margin-left:4px;}
+  .rz-spot-v{text-align:right; font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; flex-shrink:0;}
+  .rz-tl{position:relative; padding-left:26px; margin:0 2px;}
+  .rz-tl::before{content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:var(--line);}
+  .rz-tl-item{position:relative; padding-bottom:14px; cursor:pointer;}
+  .rz-tl-item:last-child{padding-bottom:0;}
+  .rz-tl-dot{position:absolute; left:-26px; top:2px; width:20px; height:20px; border-radius:50%; overflow:hidden; border:2px solid var(--card); box-shadow:0 0 0 2px var(--line);}
+  .rz-tl-item.best .rz-tl-dot{box-shadow:0 0 0 2px var(--stamp-red);}
+  .rz-tl-dot img{width:100%; height:100%; object-fit:contain; padding:15%;}
+  .rz-tl-dot span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:8px; font-weight:800; color:#fff;}
+  .rz-tl-card{background:var(--paper); border-radius:12px; padding:11px 13px;}
+  .rz-tl-item.best .rz-tl-card{background:rgba(192,57,43,.05);}
+  .rz-tl-head{display:flex; justify-content:space-between; align-items:baseline;}
+  .rz-tl-nm{font-size:12.5px; font-weight:700;}
+  .rz-tl-nm span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:400; margin-left:4px;}
+  .rz-tl-v{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800;}
+  .rz-tl-meta{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); margin-top:4px;}
+  .rz-tl-date{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); margin-bottom:3px;}
+  .rz-empty{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); text-align:center; padding:20px 10px;}
 
   /* tx timeline */
   .tx-filter{display:flex; gap:8px; align-items:center; margin:4px 2px 10px; flex-wrap:wrap;}
@@ -773,8 +819,9 @@
   <!-- MARKET INDICES -->
   <div class="page collapsible" id="sec-market" data-panel="home">
     <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>시장 지수</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="idxAsOf">실시간</div></div>
+    <div class="mkt-insight" id="mktInsight"></div>
     <div class="idx-grid" id="idxGrid"></div>
-    <div class="note">S&amp;P500·나스닥·다우는 갱신 시 ETF(SPY·QQQ·DIA) 실시간 시세로 대체 표시됩니다. KOSPI·VIX는 스냅샷 유지(무료 브라우저 API 미지원).</div>
+    <div class="note">S&amp;P500·나스닥·다우·SOX(필라델피아 반도체지수)는 갱신 시 ETF(SPY·QQQ·DIA·SOXX) 실시간 시세로 대체 표시됩니다. 환율은 open.er-api, KOSPI·VIX는 스냅샷 유지(무료 브라우저 API 미지원).</div>
   </div>
 
   <div class="perf"></div>
@@ -937,8 +984,12 @@
   <!-- REALIZED P&L -->
   <div class="page collapsible" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg></span>실현손익</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">매도로 확정된 손익</div></div>
-    <div class="rz-hero"><span class="big up" id="rzTotal">—</span><span style="font-family:'Inter',-apple-system,sans-serif;font-size:11.5px;color:var(--ink-soft);">누적 확정</span></div>
-    <div class="rz-list" id="rzList"></div>
+    <div class="rz-hero"><div class="lbl">누적 확정 손익</div><span class="big" id="rzTotal">—</span></div>
+    <div class="rz-chip-row" id="rzChips"></div>
+    <div class="rz-sec-lbl">최고 실현 거래</div>
+    <div class="rz-spot" id="rzSpot"></div>
+    <div class="rz-sec-lbl">거래 타임라인</div>
+    <div class="rz-tl" id="rzList"></div>
     <div class="note">평가손익(보유 중 미실현)과 별개로, <b>매도로 확정된 손익</b>만 모았습니다 · TSLA는 매도 시점 환율 근사 · 양도세는 별도(위 시뮬레이터 참고).</div>
   </div>
 
@@ -1135,6 +1186,7 @@ const ACCT_META = {
 let INDICES = {
   sp:{v:7575.39,c:0.42,label:'S&P 500'}, ndq:{v:26281.61,c:0.29,label:'NASDAQ'},
   dow:{v:52637.01,c:0.29,label:'DOW'},  kospi:{v:6806.93,c:-8.95,label:'KOSPI'},
+  sox:{v:5628.14,c:0.85,label:'필라델피아 반도체 (SOX)'},
   vix:{v:16.31,c:2.97,label:'VIX'}
 };
 let NEWS = [];
@@ -1271,14 +1323,53 @@ function initCoverDetail(){
 }
 
 
+const MKT_TREND_ICON='<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>';
+const MKT_ICON={
+  sp:'<svg viewBox="0 0 24 24"><rect x="4" y="10" width="3" height="8"/><line x1="5.5" y1="4" x2="5.5" y2="10"/><rect x="10.5" y="6" width="3" height="10"/><line x1="12" y1="2" x2="12" y2="6"/><rect x="17" y="12" width="3" height="6"/><line x1="18.5" y1="8" x2="18.5" y2="12"/></svg>',
+  ndq:'<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/><line x1="2" y1="9" x2="6" y2="9"/><line x1="2" y1="15" x2="6" y2="15"/><line x1="18" y1="9" x2="22" y2="9"/><line x1="18" y1="15" x2="22" y2="15"/></svg>',
+  dow:'<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="13"/><rect x="8" y="12" width="3" height="3"/><rect x="13" y="12" width="3" height="3"/><path d="M4 8l8-5 8 5"/></svg>',
+  kospi:'<svg viewBox="0 0 24 24"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg>',
+  sox:'<svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="8" rx="1.5"/><line x1="7" y1="9" x2="7" y2="5"/><line x1="12" y1="9" x2="12" y2="5"/><line x1="17" y1="9" x2="17" y2="5"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="12" y1="19" x2="12" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/></svg>',
+  fx:'<svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
+  vix:'<svg viewBox="0 0 24 24"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>'
+};
+const mktIconTint=(svg,color)=>svg.replace('<svg viewBox="0 0 24 24">', `<svg viewBox="0 0 24 24" style="stroke:${color};fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">`);
+function idxCardHtml(key, i){
+  const c=clsOf(i.c);
+  const prev = i.v/(1+i.c/100);
+  const pt = i.v-prev;
+  const barW = Math.max(2, Math.min(100, Math.abs(i.c)/2*100));
+  const isKospi = key==='kospi';
+  const bg = isKospi ? 'rgba(0,102,204,.1)' : 'rgba(124,58,237,.1)';
+  const stroke = isKospi ? '#0066cc' : '#7c3aed';
+  return `<div class="idx-card">
+    <div class="idx-top"><div class="idx-ic" style="background:${bg};">${mktIconTint(MKT_ICON[key],stroke)}</div><span class="k">${i.label}</span></div>
+    <div class="v">${i.v.toLocaleString('en-US',{maximumFractionDigits:2})}</div>
+    <div class="idx-row2"><span class="pct ${c}">${i.c>0?'▲':(i.c<0?'▼':'·')} ${sign(i.c)}</span><span class="pt">${pt>=0?'+':''}${pt.toFixed(2)}</span></div>
+    <div class="idx-bar"><i class="${c}" style="width:${barW.toFixed(1)}%;"></i></div></div>`;
+}
 function renderIndices(){
-  const g=document.getElementById('idxGrid'); g.innerHTML='';
-  Object.values(INDICES).forEach(i=>{
-    const c=clsOf(i.c);
-    g.innerHTML+=`<div class="idx-card ${c}"><div class="k">${i.label}</div>
-      <div class="v">${i.v.toLocaleString('en-US',{maximumFractionDigits:2})}</div>
-      <div class="c ${c}">${i.c>0?'▲':(i.c<0?'▼':'·')} ${sign(i.c)}</div></div>`;
-  });
+  const ins=document.getElementById('mktInsight'), g=document.getElementById('idxGrid');
+  const {sp,ndq,dow,kospi,sox,vix}=INDICES;
+  const usAvg=(sp.c+ndq.c+dow.c)/3, usCls=clsOf(usAvg), kCls=clsOf(kospi.c);
+  const decoupled = Math.sign(usAvg)!==Math.sign(kospi.c) && Math.abs(kospi.c)>1;
+  if(ins) ins.innerHTML=`${mktIconTint(MKT_TREND_ICON,'#7c3aed')}<span>미국 3대 지수 평균 <b class="${usCls}">${sign(usAvg)}</b>${decoupled?` · 코스피는 <b class="${kCls}">디커플링(${sign(kospi.c)})</b>`:` · 코스피 <b class="${kCls}">${sign(kospi.c)}</b>`}</span>`;
+  if(g){
+    const fxChg=FX-FX_PREV, fxPct=fxChg/FX_PREV*100, fxCls=clsOf(fxPct);
+    const fxBarW=Math.max(2, Math.min(100, Math.abs(fxPct)/2*100));
+    let html='';
+    html+=idxCardHtml('sp',sp)+idxCardHtml('ndq',ndq)+idxCardHtml('dow',dow)+idxCardHtml('kospi',kospi)+idxCardHtml('sox',sox);
+    html+=`<div class="idx-card">
+      <div class="idx-top"><div class="idx-ic" style="background:rgba(124,58,237,.1);">${mktIconTint(MKT_ICON.fx,'#7c3aed')}</div><span class="k">USD/KRW 환율</span></div>
+      <div class="v">${FX.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}원</div>
+      <div class="idx-row2"><span class="pct ${fxCls}">${fxChg>0?'▲':(fxChg<0?'▼':'·')} ${sign(fxPct)}</span><span class="pt">${fxChg>=0?'+':''}${fxChg.toFixed(2)}원</span></div>
+      <div class="idx-bar"><i class="${fxCls}" style="width:${fxBarW.toFixed(1)}%;"></i></div></div>`;
+    html+=`<div class="idx-card vix-card">
+      <div class="vix-top"><span class="nm">${mktIconTint(MKT_ICON.vix,'#b45309')}VIX 변동성 지수</span><span class="v ${clsOf(vix.c)}">${vix.v.toFixed(2)} ${vix.c>0?'▲':(vix.c<0?'▼':'·')} ${sign(vix.c)}</span></div>
+      <div class="vix-gauge"><div class="marker" style="left:calc(${Math.max(0,Math.min(100,vix.v/40*100))}% - 1.5px);"></div></div>
+      <div class="vix-scale"><span>0 안정</span><span>20 주의</span><span>30+ 공포</span><span>40</span></div></div>`;
+    g.innerHTML=html;
+  }
   document.getElementById('idxAsOf').textContent = LAST_UPDATED? '실시간 '+LAST_UPDATED : '스냅샷 07/13';
 }
 
@@ -2317,14 +2408,52 @@ function gotoTxFor(tk){
 }
 
 /* ===== REALIZED P&L ===== */
+function rzAvatar(tk){
+  const icon=ICONS[tk], custom=CUSTOM_LOGOS[tk], bg=PNL_COLOR[tk]||'#8a8f98';
+  if(icon) return {inner:icon, style:`background:${bg};`};
+  if(custom){
+    const cbg=CUSTOM_BG[tk]||'#fff', cpad=CUSTOM_PAD[tk];
+    const padStyle=cpad?` style="padding:${cpad};"`:'';
+    return {inner:`<img${padStyle} src="${custom}" alt="">`, style:`background:${cbg};${(cbg==='#ffffff'||cbg==='#fff')?'border:1px solid var(--line);':''}`};
+  }
+  return {inner:`<span>${tk.slice(0,2)}</span>`, style:`background:${bg};`};
+}
 function renderRealized(){
   const el=document.getElementById('rzList'); if(!el) return;
-  const tot=REALIZED.reduce((s,r)=>s+r.v,0);
-  document.getElementById('rzTotal').textContent=(tot>=0?'+':'')+won(tot)+'원';
-  el.innerHTML=REALIZED.map(r=>`<div class="rz-item">
-    <div class="rz-d">${r.d.replace(/-/g,'.')}</div>
-    <div class="rz-n">${r.n}<span>${r.tk} · ${r.note}</span></div>
-    <div class="rz-v ${r.v>=0?'up':'down'}">${r.v>=0?'+':''}${won(r.v)}</div></div>`).join('');
+  const chips=document.getElementById('rzChips'), spot=document.getElementById('rzSpot');
+  const n=REALIZED.length, tot=REALIZED.reduce((s,r)=>s+r.v,0);
+  document.getElementById('rzTotal').textContent=(tot>=0?'+':'')+wonPlain(tot);
+  if(n===0){
+    if(chips) chips.innerHTML='';
+    if(spot) spot.innerHTML='';
+    el.innerHTML='<div class="rz-empty">아직 매도로 확정된 손익이 없습니다.</div>';
+    return;
+  }
+  const wins=REALIZED.filter(r=>r.v>=0).length, winRate=wins/n*100, avg=tot/n;
+  const best=REALIZED.reduce((a,b)=>b.v>a.v?b:a, REALIZED[0]);
+  if(chips) chips.innerHTML=`
+    <div class="rz-chip"><div class="ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div class="k">총 거래</div><div class="v">${n}건</div></div>
+    <div class="rz-chip"><div class="ic" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg></div><div class="k">승률</div><div class="v ${clsOf(winRate-50)}">${winRate.toFixed(0)}%</div></div>
+    <div class="rz-chip"><div class="ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div><div class="k">건당 평균</div><div class="v">${wonPlain(avg)}</div></div>`;
+  if(spot){
+    const {inner,style}=rzAvatar(best.tk);
+    spot.innerHTML=`<div class="rz-spot-lg" style="${style}">${inner}</div>
+      <div class="rz-spot-mid"><span class="rz-spot-tag">🏆 베스트</span><div class="rz-spot-nm">${best.n}<span>${best.tk} · ${best.q}주</span></div></div>
+      <div class="rz-spot-v ${clsOf(best.v)}">${best.v>=0?'+':''}${wonPlain(best.v)}</div>`;
+    spot.dataset.tk=best.tk;
+    spot.onclick=()=>openModal(best.tk);
+  }
+  el.innerHTML=REALIZED.map(r=>{
+    const {inner,style}=rzAvatar(r.tk), isBest=(r===best);
+    return `<div class="rz-tl-item ${isBest?'best':''}" data-tk="${r.tk}">
+      <div class="rz-tl-dot" style="${style}">${inner}</div>
+      <div class="rz-tl-date">${r.d.replace(/-/g,'.')}</div>
+      <div class="rz-tl-card">
+        <div class="rz-tl-head"><span class="rz-tl-nm">${r.n}<span>${r.tk}</span></span><span class="rz-tl-v ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}</span></div>
+        <div class="rz-tl-meta">${r.note}</div>
+      </div></div>`;
+  }).join('');
+  el.querySelectorAll('.rz-tl-item').forEach(it=>it.onclick=()=>openModal(it.dataset.tk));
 }
 
 /* ===== TX TIMELINE ===== */
@@ -2461,7 +2590,7 @@ async function fetchUSStocks(key){
   HEAT_LIVE=true; return n;
 }
 async function fetchIndices(key){
-  const map=[['sp','SPY','S&P500·SPY'],['ndq','QQQ','나스닥·QQQ'],['dow','DIA','다우·DIA']];
+  const map=[['sp','SPY','S&P500·SPY'],['ndq','QQQ','나스닥·QQQ'],['dow','DIA','다우·DIA'],['sox','SOXX','반도체·SOXX']];
   const res=await Promise.allSettled(map.map(m=>fhQuote(m[1],key)));
   let n=0;
   res.forEach((r,i)=>{ if(r.status==='fulfilled'){ const q=r.value; INDICES[map[i][0]]={v:q.c,c:(typeof q.dp==='number'?q.dp:0),label:map[i][2]}; n++; } });
