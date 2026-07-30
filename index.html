@@ -2994,7 +2994,12 @@ async function fetchKisOverseas(){
   });
   if(n===0) throw new Error('KIS 해외 시세 없음');
   HEAT_LIVE = true;
-  if(n < pairs.length) throw new Error(`KIS 해외 일부 누락 (${n}/${pairs.length})`);
+  if(n < pairs.length){
+    const got = new Set((j.results||[]).filter(r=>r.price!=null).map(r=>r.symbol));
+    const miss = Object.entries(OVERSEAS_CODE_MAP).filter(([,v])=>!got.has(v.symb)).map(([tk,v])=>`${tk}(${v.excd})`);
+    console.warn('KIS 해외 누락 종목:', miss.join(', '));
+    throw new Error(`KIS 해외 일부 누락 (${n}/${pairs.length}): ${miss.join(', ')}`);
+  }
   return n;
 }
 
