@@ -545,6 +545,11 @@
   .mover:last-child{border-bottom:none;}
   .mover .mv{font-weight:600;}
   .daily-empty{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); text-align:center; padding:22px 10px;}
+  .dp-skeleton{background:linear-gradient(90deg, var(--paper) 25%, #e4e4e4 37%, var(--paper) 63%); background-size:400% 100%; animation:dpShimmer 1.4s ease infinite; border-radius:12px;}
+  @keyframes dpShimmer{0%{background-position:100% 50%;} 100%{background-position:0 50%;}}
+  .dp-skel-hero{height:78px; margin:2px 2px 16px;}
+  .dp-skel-row{height:52px; margin:0 2px 8px; border-radius:13px;}
+  #dailyBox{transition:opacity .35s ease;}
 
   /* currency gauge */
   .cur-box{padding:8px 2px 14px;}
@@ -1882,10 +1887,14 @@ function renderDiagnosis(){
   document.getElementById('dxCash').textContent=(cash/total*100).toFixed(1)+'%';
 }
 
+let dailyPnlEverLoaded = false;
 function renderDailyPnl(){
   const box=document.getElementById('dailyBox'), as=document.getElementById('dailyAsOf');
   if(pnlPeriod==='today' && !HEAT_LIVE){
-    box.innerHTML='<div class="daily-empty">실시간 갱신하면 오늘의 손익이 계산됩니다.<br>(전일 종가 대비 · 주가+환율 변동 포함)</div>';
+    box.innerHTML='<div class="dp-skel-hero dp-skeleton"></div>'
+      + '<div class="dp-skel-row dp-skeleton"></div>'
+      + '<div class="dp-skel-row dp-skeleton"></div>'
+      + '<div class="dp-skel-row dp-skeleton"></div>';
     as.textContent='전일대비'; return;
   }
   const LBL={today:'전일대비',week:'이번주',month:'이번달',quarter:'이번분기',year:'올해',all:'매입 이후 누적'};
@@ -1947,7 +1956,14 @@ function renderDailyPnl(){
       + `<div class="dp-sec-lbl">전체 종목 · 기여도</div>`
       + `<div class="dp-contrib">${rows.map(contribHtml).join('')}</div>`;
   }
-  box.innerHTML = heroHtml + bodyHtml;
+  if(!dailyPnlEverLoaded){
+    box.style.opacity='0';
+    box.innerHTML = heroHtml + bodyHtml;
+    requestAnimationFrame(()=>{ box.style.opacity='1'; });
+    dailyPnlEverLoaded = true;
+  } else {
+    box.innerHTML = heroHtml + bodyHtml;
+  }
   box.querySelectorAll('.dp-spot, .dp-c-row').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
 }
 function initPnlTabs(){
