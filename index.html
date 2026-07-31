@@ -2956,51 +2956,75 @@ const OVERSEAS_CODE_MAP = {
   KEEL:  { excd: 'NAS', symb: 'KEEL' },
 };
 
-async function fetchKisDomestic(){
-  const codes = Object.values(DOMESTIC_CODE_MAP).filter(Boolean);
-  if(!codes.length) return 0;
-  const res = await fetch(`${KIS_PROXY_URL}/quote/domestic?codes=${codes.join(',')}`);
-  if(!res.ok) throw new Error('KIS 국내 HTTP '+res.status);
+async function kisFetchRound(url){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('HTTP '+res.status);
   const j = await res.json();
-  if(!j.ok) throw new Error('KIS 국내 조회 실패');
+  if(!j.ok) throw new Error(j.error||'조회 실패');
+  return j.results || [];
+}
+
+async function fetchKisDomestic(){
   const codeToTicker = Object.fromEntries(
     Object.entries(DOMESTIC_CODE_MAP).filter(([, c]) => c).map(([tk, c]) => [c, tk])
   );
-  let n=0;
-  (j.results || []).forEach(r=>{
-    const tk = codeToTicker[r.code];
-    const h = HOLDINGS.find(x => x.ticker === tk);
-    if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; n++; }
-  });
-  if(n===0) throw new Error('KIS 국내 시세 없음');
-  if(n < codes.length) throw new Error(`KIS 국내 일부 누락 (${n}/${codes.length})`);
-  return n;
+  const total = Object.values(DOMESTIC_CODE_MAP).filter(Boolean).length;
+  if(!total) return 0;
+  let pending = Object.values(DOMESTIC_CODE_MAP).filter(Boolean);
+  let done = 0, lastErr = null;
+  // 실패한 종목만 골라서 최대 3회까지 자동 재요청 (한 번의 새로고침 안에서 전부 채움)
+  for(let round=0; round<3 && pending.length; round++){
+    if(round>0) await new Promise(r=>setTimeout(r, 400));
+    let results;
+    try{ results = await kisFetchRound(`${KIS_PROXY_URL}/quote/domestic?codes=${pending.join(',')}`); }
+    catch(e){ lastErr = e; continue; }
+    const got = new Set(results.filter(r=>r && r.price!=null).map(r=>r.code));
+    results.forEach(r=>{
+      if(!r || r.price==null) return;
+      const tk = codeToTicker[r.code];
+      const h = HOLDINGS.find(x => x.ticker === tk);
+      if(h){ h.price = r.price; DAY_CHG[tk] = r.changePct; done++; }
+    });
+    pending = pending.filter(c => !got.has(c));
+  }
+  if(done===0) throw new Error('KIS 국내 시세 없음'+(lastErr?(' ('+lastErr.message+')'):''));
+  if(pending.length){
+    const miss = pending.map(c => codeToTicker[c] || c);
+    console.warn('KIS 국내 누락 종목:', miss.join(', '));
+    throw new Error(`KIS 국내 일부 누락 (${done}/${total}): ${miss.join(', ')}`);
+  }
+  return done;
 }
 
 async function fetchKisOverseas(){
-  const pairs = Object.entries(OVERSEAS_CODE_MAP).map(([, v]) => `${v.excd}:${v.symb}`);
-  if(!pairs.length) return 0;
-  const res = await fetch(`${KIS_PROXY_URL}/quote/overseas?codes=${pairs.join(',')}`);
-  if(!res.ok) throw new Error('KIS 해외 HTTP '+res.status);
-  const j = await res.json();
-  if(!j.ok) throw new Error('KIS 해외 조회 실패');
-  let n=0;
-  (j.results || []).forEach(r=>{
-    const entry = Object.entries(OVERSEAS_CODE_MAP).find(([, v]) => v.symb === r.symbol);
-    if(!entry) return;
-    const tk = entry[0];
-    const h = HOLDINGS.find(x => x.ticker === tk);
-    if(h && r.price != null){ h.price = r.price; DAY_CHG[tk] = r.changePct; n++; }
-  });
-  if(n===0) throw new Error('KIS 해외 시세 없음');
-  HEAT_LIVE = true;
-  if(n < pairs.length){
-    const got = new Set((j.results||[]).filter(r=>r.price!=null).map(r=>r.symbol));
-    const miss = Object.entries(OVERSEAS_CODE_MAP).filter(([,v])=>!got.has(v.symb)).map(([tk,v])=>`${tk}(${v.excd})`);
-    console.warn('KIS 해외 누락 종목:', miss.join(', '));
-    throw new Error(`KIS 해외 일부 누락 (${n}/${pairs.length}): ${miss.join(', ')}`);
+  const all = Object.entries(OVERSEAS_CODE_MAP).map(([tk, v]) => ({tk, symb:v.symb, code:`${v.excd}:${v.symb}`}));
+  const total = all.length;
+  if(!total) return 0;
+  let pending = all.slice();
+  let done = 0, lastErr = null;
+  for(let round=0; round<3 && pending.length; round++){
+    if(round>0) await new Promise(r=>setTimeout(r, 400));
+    let results;
+    try{ results = await kisFetchRound(`${KIS_PROXY_URL}/quote/overseas?codes=${pending.map(p=>p.code).join(',')}`); }
+    catch(e){ lastErr = e; continue; }
+    const got = new Set(results.filter(r=>r && r.price!=null).map(r=>r.symbol));
+    results.forEach(r=>{
+      if(!r || r.price==null) return;
+      const item = pending.find(p => p.symb === r.symbol);
+      if(!item) return;
+      const h = HOLDINGS.find(x => x.ticker === item.tk);
+      if(h){ h.price = r.price; DAY_CHG[item.tk] = r.changePct; done++; }
+    });
+    pending = pending.filter(p => !got.has(p.symb));
   }
-  return n;
+  if(done===0) throw new Error('KIS 해외 시세 없음'+(lastErr?(' ('+lastErr.message+')'):''));
+  HEAT_LIVE = true;
+  if(pending.length){
+    const miss = pending.map(p => `${p.tk}(${OVERSEAS_CODE_MAP[p.tk].excd})`);
+    console.warn('KIS 해외 누락 종목:', miss.join(', '));
+    throw new Error(`KIS 해외 일부 누락 (${done}/${total}): ${miss.join(', ')}`);
+  }
+  return done;
 }
 
 let refreshing=false;
