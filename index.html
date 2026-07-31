@@ -3221,13 +3221,23 @@ async function refresh(){
   const btn=document.getElementById('refreshBtn'); btn.classList.add('spin'); btn.disabled=true;
   const key=getKey();
   setStatus('stale', '<b>조회 중…</b>');
-  const labels=[], jobs=[];
-  jobs.push(fetchFX()); labels.push('환율');
-  jobs.push(fetchKisDomestic()); labels.push('국내 시세');
-  jobs.push(fetchKisOverseas()); labels.push('해외 시세');
-  if(key){ jobs.push(fetchIndices(key));  labels.push('지수');
-           jobs.push(fetchNewsFH(key));   labels.push('뉴스'); }
-  const results=await Promise.allSettled(jobs);
+
+  // 환율·지수·뉴스는 KIS와 무관한 별도 API라 병렬로 동시 실행
+  const otherLabels=['환율'], otherJobs=[fetchFX()];
+  if(key){ otherLabels.push('지수','뉴스'); otherJobs.push(fetchIndices(key), fetchNewsFH(key)); }
+  const otherPromise=Promise.allSettled(otherJobs);
+
+  // KIS 국내→해외는 반드시 순차 실행 (동시 호출 시 API 제한·토큰 경쟁으로 실패할 수 있음)
+  const kisLabels=['국내 시세','해외 시세'], kisResults=[];
+  for(const fn of [fetchKisDomestic, fetchKisOverseas]){
+    try{ kisResults.push({status:'fulfilled', value:await fn()}); }
+    catch(e){ kisResults.push({status:'rejected', reason:e}); }
+  }
+
+  const otherResults=await otherPromise;
+  const labels=[otherLabels[0], ...kisLabels, ...otherLabels.slice(1)];
+  const results=[otherResults[0], ...kisResults, ...otherResults.slice(1)];
+
   const failed=[]; let firstErr='';
   results.forEach((r,i)=>{ if(r.status==='rejected'){ failed.push(labels[i]); if(!firstErr) firstErr=(r.reason&&r.reason.message)||'unknown'; console.error(labels[i], r.reason); } });
   LAST_UPDATED=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
