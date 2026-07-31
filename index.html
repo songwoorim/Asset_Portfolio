@@ -3077,13 +3077,29 @@ const CUSTOM_BG={GOOGL:'#ffffff', MSFT:'#243a5c', IREN:'#6ddb7f', KEEL:'#eeeeee'
 /* 자체 배경이 이미 포함된 이미지는 패딩을 줄여 꽉 차 보이게 */
 const CUSTOM_PAD={RKLB:'6px', IONQ:'6px', SMR:'6px'};
 
+const FX_PREV_KEY='portfolio_fx_prev_v1';
 async function fetchFX(){
   const r=await fetch('https://open.er-api.com/v6/latest/USD');
   if(!r.ok) throw new Error('환율 HTTP '+r.status);
   const j=await r.json();
   const v=j&&j.rates&&j.rates.KRW;
-  if(typeof v==='number'&&v>500&&v<3000){ FX_PREV=FX; FX=v; return true; }
-  throw new Error('환율 데이터 없음');
+  if(!(typeof v==='number'&&v>500&&v<3000)) throw new Error('환율 데이터 없음');
+  /* FX_PREV는 "전일 종가 환율"이어야 함 (오늘의 손익에서 어제 평가액 산출에 사용).
+     같은 날 여러 번 새로고침해도 값이 바뀌면 안 되므로 날짜 기준으로 보관한다.
+     (예전에는 FX_PREV=FX 로 직전 새로고침 값을 넣어, 첫 새로고침 때만 환차손이 과대 계상되는 버그가 있었음) */
+  const today=new Date().toISOString().slice(0,10);
+  let rec=null;
+  try{ const s=await STORE.get(FX_PREV_KEY); if(s&&s.value) rec=JSON.parse(s.value); }catch(e){}
+  if(rec && rec.d===today && typeof rec.prev==='number'){
+    FX_PREV=rec.prev;                                   // 오늘 이미 확정한 전일 종가 재사용
+  } else if(rec && typeof rec.last==='number'){
+    FX_PREV=rec.last;                                   // 어제 마지막으로 본 환율 = 전일 종가
+  } else {
+    FX_PREV=v;                                          // 최초 실행: 전일 환율을 모르므로 환차 영향 0 처리
+  }
+  FX=v;
+  try{ await STORE.set(FX_PREV_KEY, JSON.stringify({d:today, prev:FX_PREV, last:v})); }catch(e){}
+  return true;
 }
 async function fhQuote(sym,key){
   const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${key}`);
