@@ -51,6 +51,15 @@
 
   /* ---------- top bar (live + nav) ---------- */
   .topbar{ position:sticky; top:0; z-index:40; max-width:760px; margin:0 auto; }
+  /* 당겨서 새로고침 */
+  .ptr-indicator{position:fixed; top:0; left:0; right:0; z-index:45; display:flex; align-items:center; justify-content:center;
+    height:0; overflow:hidden; color:#fff; background:var(--ink); transition:height .18s ease;}
+  .ptr-indicator svg{width:17px; height:17px; transition:transform .1s;}
+  .ptr-indicator.spin svg{animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  /* 버튼 리플 */
+  .ripple{position:absolute; border-radius:50%; background:rgba(255,255,255,.45); transform:scale(0); pointer-events:none; animation:rippleAnim .6s ease-out;}
+  @keyframes rippleAnim{to{transform:scale(2.6); opacity:0;}}
   .tabbar{
     position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom));
     max-width:736px; margin:0 auto; z-index:50;
@@ -61,6 +70,7 @@
   }
   .tabbar::-webkit-scrollbar{display:none;}
   .tab-btn{
+    position:relative; overflow:hidden;
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
     font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:500; white-space:nowrap;
     background:transparent; color:rgba(245,245,247,0.5); border:none; border-radius:16px;
@@ -74,7 +84,7 @@
   .navbar .nav-sp, .tabbar .nav-sp{ flex:0 0 1px; }
   .book{ padding-bottom:calc(76px + env(safe-area-inset-bottom)); }
   .icon-btn{
-    position:relative; display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;
     background:transparent; border:none; color:rgba(245,245,247,0.7);
     border-radius:8px; padding:6px; cursor:pointer; flex-shrink:0;
   }
@@ -241,6 +251,15 @@
   .hcard-nm{flex:1; font-size:12.5px; font-weight:700; min-width:0;}
   .hcard-nm span{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); font-weight:400; margin-top:1px;}
   .hcard-ev{text-align:right; font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:700; white-space:nowrap;}
+  /* 새로고침 중 스켈레톤 시머 */
+  .skel-shimmer, .skel-shimmer span{color:transparent !important;}
+  .skel-shimmer{background:linear-gradient(90deg, var(--paper) 25%, #e4e4e4 37%, var(--paper) 63%); background-size:400% 100%; animation:shimmerSweep 1.4s ease infinite; border-radius:6px;}
+  @keyframes shimmerSweep{0%{background-position:100% 50%;} 100%{background-position:0 50%;}}
+  /* 새로고침 완료 후 값 변경 플래시 */
+  .flash-pop-up{animation:flashUp 1s ease;}
+  .flash-pop-down{animation:flashDown 1s ease;}
+  @keyframes flashUp{0%{background-color:rgba(192,57,43,.22);} 100%{background-color:rgba(192,57,43,0);}}
+  @keyframes flashDown{0%{background-color:rgba(44,74,124,.22);} 100%{background-color:rgba(44,74,124,0);}}
   .hcard-ev span{display:block; font-size:11px; font-weight:700; margin-top:2px;}
   .hcard-bottom{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); display:flex; justify-content:flex-end;}
   .hcard-px{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:700; display:flex; align-items:center; gap:7px; color:var(--ink);}
@@ -534,9 +553,12 @@
   .footer .warn{color:var(--stamp-red);}
 
   /* ---------- Modal ---------- */
-  .modal-back{position:fixed; inset:0; background:rgba(20,29,21,0.55); backdrop-filter:blur(2px); z-index:60; display:none; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto;}
+  .modal-back{position:fixed; inset:0; background:rgba(20,29,21,0); backdrop-filter:blur(0px); z-index:60; display:none; align-items:flex-end; justify-content:center; padding:0; overflow-y:auto; transition:background .28s ease, backdrop-filter .28s ease;}
   .modal-back.open{display:flex;}
-  .modal{background:var(--card); border-radius:20px; max-width:440px; width:100%; padding:24px 24px 20px; box-shadow:0 20px 50px -18px rgba(0,0,0,0.35); position:relative;}
+  .modal-back.show{background:rgba(20,29,21,0.55); backdrop-filter:blur(2px);}
+  .modal{background:var(--card); border-radius:20px 20px 0 0; max-width:440px; width:100%; padding:24px 24px 20px; box-shadow:0 20px 50px -18px rgba(0,0,0,0.35); position:relative; transform:translateY(100%); transition:transform .32s cubic-bezier(.32,.72,0,1);}
+  .modal-back.show .modal{transform:translateY(0);}
+  .modal-handle{width:36px; height:4px; border-radius:9999px; background:var(--line); margin:0 auto 14px;}
   .modal-close{position:absolute; top:14px; right:16px; background:none; border:none; font-size:20px; color:var(--ink-soft); cursor:pointer; line-height:1;}
   .modal h3{font-family:'Inter',-apple-system,sans-serif; font-size:18px; margin:0 0 2px; display:flex; align-items:center; gap:8px;}
   .modal .m-tk{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft);}
@@ -868,6 +890,7 @@
 </style>
 </head>
 <body>
+<div class="ptr-indicator" id="ptrIndicator"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 1 2.3 5.6M4 12V7m0 5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 
 <!-- TOP BAR (live + tabs) -->
 <div class="topbar" id="topbar">
@@ -1294,6 +1317,7 @@
 <!-- MODAL -->
 <div class="modal-back" id="modalBack">
   <div class="modal">
+    <div class="modal-handle"></div>
     <button class="modal-close" id="modalClose">✕</button>
     <h3 id="mName">—</h3>
     <div class="m-tk" id="mTk"></div>
@@ -2475,10 +2499,20 @@ function openModal(tk){
   }).join(''); }
   else mn.innerHTML='<div class="empty">이 종목 관련 뉴스가 아직 없습니다. 새로고침해 보세요.</div>';
   const tb=document.getElementById('mTxBtn'); if(tb) tb.onclick=()=>gotoTxFor(tk);
-  document.getElementById('modalBack').classList.add('open');
+  showModal();
 }
-document.getElementById('modalClose').onclick=()=>document.getElementById('modalBack').classList.remove('open');
-document.getElementById('modalBack').onclick=e=>{ if(e.target.id==='modalBack') e.currentTarget.classList.remove('open'); };
+function showModal(){
+  const mb=document.getElementById('modalBack');
+  mb.classList.add('open');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>mb.classList.add('show')));
+}
+function hideModal(){
+  const mb=document.getElementById('modalBack');
+  mb.classList.remove('show');
+  setTimeout(()=>mb.classList.remove('open'), 320);
+}
+document.getElementById('modalClose').onclick=()=>hideModal();
+document.getElementById('modalBack').onclick=e=>{ if(e.target.id==='modalBack') hideModal(); };
 
 /* ============ ASSET TREND (persistent) ============ */
 const TREND_KEY='portfolio_trend_v1';
@@ -3042,7 +3076,7 @@ function gotoTxFor(tk){
   const has=[...sel.options].some(o=>o.value===tk);
   sel.value = has ? tk : 'all';
   renderTxList();
-  document.getElementById('modalBack').classList.remove('open');
+  hideModal();
   switchTab('hist');
   const sec=document.getElementById('sec-tx');
   if(sec){ sec.classList.remove('collapsed'); sec.scrollIntoView({behavior:'smooth',block:'start'}); }
@@ -3364,6 +3398,7 @@ let refreshing=false;
 async function refresh(){
   if(refreshing) return; refreshing=true;
   const btn=document.getElementById('refreshBtn'); btn.classList.add('spin'); btn.disabled=true;
+  document.querySelectorAll('.hcard-ev, .pnl-val').forEach(el=>el.classList.add('skel-shimmer'));
   const key=getKey();
   setStatus('stale', '<b>조회 중…</b>');
 
@@ -3387,6 +3422,12 @@ async function refresh(){
   results.forEach((r,i)=>{ if(r.status==='rejected'){ failed.push(labels[i]); if(!firstErr) firstErr=(r.reason&&r.reason.message)||'unknown'; console.error(labels[i], r.reason); } });
   LAST_UPDATED=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
   renderAll();
+  document.querySelectorAll('.hcard-ev, .pnl-val').forEach(el=>{
+    const isUp = el.classList.contains('up') || !!el.querySelector('.up');
+    const isDown = el.classList.contains('down') || !!el.querySelector('.down');
+    if(isUp) el.classList.add('flash-pop-up');
+    else if(isDown) el.classList.add('flash-pop-down');
+  });
   if(results.some(r=>r.status==='fulfilled')) await recordTrendPoint();
   btn.classList.remove('spin'); btn.disabled=false; refreshing=false;
   if(failed.length===0){
@@ -3465,6 +3506,57 @@ function revealPanel(panelName){
 }
 function initScrollReveal(){ revealPanel('home'); }
 
+/* ===== 당겨서 새로고침 ===== */
+function initPullToRefresh(){
+  const ind=document.getElementById('ptrIndicator'); if(!ind) return;
+  const MAX=56, TRIGGER=48;
+  let startY=null, pulling=false;
+  function atTop(){ return (window.scrollY||document.documentElement.scrollTop||0) <= 0; }
+  function start(y){ if(atTop()) { startY=y; pulling=true; } }
+  function move(y, ev){
+    if(!pulling || startY==null) return;
+    const raw=y-startY;
+    if(raw<=0){ pulling=false; startY=null; ind.style.height='0px'; return; }
+    if(ev && ev.cancelable) ev.preventDefault();
+    const d=Math.max(0, Math.min(MAX, raw*0.5));
+    ind.style.height=d+'px';
+    ind.querySelector('svg').style.transform='rotate('+(d/MAX*200)+'deg)';
+  }
+  function end(){
+    if(!pulling) return;
+    const h=parseInt(ind.style.height||'0',10);
+    if(h>=TRIGGER && !refreshing){
+      ind.classList.add('spin'); ind.style.height=MAX+'px';
+      refresh().finally(()=>{ ind.classList.remove('spin'); ind.style.height='0px'; });
+    } else {
+      ind.style.height='0px';
+    }
+    pulling=false; startY=null;
+  }
+  document.addEventListener('touchstart', e=>start(e.touches[0].clientY), {passive:true});
+  document.addEventListener('touchmove', e=>move(e.touches[0].clientY, e), {passive:false});
+  document.addEventListener('touchend', end);
+}
+
+/* ===== 버튼 리플 효과 ===== */
+function addRipple(e){
+  const btn=e.currentTarget, rect=btn.getBoundingClientRect();
+  const size=Math.max(rect.width, rect.height);
+  const r=document.createElement('span');
+  r.className='ripple';
+  r.style.width=r.style.height=size+'px';
+  const cx=(e.clientX!=null?e.clientX:rect.left+rect.width/2)-rect.left-size/2;
+  const cy=(e.clientY!=null?e.clientY:rect.top+rect.height/2)-rect.top-size/2;
+  r.style.left=cx+'px'; r.style.top=cy+'px';
+  btn.appendChild(r);
+  setTimeout(()=>r.remove(), 650);
+}
+function initRipple(){
+  document.querySelectorAll('.icon-btn, .tab-btn').forEach(btn=>{
+    btn.addEventListener('click', addRipple);
+  });
+}
+
 initStockDonut();
 renderRealized();
 initTxList();
@@ -3474,6 +3566,8 @@ loadFutureSnaps().then(initTrend);
 initUI();
 initCoverDetail();
 initScrollReveal();
+initPullToRefresh();
+initRipple();
 fetchIcons().catch(e=>console.warn('icons',e));
 </script>
 
