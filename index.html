@@ -2825,26 +2825,32 @@ function rvModel(){
     {k:'thism', bonus:false, tone:'blue', ic:'wallet', lbl:'이번 달 매수',
       val:wonPlain(RV.thisM), vc:'', sub:mm(lastM.m),
       hn:wonPlain(RV.thisM), hs:mm(lastM.m)+' · '+((lastM.items||[]).length)+'종목',
+      hnVal:RV.thisM, hnFmt:v=>wonPlain(v),
       rg:'올해 매수 누적 대비 '+pctOf(RV.thisM,RV.ytd).toFixed(1)+'%', pct:cap(pctOf(RV.thisM,RV.ytd))},
     {k:'ytdbuy', bonus:false, tone:'blue', ic:'bars', lbl:'올해 매수 누적',
       val:wonPlain(RV.ytd), vc:'', sub:'월평균 '+wonPlain(avg),
       hn:wonPlain(RV.ytd), hs:I.YR+'년 '+I.nCur+'개월 · 월평균 '+wonPlain(avg),
+      hnVal:RV.ytd, hnFmt:v=>wonPlain(v),
       rg:'최근 12개월 매수 대비 '+pctOf(RV.ytd,tot12).toFixed(1)+'%', pct:cap(pctOf(RV.ytd,tot12))},
     {k:'growth', bonus:false, tone:'red', ic:'trend', lbl:'올해 자산 성장',
       val:sign(yg), vc:clsOf(yg), sub:M2(RV.jan1)+' → '+M2(RV.now),
       hn:sign(yg), hs:M2(RV.jan1)+' → '+M2(RV.now),
+      hnVal:yg, hnFmt:v=>sign(v),
       rg:'1년 전 대비 '+sign(y1g), pct:cap(yg)},
     {k:'y1', bonus:false, tone:'red', ic:'clock', lbl:'1년 전 대비',
       val:sign(y1g), vc:clsOf(y1g), sub:M2(RV.y1)+' → '+M2(RV.now),
       hn:sign(y1g), hs:M2(RV.y1)+' → '+M2(RV.now),
+      hnVal:y1g, hnFmt:v=>sign(v),
       rg:'올해 자산 성장 '+sign(yg), pct:cap(y1g)},
     {k:'realized', bonus:false, tone:'green', ic:'check', lbl:'올해 실현손익',
       val:(RV.rz_ytd>=0?'+':'')+wonPlain(RV.rz_ytd), vc:clsOf(RV.rz_ytd), sub:'매도로 확정된 손익',
       hn:(RV.rz_ytd>=0?'+':'')+wonPlain(RV.rz_ytd), hs:'매도로 확정된 손익',
+      hnVal:RV.rz_ytd, hnFmt:v=>(v>=0?'+':'')+wonPlain(v),
       rg:'누적 실현손익 대비 '+pctOf(RV.rz_ytd,RV.rz_all).toFixed(1)+'%', pct:cap(pctOf(RV.rz_ytd,RV.rz_all))},
     {k:'buy12', bonus:false, tone:'gray', ic:'list', lbl:'12개월 매수',
       val:wonPlain(tot12), vc:'', sub:'누적 실현 +'+wonPlain(RV.rz_all),
       hn:wonPlain(tot12), hs:'최근 12개월 합계 · 누적 실현 +'+wonPlain(RV.rz_all),
+      hnVal:tot12, hnFmt:v=>wonPlain(v),
       rg:'이 중 올해 매수 '+pctOf(RV.ytd,tot12).toFixed(1)+'%', pct:cap(pctOf(RV.ytd,tot12))},
     {k:'bestbuy', bonus:true, tone:'amber', ic:'trophy', lbl:'최고 매수월',
       val:ym(I.bestBuy.m), vc:'', sub:wonPlain(I.bestBuy.buy),
@@ -2853,14 +2859,17 @@ function rvModel(){
     {k:'streak', bonus:true, tone:'amber', ic:'flame', lbl:'매수 연속 개월',
       val:I.streak+'개월', vc:'', sub:'한 번도 안 거름',
       hn:I.streak+'개월 연속', hs:'매수를 한 번도 거르지 않았어요',
+      hnVal:I.streak, hnFmt:v=>Math.round(v)+'개월 연속',
       rg:'전체 '+M.length+'개월 중 '+I.streak+'개월 연속', pct:cap(pctOf(I.streak,M.length))},
     {k:'bestgrowth', bonus:true, tone:'amber', ic:'zap', lbl:'최고 상승월',
       val:ym(I.bestChg.m), vc:clsOf(I.bestChg.chgp), sub:sign(I.bestChg.chgp),
       hn:sign(I.bestChg.chgp), hs:ym(I.bestChg.m)+' · 전월 대비',
+      hnVal:I.bestChg.chgp, hnFmt:v=>sign(v),
       rg:'전체 기간 중 월간 최고 상승률', pct:cap(I.bestChg.chgp)},
     {k:'sold', bonus:true, tone:'amber', ic:'down', lbl:'올해 총 매도',
       val:wonPlain(I.sold), vc:'', sub:I.YR+'년 매도 금액',
       hn:wonPlain(I.sold), hs:I.YR+'년 매도 총액 (실현손익과 별개)',
+      hnVal:I.sold, hnFmt:v=>wonPlain(v),
       rg:'올해 매수 대비 '+pctOf(I.sold,RV.ytd).toFixed(1)+'%', pct:cap(pctOf(I.sold,RV.ytd))},
     {k:'topbuy', bonus:true, tone:'amber', ic:'target', lbl:'올해 최다매수 종목',
       val:I.topTk?I.topTk.n:'—', vc:'', sub:I.topTk?(I.topTk.tk+' · '+wonPlain(I.topTk.amt)):'거래 없음',
@@ -2870,6 +2879,7 @@ function rvModel(){
     {k:'multiple', bonus:true, tone:'amber', ic:'mult', lbl:'원금 대비 배율',
       val:I.mult.toFixed(2)+'배', vc:clsOf(I.mult-1), sub:M2(RV.costNow)+' → '+M2(RV.now),
       hn:I.mult.toFixed(2)+'배', hs:'투자원금 '+M2(RV.costNow)+' → 평가 '+M2(RV.now),
+      hnVal:I.mult, hnFmt:v=>v.toFixed(2)+'배',
       rg:'원금 대비 순수익 '+sign((I.mult-1)*100), pct:cap((I.mult-1)*100)}
   ];
 }
@@ -2880,14 +2890,30 @@ function rvCardHtml(d){
     <div class="rv-stat-top"><div class="rv-stat-ic" style="background:${t.b}; color:${t.c};">${RV_ICON[d.ic]}</div><span class="rv-stat-k">${d.lbl}</span></div>
     <div class="rv-stat-v ${d.vc}">${d.val}</div><div class="rv-stat-s">${d.sub}</div></div>`;
 }
+let rvHeroRaf=null;
+function animateRvHeroNum(to, fmt){
+  const el=document.getElementById('rvHeroNum'); if(!el) return;
+  if(rvHeroRaf) cancelAnimationFrame(rvHeroRaf);
+  const from=0, dur=450, t0=performance.now();
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    const v=from+(to-from)*e;
+    el.textContent=fmt(v);
+    if(p<1) rvHeroRaf=requestAnimationFrame(step); else { el.textContent=fmt(to); rvHeroRaf=null; }
+  }
+  rvHeroRaf=requestAnimationFrame(step);
+}
 function renderRvHero(){
   const el=document.getElementById('rvHero'); if(!el) return;
   const d=rvModel().find(x=>x.k===rvHeroKey) || rvModel()[2];
   const t=RV_TONE[d.tone];
+  const isNum=(d.hnVal!=null && !isNaN(d.hnVal));
   el.style.background=t.g;
   el.innerHTML=`<div class="rv-hero-lbl">${d.lbl}</div>
-    <div class="rv-hero-num"><span style="color:${t.c};">${d.hn}</span><span class="sub">${d.hs}</span></div>
+    <div class="rv-hero-num"><span id="rvHeroNum" style="color:${t.c};">${isNum?'':d.hn}</span><span class="sub">${d.hs}</span></div>
     <div class="rv-hero-range"><span>${d.rg}</span><div class="bar"><i style="width:${d.pct.toFixed(1)}%; background:${t.c};"></i></div></div>`;
+  if(isNum){ animateRvHeroNum(d.hnVal, d.hnFmt); }
+  else if(rvHeroRaf){ cancelAnimationFrame(rvHeroRaf); rvHeroRaf=null; }
 }
 function renderRvCards(){
   const core=document.getElementById('rvCards'), bonus=document.getElementById('rvBonusCards');
@@ -3000,6 +3026,8 @@ function initUI(){
       window.scrollTo({top:0,behavior:'smooth'});
       // 방금 보이게 된 패널 안의 세그먼트 필 위치 재계산 (display:none 상태에서는 폭 계산이 안 되므로)
       ['swSeg','pnlTabs','trPeriods'].forEach(id=>positionSegPill(id, true));
+      // 이 탭의 스크롤 등장 효과를 처음부터 다시 재생
+      revealPanel(b.dataset.tab);
     };
   });
 }
@@ -3413,23 +3441,29 @@ initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 initPnlTabs();
 /* 스크롤 등장 효과: 각 섹션이 화면에 들어올 때 아래에서 위로 살짝 떠오르며 나타남 (1회성) */
-function initScrollReveal(){
-  const targets=document.querySelectorAll('.page.collapsible');
+let scrollRevealIO=null;
+/* panelName의 .page.collapsible 섹션들을 "아직 안 나타난 상태"로 리셋하고 다시 관찰 시작.
+   같은 탭 안에서는 한 섹션이 한 번 나타나면 다시 스크롤해도 재생되지 않지만,
+   하단 탭바로 다른 화면에 갔다가 돌아오면 다시 처음부터 재생됨. */
+function revealPanel(panelName){
+  if(!('IntersectionObserver' in window)) return; // 미지원 브라우저는 항상 보임(안전)
+  const targets=[...document.querySelectorAll(`.page.collapsible[data-panel="${panelName}"]`)];
   if(!targets.length) return;
-  if(!('IntersectionObserver' in window)) return; // 미지원 브라우저는 그냥 항상 보임(안전)
-  targets.forEach(el=>el.classList.add('scroll-ready'));
-  const io=new IntersectionObserver((entries)=>{
+  if(scrollRevealIO) scrollRevealIO.disconnect();
+  targets.forEach(el=>{ el.classList.remove('in-view'); el.classList.add('scroll-ready'); });
+  scrollRevealIO=new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
         entry.target.classList.add('in-view');
-        io.unobserve(entry.target);
+        scrollRevealIO.unobserve(entry.target);
       }
     });
-  }, { threshold:0.08, rootMargin:'0px 0px -40px 0px' });
-  targets.forEach(el=>io.observe(el));
-  // 안전장치: 혹시 옵저버가 놓치는 요소가 있어도 3초 후 전부 강제로 보이게
+  }, { threshold:0.15, rootMargin:'0px 0px -80px 0px' });
+  targets.forEach(el=>scrollRevealIO.observe(el));
+  // 안전장치: 옵저버가 놓치는 요소가 있어도 3초 후 강제로 보이게
   setTimeout(()=>targets.forEach(el=>el.classList.add('in-view')), 3000);
 }
+function initScrollReveal(){ revealPanel('home'); }
 
 initStockDonut();
 renderRealized();
