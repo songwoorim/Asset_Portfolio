@@ -128,7 +128,6 @@
     .page{ box-shadow:none; break-inside:avoid; page-break-inside:avoid; margin-top:10px; }
     .perf{ display:none; }
     .cover{ box-shadow:none; }
-    .tx-scroll{ max-height:none !important; overflow:visible !important; }
     .book{ max-width:100%; }
   }
 
@@ -850,21 +849,75 @@
   .rz-tl-date{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); margin-bottom:3px;}
   .rz-empty{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); text-align:center; padding:20px 10px;}
 
-  /* tx timeline */
-  .tx-filter{display:flex; gap:8px; align-items:center; margin:4px 2px 10px; flex-wrap:wrap;}
-  .tx-filter select{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; padding:8px 14px; border:1px solid var(--line); border-radius:9999px; background:var(--card); color:var(--ink);}
-  .tx-count{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft);}
-  .tx-scroll{max-height:360px; overflow-y:auto; padding-right:4px; border-top:1px dashed var(--line);}
-  .tx-row{display:grid; grid-template-columns:66px 18px 1fr auto; gap:8px; align-items:center; padding:7px 2px; border-bottom:1px dotted var(--line);}
-  .tx-row:last-child{border-bottom:none;}
-  .tx-d{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft);}
-  .tx-ic{width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; line-height:1;}
-  .tx-ic.buy{background:rgba(178,59,46,.14); color:var(--stamp-red);}
-  .tx-ic.sell{background:rgba(44,74,124,.14); color:var(--stamp-blue);}
-  .tx-m{font-size:11.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .tx-m span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:400; margin-left:5px;}
-  .tx-a{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; text-align:right; white-space:nowrap;}
-  .tx-a b{font-weight:600;}
+  /* tx timeline (히어로+인사이트토글+필터+타임라인) */
+  .tx-hero{border-radius:14px; padding:16px 16px; margin:2px 2px 8px; background:linear-gradient(135deg, rgba(110,110,115,.09), rgba(110,110,115,.02));}
+  .tx-hero .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
+  .tx-hero .num{font-family:'Inter',-apple-system,sans-serif; font-size:27px; font-weight:800;}
+  .tx-hero .bar{display:flex; height:8px; border-radius:9999px; overflow:hidden; margin-top:12px; background:var(--line);}
+  .tx-hero .bar i{display:block; height:100%;}
+  .tx-hero .legend{display:flex; justify-content:space-between; margin-top:7px; font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft);}
+  .tx-hero .legend b{color:var(--ink); font-weight:700;}
+
+  .tx-insight-toggle{display:flex; align-items:center; justify-content:space-between; padding:8px 2px 8px; cursor:pointer;}
+  .tx-insight-toggle .lbl2{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; display:flex; align-items:center; gap:6px;}
+  .tx-insight-toggle .lbl2 svg{width:12px; height:12px; stroke:var(--ink-soft); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .tx-insight-toggle .chev{width:20px; height:20px; border-radius:50%; background:var(--paper); display:flex; align-items:center; justify-content:center;}
+  .tx-insight-toggle .chev svg{width:11px; height:11px; stroke:var(--ink-soft); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:transform .25s;}
+  .tx-insight-toggle.closed .chev svg{transform:rotate(180deg);}
+  .tx-insight-wrap{max-height:400px; overflow:hidden; transition:max-height .28s ease, opacity .2s ease; opacity:1; margin-bottom:14px;}
+  .tx-insight-wrap.closed{max-height:0; opacity:0; margin-bottom:0;}
+
+  .tx-chip-row{display:flex; gap:8px; margin-bottom:8px;}
+  .tx-chip{flex:1; background:var(--paper); border-radius:12px; padding:10px 11px; min-width:0;}
+  .tx-chip-top{display:flex; align-items:center; gap:6px; margin-bottom:6px;}
+  .tx-chip-ic{width:20px; height:20px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .tx-chip-ic svg{width:11px; height:11px; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .tx-chip-k{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tx-chip-v{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tx-chip-s{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; color:var(--ink-soft); margin-top:1px;}
+
+  .tx-spark-box{background:var(--paper); border-radius:12px; padding:11px 13px;}
+  .tx-spark-top{display:flex; align-items:center; gap:6px; margin-bottom:9px;}
+  .tx-spark-top-k{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:600;}
+  .tx-spark-bars{display:flex; align-items:flex-end; gap:6px; height:36px;}
+  .tx-spark-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;}
+  .tx-spark-bar{width:100%; border-radius:3px 3px 0 0; background:#0066cc; transition:height .6s cubic-bezier(.22,1,.36,1);}
+  .tx-spark-bar.now{background:var(--stamp-red);}
+  .tx-spark-mo{font-family:'Inter',-apple-system,sans-serif; font-size:7.5px; color:var(--ink-soft);}
+
+  .tx-filter-row{display:flex; gap:6px; margin-bottom:14px; align-items:center;}
+  .tx-filter-seg{position:relative; display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; flex:1; overflow-x:auto;}
+  .tx-filter-seg button{position:relative; z-index:1; flex-shrink:0; border:none; background:transparent; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); padding:7px 11px; border-radius:9px; cursor:pointer; white-space:nowrap; transition:color .18s;}
+  .tx-filter-seg button.on{color:var(--ink);}
+  .tx-stock-select{flex-shrink:0; position:relative;}
+  .tx-stock-select select{appearance:none; -webkit-appearance:none; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink); background:var(--paper); border:none; border-radius:12px; padding:9px 26px 9px 12px; cursor:pointer; max-width:120px;}
+  .tx-stock-select svg{position:absolute; right:8px; top:50%; transform:translateY(-50%); width:11px; height:11px; stroke:var(--ink-soft); fill:none; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round; pointer-events:none;}
+
+  .tx-tl{position:relative; padding-left:26px;}
+  .tx-tl::before{content:''; position:absolute; left:11px; top:6px; bottom:6px; width:1.5px; background:var(--line);}
+  .tx-tl-month{position:relative; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; color:var(--ink-soft); margin:14px 0 8px -26px; padding-left:26px;}
+  .tx-tl-month:first-child{margin-top:0;}
+  .tx-tl-month::before{content:''; position:absolute; left:7px; top:2px; width:9px; height:9px; border-radius:50%; background:var(--ink-soft); border:2px solid var(--card); z-index:1;}
+  .tx-tl-item{position:relative; padding:8px 0 8px 10px; cursor:pointer; border-radius:10px;
+    opacity:0; transform:translateY(12px); transition:opacity .4s ease, transform .4s ease, background .12s;}
+  .tx-tl-item.in-view{opacity:1; transform:translateY(0);}
+  .tx-tl-item:active{background:var(--paper); transform:scale(0.98);}
+  .tx-tl-dot{position:absolute; left:-21px; top:11px; width:15px; height:15px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#fff; z-index:1; border:2px solid var(--card);}
+  .tx-tl-dot.buy{background:var(--stamp-red);} .tx-tl-dot.sell{background:var(--stamp-blue);}
+  .tx-tl-row{display:flex; align-items:center; gap:9px;}
+  .tx-tl-avatar{width:28px; height:28px; border-radius:50%; flex-shrink:0; overflow:hidden;}
+  .tx-tl-avatar img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .tx-tl-avatar span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; color:#fff;}
+  .tx-tl-mid{flex:1; min-width:0;}
+  .tx-tl-mid b{font-size:11.5px; font-weight:700; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .tx-tl-mid span{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft);}
+  .tx-tl-right{text-align:right; flex-shrink:0;}
+  .tx-tl-right b{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:800; display:block; white-space:nowrap;}
+  .tx-list-wrap{position:relative; margin-top:2px;}
+  .tx-list-fade{position:absolute; top:0; left:0; right:0; height:14px; background:linear-gradient(var(--card), rgba(255,255,255,0)); pointer-events:none; z-index:1; border-radius:16px 16px 0 0;}
+  .tx-list-scroll{max-height:420px; overflow-y:auto; overflow-x:hidden; padding-right:2px; scrollbar-width:thin;}
+  .tx-list-scroll::-webkit-scrollbar{width:4px;}
+  .tx-list-scroll::-webkit-scrollbar-thumb{background:var(--line); border-radius:9999px;}
 
   /* what-if buy */
   .wf-toggle{display:inline-flex; border:1px solid var(--line); border-radius:9999px; overflow:hidden; align-self:flex-start;}
@@ -1214,11 +1267,37 @@
   <!-- TX TIMELINE -->
   <div class="page collapsible" id="sec-tx" data-panel="hist">
     <div class="page-head"><h2><span class="idx" style="background:rgba(110,110,115,.1);"><svg viewBox="0 0 24 24" style="stroke:#6e6e73;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>거래 이력</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="txTotal">—</div></div>
-    <div class="tx-filter">
-      <select id="txSel"></select>
-      <span class="tx-count" id="txCount"></span>
+
+    <div class="tx-hero">
+      <div class="lbl">전체 거래</div>
+      <div class="num" id="txHeroNum">—건</div>
+      <div class="bar" id="txHeroBar"></div>
+      <div class="legend" id="txHeroLegend"></div>
     </div>
-    <div class="tx-scroll" id="txList"></div>
+
+    <div class="tx-insight-toggle" id="txInsightToggle">
+      <span class="lbl2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>인사이트</span>
+      <span class="chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+    </div>
+    <div class="tx-insight-wrap" id="txInsightWrap"></div>
+
+    <div class="tx-filter-row">
+      <div class="tx-filter-seg" id="txAcctSeg">
+        <button data-a="all" class="on">전체</button>
+        <button data-a="overseas">해외주식</button>
+        <button data-a="isa">ISA</button>
+        <button data-a="pension">연금저축</button>
+      </div>
+      <div class="tx-stock-select">
+        <select id="txSel"></select>
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+
+    <div class="tx-list-wrap">
+      <div class="tx-list-fade"></div>
+      <div class="tx-list-scroll" id="txListScroll"><div class="tx-tl" id="txList"></div></div>
+    </div>
     <div class="note">전 계좌 실거래 내역(최신순) · 금액은 매수 시점 환율 적용 원화 환산 · KEEL은 티커 전환(비트팜스) 전 기록이라 참고용입니다.</div>
   </div>
 
@@ -3132,33 +3211,137 @@ function renderRealized(){
 }
 
 /* ===== TX TIMELINE ===== */
+function txAvatar(tk, cls){
+  const icon=ICONS[tk], custom=CUSTOM_LOGOS[tk];
+  if(icon) return `<div class="${cls}" style="background:${PNL_COLOR[tk]||'#8a8f98'};">${icon}</div>`;
+  if(custom){
+    const cbg=CUSTOM_BG[tk]||'#fff';
+    const cpad=CUSTOM_PAD[tk];
+    const padStyle=cpad?` style="padding:${cpad};"`:'';
+    const border=(cbg==='#ffffff'||cbg==='#fff')?'border:1px solid var(--line);':'';
+    return `<div class="${cls}" style="background:${cbg};${border}"><img${padStyle} src="${custom}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${tk.slice(0,2)}'}))"></div>`;
+  }
+  const h=HOLDINGS.find(x=>x.ticker===tk);
+  return `<div class="${cls}" style="background:${h?h.color:'#8a8f98'};"><span>${tk.slice(0,2)}</span></div>`;
+}
+
+function renderTxInsights(){
+  const buyN=TXL.filter(t=>t.q>0).length, sellN=TXL.length-buyN;
+  const buyPct=TXL.length?buyN/TXL.length*100:0, sellPct=100-buyPct;
+  document.getElementById('txHeroNum').textContent=TXL.length+'건';
+  document.getElementById('txHeroBar').innerHTML=`<i style="width:${buyPct.toFixed(1)}%; background:#c0392b;"></i><i style="width:${sellPct.toFixed(1)}%; background:#2c4a7c;"></i>`;
+  document.getElementById('txHeroLegend').innerHTML=`<span>매수 <b class="up">${buyN}건 (${buyPct.toFixed(1)}%)</b></span><span>매도 <b class="down">${sellN}건 (${sellPct.toFixed(1)}%)</b></span>`;
+
+  const tkCount={}; TXL.forEach(t=>{ tkCount[t.tk]=(tkCount[t.tk]||0)+1; });
+  const topTk=Object.entries(tkCount).sort((a,b)=>b[1]-a[1])[0];
+
+  const totalAmt=TXL.reduce((s,t)=>s+t.amt,0);
+  const avgAmt=TXL.length?totalAmt/TXL.length:0;
+
+  const monthly={};
+  TXL.forEach(t=>{ if(t.q>0){ const m=t.d.slice(0,7); monthly[m]=(monthly[m]||0)+t.amt; } });
+  const months=Object.keys(monthly).sort().slice(-6);
+  const maxM=Math.max(...months.map(m=>monthly[m]), 1);
+  const curM=months[months.length-1];
+  const sparkHtml=months.map(m=>{
+    const h=Math.max(4, monthly[m]/maxM*100);
+    return `<div class="tx-spark-col"><div class="tx-spark-bar ${m===curM?'now':''}" style="height:${h.toFixed(0)}%;"></div><span class="tx-spark-mo">${parseInt(m.slice(5))}월</span></div>`;
+  }).join('');
+
+  document.getElementById('txInsightWrap').innerHTML=`
+    <div class="tx-chip-row">
+      <div class="tx-chip">
+        <div class="tx-chip-top"><div class="tx-chip-ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg></div><span class="tx-chip-k">이번달 매수</span></div>
+        <div class="tx-chip-v">${won(RV.thisM)}</div>
+      </div>
+      <div class="tx-chip">
+        <div class="tx-chip-top"><div class="tx-chip-ic" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg></div><span class="tx-chip-k">최다거래</span></div>
+        <div class="tx-chip-v">${topTk?topTk[0]:'—'}</div>
+        <div class="tx-chip-s">${topTk?topTk[1]+'회':''}</div>
+      </div>
+    </div>
+    <div class="tx-chip-row">
+      <div class="tx-chip">
+        <div class="tx-chip-top"><div class="tx-chip-ic" style="background:rgba(138,146,128,.15);"><svg viewBox="0 0 24 24" style="stroke:#8a9280;"><path d="M3 12h18M3 6h18M3 18h18"/></svg></div><span class="tx-chip-k">건당 평균 거래</span></div>
+        <div class="tx-chip-v">${won(avgAmt)}</div>
+      </div>
+      <div class="tx-chip">
+        <div class="tx-chip-top"><div class="tx-chip-ic" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M12 2v20M2 12h20"/></svg></div><span class="tx-chip-k">총 거래대금</span></div>
+        <div class="tx-chip-v">${won(totalAmt)}</div>
+      </div>
+    </div>
+    <div class="tx-spark-box">
+      <div class="tx-spark-top"><div class="tx-chip-ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg></div><span class="tx-spark-top-k">최근 ${months.length}개월 매수 추이</span></div>
+      <div class="tx-spark-bars">${sparkHtml}</div>
+    </div>`;
+}
+
+function initTxScrollReveal(){
+  const items=document.querySelectorAll('.tx-tl-item');
+  if(!items.length) return;
+  if(!('IntersectionObserver' in window)){ items.forEach(el=>el.classList.add('in-view')); return; }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); } });
+  }, { root: document.getElementById('txListScroll'), threshold:0.15, rootMargin:'0px 0px -20px 0px' });
+  items.forEach(el=>io.observe(el));
+  setTimeout(()=>items.forEach(el=>el.classList.add('in-view')), 3000); // 안전장치
+}
+
 function initTxList(){
   const sel=document.getElementById('txSel'); if(!sel) return;
   const tks=[...new Set(TXL.map(t=>t.tk))];
   const NAME={}; TXL.forEach(t=>NAME[t.tk]=t.n);
-  sel.innerHTML='<option value="all">전체 계좌 · 전 종목</option>'
-    +'<option value="acct:overseas">해외주식 전체</option><option value="acct:isa">ISA 전체</option><option value="acct:pension">연금저축 전체</option>'
+  sel.innerHTML='<option value="all">전 종목</option>'
     +tks.map(tk=>`<option value="${tk}">${NAME[tk]} (${tk})</option>`).join('');
-  sel.onchange=renderTxList; renderTxList();
+  sel.onchange=()=>{ renderTxList(); const sc=document.getElementById('txListScroll'); if(sc) sc.scrollTop=0; };
+  document.querySelectorAll('#txAcctSeg button').forEach(b=>b.onclick=()=>{
+    if(b.classList.contains('on')) return;
+    document.querySelectorAll('#txAcctSeg button').forEach(x=>x.classList.toggle('on',x===b));
+    sel.value='all';
+    renderTxList();
+    positionSegPill('txAcctSeg');
+    const sc=document.getElementById('txListScroll'); if(sc) sc.scrollTop=0;
+  });
+  initSegPill('txAcctSeg');
+  const itg=document.getElementById('txInsightToggle');
+  if(itg) itg.onclick=()=>{
+    document.getElementById('txInsightWrap').classList.toggle('closed');
+    itg.classList.toggle('closed');
+  };
+  renderTxInsights();
+  renderTxList();
 }
 function renderTxList(){
   const sel=document.getElementById('txSel'), box=document.getElementById('txList'); if(!box) return;
-  const v=sel.value;
+  const activeBtn=document.querySelector('#txAcctSeg button.on');
+  const acct=activeBtn?activeBtn.dataset.a:'all';
+  const tk=sel.value;
   let rows=TXL;
-  if(v.startsWith('acct:')) rows=TXL.filter(t=>t.ac===v.slice(5));
-  else if(v!=='all') rows=TXL.filter(t=>t.tk===v);
-  const buys=rows.filter(r=>r.q>0).length, sells=rows.length-buys;
-  document.getElementById('txCount').textContent=`${rows.length}건 · 매수 ${buys} / 매도 ${sells}`;
+  if(acct!=='all') rows=rows.filter(t=>t.ac===acct);
+  if(tk && tk!=='all') rows=rows.filter(t=>t.tk===tk);
   document.getElementById('txTotal').textContent=`총 ${TXL.length}건`;
-  box.innerHTML=rows.map(t=>{
-    const buy=t.q>0;
-    const px = t.cur==='USD' ? ('$'+t.p.toFixed(2)) : (Math.round(t.p).toLocaleString()+'원');
-    return `<div class="tx-row">
-      <div class="tx-d">${t.d.replace(/-/g,'.').slice(2)}</div>
-      <div class="tx-ic ${buy?'buy':'sell'}">${buy?'+':'−'}</div>
-      <div class="tx-m">${t.n}<span>${Math.abs(t.q)}주 @ ${px}</span></div>
-      <div class="tx-a ${buy?'':'down'}"><b>${buy?'':'+'}${won(t.amt)}</b></div></div>`;
-  }).join('');
+
+  const groups={};
+  rows.forEach(t=>{ const m=t.d.slice(0,7); (groups[m]=groups[m]||[]).push(t); });
+  const months=Object.keys(groups).sort().reverse();
+  box.innerHTML=months.map(m=>{
+    const [y,mo]=m.split('-');
+    const rowsHtml=groups[m].map(t=>{
+      const buy=t.q>0;
+      const px=t.cur==='USD' ? ('$'+t.p.toFixed(2)) : (Math.round(t.p).toLocaleString()+'원');
+      return `<div class="tx-tl-item" data-tk="${t.tk}">
+        <div class="tx-tl-dot ${buy?'buy':'sell'}">${buy?'+':'−'}</div>
+        <div class="tx-tl-row">
+          ${txAvatar(t.tk,'tx-tl-avatar')}
+          <div class="tx-tl-mid"><b>${t.n}</b><span>${mo}.${t.d.slice(8,10)} · ${Math.abs(t.q)}주 @ ${px}</span></div>
+          <div class="tx-tl-right"><b class="${buy?'':'down'}">${buy?'':'+'}${won(t.amt)}</b></div>
+        </div></div>`;
+    }).join('');
+    return `<div class="tx-tl-month">${y}년 ${parseInt(mo)}월 · ${groups[m].length}건</div>${rowsHtml}`;
+  }).join('') || '<div class="hcard-empty" style="padding:20px 4px;">해당 조건의 거래가 없습니다.</div>';
+
+  document.querySelectorAll('.tx-tl-item').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
+  initTxScrollReveal();
 }
 
 /* ============ LIVE FETCH via Claude API ============ */
