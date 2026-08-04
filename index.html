@@ -745,13 +745,16 @@
   .cp-reset:active{transform:scale(0.95);}
 
   /* 매수·매도 계산기 */
-  .calc-stock{display:flex; align-items:center; gap:10px; background:var(--paper); border-radius:12px; padding:11px 12px; margin-bottom:12px; position:relative;}
+  .calc-stock{display:flex; align-items:center; gap:10px; background:var(--paper); border-radius:12px; padding:11px 12px; margin-bottom:12px; position:relative; cursor:pointer;}
   .calc-avatar{width:32px; height:32px; border-radius:50%; flex-shrink:0; overflow:hidden;}
   .calc-avatar img{width:100%; height:100%; object-fit:contain; padding:20%;}
   .calc-avatar span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:800; color:#fff;}
   .calc-mid{flex:1; min-width:0;}
   .calc-mid b{font-size:12.5px; font-weight:700; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .calc-mid span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .calc-mid .calc-price{color:var(--brass); font-weight:600;}
+  .calc-chev{width:24px; height:24px; border-radius:50%; background:var(--card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; pointer-events:none;}
+  .calc-chev svg{width:12px; height:12px; stroke:var(--brass); fill:none; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round;}
   .calc-select{position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; border:none;}
   .calc-toggle{display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; margin-bottom:14px;}
   .calc-toggle button{flex:1; border:none; background:transparent; font-family:inherit; font-size:12px; font-weight:700; color:var(--ink-soft); padding:9px 4px; border-radius:9px; cursor:pointer; transition:background .15s, color .15s;}
@@ -1407,6 +1410,37 @@
 
 
 
+  <!-- BUY/SELL CALCULATOR -->
+  <div class="page collapsible" id="sec-calc" data-panel="rebal">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/><path d="M6 14h2M6 17h5"/></svg></span>매수·매도 계산기</h2></div>
+    <div class="rebal-head-note">종목을 고르고 매수/매도 방향과 수량을 정하면 <b>평단가·보유비중·필요자금(또는 실현손익)</b>이 한 번에 계산됩니다.</div>
+
+    <div class="calc-stock" id="calcStockRow">
+      <div id="calcAvatarWrap"></div>
+      <div class="calc-mid" id="calcMid"></div>
+      <div class="calc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <select id="calcSel" class="calc-select"></select>
+    </div>
+
+    <div class="calc-toggle" id="calcModeToggle">
+      <button class="buy" data-m="buy">매수</button>
+      <button class="sell on" data-m="sell">매도</button>
+    </div>
+
+    <div class="calc-slider-box">
+      <div class="calc-slider-top">
+        <span class="qty" id="calcQty">0<span>주</span></span>
+        <span class="calc-cost-toggle" id="calcCcyToggle"><button data-c="krw" class="on">KRW</button><button data-c="usd">USD</button></span>
+      </div>
+      <input type="range" id="calcRange" min="0" max="0" value="0">
+    </div>
+
+    <div class="result-grid" id="calcResultGrid"></div>
+    <div class="note" id="calcNote"></div>
+  </div>
+
+  <div class="perf"></div>
+
   <!-- REBALANCING -->
   <div class="page collapsible" id="sec-rebal" data-panel="rebal">
     <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>리밸런싱 제안</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">현재 → 목표</div></div>
@@ -1436,36 +1470,6 @@
     <h3 class="strat-title">투자 전략 요약</h3>
     <div class="strat-grid" id="stratGrid"></div>
     <div class="note">목표비중은 참고용 가이드이며 투자자문이 아닙니다. 조정 금액·주수는 현재가·환율 기준 추정 · 실제 매매는 세금·수수료 별도.</div>
-  </div>
-
-  <div class="perf"></div>
-
-  <!-- BUY/SELL CALCULATOR -->
-  <div class="page collapsible collapsed" id="sec-calc" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/><path d="M6 14h2M6 17h5"/></svg></span>매수·매도 계산기</h2></div>
-    <div class="rebal-head-note">종목을 고르고 매수/매도 방향과 수량을 정하면 <b>평단가·보유비중·필요자금(또는 실현손익)</b>이 한 번에 계산됩니다.</div>
-
-    <div class="calc-stock" id="calcStockRow">
-      <div id="calcAvatarWrap"></div>
-      <div class="calc-mid" id="calcMid"></div>
-      <select id="calcSel" class="calc-select"></select>
-    </div>
-
-    <div class="calc-toggle" id="calcModeToggle">
-      <button class="buy" data-m="buy">매수</button>
-      <button class="sell on" data-m="sell">매도</button>
-    </div>
-
-    <div class="calc-slider-box">
-      <div class="calc-slider-top">
-        <span class="qty" id="calcQty">0<span>주</span></span>
-        <span class="calc-cost-toggle" id="calcCcyToggle"><button data-c="krw" class="on">KRW</button><button data-c="usd">USD</button></span>
-      </div>
-      <input type="range" id="calcRange" min="0" max="0" value="0">
-    </div>
-
-    <div class="result-grid" id="calcResultGrid"></div>
-    <div class="note" id="calcNote"></div>
   </div>
 
   <div class="perf"></div>
@@ -2762,7 +2766,7 @@ function initCalcSim(){
     document.querySelectorAll('#calcCcyToggle button').forEach(x=>x.classList.toggle('on', x===b));
     renderCalcSim();
   });
-  document.getElementById('calcRange').oninput=renderCalcSim;
+  document.getElementById('calcRange').oninput=()=>renderCalcSim(false);
   renderCalcSim(true);
 }
 function renderCalcSim(resetRange){
@@ -2773,7 +2777,8 @@ function renderCalcSim(resetRange){
   const curEval=evalKRW(h), curWeight=total?curEval/total*100:0;
 
   document.getElementById('calcAvatarWrap').innerHTML=txAvatar(h.ticker,'calc-avatar');
-  document.getElementById('calcMid').innerHTML=`<b>${h.nameKr}</b><span>${h.ticker} · 보유 ${h.shares}주 · 평단 ${calcAvgCostStr(h,costPerShareKRW)}</span>`;
+  const priceStr=h.cur==='USD' ? `$${h.price.toFixed(2)} (₩${Math.round(priceKRW).toLocaleString()})` : `₩${Math.round(priceKRW).toLocaleString()}`;
+  document.getElementById('calcMid').innerHTML=`<b>${h.nameKr}</b><span>${h.ticker} · 보유 ${h.shares}주 · 평단 ${calcAvgCostStr(h,costPerShareKRW)}</span><span class="calc-price">현재가 ${priceStr}${HEAT_LIVE?' · 실시간':' · 최근 갱신값'}</span>`;
 
   const usdDisabled=h.cur!=='USD';
   document.querySelectorAll('#calcCcyToggle button').forEach(b=>{
