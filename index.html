@@ -708,35 +708,75 @@
   }
   /* rebal checkpoint */
   .cp-table{display:flex; flex-direction:column; padding:4px 0 8px;}
-  .cp-row{display:grid; grid-template-columns:92px 48px 1fr 66px; gap:8px; align-items:center; padding:8px 2px; border-bottom:1px dotted var(--line);}
-  .cp-row .cn{font-size:12px; font-weight:600; line-height:1.2;} .cp-row .cn span{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); display:block; font-weight:400;}
-  .cp-row .cur{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; text-align:right;}
-  .cp-slider{display:flex; align-items:center; gap:8px;}
-  .cp-slider input[type=range]{flex:1; accent-color:var(--brass); height:4px; min-width:40px;}
-  .cp-slider .tv{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; min-width:40px; text-align:right; color:var(--brass);}
-  .cp-act{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; text-align:right; line-height:1.35;}
-  .cp-badge{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; padding:1px 5px; border-radius:3px; display:inline-block;}
-  .cp-badge.over{background:rgba(44,74,124,0.12); color:var(--stamp-blue);}
-  .cp-badge.under{background:rgba(192,57,43,0.12); color:var(--stamp-red);}
-  .cp-badge.ok{background:rgba(120,140,110,0.18); color:#5f6b52;}
+  .cp-card{background:var(--paper); border-radius:13px; padding:11px 12px; margin-bottom:8px;}
+  .cp-card:last-child{margin-bottom:0;}
+  .cp-top{display:flex; align-items:center; gap:9px; min-width:0;}
+  .cp-avatar{width:28px; height:28px; border-radius:50%; flex-shrink:0; overflow:hidden;}
+  .cp-avatar img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .cp-avatar span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; color:#fff;}
+  .cp-mid{flex:1; min-width:0;}
+  .cp-mid b{font-size:11.5px; font-weight:700; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .cp-mid span{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .cp-cur{text-align:right; flex-shrink:0;}
+  .cp-cur b{font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:800; display:block;}
+  .cp-cur span{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; color:var(--ink-soft);}
+  .cp-slider-row{display:flex; align-items:center; gap:9px; margin-top:9px;}
+  .cp-slider-row input[type=range]{flex:1; min-width:0; accent-color:var(--brass); height:4px;}
+  .cp-slider-row .tv{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; color:var(--brass); flex-shrink:0; width:38px; text-align:right;}
+  .cp-bottom{display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:8px;}
+  .cp-status{display:inline-flex; align-items:center; gap:4px; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:9999px; flex-shrink:0; white-space:nowrap;}
+  .cp-status.over{background:rgba(44,74,124,.12); color:var(--stamp-blue);}
+  .cp-status.under{background:rgba(192,57,43,.12); color:var(--stamp-red);}
+  .cp-status.ok{background:rgba(21,128,61,.12); color:#15803d;}
+  .cp-act{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); text-align:right; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   #rebalSum.warn{color:var(--stamp-red);} #rebalSum.ok{color:#5f7a4f;}
   .cp-summary{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0 6px;}
   .cp-box{background:var(--paper); border-radius:6px; overflow:hidden; border:1px solid var(--line);}
   .cp-box-h{font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:600; padding:8px 10px; text-align:center;}
   .cp-box-h.over{background:rgba(178,59,46,0.12); color:var(--stamp-red);}
   .cp-box-h.under{background:rgba(44,74,124,0.12); color:var(--stamp-blue);}
-  .cp-box .li{display:flex; justify-content:space-between; gap:6px; font-family:'Inter',-apple-system,sans-serif; font-size:11px; padding:6px 10px; border-top:1px dotted var(--line);}
-  .cp-box .li .tgt{color:var(--ink-soft);}
+  .cp-box .li{display:flex; justify-content:space-between; gap:6px; font-family:'Inter',-apple-system,sans-serif; font-size:11px; padding:6px 10px; border-top:1px dotted var(--line); min-width:0;}
+  .cp-box .li span:first-child{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
+  .cp-box .li .tgt{color:var(--ink-soft); flex-shrink:0;}
   .cp-box .empty{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); text-align:center; padding:14px 8px;}
   .cp-reset-row{text-align:right; margin:8px 0 2px;}
   .cp-reset{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:var(--brass); background:none; border:1px solid var(--brass); border-radius:9999px; padding:6px 14px; cursor:pointer;}
   .cp-reset:hover{background:rgba(0,102,204,0.06);}
   .cp-reset:active{transform:scale(0.95);}
+
+  /* 매수·매도 계산기 */
+  .calc-stock{display:flex; align-items:center; gap:10px; background:var(--paper); border-radius:12px; padding:11px 12px; margin-bottom:12px; position:relative;}
+  .calc-avatar{width:32px; height:32px; border-radius:50%; flex-shrink:0; overflow:hidden;}
+  .calc-avatar img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .calc-avatar span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:800; color:#fff;}
+  .calc-mid{flex:1; min-width:0;}
+  .calc-mid b{font-size:12.5px; font-weight:700; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .calc-mid span{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .calc-select{position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; border:none;}
+  .calc-toggle{display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; margin-bottom:14px;}
+  .calc-toggle button{flex:1; border:none; background:transparent; font-family:inherit; font-size:12px; font-weight:700; color:var(--ink-soft); padding:9px 4px; border-radius:9px; cursor:pointer; transition:background .15s, color .15s;}
+  .calc-toggle button.buy.on{background:var(--stamp-red); color:#fff;}
+  .calc-toggle button.sell.on{background:var(--stamp-blue); color:#fff;}
+  .calc-slider-box{margin-bottom:16px;}
+  .calc-slider-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .calc-slider-top .qty{font-family:'Inter',-apple-system,sans-serif; font-size:22px; font-weight:800;}
+  .calc-slider-top .qty span{font-size:12px; color:var(--ink-soft); font-weight:600;}
+  .calc-cost-toggle{display:flex; background:var(--paper); border-radius:9999px; padding:2px; gap:2px;}
+  .calc-cost-toggle button{border:none; background:transparent; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); padding:5px 10px; border-radius:9999px; cursor:pointer;}
+  .calc-cost-toggle button.on{background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .calc-slider-box input[type=range]{width:100%; accent-color:var(--stamp-red); height:5px;}
+  .result-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;}
+  .result-card{background:var(--paper); border-radius:12px; padding:11px 12px; min-width:0;}
+  .result-k{display:flex; align-items:center; gap:5px; font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:600; margin-bottom:7px;}
+  .result-k svg{width:11px; height:11px; stroke:var(--ink-soft); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+  .result-arrow{display:flex; align-items:baseline; gap:6px; flex-wrap:wrap;}
+  .result-from{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--line);}
+  .result-to{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800; overflow-wrap:break-word;}
   .strat-title{font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:600; margin:18px 2px 12px; padding-top:16px; border-top:1px solid var(--ink);}
   .strat-grid{display:grid; grid-template-columns:1fr 1fr; gap:11px 16px; padding:0 2px 4px;}
   .strat-item{display:flex; gap:8px; align-items:flex-start; font-size:12px; line-height:1.5;}
   .strat-item .ck{color:#5f8a4f; flex-shrink:0; font-weight:700;}
-  @media(max-width:480px){ .cp-summary{grid-template-columns:1fr;} .strat-grid{grid-template-columns:1fr;} .cp-row{grid-template-columns:76px 42px 1fr 56px; gap:6px;} }
+  @media(max-width:480px){ .cp-summary{grid-template-columns:1fr;} .strat-grid{grid-template-columns:1fr;} }
   /* benchmark */
   .bm-hero{display:flex; gap:22px; flex-wrap:wrap; padding:4px 2px 12px;}
   .bm-k{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft);}
@@ -1396,6 +1436,36 @@
     <h3 class="strat-title">투자 전략 요약</h3>
     <div class="strat-grid" id="stratGrid"></div>
     <div class="note">목표비중은 참고용 가이드이며 투자자문이 아닙니다. 조정 금액·주수는 현재가·환율 기준 추정 · 실제 매매는 세금·수수료 별도.</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- BUY/SELL CALCULATOR -->
+  <div class="page collapsible collapsed" id="sec-calc" data-panel="rebal">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/><path d="M6 14h2M6 17h5"/></svg></span>매수·매도 계산기</h2></div>
+    <div class="rebal-head-note">종목을 고르고 매수/매도 방향과 수량을 정하면 <b>평단가·보유비중·필요자금(또는 실현손익)</b>이 한 번에 계산됩니다.</div>
+
+    <div class="calc-stock" id="calcStockRow">
+      <div id="calcAvatarWrap"></div>
+      <div class="calc-mid" id="calcMid"></div>
+      <select id="calcSel" class="calc-select"></select>
+    </div>
+
+    <div class="calc-toggle" id="calcModeToggle">
+      <button class="buy" data-m="buy">매수</button>
+      <button class="sell on" data-m="sell">매도</button>
+    </div>
+
+    <div class="calc-slider-box">
+      <div class="calc-slider-top">
+        <span class="qty" id="calcQty">0<span>주</span></span>
+        <span class="calc-cost-toggle" id="calcCcyToggle"><button data-c="krw" class="on">KRW</button><button data-c="usd">USD</button></span>
+      </div>
+      <input type="range" id="calcRange" min="0" max="0" value="0">
+    </div>
+
+    <div class="result-grid" id="calcResultGrid"></div>
+    <div class="note" id="calcNote"></div>
   </div>
 
   <div class="perf"></div>
@@ -2605,15 +2675,16 @@ function rowCurrentKRW(r){
   if(r.group) return r.group.reduce((s,tk)=>{ const h=HOLDINGS.find(x=>x.ticker===tk); return s+(h?evalKRW(h):0); },0);
   const h=HOLDINGS.find(x=>x.ticker===r.id); return h?evalKRW(h):0;
 }
-function cpActHtml(r,status,adjKRW){
-  const lab=status==='over'?'과대':(status==='under'?'과소':'적정');
-  let act='—';
-  if(status!=='ok'){
-    let sh='';
-    if(r.ticker){ const h=HOLDINGS.find(x=>x.ticker===r.id); const pxKRW=(h.cur==='USD')?h.price*FX:h.price; const n=Math.abs(adjKRW)/pxKRW; sh=` (${n<10?n.toFixed(1):Math.round(n)}주)`; }
-    act=(adjKRW<0?'매도 ':'매수 ')+won(Math.abs(adjKRW))+sh;
-  }
-  return `<span class="cp-badge ${status}">${lab}</span><br>${act}`;
+function cpRowIcon(r){
+  if(r.cash) return `<div class="cp-avatar" style="background:#64748b;"><span>₩</span></div>`;
+  if(r.group) return `<div class="cp-avatar" style="background:${r.id==='ISA'?'#b23b2e':'#2c4a7c'};"><span>${r.id.slice(0,2)}</span></div>`;
+  return txAvatar(r.id,'cp-avatar');
+}
+function cpActText(r,status,adjKRW){
+  if(status==='ok') return '—';
+  let sh='';
+  if(r.ticker){ const h=HOLDINGS.find(x=>x.ticker===r.id); const pxKRW=(h.cur==='USD')?h.price*FX:h.price; const n=Math.abs(adjKRW)/pxKRW; sh=` (${n<10?n.toFixed(1):Math.round(n)}주)`; }
+  return (adjKRW<0?'매도 ':'매수 ')+won(Math.abs(adjKRW))+sh;
 }
 function cpBoxLi(r,curW,tgt){ const nm=r.ticker?r.id:r.label; return `<div class="li"><span>${nm}</span><span><b>${curW.toFixed(1)}%</b> <span class="tgt">→ ${tgt.toFixed(1)}%</span></span></div>`; }
 function cpSumBoxes(sum, rows){
@@ -2630,10 +2701,13 @@ function renderRebalCheckpoint(){
   REBAL_ROWS.forEach(r=>{
     const cur=rowCurrentKRW(r), curW=cur/total*100, tgt=TARGET[r.id]; sum+=tgt; rows.push({r,curW,tgt});
     const diff=tgt-curW, status=Math.abs(diff)<=0.5?'ok':(diff<0?'over':'under'), adjKRW=diff/100*total;
-    const label=r.ticker?`${r.label}<span>${r.id}</span>`:r.label;
-    html+=`<div class="cp-row"><div class="cn">${label}</div><div class="cur">${curW.toFixed(1)}%</div>`
-      +`<div class="cp-slider"><input type="range" min="0" max="${r.cash?30:25}" step="0.5" value="${tgt}" data-id="${r.id}"><span class="tv" data-id="${r.id}">${tgt.toFixed(1)}%</span></div>`
-      +`<div class="cp-act" data-id="${r.id}">${cpActHtml(r,status,adjKRW)}</div></div>`;
+    const statusLbl=status==='over'?'▼ 과대':(status==='under'?'▲ 과소':'✓ 적정');
+    const name=r.ticker?r.label:r.label, sub=r.ticker?r.id:(r.group?r.group.join(' · '):'예수금');
+    html+=`<div class="cp-card">
+      <div class="cp-top">${cpRowIcon(r)}<div class="cp-mid"><b>${name}</b><span>${sub}</span></div><div class="cp-cur"><b>${curW.toFixed(1)}%</b><span>현재비중</span></div></div>
+      <div class="cp-slider-row"><input type="range" min="0" max="${r.cash?30:25}" step="0.5" value="${tgt}" data-id="${r.id}"><span class="tv" data-id="${r.id}">${tgt.toFixed(1)}%</span></div>
+      <div class="cp-bottom"><span class="cp-status ${status}" data-status-id="${r.id}">${statusLbl}</span><span class="cp-act" data-id="${r.id}">${cpActText(r,status,adjKRW)}</span></div>
+    </div>`;
   });
   tbl.innerHTML=html;
   cpSumBoxes(sum, rows);
@@ -2644,8 +2718,10 @@ function updateRebalDynamic(){
   REBAL_ROWS.forEach(r=>{
     const cur=rowCurrentKRW(r), curW=cur/total*100, tgt=TARGET[r.id]; sum+=tgt; rows.push({r,curW,tgt});
     const diff=tgt-curW, status=Math.abs(diff)<=0.5?'ok':(diff<0?'over':'under'), adjKRW=diff/100*total;
+    const statusLbl=status==='over'?'▼ 과대':(status==='under'?'▲ 과소':'✓ 적정');
     const tv=document.querySelector(`.tv[data-id="${r.id}"]`); if(tv) tv.textContent=tgt.toFixed(1)+'%';
-    const act=document.querySelector(`.cp-act[data-id="${r.id}"]`); if(act) act.innerHTML=cpActHtml(r,status,adjKRW);
+    const st=document.querySelector(`.cp-status[data-status-id="${r.id}"]`); if(st){ st.className='cp-status '+status; st.textContent=statusLbl; }
+    const act=document.querySelector(`.cp-act[data-id="${r.id}"]`); if(act) act.textContent=cpActText(r,status,adjKRW);
   });
   cpSumBoxes(sum, rows);
 }
@@ -2658,6 +2734,101 @@ const STRAT=[
   '신규 자금은 연금(세액공제) → ISA 순으로 우선 납입',
 ];
 function renderStrat(){ const g=document.getElementById('stratGrid'); if(g) g.innerHTML=STRAT.map(s=>`<div class="strat-item"><span class="ck">✓</span><span>${s}</span></div>`).join(''); }
+
+/* ===== 매수·매도 계산기 ===== */
+let calcTicker=null, calcMode='sell', calcCcy='krw';
+function calcFmtKRW(v){ return (v>=0?'+':'-')+won(Math.abs(v)); }
+function calcAvgCostStr(h, costKRWPerShare){
+  if(calcCcy==='usd' && h.cur==='USD'){
+    return '$'+(costKRWPerShare/FX).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  return won(costKRWPerShare);
+}
+function initCalcSim(){
+  const sel=document.getElementById('calcSel'); if(!sel) return;
+  sel.innerHTML=HOLDINGS.map(h=>`<option value="${h.ticker}">${h.nameKr} (${h.ticker})</option>`).join('');
+  calcTicker=HOLDINGS[0].ticker;
+  sel.value=calcTicker;
+  sel.onchange=()=>{ calcTicker=sel.value; const h=HOLDINGS.find(x=>x.ticker===calcTicker); if(h.cur!=='USD') calcCcy='krw'; renderCalcSim(true); };
+  document.querySelectorAll('#calcModeToggle button').forEach(b=>b.onclick=()=>{
+    calcMode=b.dataset.m;
+    document.querySelectorAll('#calcModeToggle button').forEach(x=>x.classList.toggle('on', x===b));
+    renderCalcSim(true);
+  });
+  document.querySelectorAll('#calcCcyToggle button').forEach(b=>b.onclick=()=>{
+    const h=HOLDINGS.find(x=>x.ticker===calcTicker);
+    if(b.dataset.c==='usd' && h.cur!=='USD') return; // 원화 종목은 USD 평단가 개념 없음
+    calcCcy=b.dataset.c;
+    document.querySelectorAll('#calcCcyToggle button').forEach(x=>x.classList.toggle('on', x===b));
+    renderCalcSim();
+  });
+  document.getElementById('calcRange').oninput=renderCalcSim;
+  renderCalcSim(true);
+}
+function renderCalcSim(resetRange){
+  const h=HOLDINGS.find(x=>x.ticker===calcTicker); if(!h) return;
+  const priceKRW=h.cur==='USD'?h.price*FX:h.price;
+  const costPerShareKRW=h.costKRW/h.shares;
+  const total=grandTotal();
+  const curEval=evalKRW(h), curWeight=total?curEval/total*100:0;
+
+  document.getElementById('calcAvatarWrap').innerHTML=txAvatar(h.ticker,'calc-avatar');
+  document.getElementById('calcMid').innerHTML=`<b>${h.nameKr}</b><span>${h.ticker} · 보유 ${h.shares}주 · 평단 ${calcAvgCostStr(h,costPerShareKRW)}</span>`;
+
+  const usdDisabled=h.cur!=='USD';
+  document.querySelectorAll('#calcCcyToggle button').forEach(b=>{
+    b.classList.toggle('on', b.dataset.c===calcCcy);
+    b.style.opacity=(b.dataset.c==='usd'&&usdDisabled)?'0.35':'1';
+    b.style.cursor=(b.dataset.c==='usd'&&usdDisabled)?'not-allowed':'pointer';
+  });
+
+  const range=document.getElementById('calcRange');
+  const maxQty=calcMode==='sell' ? h.shares : Math.max(10, Math.round(h.shares*2));
+  if(resetRange){ range.min=0; range.max=maxQty; range.step=1; range.value=Math.round(maxQty*0.3); }
+  const qty=Math.min(parseInt(range.value||0,10), maxQty);
+  document.getElementById('calcQty').innerHTML=`${qty}<span>주</span>`;
+
+  let resultHtml='', noteHtml='';
+  if(calcMode==='buy'){
+    const buyCostKRW=qty*priceKRW;
+    const newShares=h.shares+qty;
+    const newCostKRW=h.costKRW+buyCostKRW;
+    const newCostPerShareKRW=newShares?newCostKRW/newShares:0;
+    const newEval=newShares*priceKRW;
+    const newTotal=total+buyCostKRW; // 신규 자금 투입 가정
+    const newWeight=newTotal?newEval/newTotal*100:0;
+    resultHtml=`
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg>평단가</div>
+        <div class="result-arrow">${qty>0?`<span class="result-from">${calcAvgCostStr(h,costPerShareKRW)}</span>`:''}<span class="result-to">${calcAvgCostStr(h,newCostPerShareKRW)}</span></div></div>
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>보유비중</div>
+        <div class="result-arrow"><span class="result-from">${curWeight.toFixed(2)}%</span><span class="result-to up">${newWeight.toFixed(2)}%</span></div></div>
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>보유수량</div>
+        <div class="result-arrow"><span class="result-from">${h.shares}주</span><span class="result-to">${newShares}주</span></div></div>
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg>필요자금</div>
+        <div class="result-arrow"><span class="result-to up">${won(buyCostKRW)}</span></div></div>`;
+    noteHtml='평단가는 매수 시 가중평균으로 재계산됩니다 · 필요자금은 신규 자금 투입 기준(예수금 사용 시 총자산 변화 없음).';
+  } else {
+    const sellProceedsKRW=qty*priceKRW;
+    const soldCostKRW=costPerShareKRW*qty;
+    const realizedPL=sellProceedsKRW-soldCostKRW;
+    const remainShares=h.shares-qty;
+    const remainEval=remainShares*priceKRW;
+    const newWeight=total?remainEval/total*100:0; // 매도대금은 현금으로 남아 총자산 불변
+    resultHtml=`
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg>평단가</div>
+        <div class="result-arrow"><span class="result-to">${calcAvgCostStr(h,costPerShareKRW)}</span></div>
+        <div style="font-size:8.5px;color:var(--ink-soft);margin-top:3px;">매도는 평단가에 영향 없음</div></div>
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>보유비중</div>
+        <div class="result-arrow"><span class="result-from">${curWeight.toFixed(2)}%</span><span class="result-to down">${newWeight.toFixed(2)}%</span></div></div>
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>보유수량</div>
+        <div class="result-arrow"><span class="result-from">${h.shares}주</span><span class="result-to">${remainShares}주</span></div></div>
+      <div class="result-card"><div class="result-k"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg>실현손익</div>
+        <div class="result-arrow"><span class="result-to ${realizedPL>=0?'up':'down'}">${calcFmtKRW(realizedPL)}</span></div></div>`;
+    noteHtml='평단가는 평균매입가 기준 — 매도 시 잔여 수량의 평단가는 그대로 유지되며 매도분에 대해서만 실현손익이 확정됩니다 · 매도대금은 현금으로 남아 총자산은 변하지 않습니다.';
+  }
+  document.getElementById('calcResultGrid').innerHTML=resultHtml;
+  document.getElementById('calcNote').textContent=noteHtml;
+}
 
 /* ===== WHAT-IF BUY ===== */
 let wfFund='new';
@@ -3816,6 +3987,7 @@ renderAll();
 initTax();
 initWhatif();
 renderStrat();
+initCalcSim();
 initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 initPnlTabs();
