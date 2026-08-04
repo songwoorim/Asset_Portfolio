@@ -354,12 +354,30 @@
 
   /* ---------- FX widget ---------- */
 
-  .fx-box{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:8px 2px 16px;}
-  .fx-main{display:flex; align-items:baseline; gap:8px;}
-  .fx-main .pair{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft);}
-  .fx-main .rate{font-family:'Inter',-apple-system,sans-serif; font-size:26px; font-weight:600;}
-  .fx-main .chg{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:600;}
-  .fx-meta{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); line-height:1.6;}
+  .fx-hero{border-radius:14px; padding:16px 16px; margin:2px 2px 14px; background:linear-gradient(135deg, rgba(124,58,237,.08), rgba(124,58,237,.02));}
+  .fx-hero .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
+  .fx-hero .rate-row{display:flex; align-items:baseline; gap:9px;}
+  .fx-hero .rate{font-family:'Inter',-apple-system,sans-serif; font-size:27px; font-weight:800;}
+  .fx-hero .unit{font-family:'Inter',-apple-system,sans-serif; font-size:13px; color:var(--ink-soft); font-weight:600;}
+  .fx-hero .chg{display:inline-flex; align-items:baseline; gap:4px; font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:800; margin-top:6px;}
+
+  .fx-gauge-wrap{display:flex; flex-direction:column; align-items:center; padding:6px 0 4px;}
+  .fx-gauge-range{display:flex; justify-content:space-between; width:200px; font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); margin-top:2px;}
+  .fx-gauge-pos{font-size:10.5px; color:var(--ink-soft); margin-top:6px;}
+  .fx-gauge-pos b{color:var(--ink); font-weight:700; font-family:'Inter',-apple-system,sans-serif;}
+
+  .fx-chart-box{position:relative; margin:14px 0 4px;}
+  .fx-chart-box svg{width:100%; display:block;}
+  .fx-chart-labels{display:flex; justify-content:space-between; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; color:var(--ink-soft); margin-top:2px; padding:0 2px;}
+
+  .fx-chip-row{display:flex; gap:8px; margin:14px 0 4px;}
+  .fx-chip{flex:1; background:var(--paper); border-radius:12px; padding:10px 11px; min-width:0;}
+  .fx-chip-top{display:flex; align-items:center; gap:6px; margin-bottom:6px;}
+  .fx-chip-ic{width:20px; height:20px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .fx-chip-ic svg{width:11px; height:11px; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .fx-chip-k{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:600;}
+  .fx-chip-v{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800;}
+  .fx-chip-s{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; color:var(--ink-soft); margin-top:1px;}
 
   /* ---------- Trend chart ---------- */
   .trend-wrap{padding:8px 2px 12px;}
@@ -1092,11 +1110,30 @@
 
   <!-- FX -->
   <div class="page collapsible" data-panel="home">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>실시간 환율</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">USD/KRW</div></div>
-    <div class="fx-box">
-      <div class="fx-main"><span class="pair">USD/KRW</span><span class="rate" id="fxRate">—</span><span class="chg" id="fxChg"></span></div>
-      <div class="fx-meta" id="fxMeta"></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>실시간 환율</h2><span class="total" style="font-size:12px;color:var(--ink-soft);">USD/KRW</span></div>
+
+    <div class="fx-hero">
+      <div class="lbl">현재 환율</div>
+      <div class="rate-row"><span class="rate" id="fxRate">—</span><span class="unit">원</span></div>
+      <div class="chg" id="fxChg"></div>
     </div>
+
+    <div class="fx-gauge-wrap">
+      <svg width="200" height="100" viewBox="0 0 200 100">
+        <path d="M 10 95 A 90 90 0 0 1 190 95" fill="none" stroke="#e0e0e0" stroke-width="12" stroke-linecap="round"/>
+        <path d="M 10 95 A 90 90 0 0 1 190 95" fill="none" stroke="#c0392b" stroke-width="12" stroke-linecap="round"
+              stroke-dasharray="283" stroke-dashoffset="283" id="fxGaugeArc"/>
+        <line x1="100" y1="95" x2="100" y2="20" stroke="#1d1d1f" stroke-width="2.2" stroke-linecap="round" id="fxGaugeNeedle" style="transform-origin:100px 95px;"/>
+        <circle cx="100" cy="95" r="5" fill="#1d1d1f"/>
+      </svg>
+      <div class="fx-gauge-range" id="fxGaugeRange"></div>
+      <div class="fx-gauge-pos" id="fxGaugePos"></div>
+    </div>
+
+    <div class="fx-chart-box" id="fxChartBox"></div>
+
+    <div class="fx-chip-row" id="fxChipRow"></div>
+
     <div class="note">환율 변동은 달러 자산의 원화 평가액과 환차손익에 직접 반영됩니다. 갱신 시 전 계좌 재계산.</div>
   </div>
 
@@ -1727,13 +1764,78 @@ function renderIndices(){
   document.getElementById('idxAsOf').textContent = LAST_UPDATED? '실시간 '+LAST_UPDATED : '스냅샷 07/13';
 }
 
+let fxHeroShown=null, fxHeroRaf=null;
+function animateFxHero(to){
+  const el=document.getElementById('fxRate'); if(!el) return;
+  const from=fxHeroShown==null?to:fxHeroShown;
+  if(fxHeroRaf) cancelAnimationFrame(fxHeroRaf);
+  if(from===to){ fxHeroShown=to; el.textContent=to.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); return; }
+  const t0=performance.now(), dur=550;
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    const v=from+(to-from)*e;
+    fxHeroShown=v;
+    el.textContent=v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    if(p<1) fxHeroRaf=requestAnimationFrame(step); else { fxHeroShown=to; fxHeroRaf=null; }
+  }
+  fxHeroRaf=requestAnimationFrame(step);
+}
+function fxRangeData(){
+  const cutoff=new Date(Date.now()-365*24*3600*1000);
+  let recent=FX_ANCHORS.filter(([d])=>d>=cutoff);
+  if(recent.length<3) recent=FX_ANCHORS.slice(-6);
+  return recent;
+}
 function renderFX(){
-  document.getElementById('fxRate').textContent = FX.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const d=FX-FX_PREV, dp=d/FX_PREV*100, c=clsOf(dp);
+  animateFxHero(FX);
+  const d=FX-FX_PREV, dp=FX_PREV?d/FX_PREV*100:0, c=clsOf(dp);
   const chg=document.getElementById('fxChg');
   chg.className='chg '+c; chg.textContent=`${d>0?'▲':(d<0?'▼':'·')} ${d>=0?'+':''}${d.toFixed(2)} (${sign(dp)})`;
-  document.getElementById('fxMeta').innerHTML =
-    `스냅샷 ${SNAP_FX.toLocaleString()} · 전일 ${FX_PREV.toLocaleString()}<br>${LAST_UPDATED?('실시간 '+LAST_UPDATED):'새로고침 시 실시간 반영'}`;
+
+  const points=fxRangeData();
+  const allVals=points.map(p=>p[1]).concat([FX]);
+  const vmin=Math.min(...allVals), vmax=Math.max(...allVals), vr=(vmax-vmin)||1;
+  const pct=Math.max(0,Math.min(1,(FX-vmin)/vr));
+  const circumference=283;
+  const arc=document.getElementById('fxGaugeArc');
+  arc.style.transition='stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)';
+  arc.setAttribute('stroke-dashoffset',(circumference*(1-pct)).toFixed(1));
+  const needle=document.getElementById('fxGaugeNeedle');
+  needle.style.transition='transform .6s cubic-bezier(.22,1,.36,1)';
+  needle.style.transform=`rotate(${(pct*180-90).toFixed(1)}deg)`;
+  document.getElementById('fxGaugeRange').innerHTML=`<span>${vmin.toFixed(0)} 최저</span><span>${vmax.toFixed(0)} 최고</span>`;
+  document.getElementById('fxGaugePos').innerHTML=`최근 1년 범위 중 <b>상위 ${(100-pct*100).toFixed(0)}%</b> 구간`;
+
+  const W=350,H=90,n=allVals.length;
+  const x=i=>i/(n-1)*W;
+  const y=v=>H-10-((v-vmin)/vr)*(H-20);
+  let path=''; allVals.forEach((v,i)=>{ path+=(i===0?'M':'L')+x(i).toFixed(1)+','+y(v).toFixed(1)+' '; });
+  const area=path+`L${W},${H} L0,${H} Z`;
+  const lastX=x(n-1), lastY=y(allVals[n-1]);
+  const fmtLbl=i=>{ if(i>=points.length) return '지금'; const dt=points[i][0]; return `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}`; };
+  const labelIdxs=[0, Math.floor((n-1)/3), Math.floor((n-1)*2/3), n-1];
+  document.getElementById('fxChartBox').innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <defs><linearGradient id="fxg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.20"/>
+        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+      </linearGradient></defs>
+      <path d="${area}" fill="url(#fxg)"/>
+      <path d="${path}" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="4" fill="#7c3aed"/>
+    </svg>
+    <div class="fx-chart-labels">${labelIdxs.map(i=>`<span>${fmtLbl(i)}</span>`).join('')}</div>`;
+
+  const usdVal=HOLDINGS.filter(h=>h.cur==='USD').reduce((s,h)=>s+h.shares*h.price*FX,0);
+  const impact10=FX?usdVal/FX*10:0;
+  document.getElementById('fxChipRow').innerHTML=`
+    <div class="fx-chip">
+      <div class="fx-chip-top"><div class="fx-chip-ic" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg></div><span class="fx-chip-k">최근 1년 최고</span></div>
+      <div class="fx-chip-v">${vmax.toFixed(1)}</div>
+    </div>
+    <div class="fx-chip">
+      <div class="fx-chip-top"><div class="fx-chip-ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg></div><span class="fx-chip-k">10원당 자산 영향</span></div>
+      <div class="fx-chip-v">±${wonPlain(impact10)}</div>
+    </div>`;
 }
 
 function renderTicker(){
