@@ -653,11 +653,30 @@
   #dailyBox{transition:opacity .35s ease;}
 
   /* currency gauge */
-  .cur-box{padding:8px 2px 14px;}
-  .cur-bar{display:flex; height:26px; border-radius:9999px; overflow:hidden; margin-bottom:10px;}
-  .cur-bar div{height:100%; display:flex; align-items:center; padding:0 10px; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:#fff; white-space:nowrap;}
-  .cur-usd{background:var(--brass);} .cur-krw{background:var(--stamp-blue);}
-  .cur-detail{display:flex; gap:20px; flex-wrap:wrap; font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink);}
+  .cur-box{padding:2px 2px 4px;}
+  .cur-vs-row{position:relative; display:flex; gap:8px; margin-bottom:18px;}
+  .cur-vs-card{flex:1; border-radius:14px; padding:16px 14px; text-align:center; transition:transform .12s;}
+  .cur-vs-card:active{transform:scale(0.97);}
+  .cur-vs-card.usd{background:linear-gradient(160deg, rgba(0,102,204,.1), rgba(0,102,204,.02));}
+  .cur-vs-card.krw{background:linear-gradient(200deg, rgba(138,146,128,.14), rgba(138,146,128,.03));}
+  .cur-vs-ic{width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 8px;}
+  .cur-vs-ic svg{width:17px; height:17px; fill:none; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round;}
+  .cur-vs-pct{font-family:'Inter',-apple-system,sans-serif; font-size:22px; font-weight:800;}
+  .cur-vs-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); font-weight:600; margin-top:2px;}
+  .cur-vs-amt{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; margin-top:7px; padding-top:7px; border-top:1px dashed var(--line);}
+  .cur-vs-badge-donut{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:46px; height:46px;}
+  .cur-vs-badge-donut .center-txt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:8px; font-weight:800; color:var(--ink-soft); letter-spacing:.03em;}
+  .cur-spectrum{margin:0 2px 4px;}
+  .cur-spectrum-top{display:flex; align-items:center; gap:6px; margin-bottom:8px;}
+  .cur-spectrum-top svg{width:12px; height:12px; stroke:var(--ink-soft); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .cur-spectrum-top-k{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em;}
+  .cur-spectrum-bar{display:flex; height:14px; border-radius:9999px; overflow:hidden; box-shadow:inset 0 1px 2px rgba(0,0,0,.06);}
+  .cur-spectrum-bar .usd{background:linear-gradient(90deg,#0066cc,#2997ff);}
+  .cur-spectrum-bar .krw{background:linear-gradient(90deg,#8a9280,#a8ae9d);}
+  .cur-spectrum-legend{display:flex; justify-content:space-between; margin-top:8px; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft);}
+  .cur-spectrum-legend span{display:flex; align-items:center; gap:5px;}
+  .cur-spectrum-legend i{width:8px; height:8px; border-radius:2px; display:inline-block;}
+  .cur-spectrum-legend b{color:var(--ink); font-weight:700;}
 
   /* theme risk bar */
   .theme-bar{display:flex; height:16px; border-radius:9999px; overflow:hidden; margin:6px 0 8px;}
@@ -2390,11 +2409,39 @@ function initPnlTabs(){
 function renderCurrency(){
   const total=grandTotal();
   let usd=0; HOLDINGS.forEach(h=>{ if(h.cur==='USD') usd+=evalKRW(h); }); usd+=CASH.usd*FX;
-  const krw=total-usd, up=usd/total*100, kp=krw/total*100;
-  document.getElementById('curBox').innerHTML=`<div class="cur-bar">
-      <div class="cur-usd" style="width:${up}%;">USD ${up.toFixed(0)}%</div>
-      <div class="cur-krw" style="width:${kp}%;">KRW ${kp.toFixed(0)}%</div></div>
-    <div class="cur-detail"><span>달러 자산 ${won(usd)}</span><span>원화 자산 ${won(krw)}</span><span>적용환율 ${FX.toLocaleString('en-US',{maximumFractionDigits:2})}</span></div>`;
+  const krw=total-usd, up=total?usd/total*100:0, kp=100-up;
+  const off=25-up;
+  document.getElementById('curBox').innerHTML=`
+    <div class="cur-vs-row">
+      <div class="cur-vs-card usd">
+        <div class="cur-vs-ic" style="background:rgba(0,102,204,.14);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg></div>
+        <div class="cur-vs-pct" style="color:#0066cc;">${up.toFixed(1)}%</div>
+        <div class="cur-vs-lbl">달러 자산</div>
+        <div class="cur-vs-amt">${won(usd)}</div>
+      </div>
+      <div class="cur-vs-card krw">
+        <div class="cur-vs-ic" style="background:rgba(138,146,128,.2);"><svg viewBox="0 0 24 24" style="stroke:#6b7263;"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="cur-vs-pct" style="color:#6b7263;">${kp.toFixed(1)}%</div>
+        <div class="cur-vs-lbl">원화 자산</div>
+        <div class="cur-vs-amt">${won(krw)}</div>
+      </div>
+      <div class="cur-vs-badge-donut">
+        <svg width="46" height="46" viewBox="0 0 42 42">
+          <circle cx="21" cy="21" r="16.5" fill="#fff" stroke="var(--line)" stroke-width="1"/>
+          <circle cx="21" cy="21" r="15" fill="none" stroke="#8a9280" stroke-width="5.5"/>
+          <circle cx="21" cy="21" r="15" fill="none" stroke="#0066cc" stroke-width="5.5" stroke-dasharray="${up.toFixed(1)} ${kp.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>
+        </svg>
+        <div class="center-txt">VS</div>
+      </div>
+    </div>
+    <div class="cur-spectrum">
+      <div class="cur-spectrum-top"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg><span class="cur-spectrum-top-k">자산 비중 스펙트럼</span></div>
+      <div class="cur-spectrum-bar"><div class="usd" style="width:${up.toFixed(1)}%;"></div><div class="krw" style="width:${kp.toFixed(1)}%;"></div></div>
+      <div class="cur-spectrum-legend">
+        <span><i style="background:#0066cc;"></i>달러 자산 <b>${up.toFixed(1)}%</b></span>
+        <span><i style="background:#8a9280;"></i>원화 자산 <b>${kp.toFixed(1)}%</b></span>
+      </div>
+    </div>`;
 }
 
 function renderSectorAlloc(){
@@ -3246,7 +3293,7 @@ function initUI(){
       document.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('tab-active', p.dataset.panel===b.dataset.tab));
       window.scrollTo({top:0,behavior:'smooth'});
       // 방금 보이게 된 패널 안의 세그먼트 필 위치 재계산 (display:none 상태에서는 폭 계산이 안 되므로)
-      ['swSeg','pnlTabs','trPeriods'].forEach(id=>positionSegPill(id, true));
+      ['swSeg','pnlTabs','trPeriods','txAcctSeg'].forEach(id=>positionSegPill(id, true));
       // 이 탭의 스크롤 등장 효과를 처음부터 다시 재생
       revealPanel(b.dataset.tab);
     };
