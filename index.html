@@ -650,6 +650,12 @@
   .mover:last-child{border-bottom:none;}
   .mover .mv{font-weight:600;}
   .daily-empty{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); text-align:center; padding:22px 10px;}
+  .daily-loading{display:flex; flex-direction:column; align-items:center; padding:30px 20px; gap:11px;}
+  .dl-spinner{width:26px; height:26px; border:3px solid var(--paper); border-top-color:var(--brass); border-radius:50%; animation:dlspin .8s linear infinite;}
+  @keyframes dlspin{to{transform:rotate(360deg);}}
+  .dl-txt{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:700; text-align:center; color:var(--ink);}
+  .dl-sub{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); text-align:center; line-height:1.6;}
+  .real-badge{display:inline-flex; align-items:center; gap:2px; background:rgba(21,128,61,.12); color:#15803d; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; padding:2px 7px; border-radius:9999px; margin-left:4px; vertical-align:1px;}
   #dailyBox{transition:opacity .35s ease;}
 
   /* currency gauge */
@@ -2403,7 +2409,22 @@ function renderDailyPnl(){
   }
   const LBL={today:'전일대비',week:'이번주',month:'이번달',quarter:'이번분기',year:'올해',all:'매입 이후 누적'};
   as.textContent = (pnlPeriod==='today' && LAST_UPDATED) ? ('실시간 '+LAST_UPDATED) : LBL[pnlPeriod];
-  const {total, pct, rows, approx, stale}=computePeriodPL(pnlPeriod);
+
+  const isHistPeriod = ['week','month','quarter','year'].includes(pnlPeriod);
+  if(isHistPeriod && !HIST_PRICE_READY){
+    box.innerHTML=`<div class="daily-loading">
+      <div class="dl-spinner"></div>
+      <div class="dl-txt" id="dlProgressTxt">${LBL[pnlPeriod]} 시작 시세 확인 중</div>
+      <div class="dl-sub">이번 한 번만 확인하면, 이 기간이 끝날 때까지<br>다시 조회하지 않아요</div>
+    </div>`;
+    if(!HIST_PRICE_LOADING){
+      ensureHistPrices(msg=>{ const t=document.getElementById('dlProgressTxt'); if(t) t.textContent=msg; })
+        .then(()=>{ if(pnlPeriod===pnlPeriod) renderDailyPnl(); });
+    }
+    return;
+  }
+
+  const {total, pct, rows, approx, stale, real}=computePeriodPL(pnlPeriod);
   if(stale){
     const lastD=new Date(HSTART.getTime()+(AS.length-1)*864e5);
     box.innerHTML=`<div class="daily-empty">${LBL[pnlPeriod]} 손익을 계산할 수 없습니다.<br>
@@ -2450,7 +2471,7 @@ function renderDailyPnl(){
     </div>`;
   };
   const heroHtml=`<div class="dp-hero ${cls}">
-    <div class="lbl">${LBL[pnlPeriod]}${approx?' · 근사치':''}</div>
+    <div class="lbl">${LBL[pnlPeriod]}${approx?' · 근사치':''}${real?' <span class="real-badge">✓ 실시세 확인됨</span>':''}</div>
     <div class="num"><span id="dpHeroNum">${arrowOf(total)} ${total>=0?'+':''}${won(dpHeroShown==null?total:dpHeroShown)}</span><span class="pct">${sign(pct)}</span></div>
     <div class="sub">${rows.length}종목 반영</div>
   </div>`;
@@ -2484,6 +2505,11 @@ function initPnlTabs(){
     document.querySelectorAll('#pnlTabs button').forEach(x=>x.classList.toggle('on',x===b));
     pnlPeriod=b.dataset.p; renderDailyPnl();
     positionSegPill('pnlTabs');
+  });
+  loadHistPriceCache().then(cache=>{
+    HIST_PRICE_CACHE=cache;
+    HIST_PRICE_READY=histCoversThisWeek(cache);
+    if(HIST_PRICE_READY && pnlPeriod!=='today') renderDailyPnl();
   });
 }
 
@@ -2648,16 +2674,48 @@ function computePeriodPL(key){
     const total=rows.reduce((s,r)=>s+r.v,0), cost=investedCost();
     return {total, pct: cost? total/cost*100:0, rows, approx:false};
   }
-  /* 기간 손익 계산 원칙 (여러 차례 버그를 겪은 뒤 확정한 방식):
+
+  /* 실제 종가가 확보된 경우: KIS 기간별시세로 받아온 진짜 종가를 쓴다 — 이게 최우선.
+     총액과 종목별 내역이 같은 실측 데이터에서 나오므로 서로 자연스럽게 일치하고,
+     예전처럼 근사치를 억지로 비례 배분할 필요가 없다(그 방식이 RKLB +3969% 버그의 원인이었음). */
+  if(HIST_PRICE_READY && HIST_PRICE_CACHE){
+    const b=periodBoundaries(); const fromYmd=b[key];
+    const from=periodStartDate(key);
+    const rows=[]; const seen=new Set(); let total=0, costBase=0; let anyReal=false;
+    HOLDINGS.forEach(h=>{
+      seen.add(h.ticker);
+      const nowV=evalKRW(h), nowC=h.costKRW, nowPL=nowV-nowC;
+      const st=stateAt(h.ticker, from);
+      const days=HIST_PRICE_CACHE[h.ticker];
+      const pastPx = (days && days.length) ? closestClose(days, fromYmd) : priceAt(h.ticker, from);
+      if(days && days.length) anyReal=true;
+      const pastV=(h.cur==='USD') ? st.shares*pastPx*fxAt(from) : st.shares*pastPx;
+      const pastPL=pastV-st.cost;
+      const realizedInPeriod=REALIZED.filter(r=>r.tk===h.ticker && new Date(r.d+'T00:00:00')>=from).reduce((s,r)=>s+r.v,0);
+      const gain=(nowPL-pastPL)+realizedInPeriod;
+      if(st.shares<=0 && nowV<=0 && realizedInPeriod===0) return;
+      total+=gain; costBase+=st.cost;
+      rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: st.cost? gain/st.cost*100 : (nowC? gain/nowC*100:0)});
+    });
+    REALIZED.forEach(r=>{
+      if(seen.has(r.tk)) return;
+      if(new Date(r.d+'T00:00:00')<from) return;
+      total+=r.v; rows.push({tk:r.tk, n:r.n, v:r.v, pct:null});
+    });
+    if(anyReal){
+      rows.sort((a,b)=>b.v-a.v);
+      return {total, pct: costBase? total/costBase*100:0, rows, approx:false, real:true};
+    }
+  }
+
+  /* 실제 종가가 아직 없는 경우의 폴백 (여러 차례 버그를 겪은 뒤 확정한 방식):
      1) 총액(헤더에 표시되는 숫자)은 반드시 AS/CS(자산추이가 쓰는, 실거래로 재구성된 일자별
         시계열)에서만 구한다. HOLDINGS별 priceAt() 보간은 마지막 거래일~오늘을 직선으로 이었을
-        뿐이라 짧은 기간(주/월)일수록 실제 등락과 무관한 값이 나온다 — 이걸로 총액을 구하면
-        이번주/이번달이 이유 없이 마이너스로 나오는 버그가 생긴다.
+        뿐이라 짧은 기간(주/월)일수록 실제 등락과 무관한 값이 나온다.
      2) 종목별 내역(베스트/워스트, 기여도 막대)은 위 총액과 억지로 합을 맞추지 않는다.
         예전에 "총액에 비례 배분"했다가 종목별 값이 몇 배씩 증폭되는(RKLB +3969% 등) 심각한
         버그가 있었다. 종목별 내역은 참고용 근사치임을 명시하고 총액과는 별도로 취급한다.
-     3) 종목별 근사치에는 REALIZED[](검증된 실현손익)를 더한다 — 안 그러면 기간 중 매도된
-        수량의 손익이 누락되어 해당 종목이 실제보다 훨씬 나쁘게 보인다. */
+     3) 종목별 근사치에는 REALIZED[](검증된 실현손익)를 더한다. */
   const from=periodStartDate(key);
   const lastIdx=AS.length-1;
   let idx=Math.round((from-HSTART)/864e5);
@@ -3936,6 +3994,93 @@ async function fetchKisOverseas(){
     throw new Error(`KIS 해외 일부 누락 (${done}/${total}): ${miss.join(', ')}`);
   }
   return done;
+}
+
+/* ===== 기간별 실제 종가 조회 (이번주·이번달·이번분기·올해 손익 정확도 개선) =====
+   원리: 각 종목의 "기준일(이번주 월요일/이번달 1일/이번분기 첫날/올해 1월1일)" 실제 종가를
+   KIS 기간별시세 API로 가져와 캐시해둔다. 과거 종가는 절대 바뀌지 않으므로, 한 번 그 주/그 달에
+   확보해두면 그 기간이 끝날 때까지 다시 조회할 필요가 없다(스토리지에 영구 캐싱). */
+const HIST_PRICE_KEY = 'kis_hist_price_v2';
+let HIST_PRICE_CACHE = null;   // { [ticker]: {date, close}[] (최신순) }
+let HIST_PRICE_LOADING = false;
+let HIST_PRICE_READY = false;  // 이번 세션에서 필요한 만큼 확보됐는지
+
+function periodBoundaries(){
+  const now=new Date();
+  const monday=new Date(now); monday.setDate(now.getDate()-((now.getDay()+6)%7));
+  const monthStart=new Date(now.getFullYear(), now.getMonth(), 1);
+  const qStart=new Date(now.getFullYear(), Math.floor(now.getMonth()/3)*3, 1);
+  const yearStart=new Date(now.getFullYear(), 0, 1);
+  const fmt=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  return { week:fmt(monday), month:fmt(monthStart), quarter:fmt(qStart), year:fmt(yearStart) };
+}
+async function loadHistPriceCache(){
+  try{ const r=await STORE.get(HIST_PRICE_KEY); if(r&&r.value) return JSON.parse(r.value); }catch(e){}
+  return {};
+}
+async function saveHistPriceCache(cache){
+  try{ await STORE.set(HIST_PRICE_KEY, JSON.stringify(cache)); }catch(e){}
+}
+/** days(해당 종목의 {date,close}[] 최신순 배열)에서 targetYmd 이후 가장 이른(=targetYmd에 가장 가까운) 종가 */
+function closestClose(days, targetYmd){
+  if(!days || !days.length) return null;
+  const cands=days.filter(d=>d.date>=targetYmd);
+  if(cands.length) return cands[cands.length-1].close; // 최신순 정렬이므로 배열 끝이 targetYmd에 가장 가까움
+  return days[days.length-1].close; // 그마저 없으면 가진 것 중 가장 오래된 값
+}
+/** 캐시가 이번 주 시작일(가장 최근에 필요한 기준일)까지 커버하는지 확인 */
+function histCoversThisWeek(cache){
+  if(!cache) return false;
+  const b=periodBoundaries();
+  return Object.keys(OVERSEAS_CODE_MAP).concat(Object.keys(DOMESTIC_CODE_MAP)).every(tk=>{
+    const days=cache[tk];
+    return days && days.length && days[0].date >= b.week;
+  });
+}
+/** 종목별 기간별 실제 종가를 확보(캐시 우선, 없거나 오래됐으면 Worker 조회). progressCb(단계 문자열)로 진행상황 콜백 */
+async function ensureHistPrices(progressCb){
+  if(HIST_PRICE_LOADING) return;
+  const cache = HIST_PRICE_CACHE || await loadHistPriceCache();
+  HIST_PRICE_CACHE = cache;
+  if(histCoversThisWeek(cache)){ HIST_PRICE_READY=true; return; }
+
+  HIST_PRICE_LOADING = true;
+  const b=periodBoundaries();
+  try{
+    const domCodes=Object.entries(DOMESTIC_CODE_MAP).filter(([,c])=>c);
+    if(domCodes.length){
+      if(progressCb) progressCb('국내 ETF '+domCodes.length+'종목 조회 중');
+      const url=`${KIS_PROXY_URL}/hist/domestic?codes=${domCodes.map(([,c])=>c).join(',')}&from=${b.year}`;
+      const res=await fetch(url); const json=await res.json();
+      if(json.ok){
+        json.results.forEach(r=>{
+          if(!r || !r.days || !r.days.length) return;
+          const tk=domCodes.find(([,c])=>c===r.code)?.[0]; if(!tk) return;
+          cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
+        });
+      }
+    }
+    const ovCodes=Object.entries(OVERSEAS_CODE_MAP);
+    if(ovCodes.length){
+      if(progressCb) progressCb('해외주식 '+ovCodes.length+'종목 조회 중');
+      const url=`${KIS_PROXY_URL}/hist/overseas?codes=${ovCodes.map(([,v])=>`${v.excd}:${v.symb}`).join(',')}&from=${b.year}`;
+      const res=await fetch(url); const json=await res.json();
+      if(json.ok){
+        json.results.forEach(r=>{
+          if(!r || !r.days || !r.days.length) return;
+          const tk=ovCodes.find(([,v])=>v.symb===r.symbol)?.[0]; if(!tk) return;
+          cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
+        });
+      }
+    }
+    await saveHistPriceCache(cache);
+    HIST_PRICE_CACHE = cache;
+    HIST_PRICE_READY = histCoversThisWeek(cache);
+  } catch(e){
+    console.error('기간별 시세 조회 실패', e);
+  } finally {
+    HIST_PRICE_LOADING = false;
+  }
 }
 
 let refreshing=false;
