@@ -2642,20 +2642,27 @@ function computePeriodPL(key){
     return {total, pct: cost? total/cost*100:0, rows, approx:false};
   }
   const from=periodStartDate(key);
-  const rows=[]; let total=0, costBase=0;
+  let idx=Math.round((from-HSTART)/864e5);
+  idx=Math.max(0, Math.min(HIST.a.length-1, idx));
+  const pastAsset=HIST.a[idx], pastCost=HIST.c[idx];
+  const nowAsset=grandTotal(), nowCost=investedCost();
+  const total=(nowAsset-nowCost)-(pastAsset-pastCost);
+  const pct=pastCost? total/pastCost*100 : 0;
+
+  // 종목별 기여도는 거래시점 가격 보간(근사)으로 상대 순위만 계산 후, 위에서 구한 정확한 총합에 비례 배분
+  const raw=[]; let rawSum=0;
   HOLDINGS.forEach(h=>{
     const nowV=evalKRW(h), nowC=h.costKRW, nowPL=nowV-nowC;
     const st=stateAt(h.ticker, from);
     if(st.shares<=0 && nowV<=0) return;
     const pastPx=priceAt(h.ticker, from);
-    const pastV = (h.cur==='USD') ? st.shares*pastPx*fxAt(from) : st.shares*pastPx;
-    const pastPL = pastV - st.cost;
-    const gain = nowPL - pastPL;
-    total += gain; costBase += st.cost;
-    if(st.shares>0 || nowV>0) rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: st.cost? gain/st.cost*100 : (nowC? gain/nowC*100:0)});
+    const pastV=(h.cur==='USD') ? st.shares*pastPx*fxAt(from) : st.shares*pastPx;
+    const gain=nowPL-(pastV-st.cost);
+    raw.push({tk:h.ticker, n:h.nameKr, v:gain, cost:st.cost||nowC});
+    rawSum+=gain;
   });
-  rows.sort((a,b)=>b.v-a.v);
-  const pct = costBase? total/costBase*100 : 0;
+  const scale=rawSum? total/rawSum : 0;
+  const rows=raw.map(r=>{ const v=r.v*scale; return {tk:r.tk, n:r.n, v, pct: r.cost? v/r.cost*100 : 0}; }).sort((a,b)=>b.v-a.v);
   return {total, pct, rows, approx:true};
 }
 let pnlPeriod='today';
