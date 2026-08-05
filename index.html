@@ -2403,7 +2403,14 @@ function renderDailyPnl(){
   }
   const LBL={today:'전일대비',week:'이번주',month:'이번달',quarter:'이번분기',year:'올해',all:'매입 이후 누적'};
   as.textContent = (pnlPeriod==='today' && LAST_UPDATED) ? ('실시간 '+LAST_UPDATED) : LBL[pnlPeriod];
-  const {total, pct, rows, approx}=computePeriodPL(pnlPeriod);
+  const {total, pct, rows, approx, stale}=computePeriodPL(pnlPeriod);
+  if(stale){
+    const lastD=new Date(HSTART.getTime()+(AS.length-1)*864e5);
+    box.innerHTML=`<div class="daily-empty">${LBL[pnlPeriod]} 손익을 계산할 수 없습니다.<br>
+      자산 시계열이 <b>${lastD.getFullYear()}.${String(lastD.getMonth()+1).padStart(2,'0')}.${String(lastD.getDate()).padStart(2,'0')}</b>까지만 기록되어 있어 기간 시작 시점 값이 없습니다.<br>
+      <span style="font-size:10px;">새로고침을 계속 하시면 일자별 기록이 쌓여 이후 정상 계산됩니다.</span></div>`;
+    return;
+  }
   const cls=clsOf(total);
   const avatarPiece=tk=>{
     const initial=tk.slice(0,2);
@@ -2641,15 +2648,24 @@ function computePeriodPL(key){
     const total=rows.reduce((s,r)=>s+r.v,0), cost=investedCost();
     return {total, pct: cost? total/cost*100:0, rows, approx:false};
   }
+  /* 기간 손익 = (기간말 평가손익) - (기간초 평가손익)
+     주의 1) HIST/AS(일자별 재구성 시계열)와 investedCost()는 산출 기준이 달라
+     (HIST.c 마지막값 58,871,428 vs investedCost() 55,072,906) 두 소스를 섞으면 값이 크게 왜곡된다.
+     따라서 시작·종료 시점 모두 시계열 내부 값만 사용한다.
+     주의 2) 종료 시점은 AS/CS를 쓴다 — AS는 syncTrendToday()가 마지막 칸에 오늘 실시간 총자산을
+     반영해 주므로 HIST.a보다 최신이다. */
   const from=periodStartDate(key);
+  const lastIdx=AS.length-1;
   let idx=Math.round((from-HSTART)/864e5);
-  idx=Math.max(0, Math.min(HIST.a.length-1, idx));
-  const pastAsset=HIST.a[idx], pastCost=HIST.c[idx];
-  const nowAsset=grandTotal(), nowCost=investedCost();
-  const total=(nowAsset-nowCost)-(pastAsset-pastCost);
-  const pct=pastCost? total/pastCost*100 : 0;
+  const stale=idx>lastIdx;          // 시계열이 기간 시작일을 못 덮는 경우(데이터 공백)
+  if(idx>lastIdx) idx=lastIdx;
+  if(idx<0) idx=0;
+  const pastPL=AS[idx]-CS[idx];
+  const endPL=AS[lastIdx]-CS[lastIdx];
+  const total=endPL-pastPL;
+  const pct=CS[idx]? total/CS[idx]*100 : 0;
 
-  // 종목별 기여도는 거래시점 가격 보간(근사)으로 상대 순위만 계산 후, 위에서 구한 정확한 총합에 비례 배분
+  // 종목별 기여도: 거래시점 가격 보간(근사)으로 상대 순위만 계산 후 정확한 총합에 비례 배분
   const raw=[]; let rawSum=0;
   HOLDINGS.forEach(h=>{
     const nowV=evalKRW(h), nowC=h.costKRW, nowPL=nowV-nowC;
@@ -2663,7 +2679,7 @@ function computePeriodPL(key){
   });
   const scale=rawSum? total/rawSum : 0;
   const rows=raw.map(r=>{ const v=r.v*scale; return {tk:r.tk, n:r.n, v, pct: r.cost? v/r.cost*100 : 0}; }).sort((a,b)=>b.v-a.v);
-  return {total, pct, rows, approx:true};
+  return {total, pct, rows, approx:true, stale};
 }
 let pnlPeriod='today';
 
@@ -4084,7 +4100,7 @@ renderRealized();
 initTxList();
 initBench();
 initReview();
-loadFutureSnaps().then(initTrend);
+loadFutureSnaps().then(()=>{ initTrend(); renderDailyPnl(); });
 initUI();
 initCoverDetail();
 initScrollReveal();
