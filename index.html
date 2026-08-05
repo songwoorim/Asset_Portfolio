@@ -2648,37 +2648,44 @@ function computePeriodPL(key){
     const total=rows.reduce((s,r)=>s+r.v,0), cost=investedCost();
     return {total, pct: cost? total/cost*100:0, rows, approx:false};
   }
-  /* 기간 손익 = (기간말 평가손익) - (기간초 평가손익)
-     주의 1) HIST/AS(일자별 재구성 시계열)와 investedCost()는 산출 기준이 달라
-     (HIST.c 마지막값 58,871,428 vs investedCost() 55,072,906) 두 소스를 섞으면 값이 크게 왜곡된다.
-     따라서 시작·종료 시점 모두 시계열 내부 값만 사용한다.
-     주의 2) 종료 시점은 AS/CS를 쓴다 — AS는 syncTrendToday()가 마지막 칸에 오늘 실시간 총자산을
-     반영해 주므로 HIST.a보다 최신이다. */
+  /* 기간 손익 계산 원칙 (여러 차례 버그를 겪은 뒤 확정한 방식):
+     1) 총액(헤더에 표시되는 숫자)은 반드시 AS/CS(자산추이가 쓰는, 실거래로 재구성된 일자별
+        시계열)에서만 구한다. HOLDINGS별 priceAt() 보간은 마지막 거래일~오늘을 직선으로 이었을
+        뿐이라 짧은 기간(주/월)일수록 실제 등락과 무관한 값이 나온다 — 이걸로 총액을 구하면
+        이번주/이번달이 이유 없이 마이너스로 나오는 버그가 생긴다.
+     2) 종목별 내역(베스트/워스트, 기여도 막대)은 위 총액과 억지로 합을 맞추지 않는다.
+        예전에 "총액에 비례 배분"했다가 종목별 값이 몇 배씩 증폭되는(RKLB +3969% 등) 심각한
+        버그가 있었다. 종목별 내역은 참고용 근사치임을 명시하고 총액과는 별도로 취급한다.
+     3) 종목별 근사치에는 REALIZED[](검증된 실현손익)를 더한다 — 안 그러면 기간 중 매도된
+        수량의 손익이 누락되어 해당 종목이 실제보다 훨씬 나쁘게 보인다. */
   const from=periodStartDate(key);
   const lastIdx=AS.length-1;
   let idx=Math.round((from-HSTART)/864e5);
-  const stale=idx>lastIdx;          // 시계열이 기간 시작일을 못 덮는 경우(데이터 공백)
+  const stale=idx>lastIdx;
   if(idx>lastIdx) idx=lastIdx;
   if(idx<0) idx=0;
-  const pastPL=AS[idx]-CS[idx];
-  const endPL=AS[lastIdx]-CS[lastIdx];
-  const total=endPL-pastPL;
+  const total=(AS[lastIdx]-CS[lastIdx])-(AS[idx]-CS[idx]);
   const pct=CS[idx]? total/CS[idx]*100 : 0;
 
-  // 종목별 기여도: 거래시점 가격 보간(근사)으로 상대 순위만 계산 후 정확한 총합에 비례 배분
-  const raw=[]; let rawSum=0;
+  const rows=[]; const seen=new Set();
   HOLDINGS.forEach(h=>{
+    seen.add(h.ticker);
     const nowV=evalKRW(h), nowC=h.costKRW, nowPL=nowV-nowC;
     const st=stateAt(h.ticker, from);
-    if(st.shares<=0 && nowV<=0) return;
     const pastPx=priceAt(h.ticker, from);
     const pastV=(h.cur==='USD') ? st.shares*pastPx*fxAt(from) : st.shares*pastPx;
-    const gain=nowPL-(pastV-st.cost);
-    raw.push({tk:h.ticker, n:h.nameKr, v:gain, cost:st.cost||nowC});
-    rawSum+=gain;
+    const pastPL=pastV-st.cost;
+    const realizedInPeriod=REALIZED.filter(r=>r.tk===h.ticker && new Date(r.d+'T00:00:00')>=from).reduce((s,r)=>s+r.v,0);
+    const gain=(nowPL-pastPL)+realizedInPeriod;
+    if(st.shares<=0 && nowV<=0 && realizedInPeriod===0) return;
+    rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: st.cost? gain/st.cost*100 : (nowC? gain/nowC*100:0)});
   });
-  const scale=rawSum? total/rawSum : 0;
-  const rows=raw.map(r=>{ const v=r.v*scale; return {tk:r.tk, n:r.n, v, pct: r.cost? v/r.cost*100 : 0}; }).sort((a,b)=>b.v-a.v);
+  REALIZED.forEach(r=>{
+    if(seen.has(r.tk)) return;
+    if(new Date(r.d+'T00:00:00')<from) return;
+    rows.push({tk:r.tk, n:r.n, v:r.v, pct:null});
+  });
+  rows.sort((a,b)=>b.v-a.v);
   return {total, pct, rows, approx:true, stale};
 }
 let pnlPeriod='today';
