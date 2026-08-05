@@ -2681,7 +2681,7 @@ function computePeriodPL(key){
   if(HIST_PRICE_READY && HIST_PRICE_CACHE){
     const b=periodBoundaries(); const fromYmd=b[key];
     const from=periodStartDate(key);
-    const rows=[]; const seen=new Set(); let total=0, costBase=0; let anyReal=false;
+    const rows=[]; const seen=new Set(); let total=0, pastValueBase=0; let anyReal=false;
     HOLDINGS.forEach(h=>{
       seen.add(h.ticker);
       const nowV=evalKRW(h), nowC=h.costKRW, nowPL=nowV-nowC;
@@ -2694,8 +2694,11 @@ function computePeriodPL(key){
       const realizedInPeriod=REALIZED.filter(r=>r.tk===h.ticker && new Date(r.d+'T00:00:00')>=from).reduce((s,r)=>s+r.v,0);
       const gain=(nowPL-pastPL)+realizedInPeriod;
       if(st.shares<=0 && nowV<=0 && realizedInPeriod===0) return;
-      total+=gain; costBase+=st.cost;
-      rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: st.cost? gain/st.cost*100 : (nowC? gain/nowC*100:0)});
+      total+=gain; pastValueBase+=pastV;
+      // 퍼센트는 반드시 "기간 시작 시점 평가금액" 대비로 계산한다(원가 대비 아님) —
+      // 원가로 나누면 오래 전 산 종목일수록 "이번주 수익률"이 "전체 누적 수익률"처럼
+      // 부풀려지는 심각한 버그가 있었다(PLTR 실제론 +주간 한자릿수%인데 +103%로 표시됐던 사례).
+      rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: pastV? gain/pastV*100 : (nowC? gain/nowC*100:0)});
     });
     REALIZED.forEach(r=>{
       if(seen.has(r.tk)) return;
@@ -2704,7 +2707,7 @@ function computePeriodPL(key){
     });
     if(anyReal){
       rows.sort((a,b)=>b.v-a.v);
-      return {total, pct: costBase? total/costBase*100:0, rows, approx:false, real:true};
+      return {total, pct: pastValueBase? total/pastValueBase*100:0, rows, approx:false, real:true};
     }
   }
 
@@ -2723,7 +2726,9 @@ function computePeriodPL(key){
   if(idx>lastIdx) idx=lastIdx;
   if(idx<0) idx=0;
   const total=(AS[lastIdx]-CS[lastIdx])-(AS[idx]-CS[idx]);
-  const pct=CS[idx]? total/CS[idx]*100 : 0;
+  // 퍼센트는 "기간 시작 시점 총자산 평가금액"(AS[idx]) 대비 — CS(원가)로 나누면
+  // 위 real-경로 주석과 같은 이유로 부풀려진다.
+  const pct=AS[idx]? total/AS[idx]*100 : 0;
 
   const rows=[]; const seen=new Set();
   HOLDINGS.forEach(h=>{
@@ -2736,7 +2741,7 @@ function computePeriodPL(key){
     const realizedInPeriod=REALIZED.filter(r=>r.tk===h.ticker && new Date(r.d+'T00:00:00')>=from).reduce((s,r)=>s+r.v,0);
     const gain=(nowPL-pastPL)+realizedInPeriod;
     if(st.shares<=0 && nowV<=0 && realizedInPeriod===0) return;
-    rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: st.cost? gain/st.cost*100 : (nowC? gain/nowC*100:0)});
+    rows.push({tk:h.ticker, n:h.nameKr, v:gain, pct: pastV? gain/pastV*100 : (nowC? gain/nowC*100:0)});
   });
   REALIZED.forEach(r=>{
     if(seen.has(r.tk)) return;
