@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8">
+<html lang="ko" class="theme-init"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>자산 포트폴리오 · 통장 (LIVE)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -23,6 +23,17 @@
     color-scheme: dark;
   }
   *{box-sizing:border-box;}
+  /* 다크모드 토글 시 색상만 부드럽게 페이드 (레이아웃/크기 속성은 건드리지 않음 —
+     테마 전환 자체는 순간적이어야 하고, 색만 뚝뚝 끊기지 않고 자연스럽게 바뀌면 됨) */
+  *, *::before, *::after{
+    transition: background-color .28s ease, color .28s ease, border-color .28s ease,
+                box-shadow .28s ease, fill .28s ease, stroke .28s ease;
+  }
+  /* 최초 페이지 로드 시에는 트랜지션 없이 즉시 테마 적용 (초기 로드 중 색이 스르륵 바뀌는
+     어색한 깜빡임 방지) — initTheme()이 이 클래스를 제거하면 그때부터 토글이 부드러워짐 */
+  html.theme-init, html.theme-init *, html.theme-init *::before, html.theme-init *::after{
+    transition: none !important;
+  }
   body{
     margin:0;
     background:var(--paper);
@@ -119,7 +130,9 @@
   .book > .page, .book > div[id^="sec-"]{ scroll-margin-top:96px; }
   .page{ scroll-margin-top:96px; }
   [data-panel]{ display:none; }
-  [data-panel].tab-active{ display:block; }
+  [data-panel].tab-active{ display:block; animation: tabFadeIn .34s cubic-bezier(.22,1,.36,1); }
+  @keyframes tabFadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  @media (prefers-reduced-motion: reduce){ [data-panel].tab-active{ animation:none; } }
 
   /* ---------- collapsible ---------- */
   .page.collapsible .page-head{ cursor:pointer; user-select:none; }
@@ -4177,6 +4190,8 @@ async function initTheme(){
   try{ const r=await STORE.get(THEME_KEY); if(r&&r.value) mode=r.value; }catch(e){}
   if(!mode) mode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
   applyTheme(mode);
+  // 초기 적용은 즉시(트랜지션 없이) 끝났으니, 다음 프레임부터 부드러운 전환을 켠다
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ document.documentElement.classList.remove('theme-init'); }));
   document.getElementById('themeBtn').onclick=async()=>{
     const cur=document.documentElement.getAttribute('data-theme');
     const next = cur==='dark' ? 'light' : 'dark';
