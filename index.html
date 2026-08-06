@@ -1067,9 +1067,10 @@
     <span class="live-dot stale" id="liveDot"></span>
     <div class="live-status" id="liveStatus"><b>스냅샷</b> · 갱신 필요</div>
     <div class="spacer"></div>
-    <button class="icon-btn" id="themeBtn" title="다크모드 전환">
+    <button class="icon-btn" id="themeBtn" title="테마: 라이트 → 다크 → 자동 순환">
       <svg viewBox="0 0 24 24" id="themeIconMoon" style="display:none;"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg viewBox="0 0 24 24" id="themeIconSun"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <svg viewBox="0 0 24 24" id="themeIconAuto" style="display:none;"><rect x="2.5" y="4" width="19" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M8 20.5h8M12 17v3.5"/></svg>
     </button>
     <button class="icon-btn" id="autoBtn" title="자동 60초 갱신">
       <svg viewBox="0 0 24 24"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -4180,21 +4181,38 @@ document.getElementById('refreshBtn').onclick=refresh;
 
 /* ===== 다크모드 ===== */
 const THEME_KEY='theme_pref_v1';
-function applyTheme(mode){ // 'light' | 'dark'
-  document.documentElement.setAttribute('data-theme', mode);
-  const moon=document.getElementById('themeIconMoon'), sun=document.getElementById('themeIconSun');
-  if(moon && sun){ moon.style.display = mode==='dark' ? 'block' : 'none'; sun.style.display = mode==='dark' ? 'none' : 'block'; }
+const THEME_ORDER=['light','dark','auto'];
+let themeMode='auto'; // 사용자가 고른 모드(light/dark/auto) - auto면 시스템 설정을 따라감
+function systemPrefersDark(){ return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches); }
+function resolvedTheme(mode){ return mode==='auto' ? (systemPrefersDark()?'dark':'light') : mode; }
+function applyTheme(mode){ // mode: 'light' | 'dark' | 'auto'
+  themeMode=mode;
+  const resolved=resolvedTheme(mode);
+  document.documentElement.setAttribute('data-theme', resolved);
+  const moon=document.getElementById('themeIconMoon'), sun=document.getElementById('themeIconSun'), auto=document.getElementById('themeIconAuto');
+  if(moon && sun && auto){
+    moon.style.display = mode==='dark' ? 'block' : 'none';
+    sun.style.display = mode==='light' ? 'block' : 'none';
+    auto.style.display = mode==='auto' ? 'block' : 'none';
+  }
+  const btn=document.getElementById('themeBtn');
+  if(btn){ const lbl={light:'라이트',dark:'다크',auto:`자동(현재 ${resolved==='dark'?'다크':'라이트'})`}[mode]; btn.title=`테마: ${lbl} · 눌러서 전환`; }
 }
 async function initTheme(){
   let mode=null;
   try{ const r=await STORE.get(THEME_KEY); if(r&&r.value) mode=r.value; }catch(e){}
-  if(!mode) mode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  if(!mode || !THEME_ORDER.includes(mode)) mode='auto'; // 저장된 게 없으면 기본은 자동(시스템 설정 따라감)
   applyTheme(mode);
   // 초기 적용은 즉시(트랜지션 없이) 끝났으니, 다음 프레임부터 부드러운 전환을 켠다
   requestAnimationFrame(()=>requestAnimationFrame(()=>{ document.documentElement.classList.remove('theme-init'); }));
+  // 자동 모드일 때 시스템 다크모드 설정이 바뀌면(예: 밤이 되어 기기가 자동 전환) 실시간 반영
+  if(window.matchMedia){
+    const mq=window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange=()=>{ if(themeMode==='auto') applyTheme('auto'); };
+    if(mq.addEventListener) mq.addEventListener('change', onChange); else if(mq.addListener) mq.addListener(onChange);
+  }
   document.getElementById('themeBtn').onclick=async()=>{
-    const cur=document.documentElement.getAttribute('data-theme');
-    const next = cur==='dark' ? 'light' : 'dark';
+    const next=THEME_ORDER[(THEME_ORDER.indexOf(themeMode)+1)%THEME_ORDER.length];
     applyTheme(next);
     try{ await STORE.set(THEME_KEY, next); }catch(e){}
   };
