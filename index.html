@@ -583,17 +583,45 @@
   .rule-chip .txt{font-size:12px; line-height:1.55;}
 
   /* ---------- Advice ---------- */
-  .advice-card{background:var(--paper); border-radius:12px; padding:14px 16px; margin:0 2px 12px; border-left:3px solid var(--brass);}
-  .advice-card:last-of-type{margin-bottom:4px;}
-  .advice-card.urgent{border-left-color:var(--stamp-red);}
-  .advice-card h3{font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:600; margin:0 0 6px; display:flex; align-items:center; gap:8px;}
-  .advice-card h3 .pill{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; letter-spacing:0.08em; padding:2px 7px; border-radius:10px; background:var(--ink); color:var(--paper);}
-  .advice-card.urgent h3 .pill{background:var(--stamp-red);}
-  .advice-card p{font-size:12px; line-height:1.6; margin:0; color:var(--ink);}
-  .advice-card p + p{margin-top:6px;}
-  .advice-num-row{display:flex; gap:20px; flex-wrap:wrap; margin:2px 2px 14px;}
-  .advice-num .k{font-size:10.5px; color:var(--ink-soft); font-family:'Inter',-apple-system,sans-serif;}
-  .advice-num .v{font-family:'Inter',-apple-system,sans-serif; font-size:19px; font-weight:600;}
+  .dx-head-l{display:flex; align-items:baseline; gap:9px; min-width:0;}
+  .dx-score-pill{display:flex; align-items:center; gap:5px; background:rgba(192,57,43,.08); border-radius:9999px; padding:5px 10px 5px 6px; flex-shrink:0;}
+  .dx-score-pill.ok{background:rgba(21,128,61,.08);}
+  .dx-score-num{font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:800; color:var(--stamp-red);}
+  .dx-score-pill.ok .dx-score-num{color:#15803d;}
+  .dx-score-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:8px; color:var(--ink-soft); font-weight:700;}
+  .dx-oneline{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; line-height:1.6; background:linear-gradient(135deg, rgba(21,128,61,.06), rgba(21,128,61,.01)); border-radius:12px; padding:12px 13px; margin-bottom:14px;}
+  .dx-cmp-sec{margin-bottom:16px;}
+  .dx-cmp-head{display:flex; align-items:center; gap:6px; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin:2px 2px 11px;}
+  .dx-cmp-head svg{width:12px; height:12px; stroke:var(--ink-soft); fill:none; stroke-width:2.2;}
+  .dx-cmp-row{margin-bottom:20px;}
+  .dx-cmp-row:last-child{margin-bottom:2px;}
+  .dx-cmp-row-top{display:flex; align-items:center; gap:8px; margin-bottom:7px;}
+  .dx-cmp-ic{width:22px; height:22px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dx-cmp-ic svg{width:12px; height:12px; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .dx-cmp-mid{flex:1; min-width:0;}
+  .dx-cmp-mid .k{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:700; display:block;}
+  .dx-cmp-mid .gap{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700; display:block; margin-top:1px;}
+  .dx-cmp-right{text-align:right; flex-shrink:0;}
+  .dx-cmp-right .now{font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:800; display:block;}
+  .dx-cmp-right .rec{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft);}
+  .dx-cmp-bar{position:relative; height:11px; background:var(--paper); border-radius:9999px; margin-top:2px;}
+  .dx-cmp-bar .fill{height:100%; border-radius:9999px; transition:width .6s cubic-bezier(.22,1,.36,1);}
+  .dx-cmp-bar .target{position:absolute; top:50%; transform:translate(-50%,-50%); width:16px; height:16px; border-radius:50%; background:var(--card); border:2.5px solid var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.15);}
+  .dx-acc{border-radius:12px; background:var(--paper); margin-bottom:7px; overflow:hidden;}
+  .dx-acc-head{display:flex; align-items:center; gap:9px; padding:11px 12px; cursor:pointer;}
+  .dx-acc-head:active{background:rgba(0,0,0,.03);}
+  .dx-acc-ic{width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dx-acc-ic svg{width:13px; height:13px; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .dx-acc-title{flex:1; font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:700;}
+  .dx-acc-badge{font-family:'Inter',-apple-system,sans-serif; font-size:8px; font-weight:800; padding:2px 6px; border-radius:9999px; flex-shrink:0;}
+  .dx-acc-chev{width:16px; height:16px; flex-shrink:0; transition:transform .2s;}
+  .dx-acc-chev svg{width:100%; height:100%; stroke:var(--ink-soft); fill:none; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round;}
+  .dx-acc.open .dx-acc-chev{transform:rotate(180deg);}
+  .dx-acc-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .dx-acc.open .dx-acc-body{max-height:120px;}
+  .dx-acc-body p{margin:0; padding:0 12px 12px 47px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); line-height:1.55;}
+  .dx-acc-body .cta{display:flex; align-items:center; gap:4px; margin:6px 12px 12px 47px; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--brass); background:none; border:none; padding:0; cursor:pointer;}
+  .dx-acc-body .cta svg{width:11px; height:11px; stroke:var(--brass); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
 
   .footer{text-align:center; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); margin-top:26px; line-height:1.7;}
   .footer .warn{color:var(--stamp-red);}
@@ -1543,17 +1571,65 @@
 
   <!-- DIAGNOSIS -->
   <div class="page collapsible" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 14 11 16 15 12"/></svg></span>진단 &amp; 조언</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">냉정한 점검</div></div>
-    <div class="advice-num-row">
-      <div class="advice-num"><div class="k">총자산</div><div class="v" id="dxTotal">—</div></div>
-      <div class="advice-num"><div class="k">추정 수익률</div><div class="v up" id="dxRet">—</div></div>
-      <div class="advice-num"><div class="k">개별주 비중</div><div class="v" id="dxStock">—</div></div>
-      <div class="advice-num"><div class="k">현금 비중</div><div class="v down" id="dxCash">—</div></div>
+    <div class="page-head">
+      <div class="dx-head-l"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 14 11 16 15 12"/></svg></span>진단 &amp; 조언</h2></div>
+      <div class="dx-score-pill" id="dxScorePill">
+        <svg width="22" height="22" viewBox="0 0 42 42">
+          <circle cx="21" cy="21" r="17" fill="none" stroke="var(--line)" stroke-width="5"/>
+          <circle cx="21" cy="21" r="17" fill="none" stroke="#c0392b" stroke-width="5" stroke-linecap="round" id="dxScoreArc" transform="rotate(-90 21 21)"/>
+        </svg>
+        <span class="dx-score-num" id="dxScoreNum">—</span><span class="dx-score-lbl">/100</span>
+      </div>
     </div>
-    <div class="advice-card urgent"><h3>한 줄 진단 <span class="pill">CORE</span></h3><p>"미국 기술·성장주 + 100% 달러"에 집중한 <b>고확신 베팅</b>. 상승장에서 통한 구조이고, 하락 전환 시 변동성이 그대로 실린다. 수익의 질이 아니라 <b>리스크 구조</b>가 과제.</p></div>
-    <div class="advice-card urgent"><h3>가장 시급한 2가지 <span class="pill">ACT NOW</span></h3><p><b>① PLTR 비중 축소</b> — 단일 종목 최대 비중. 일부 익절해 10% 이하로.</p><p><b>② 현금 확보</b> — 현재 현금 비중이 낮아 하락장 대응 여력이 적음. 8~10%로.</p></div>
-    <div class="advice-card"><h3>전략 방향 <span class="pill">PLAN</span></h3><p><b>코어-새틀라이트 전환:</b> 지수 ETF를 본체로, 개별주를 위성으로. 지금은 위성이 본체.</p><p><b>연금저축 우선 납입:</b> 신규 자금은 연금(세액공제)→ISA 순. 세후 수익률부터 확보.</p></div>
-    <div class="advice-card"><h3>패자 재점검 <span class="pill">REVIEW</span></h3><p>SMR·NFLX·INTC는 "물타기 vs 손절"이 아니라 <b>매수 논리가 아직 유효한가</b>로 판단. 논리가 깨졌으면 규모 축소.</p></div>
+
+    <div class="dx-oneline" id="dxOneline">"미국 기술·성장주 + 100% 달러"에 집중한 <b>고확신 베팅</b>. 상승장에서 통한 구조이고, 하락 전환 시 변동성이 그대로 실린다. 수익의 질이 아니라 <b>리스크 구조</b>가 과제.</div>
+
+    <div class="dx-cmp-sec">
+      <div class="dx-cmp-head"><svg viewBox="0 0 24 24"><path d="M9 17V9M12 17V5M15 17v-4"/></svg>지금 비중 vs 권장 범위</div>
+      <div id="dxCmpRows"></div>
+    </div>
+
+    <div class="dx-cmp-head"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>조언 (눌러서 펼치기)</div>
+    <div class="dx-acc open" data-acc="pltr">
+      <div class="dx-acc-head">
+        <div class="dx-acc-ic" style="background:rgba(192,57,43,.12);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
+        <span class="dx-acc-title">PLTR 비중 축소</span>
+        <span class="dx-acc-badge" style="background:rgba(192,57,43,.12); color:#c0392b;">긴급</span>
+        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="dx-acc-body">
+        <p>단일 종목 최대 비중. 일부 익절해 10% 이하로.</p>
+        <button class="cta" data-goto="sec-calc">매수·매도 계산기에서 몇 주 팔면 될지 확인 <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="dx-acc" data-acc="cash">
+      <div class="dx-acc-head">
+        <div class="dx-acc-ic" style="background:rgba(192,57,43,.12);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg></div>
+        <span class="dx-acc-title">현금 확보</span>
+        <span class="dx-acc-badge" style="background:rgba(192,57,43,.12); color:#c0392b;">긴급</span>
+        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="dx-acc-body"><p>현재 현금 비중이 낮아 하락장 대응 여력이 적음. 8~10%로.</p></div>
+    </div>
+    <div class="dx-acc" data-acc="core">
+      <div class="dx-acc-head">
+        <div class="dx-acc-ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M3 11l18-5v12L3 14v-3z"/></svg></div>
+        <span class="dx-acc-title">코어-새틀라이트 전환 · 연금 우선 납입</span>
+        <span class="dx-acc-badge" style="background:rgba(0,102,204,.1); color:#0066cc;">전략</span>
+        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="dx-acc-body"><p>지수 ETF를 본체로, 개별주를 위성으로. 신규 자금은 연금(세액공제)→ISA 순으로.</p></div>
+    </div>
+    <div class="dx-acc" data-acc="review">
+      <div class="dx-acc-head">
+        <div class="dx-acc-ic" style="background:rgba(201,130,42,.12);"><svg viewBox="0 0 24 24" style="stroke:#c9822a;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <span class="dx-acc-title">패자 재점검: SMR·NFLX·INTC</span>
+        <span class="dx-acc-badge" style="background:rgba(201,130,42,.12); color:#c9822a;">점검</span>
+        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="dx-acc-body"><p>"물타기 vs 손절"이 아니라 매수 논리가 아직 유효한가로 판단. 논리가 깨졌으면 규모 축소.</p></div>
+    </div>
+
     <div class="note">본 내용은 참고용 프레임워크이며 투자자문이 아닙니다. 최종 결정과 책임은 본인에게 있습니다.</div>
   </div>
 
@@ -2402,15 +2478,65 @@ function renderTables(){
   cont.querySelectorAll('.hcard.clickable').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
 }
 
+const DX_TARGET={stock:60, cashLo:8, cashHi:10, pltr:10};
 function renderDiagnosis(){
   const total=grandTotal(), cost=investedCost();
   const ret=((total-cashKRW())/cost-1)*100;
   const ov=HOLDINGS.filter(h=>h.acct==='overseas').reduce((s,h)=>s+evalKRW(h),0);
   const cash=cashKRW();
-  document.getElementById('dxTotal').textContent='₩'+(total/1e6).toFixed(1)+'M';
-  document.getElementById('dxRet').textContent=sign(ret);
-  document.getElementById('dxStock').textContent=(ov/total*100).toFixed(1)+'%';
-  document.getElementById('dxCash').textContent=(cash/total*100).toFixed(1)+'%';
+  const stockPct=ov/total*100, cashPct=cash/total*100;
+  const pltr=HOLDINGS.find(h=>h.ticker==='PLTR');
+  const pltrPct=pltr? evalKRW(pltr)/total*100 : 0;
+
+  // 한줄 진단에 실제 수치 반영
+  document.getElementById('dxOneline').innerHTML=
+    `"미국 기술·성장주 + 100% 달러"에 집중한 <b>고확신 베팅</b>. 상승장에서 통한 구조이고, 하락 전환 시 변동성이 그대로 실린다. 총자산 ${won(total)} · 추정수익률 <b class="${clsOf(ret)}">${sign(ret)}</b>`;
+
+  // 종합 스코어: 100점에서 권장범위 이탈분만큼 감점(각 항목 상한 있음)
+  const stockOver=Math.max(0, stockPct-DX_TARGET.stock);
+  const cashUnder=Math.max(0, DX_TARGET.cashLo-cashPct);
+  const pltrOver=Math.max(0, pltrPct-DX_TARGET.pltr);
+  const score=Math.round(Math.max(0, 100 - Math.min(30,stockOver) - Math.min(20,cashUnder) - Math.min(15,pltrOver)));
+  const circumference=2*Math.PI*17;
+  const arc=document.getElementById('dxScoreArc');
+  arc.setAttribute('stroke-dasharray', `${(circumference*score/100).toFixed(1)} ${circumference.toFixed(1)}`);
+  document.getElementById('dxScoreNum').textContent=score;
+  document.getElementById('dxScorePill').className='dx-score-pill'+(score>=75?' ok':'');
+  arc.style.stroke = score>=75 ? '#15803d' : '#c0392b';
+
+  // 비교바: 개별주비중/현금비중을 권장범위와 함께
+  const rows=[
+    { k:'개별주 비중', now:stockPct, rec:`권장 ${DX_TARGET.stock}% 이하`, target:DX_TARGET.stock, over:stockOver>0,
+      gapTxt: stockOver>0 ? `${stockOver.toFixed(1)}%p 초과` : '권장 범위 이내',
+      ic:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/>', icBg:'rgba(192,57,43,.1)', icColor:'#c0392b', barColor:'var(--stamp-red)' },
+    { k:'현금 비중', now:cashPct, rec:`권장 ${DX_TARGET.cashLo}~${DX_TARGET.cashHi}%`, target:DX_TARGET.cashLo, over:cashUnder>0,
+      gapTxt: cashUnder>0 ? `${cashUnder.toFixed(1)}%p 부족` : '권장 범위 이내',
+      ic:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/>', icBg:'rgba(44,74,124,.1)', icColor:'#2c4a7c', barColor:'var(--stamp-blue)' },
+  ];
+  document.getElementById('dxCmpRows').innerHTML=rows.map(r=>`
+    <div class="dx-cmp-row">
+      <div class="dx-cmp-row-top">
+        <div class="dx-cmp-ic" style="background:${r.icBg};"><svg viewBox="0 0 24 24" style="stroke:${r.icColor};">${r.ic}</svg></div>
+        <div class="dx-cmp-mid"><span class="k">${r.k}</span><span class="gap ${r.over?(r.k.includes('현금')?'down':'up'):''}">${r.gapTxt}</span></div>
+        <div class="dx-cmp-right"><span class="now ${r.over?(r.k.includes('현금')?'down':'up'):''}">${r.now.toFixed(1)}%</span><span class="rec">${r.rec}</span></div>
+      </div>
+      <div class="dx-cmp-bar"><div class="fill" style="width:${Math.min(100,r.now).toFixed(1)}%; background:${r.barColor};"></div><div class="target" style="left:${r.target}%;"></div></div>
+    </div>`).join('');
+}
+function initDiagnosisAcc(){
+  document.querySelectorAll('.dx-acc-head').forEach(h=>{
+    h.onclick=()=>{ h.closest('.dx-acc').classList.toggle('open'); };
+  });
+  document.querySelectorAll('.dx-acc-body .cta').forEach(b=>{
+    b.onclick=(e)=>{
+      e.stopPropagation();
+      const target=document.getElementById(b.dataset.goto);
+      if(!target) return;
+      const tabBtn=document.querySelector(`#tabbar .tab-btn[data-tab="rebal"]`);
+      if(tabBtn) tabBtn.click();
+      setTimeout(()=>target.scrollIntoView({behavior:'smooth', block:'start'}), 60);
+    };
+  });
 }
 
 let dailyPnlEverLoaded = false;
@@ -2499,8 +2625,9 @@ function renderDailyPnl(){
       <div class="dp-c-val"><div class="a ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}</div><div class="p ${clsOf(r.v)}">${sign(r.pct)}</div></div>
     </div>`;
   };
+  const dateLbl=periodDateLabel(pnlPeriod);
   const heroHtml=`<div class="dp-hero ${cls}">
-    <div class="lbl">${LBL[pnlPeriod]}${approx?' · 근사치':''}${real?' <span class="real-badge">✓ 실시세 확인됨</span>':''}</div>
+    <div class="lbl">${LBL[pnlPeriod]}${dateLbl?` · ${dateLbl}`:''}${approx?' · 근사치':''}${real?' <span class="real-badge">✓ 실시세 확인됨</span>':''}</div>
     <div class="num"><span id="dpHeroNum">${arrowOf(total)} ${total>=0?'+':''}${won(dpHeroShown==null?total:dpHeroShown)}</span><span class="pct">${sign(pct)}</span></div>
     <div class="sub">${rows.length}종목 반영</div>
   </div>`;
@@ -4056,6 +4183,31 @@ function periodBoundaries(){
   const fmt=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
   return { week:fmt(prevDay(monday)), month:fmt(prevDay(monthStart)), quarter:fmt(prevDay(qStart)), year:fmt(prevDay(yearStart)) };
 }
+/* 수익현황 히어로에 표시할 "몇일부터 몇일까지" 라벨.
+   이번주/이번달은 실제 날짜(몇월 몇일)까지, 이번분기/올해는 기간이 길어 날짜 단위가
+   큰 의미 없으므로 월 단위까지만 표시한다(예: "7월~8월"). 오늘/총은 범위가 필요 없다. */
+function periodDateLabel(key){
+  const now=new Date();
+  const d=(x)=>`${x.getMonth()+1}.${x.getDate()}`;
+  const m=(x)=>`${x.getMonth()+1}월`;
+  if(key==='week'){
+    const monday=new Date(now); monday.setDate(now.getDate()-((now.getDay()+6)%7));
+    return `${d(monday)}~${d(now)}`;
+  }
+  if(key==='month'){
+    const monthStart=new Date(now.getFullYear(), now.getMonth(), 1);
+    return `${d(monthStart)}~${d(now)}`;
+  }
+  if(key==='quarter'){
+    const qStart=new Date(now.getFullYear(), Math.floor(now.getMonth()/3)*3, 1);
+    return qStart.getMonth()===now.getMonth() ? m(now) : `${m(qStart)}~${m(now)}`;
+  }
+  if(key==='year'){
+    const yearStart=new Date(now.getFullYear(), 0, 1);
+    return yearStart.getMonth()===now.getMonth() ? m(now) : `${m(yearStart)}~${m(now)}`;
+  }
+  return null; // today, all은 범위 표시 안 함
+}
 async function loadHistPriceCache(){
   try{ const r=await STORE.get(HIST_PRICE_KEY); if(r&&r.value) return JSON.parse(r.value); }catch(e){}
   return {};
@@ -4253,6 +4405,7 @@ initTax();
 initWhatif();
 renderStrat();
 initCalcSim();
+initDiagnosisAcc();
 initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 initPnlTabs();
