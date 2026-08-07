@@ -177,7 +177,7 @@
   @keyframes marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   .tk-item{
     font-family:'Inter',-apple-system,sans-serif; font-size:12px;
-    color:var(--paper); padding:0 18px; border-right:1px solid rgba(245,245,247,0.1);
+    color:var(--bar-fg); padding:0 18px; border-right:1px solid rgba(245,245,247,0.1);
     display:inline-flex; align-items:center; gap:7px;
   }
   .tk-item .sym{ color:rgba(245,245,247,0.65); font-size:10.5px; }
@@ -225,7 +225,6 @@
   .cover-detail{max-height:0; overflow:hidden; transition:max-height .25s ease;}
   .cover-detail.open{max-height:280px;}
   .cd-row{display:flex; justify-content:space-between; padding:7px 2px; font-size:12.5px;}
-  .cd-k{color:var(--ink-soft);}
   .cd-v{font-weight:700;}
   .cd-label{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin:8px 2px 4px;}
   .cd-radio{display:flex; align-items:center; gap:9px; padding:7px 2px; cursor:pointer;}
@@ -237,6 +236,30 @@
   .cd-pill.up{color:var(--stamp-red); background:rgba(192,57,43,.08);}
   .cd-pill.down{color:var(--stamp-blue); background:rgba(44,74,124,.08);}
   .cd-divider{height:1px; background:var(--line); margin:10px 2px;}
+  .cd-k{color:var(--ink-soft); display:flex; align-items:center; gap:8px;}
+  .cd-ic{width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .cd-ic svg{width:11px; height:11px;}
+  .week-dots-wrap{display:flex; align-items:center; justify-content:space-between; background:var(--paper); border-radius:12px; padding:10px 12px; margin:14px 0;}
+  .week-dots-lbl{font-size:11px; color:var(--ink-soft); font-weight:600;}
+  .week-dots{display:flex; align-items:flex-end; gap:5px; height:24px;}
+  .week-dot{width:6px; border-radius:3px; background:var(--line); transition:height .3s ease;}
+  .week-dot.up{background:var(--stamp-red);}
+  .week-dot.down{background:var(--stamp-blue);}
+  .ins-badgerow{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 2px; }
+  .ins-badgerow .ins-badge{ justify-content:center; }
+  .ins-badgerow .ins-badge.solo{ grid-column:1 / -1; justify-content:flex-start; }
+  .ins-badge{ display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:8px 12px; border-radius:12px; white-space:nowrap; box-sizing:border-box; }
+  .ins-ath.up{ background:rgba(255,111,94,.14); color:var(--stamp-red); }
+  .ins-ath.below{ background:var(--paper); color:var(--ink-soft); }
+  .ins-streak.up{ background:rgba(255,159,10,.14); color:#ff9f0a; }
+  .ins-streak.down{ background:rgba(44,74,124,.1); color:var(--stamp-blue); }
+  .ins-contrib{ display:flex; align-items:center; gap:9px; background:var(--paper); border-radius:12px; padding:9px 12px; margin:10px 0 2px; font-size:11.5px; }
+  .ins-contrib .ic{ width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ins-contrib .ic.up{ background:rgba(255,111,94,.12); color:var(--stamp-red); }
+  .ins-contrib .ic.down{ background:rgba(44,74,124,.1); color:var(--stamp-blue); }
+  .ins-contrib .ic svg{ width:11px; height:11px; }
+  .ins-contrib b{ color:var(--ink); font-weight:700; }
+  .ins-empty-note{ font-size:11px; color:var(--ink-soft); padding:9px 2px; }
 
   .alloc{margin-top:20px; padding-top:18px; border-top:1px solid var(--line);}
   .alloc-title{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px;}
@@ -1186,15 +1209,21 @@
         <div class="cc-right"><span class="cc-v" id="chipTotalV">—</span><span class="cc-p" id="chipTotalP"></span></div>
       </div>
     </div>
+    <div id="insContrib"></div>
     <div class="cover-detail" id="coverDetail">
-      <div class="cd-row"><span class="cd-k">투자</span><span class="cd-v" id="cdInvest">—</span></div>
-      <div class="cd-row"><span class="cd-k">원금</span><span class="cd-v" id="cdCost">—</span></div>
-      <div class="cd-label">수익보기</div>
-      <div class="cd-radio sel" data-k="total"><span class="cd-dot"></span><span class="cd-rk">총 수익</span><span class="cd-pill" id="cdTotalPill">—</span></div>
-      <div class="cd-radio" data-k="daily"><span class="cd-dot"></span><span class="cd-rk">일간 수익</span><span class="cd-pill" id="cdDailyPill">—</span></div>
+      <div class="cd-row"><span class="cd-k"><span class="cd-ic" style="background:rgba(64,156,255,.1); color:var(--brass);"><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 4 7-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>투자</span><span class="cd-v" id="cdInvest">—</span></div>
+      <div class="cd-row"><span class="cd-k"><span class="cd-ic" style="background:rgba(110,110,115,.12); color:var(--ink-soft);"><svg viewBox="0 0 24 24"><path d="M6 3v18M6 4h11l-3 4 3 4H6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>원금</span><span class="cd-v" id="cdCost">—</span></div>
       <div class="cd-divider"></div>
-      <div class="cd-row"><span class="cd-k">현금</span><span class="cd-v" id="cdCash">—</span></div>
+      <div class="cd-row"><span class="cd-k"><span class="cd-ic" style="background:rgba(44,74,124,.08); color:var(--stamp-blue);"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>일간수익</span><span class="cd-pill" id="cdDailyPill">—</span></div>
+      <div class="cd-row"><span class="cd-k"><span class="cd-ic" style="background:rgba(192,57,43,.08); color:var(--stamp-red);"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>총수익</span><span class="cd-pill" id="cdTotalPill">—</span></div>
+      <div class="cd-divider"></div>
+      <div class="cd-row"><span class="cd-k"><span class="cd-ic" style="background:rgba(142,142,147,.12); color:#8e8e93;"><svg viewBox="0 0 24 24"><rect x="3.5" y="7" width="17" height="12" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>현금</span><span class="cd-v" id="cdCash">—</span></div>
     </div>
+    <div class="week-dots-wrap">
+      <span class="week-dots-lbl">최근 7일 등락</span>
+      <div class="week-dots" id="weekDots"></div>
+    </div>
+    <div class="ins-badgerow" id="insBadgeRow"></div>
     <div class="alloc">
       <div class="alloc-title">자산 배분</div>
       <div class="alloc-bar" id="allocBar"></div>
@@ -1939,7 +1968,11 @@ function renderCover(){
     grid.innerHTML+=`<div class="acct-item"><div class="acct-ic" style="background:${p.color};">${ACCT_ICONS[p.key]}</div><div class="acct-txt"><div class="n">${p.label}</div><div class="p">${pc.toFixed(1)}%</div></div></div>`;
   });
 
-  // 당일 칩 + 상세패널 일간수익 pill (실시간 갱신 후에만 값 존재)
+  // ① 역대 최고치(ATH) 배지 + ④ 연속 상승/하락 스트릭 — AS 히스토리만 있으면 계산 가능 (실시간 갱신 불필요)
+  renderAthAndStreak(total);
+
+  // 당일 칩 + 상세패널 일간수익 pill + ③ 오늘 등락 기여 TOP 종목 (실시간 갱신 후에만 값 존재)
+  const insContribEl=document.getElementById('insContrib');
   if(HEAT_LIVE){
     const {totalDay:d, totalPct:dp, contribs}=dailyChangeStats();
     if(contribs.length){
@@ -1950,16 +1983,78 @@ function renderCover(){
       const cdDailyPill=document.getElementById('cdDailyPill');
       cdDailyPill.className='cd-pill '+clsOf(d);
       cdDailyPill.textContent=`${d>=0?'+':''}${won(d)}원 (${sign(dp)})`;
+
+      if(insContribEl){
+        const sorted=[...contribs].sort((a,b)=> d>=0 ? b.d-a.d : a.d-b.d);
+        const top=sorted[0];
+        const up=top.d>=0;
+        insContribEl.innerHTML=`<div class="ins-contrib">
+          <span class="ic ${up?'up':'down'}"><svg viewBox="0 0 24 24"><path d="${up?'M12 19V5M5 12l7-7 7 7':'M12 5v14M5 12l7 7 7-7'}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          오늘 ${up?'상승':'하락'} 견인 <b>${top.h.ticker} ${up?'+':''}${won(top.d)}원</b>
+        </div>`;
+      }
+    } else if(insContribEl){
+      insContribEl.innerHTML=`<div class="ins-empty-note">오늘 시세 새로고침 전에는 표시되지 않습니다</div>`;
     }
+  } else if(insContribEl){
+    insContribEl.innerHTML=`<div class="ins-empty-note">오늘 시세 새로고침 전에는 표시되지 않습니다</div>`;
   }
   renderCoverSpark();
+  renderWeekDots();
+}
+function renderAthAndStreak(total){
+  const row=document.getElementById('insBadgeRow');
+  if(!row || typeof AS==='undefined' || !AS.length) return;
+  const pastMax=Math.max(...AS.slice(0,-1).filter(v=>v!=null));
+  const athValue=Math.max(pastMax, total);
+  const atHigh=total >= athValue - 0.5;
+  let streak=0, dir=0;
+  for(let i=AS.length-1;i>=1;i--){
+    const a=AS[i-1], b=AS[i];
+    if(a==null||b==null) break;
+    const d=b-a;
+    const s=d>0.0001?1:(d<-0.0001?-1:0);
+    if(s===0) break;
+    if(dir===0){ dir=s; streak=1; }
+    else if(s===dir){ streak++; }
+    else break;
+  }
+  const hasStreak = streak>=2;
+  const soloCls = hasStreak ? '' : ' solo'; // ATH 배지 혼자면 폭 전체를 채움
+  let html='';
+  if(atHigh){
+    html+=`<span class="ins-badge ins-ath up${soloCls}">🏆 역대 최고치 경신중</span>`;
+  } else {
+    const gap=(total/athValue-1)*100;
+    html+=`<span class="ins-badge ins-ath below${soloCls}">최고치 대비 ${sign(gap)}</span>`;
+  }
+  if(hasStreak){
+    const cls=dir>0?'up':'down';
+    const word=dir>0?'연속 상승':'연속 하락';
+    html+=`<span class="ins-badge ins-streak ${cls}">${dir>0?'🔥':'📉'} ${streak}일 ${word} 중</span>`;
+  }
+  row.innerHTML=html;
+}
+function renderWeekDots(){
+  const el=document.getElementById('weekDots'); if(!el || typeof AS==='undefined') return;
+  const n=AS.length, take=Math.min(8,n);
+  const vals=AS.slice(n-take);
+  const deltas=[];
+  for(let i=1;i<vals.length;i++){
+    const prev=vals[i-1], cur=vals[i];
+    deltas.push(prev? (cur-prev)/prev*100 : 0);
+  }
+  while(deltas.length<7) deltas.unshift(null); // 데이터가 7일 미만이면 앞쪽을 빈 칸으로
+  const maxAbs=Math.max(0.3, ...deltas.map(d=>d==null?0:Math.abs(d)));
+  el.innerHTML=deltas.map(d=>{
+    if(d==null) return `<div class="week-dot" style="height:20%;"></div>`;
+    const h=22+Math.min(78, Math.abs(d)/maxAbs*78);
+    return `<div class="week-dot ${clsOf(d)}" style="height:${h}%;"></div>`;
+  }).join('');
 }
 function initCoverDetail(){
   const btn=document.getElementById('coverDetailBtn'), panel=document.getElementById('coverDetail');
   if(btn && panel) btn.onclick=()=>{ panel.classList.toggle('open'); btn.classList.toggle('open'); };
-  document.querySelectorAll('.cd-radio').forEach(r=>{
-    r.onclick=()=>{ document.querySelectorAll('.cd-radio').forEach(x=>x.classList.toggle('sel', x===r)); };
-  });
 }
 
 
