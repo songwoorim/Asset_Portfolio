@@ -2,6 +2,7 @@
 <html lang="ko" class="theme-init"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>자산 포트폴리오 · 통장 (LIVE)</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%230066cc%22/%3E%3Cpath%20d%3D%22M14%2042%20L26%2030%20L34%2038%20L50%2018%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3Cpath%20d%3D%22M40%2018%20H50%20V28%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -270,6 +271,30 @@
 
   /* ---------- 종목 카드 (테이블 완전 대체) ---------- */
   .hcard{background:var(--paper); border-radius:14px; padding:12px 14px; margin-bottom:8px; cursor:pointer; transition:transform .12s ease;}
+  .hcard-swipe-wrap{position:relative; border-radius:14px; overflow:hidden; margin-bottom:8px;}
+  .hcard-swipe-wrap .hcard{margin-bottom:0; position:relative; z-index:1; touch-action:pan-y;}
+  .hcard-swipe-action{position:absolute; top:0; right:0; bottom:0; width:78px; background:var(--brass); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:3px; color:#fff; cursor:pointer; z-index:0;}
+  .hcard-swipe-action svg{width:17px; height:17px; stroke:#fff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .hcard-swipe-action span{font-family:'Inter',-apple-system,sans-serif; font-size:9px; font-weight:700;}
+
+  /* 길게 눌러서 미리보기 */
+  .peek-overlay{position:fixed; inset:0; background:rgba(0,0,0,0); z-index:200; display:flex; align-items:center; justify-content:center; pointer-events:none; transition:background .22s;}
+  .peek-overlay.show{background:rgba(0,0,0,.35); pointer-events:auto;}
+  .peek-modal{background:var(--card); border-radius:20px; padding:22px; width:250px; text-align:center; transform:scale(0.7); opacity:0; transition:transform .22s cubic-bezier(.34,1.56,.64,1), opacity .18s; box-shadow:0 20px 50px rgba(0,0,0,.35);}
+  .peek-overlay.show .peek-modal{transform:scale(1); opacity:1;}
+  .peek-modal .pk-av{width:48px; height:48px; border-radius:50%; margin:0 auto 12px; overflow:hidden;}
+  .peek-modal .pk-av img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .peek-modal .pk-av span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:800; color:#fff;}
+  .peek-modal b{font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; display:block;}
+  .peek-modal .pk-sub{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); margin-top:2px;}
+  .peek-modal .pk-big{font-family:'Inter',-apple-system,sans-serif; font-size:21px; font-weight:800; margin-top:13px;}
+  .peek-modal .pk-chg{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:700; margin-top:3px;}
+  .peek-modal .pk-hint{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); margin-top:12px;}
+
+  /* 마일스톤 컨페티 */
+  .ms-toast{position:fixed; top:70px; left:50%; transform:translateX(-50%) scale(0.85); background:var(--ink); color:var(--paper); font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:700; padding:8px 16px; border-radius:9999px; opacity:0; transition:opacity .3s, transform .3s; pointer-events:none; z-index:300; white-space:nowrap; box-shadow:0 6px 20px rgba(0,0,0,.2);}
+  .ms-toast.show{opacity:1; transform:translateX(-50%) scale(1);}
+  .confetti-piece{position:fixed; width:8px; height:8px; top:-10px; pointer-events:none; border-radius:2px; z-index:299;}
   .hcard:active{transform:scale(0.97);}
   .hcard:last-child{margin-bottom:0;}
   .hcard-top{display:flex; align-items:center; gap:10px;}
@@ -1659,6 +1684,20 @@
   </div>
 </div>
 
+<!-- 길게눌러서 미리보기 -->
+<div class="peek-overlay" id="peekOverlay">
+  <div class="peek-modal" id="peekModal">
+    <div class="pk-av" id="pkAv"></div>
+    <b id="pkName">—</b>
+    <div class="pk-sub" id="pkSub"></div>
+    <div class="pk-big" id="pkBig"></div>
+    <div class="pk-chg" id="pkChg"></div>
+    <div class="pk-hint">손을 떼면 닫혀요 · 탭하면 상세보기</div>
+  </div>
+</div>
+<!-- 마일스톤 축하 토스트 -->
+<div class="ms-toast" id="msToast"></div>
+
 <!-- BOTTOM FIXED TAB BAR -->
 <div class="tabbar" id="tabbar">
   <button class="tab-btn on" data-tab="home">
@@ -2379,13 +2418,16 @@ function renderTables(){
       } else {
         priceRow=`<div class="hcard-empty">실시간 갱신 시 현재가 표시</div>`;
       }
-      body+=`<div class="hcard clickable" data-tk="${h.ticker}">
-        <div class="hcard-top">
-          ${hcardAvatar(h.ticker)}
-          <div class="hcard-nm">${h.nameKr}<span>${h.ticker} · ${h.shares}주</span></div>
-          <div class="hcard-ev">${wonPlain(h.ev)}<span class="${clsOf(h.r)}">${sign(h.r)}</span></div>
+      body+=`<div class="hcard-swipe-wrap">
+        <div class="hcard-swipe-action" data-goto-tk="${h.ticker}"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg><span>계산기</span></div>
+        <div class="hcard clickable" data-tk="${h.ticker}">
+          <div class="hcard-top">
+            ${hcardAvatar(h.ticker)}
+            <div class="hcard-nm">${h.nameKr}<span>${h.ticker} · ${h.shares}주</span></div>
+            <div class="hcard-ev">${wonPlain(h.ev)}<span class="${clsOf(h.r)}">${sign(h.r)}</span></div>
+          </div>
+          <div class="hcard-bottom">${priceRow}</div>
         </div>
-        <div class="hcard-bottom">${priceRow}</div>
       </div>`;
     });
     if(a==='isa' && ISA_CASH>0){
@@ -2480,6 +2522,7 @@ function renderTables(){
 
     <div class="note">환율 ${FX.toLocaleString('en-US',{maximumFractionDigits:2})}원/USD 기준 · ISA 예수금은 재매수 전까지 대기 중인 현금입니다.</div></div>`;
   cont.querySelectorAll('.hcard.clickable').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
+  initHcardGestures(cont);
 }
 
 const DX_TARGET={stock:60, cashLo:8, cashHi:10, pltr:10};
@@ -2974,7 +3017,21 @@ function renderRebalCheckpoint(){
   });
   tbl.innerHTML=html;
   cpSumBoxes(sum, rows);
-  tbl.querySelectorAll('input[type=range]').forEach(el=>el.oninput=e=>{ TARGET[e.target.dataset.id]=parseFloat(e.target.value); updateRebalDynamic(); });
+  tbl.querySelectorAll('input[type=range]').forEach(el=>{
+    let wasSnapped=false;
+    el.oninput=e=>{
+      let v=parseFloat(e.target.value);
+      const nearest5=Math.round(v/5)*5;
+      const snapped = Math.abs(v-nearest5)<=0.75 && nearest5<=parseFloat(e.target.max) && nearest5>=0;
+      if(snapped){
+        v=nearest5; e.target.value=v;
+        if(!wasSnapped && navigator.vibrate) navigator.vibrate(8);
+        wasSnapped=true;
+      } else { wasSnapped=false; }
+      TARGET[e.target.dataset.id]=v;
+      updateRebalDynamic();
+    };
+  });
 }
 function updateRebalDynamic(){
   const total=grandTotal(); let sum=0; const rows=[];
@@ -3147,6 +3204,94 @@ function renderAll(){
 }
 
 /* ============ MODAL ============ */
+/* ===== 보유종목 카드: 스와이프 퀵액션 + 길게눌러서 미리보기 ===== */
+function initHcardGestures(container){
+  // 1) 스와이프: 왼쪽으로 밀면 계산기 바로가기 버튼 노출
+  container.querySelectorAll('.hcard-swipe-wrap').forEach(wrap=>{
+    const card=wrap.querySelector('.hcard'), action=wrap.querySelector('.hcard-swipe-action');
+    if(!card || !action) return;
+    let startX=0, curX=0, dragging=false, openX=0;
+    const setX=x=>{ card.style.transform=`translateX(${x}px)`; };
+    const start=x=>{ startX=x; dragging=true; card.style.transition='none'; };
+    const move=x=>{ if(!dragging) return; curX=Math.max(-78, Math.min(0, x-startX+openX)); setX(curX); };
+    const end=()=>{
+      if(!dragging) return; dragging=false;
+      card.style.transition='transform .25s cubic-bezier(.22,1,.36,1)';
+      openX = curX < -38 ? -78 : 0;
+      setX(openX);
+    };
+    card.addEventListener('touchstart', e=>start(e.touches[0].clientX), {passive:true});
+    card.addEventListener('touchmove', e=>move(e.touches[0].clientX), {passive:true});
+    card.addEventListener('touchend', end);
+    action.onclick=()=>{
+      openX=0; setX(0); card.style.transition='transform .2s';
+      const tk=action.dataset.gotoTk;
+      const sel=document.getElementById('calcSel'); if(sel){ sel.value=tk; sel.onchange&&sel.onchange(); }
+      const tabBtn=document.querySelector('#tabbar .tab-btn[data-tab="rebal"]');
+      if(tabBtn) tabBtn.click();
+      setTimeout(()=>{ const target=document.getElementById('sec-calc'); if(target) target.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
+    };
+  });
+  // 2) 길게 눌러서 미리보기(peek): 0.4초 이상 누르면 확대 미리보기, 짧으면 기존 클릭(모달)
+  container.querySelectorAll('.hcard.clickable').forEach(card=>{
+    let timer=null, longPressed=false;
+    const start=()=>{
+      longPressed=false;
+      timer=setTimeout(()=>{ longPressed=true; openPeek(card.dataset.tk); if(navigator.vibrate) navigator.vibrate(12); }, 400);
+    };
+    const clear=()=>{ clearTimeout(timer); };
+    card.addEventListener('touchstart', start, {passive:true});
+    card.addEventListener('touchend', ()=>{ clear(); if(longPressed){ closePeek(); } }, {passive:true});
+    card.addEventListener('touchmove', clear, {passive:true});
+    card.addEventListener('click', e=>{ if(longPressed){ e.stopPropagation(); longPressed=false; } });
+  });
+}
+function openPeek(tk){
+  const h=HOLDINGS.find(x=>x.ticker===tk); if(!h) return;
+  document.getElementById('pkAv').innerHTML=txAvatar(tk,'pk-av-inner');
+  document.getElementById('pkName').textContent=h.nameKr;
+  const px=h.cur==='USD'?('$'+h.price.toFixed(2)):wonPlain(h.price);
+  document.getElementById('pkSub').textContent=`${h.ticker} · ${h.shares}주 · ${px}`;
+  const ev=evalKRW(h);
+  document.getElementById('pkBig').textContent=wonPlain(ev);
+  const chg=document.getElementById('pkChg');
+  if(HEAT_LIVE && DAY_CHG[tk]!=null){ const d=DAY_CHG[tk]; chg.className='pk-chg '+clsOf(d); chg.textContent=`${d>0?'▲':d<0?'▼':''} ${sign(d)} (오늘)`; }
+  else { const r=retPct(h); chg.className='pk-chg '+clsOf(r); chg.textContent=`${r>0?'▲':r<0?'▼':''} ${sign(r)} (누적)`; }
+  document.getElementById('peekOverlay').classList.add('show');
+}
+function closePeek(){ document.getElementById('peekOverlay').classList.remove('show'); }
+
+/* ===== 마일스톤 축하 효과 (총자산 역대 최고치 경신) ===== */
+const ATH_KEY='ath_total_v1';
+const CONFETTI_COLORS=['#c0392b','#0066cc','#15803d','#c9822a','#7c3aed'];
+function burstConfetti(){
+  for(let i=0;i<26;i++){
+    const c=document.createElement('div');
+    c.className='confetti-piece';
+    const x=30+Math.random()*40;
+    c.style.left=x+'%'; c.style.top='90px';
+    c.style.background=CONFETTI_COLORS[i%CONFETTI_COLORS.length];
+    document.body.appendChild(c);
+    const dur=900+Math.random()*500, dx=(Math.random()-0.5)*160;
+    c.animate([
+      { transform:'translate(0,0) rotate(0deg)', opacity:1 },
+      { transform:`translate(${dx}px, ${180+Math.random()*80}px) rotate(${360+Math.random()*360}deg)`, opacity:0 }
+    ], { duration:dur, easing:'cubic-bezier(.25,.46,.45,.94)' });
+    setTimeout(()=>c.remove(), dur+50);
+  }
+}
+async function checkMilestone(total){
+  let prevAth=0;
+  try{ const r=await STORE.get(ATH_KEY); if(r&&r.value) prevAth=parseFloat(r.value)||0; }catch(e){}
+  if(prevAth>0 && total>prevAth){
+    burstConfetti();
+    const toast=document.getElementById('msToast');
+    if(toast){ toast.textContent='🎉 총자산 역대 최고치 경신!'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 2000); }
+    if(navigator.vibrate) navigator.vibrate([15,40,15]);
+  }
+  if(total>prevAth){ try{ await STORE.set(ATH_KEY, String(total)); }catch(e){} }
+}
+
 function openModal(tk){
   const h=HOLDINGS.find(x=>x.ticker===tk); if(!h) return;
   document.getElementById('mName').textContent=h.nameKr;
@@ -4345,9 +4490,11 @@ async function refresh(){
   if(failed.length===0){
     setStatus('live', `<b>실시간</b> · ${LAST_UPDATED}`);
     popCheck();
+    checkMilestone(grandTotal());
   } else if(failed.length<results.length){
     setStatus('live', `<b>부분 갱신</b> · ${LAST_UPDATED}`);
     popCheck();
+    checkMilestone(grandTotal());
   } else { setStatus('err', `<b>갱신 실패</b> · 스냅샷 유지`); }
 }
 function popCheck(){
