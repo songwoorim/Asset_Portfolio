@@ -1178,7 +1178,7 @@
   <div class="perf" id="p0"></div>
 
   <!-- STOCK WEIGHT DONUT -->
-  <div class="page collapsible" data-panel="home">
+  <div class="page collapsible" id="sec-sw" data-panel="home">
     <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span>종목별 보유비중</h2><span class="total" id="swTotal" style="font-size:12px;color:var(--ink-soft);"></span></div>
 
     <div class="sw-seg" id="swSeg">
@@ -1214,7 +1214,7 @@
   <div class="perf"></div>
 
   <!-- HEATMAP -->
-  <div class="page collapsible" data-panel="home">
+  <div class="page collapsible" id="sec-heat" data-panel="home">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>수익률 히트맵</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="heatMode">누적 기준</div></div>
     <div class="heat-grid" id="heatGrid"></div>
     <div class="heat-legend" id="heatLegend"></div>
@@ -1234,7 +1234,7 @@
   <div class="perf"></div>
 
   <!-- FX -->
-  <div class="page collapsible" data-panel="home">
+  <div class="page collapsible" id="sec-fx" data-panel="home">
     <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>실시간 환율</h2><span class="total" style="font-size:12px;color:var(--ink-soft);">USD/KRW</span></div>
 
     <div class="fx-hero">
@@ -1362,7 +1362,7 @@
   <div class="perf"></div>
 
   <!-- NEWS -->
-  <div class="page collapsible" data-panel="hist">
+  <div class="page collapsible" id="sec-news" data-panel="hist">
     <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M4 4h13a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H4z"/><path d="M4 4v16"/><line x1="8" y1="9" x2="15" y2="9"/><line x1="8" y1="13" x2="15" y2="13"/></svg></span>종목 뉴스</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">보유 종목 헤드라인</div></div>
     <div class="news-list" id="newsList"><div class="news-empty">새로고침하면 보유 종목 관련 최신 뉴스를 불러옵니다.</div></div>
   </div>
@@ -1385,7 +1385,7 @@
   <div class="perf"></div>
 
   <!-- CURRENCY EXPOSURE -->
-  <div class="page collapsible" data-panel="home">
+  <div class="page collapsible" id="sec-currency" data-panel="home">
     <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg></span>통화 노출</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">USD vs KRW</div></div>
     <div id="curBox" class="cur-box"></div>
     <div class="note">달러 표시 자산은 원/달러 환율에 노출됩니다. 원화 강세 시 환차손, 약세 시 환차익 · 오늘처럼 원화가 강해지면 달러 자산 평가액이 눌립니다.</div>
@@ -1396,7 +1396,7 @@
   <div class="perf"></div>
 
   <!-- SECTOR / THEME -->
-  <div class="page collapsible" data-panel="hold">
+  <div class="page collapsible" id="sec-sector" data-panel="hold">
     <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>섹터·테마 비중</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">위험 성격별</div></div>
     <div class="insight-grid">
       <div class="donut-wrap"><div id="sectorDonut"></div><div class="donut-center-label">세부 섹터별</div></div>
@@ -1410,7 +1410,7 @@
   <div class="perf"></div>
 
   <!-- P&L BARS -->
-  <div class="page collapsible" data-panel="hold">
+  <div class="page collapsible" id="sec-stockret" data-panel="hold">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M7 17V3M7 3l-3 3M7 3l3 3"/><path d="M17 7v14M17 21l3-3M17 21l-3-3"/></svg></span>종목별 손익률</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 기준</div></div>
     <div class="pnl-list" id="pnlList"></div>
     <div class="note">가운데 세로선 기준 · 오른쪽(빨강) 수익 · 왼쪽(파랑) 손실</div>
@@ -1419,7 +1419,7 @@
   <div class="perf"></div>
 
   <!-- REALIZED P&L -->
-  <div class="page collapsible" data-panel="pnl">
+  <div class="page collapsible" id="sec-realized" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg></span>실현손익</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">매도로 확정된 손익</div></div>
     <div class="rz-hero"><div class="lbl">누적 확정 손익</div><span class="big" id="rzTotal">—</span></div>
     <div class="rz-chip-row" id="rzChips"></div>
@@ -1504,73 +1504,7 @@
 
   <div class="perf"></div>
 
-  <!-- REBALANCING -->
-  <div class="page collapsible" id="sec-rebal" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>리밸런싱 제안</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">현재 → 목표</div></div>
-    <div class="rebal-head-note">자산군 기준 목표 배분. 막대는 <b style="color:#b7813f;">현재(갈색)</b> vs <b style="color:#8a9280;">목표(회녹색)</b>. 한 번에 옮기지 말고 수개월 분할 권장.</div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#b23b2e;"></span>고위험 테마주</span><span class="rebal-move cut">▼ 축소 −15%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:69.8%;"></div></div><span class="v">34.9%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:36%;"></div></div><span class="v">~18%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">PLTR·RKLB·KEEL·IONQ·IREN·SMR·TSLA · 약 ₩29M → ₩15M</div></div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#cf8a5c;"></span>대형 우량주</span><span class="rebal-move cut">▼ 소폭 −9%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:77.6%;"></div></div><span class="v">38.8%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:58%;"></div></div><span class="v">~29%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">AAPL·NVDA·GOOGL·MSFT·NFLX·SPYM·INTC · 승자 비중 10% 상한</div></div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#8a9280;"></span>지수 ETF (코어)</span><span class="rebal-move add">▲ 확대 +12%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:46%;"></div></div><span class="v">23.0%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:70%;"></div></div><span class="v">~35%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">ISA·연금 ETF 중심 · 선진국·신흥국 분산 검토</div></div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#7d97c4;"></span>현금·단기채</span><span class="rebal-move add">▲ 확대 +6%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:6.6%;"></div></div><span class="v">3.3%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:18%;"></div></div><span class="v">~9%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">하락장 매수 실탄 · 약 ₩2.8M → ₩7.5M</div></div>
-    <div class="rule-chips">
-      <div class="rule-chip"><span class="num">1</span><span class="txt"><b>단일 종목 상한 10%</b> — PLTR 일부 익절로 10% 이하. 승자 축소는 손절이 아니라 리스크 관리.</span></div>
-      <div class="rule-chip"><span class="num">2</span><span class="txt"><b>테마주는 "잃어도 되는 돈"</b> — 7개 테마주 합계를 총자산의 15~20%로 캡.</span></div>
-    </div>
-  </div>
-
-  <div class="perf"></div>
-
-  <!-- REBAL CHECKPOINT (interactive) -->
-  <div class="page collapsible" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M12 3v18M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0zM3 7h18M8 7l4-4 4 4"/></svg></span>리밸런싱 체크포인트</h2><div class="total ok" id="rebalSum" style="font-size:12px;">목표 합계 —</div></div>
-    <div class="rebal-head-note">각 종목 <b>목표비중</b>을 슬라이더로 조절하면 현재비중과 비교해 <b style="color:var(--stamp-red)">과대</b>/<b style="color:var(--stamp-blue)">과소</b>를 판정하고, 총자산 100% 기준 <b>조정 금액·주수</b>를 계산합니다. 목표 합계를 100%에 맞춰보세요.</div>
-    <div class="cp-table" id="cpTable"></div>
-    <div class="cp-reset-row"><button class="cp-reset" id="cpReset">↺ 목표비중 기본값으로 초기화</button></div>
-    <div class="cp-summary">
-      <div class="cp-box"><div class="cp-box-h over">과대 비중 (비중 &gt; 목표)</div><div id="cpOver"></div></div>
-      <div class="cp-box"><div class="cp-box-h under">과소 비중 (비중 &lt; 목표)</div><div id="cpUnder"></div></div>
-    </div>
-    <h3 class="strat-title">투자 전략 요약</h3>
-    <div class="strat-grid" id="stratGrid"></div>
-    <div class="note">목표비중은 참고용 가이드이며 투자자문이 아닙니다. 조정 금액·주수는 현재가·환율 기준 추정 · 실제 매매는 세금·수수료 별도.</div>
-  </div>
-
-  <div class="perf"></div>
-
-  <!-- WHAT-IF BUY SIM -->
-  <div class="page collapsible collapsed" id="sec-sim" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>What-if 매수 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">추가 매수 가정</div></div>
-    <div class="rebal-head-note">종목과 매수 수량을 정하면 <b>예상 비중·목표 대비·신규 평단·총자산 변화</b>를 계산합니다. 리밸런싱 체크포인트의 실행 짝입니다.</div>
-    <div class="tax-ctrl">
-      <select id="wfSel"></select>
-      <div class="wf-toggle" id="wfFund"><button data-f="new" class="on">신규 자금 투입</button><button data-f="cash">예수금으로 매수</button></div>
-      <div class="tax-slider-row"><input type="range" id="wfRange" min="0" max="0" value="0"><span id="wfShares" class="tax-shares">0주</span></div>
-    </div>
-    <div class="wf-bar-lbls"><span>현재 <span id="wfCurW">—</span></span><span>목표 <span id="wfTgtW">—</span></span><span>예상 <span id="wfNewW">—</span></span></div>
-    <div class="wf-bar" id="wfBar"></div>
-    <div id="wfWarn"></div>
-    <div class="tax-out" id="wfOut"></div>
-    <div class="note">막대: <b style="color:#b7813f">현재 비중</b> + <b style="color:#c0564a">추가분</b> · 세로선 = 목표비중. 예상 비중은 총자산 대비 · 신규 평단은 원화 매입기준 가중평균 추정. 실제 체결가·환율·수수료 별도.</div>
-  </div>
-
-  <div class="perf"></div>
-
-  <!-- CAPITAL GAINS TAX SIM -->
-  <div class="page collapsible collapsed" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>양도세 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 익절</div></div>
-    <div class="tax-ctrl">
-      <select id="taxSel"></select>
-      <div class="tax-slider-row"><input type="range" id="taxRange" min="0" max="0" value="0"><span id="taxShares" class="tax-shares">0주</span></div>
-      <label class="tax-chk"><input type="checkbox" id="taxDeduct" checked> 기본공제 250만원 적용</label>
-    </div>
-    <div id="taxOut" class="tax-out"></div>
-    <div class="note">해외주식 양도소득세 22%(지방소득세 포함)·연 250만원 기본공제 가정. 손실 종목은 과세 없음(손익통산 별도). 실제 세액은 연간 전체 실현손익·환율·증권사 정산에 따라 달라집니다 · 세무자문 아님.</div>
-  </div>
-
-  <div class="perf"></div>
-
-  <!-- DIAGNOSIS -->
-  <div class="page collapsible" data-panel="rebal">
+  <div class="page collapsible" id="sec-diag" data-panel="rebal">
     <div class="page-head">
       <div class="dx-head-l"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 14 11 16 15 12"/></svg></span>진단 &amp; 조언</h2></div>
       <div class="dx-score-pill" id="dxScorePill">
@@ -1632,6 +1566,76 @@
 
     <div class="note">본 내용은 참고용 프레임워크이며 투자자문이 아닙니다. 최종 결정과 책임은 본인에게 있습니다.</div>
   </div>
+
+  <div class="perf"></div>
+
+  <!-- REBALANCING -->
+  <div class="page collapsible" id="sec-rebal" data-panel="rebal">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>리밸런싱 제안</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">현재 → 목표</div></div>
+    <div class="rebal-head-note">자산군 기준 목표 배분. 막대는 <b style="color:#b7813f;">현재(갈색)</b> vs <b style="color:#8a9280;">목표(회녹색)</b>. 한 번에 옮기지 말고 수개월 분할 권장.</div>
+    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#b23b2e;"></span>고위험 테마주</span><span class="rebal-move cut">▼ 축소 −15%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:69.8%;"></div></div><span class="v">34.9%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:36%;"></div></div><span class="v">~18%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">PLTR·RKLB·KEEL·IONQ·IREN·SMR·TSLA · 약 ₩29M → ₩15M</div></div>
+    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#cf8a5c;"></span>대형 우량주</span><span class="rebal-move cut">▼ 소폭 −9%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:77.6%;"></div></div><span class="v">38.8%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:58%;"></div></div><span class="v">~29%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">AAPL·NVDA·GOOGL·MSFT·NFLX·SPYM·INTC · 승자 비중 10% 상한</div></div>
+    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#8a9280;"></span>지수 ETF (코어)</span><span class="rebal-move add">▲ 확대 +12%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:46%;"></div></div><span class="v">23.0%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:70%;"></div></div><span class="v">~35%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">ISA·연금 ETF 중심 · 선진국·신흥국 분산 검토</div></div>
+    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#7d97c4;"></span>현금·단기채</span><span class="rebal-move add">▲ 확대 +6%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:6.6%;"></div></div><span class="v">3.3%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:18%;"></div></div><span class="v">~9%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">하락장 매수 실탄 · 약 ₩2.8M → ₩7.5M</div></div>
+    <div class="rule-chips">
+      <div class="rule-chip"><span class="num">1</span><span class="txt"><b>단일 종목 상한 10%</b> — PLTR 일부 익절로 10% 이하. 승자 축소는 손절이 아니라 리스크 관리.</span></div>
+      <div class="rule-chip"><span class="num">2</span><span class="txt"><b>테마주는 "잃어도 되는 돈"</b> — 7개 테마주 합계를 총자산의 15~20%로 캡.</span></div>
+    </div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- REBAL CHECKPOINT (interactive) -->
+  <div class="page collapsible" id="sec-checkpoint" data-panel="rebal">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M12 3v18M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0zM3 7h18M8 7l4-4 4 4"/></svg></span>리밸런싱 체크포인트</h2><div class="total ok" id="rebalSum" style="font-size:12px;">목표 합계 —</div></div>
+    <div class="rebal-head-note">각 종목 <b>목표비중</b>을 슬라이더로 조절하면 현재비중과 비교해 <b style="color:var(--stamp-red)">과대</b>/<b style="color:var(--stamp-blue)">과소</b>를 판정하고, 총자산 100% 기준 <b>조정 금액·주수</b>를 계산합니다. 목표 합계를 100%에 맞춰보세요.</div>
+    <div class="cp-table" id="cpTable"></div>
+    <div class="cp-reset-row"><button class="cp-reset" id="cpReset">↺ 목표비중 기본값으로 초기화</button></div>
+    <div class="cp-summary">
+      <div class="cp-box"><div class="cp-box-h over">과대 비중 (비중 &gt; 목표)</div><div id="cpOver"></div></div>
+      <div class="cp-box"><div class="cp-box-h under">과소 비중 (비중 &lt; 목표)</div><div id="cpUnder"></div></div>
+    </div>
+    <h3 class="strat-title">투자 전략 요약</h3>
+    <div class="strat-grid" id="stratGrid"></div>
+    <div class="note">목표비중은 참고용 가이드이며 투자자문이 아닙니다. 조정 금액·주수는 현재가·환율 기준 추정 · 실제 매매는 세금·수수료 별도.</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- WHAT-IF BUY SIM -->
+  <div class="page collapsible collapsed" id="sec-sim" data-panel="rebal">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>What-if 매수 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">추가 매수 가정</div></div>
+    <div class="rebal-head-note">종목과 매수 수량을 정하면 <b>예상 비중·목표 대비·신규 평단·총자산 변화</b>를 계산합니다. 리밸런싱 체크포인트의 실행 짝입니다.</div>
+    <div class="tax-ctrl">
+      <select id="wfSel"></select>
+      <div class="wf-toggle" id="wfFund"><button data-f="new" class="on">신규 자금 투입</button><button data-f="cash">예수금으로 매수</button></div>
+      <div class="tax-slider-row"><input type="range" id="wfRange" min="0" max="0" value="0"><span id="wfShares" class="tax-shares">0주</span></div>
+    </div>
+    <div class="wf-bar-lbls"><span>현재 <span id="wfCurW">—</span></span><span>목표 <span id="wfTgtW">—</span></span><span>예상 <span id="wfNewW">—</span></span></div>
+    <div class="wf-bar" id="wfBar"></div>
+    <div id="wfWarn"></div>
+    <div class="tax-out" id="wfOut"></div>
+    <div class="note">막대: <b style="color:#b7813f">현재 비중</b> + <b style="color:#c0564a">추가분</b> · 세로선 = 목표비중. 예상 비중은 총자산 대비 · 신규 평단은 원화 매입기준 가중평균 추정. 실제 체결가·환율·수수료 별도.</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- CAPITAL GAINS TAX SIM -->
+  <div class="page collapsible collapsed" id="sec-tax" data-panel="rebal">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>양도세 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 익절</div></div>
+    <div class="tax-ctrl">
+      <select id="taxSel"></select>
+      <div class="tax-slider-row"><input type="range" id="taxRange" min="0" max="0" value="0"><span id="taxShares" class="tax-shares">0주</span></div>
+      <label class="tax-chk"><input type="checkbox" id="taxDeduct" checked> 기본공제 250만원 적용</label>
+    </div>
+    <div id="taxOut" class="tax-out"></div>
+    <div class="note">해외주식 양도소득세 22%(지방소득세 포함)·연 250만원 기본공제 가정. 손실 종목은 과세 없음(손익통산 별도). 실제 세액은 연간 전체 실현손익·환율·증권사 정산에 따라 달라집니다 · 세무자문 아님.</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- DIAGNOSIS -->
+
 
   <div class="footer" id="footer">
     실시간: 국내·해외 주식(한국투자증권 KIS API) · 환율(open.er-api·무료) · 지수·뉴스(Finnhub·무료 키) — 전부 ⟳ 버튼으로 갱신.<br>
@@ -2563,7 +2567,8 @@ function renderDailyPnl(){
     as.textContent='전일대비'; return;
   }
   const LBL={today:'전일대비',week:'이번주',month:'이번달',quarter:'이번분기',year:'올해',all:'매입 이후 누적'};
-  as.textContent = (pnlPeriod==='today' && LAST_UPDATED) ? ('실시간 '+LAST_UPDATED) : LBL[pnlPeriod];
+  const dateLbl0=periodDateLabel(pnlPeriod);
+  as.textContent = (pnlPeriod==='today' && LAST_UPDATED) ? ('실시간 '+LAST_UPDATED) : (LBL[pnlPeriod]+(dateLbl0?` · ${dateLbl0}`:''));
 
   const isHistPeriod = ['week','month','quarter','year'].includes(pnlPeriod);
   if(isHistPeriod && !HIST_PRICE_READY){
@@ -2625,9 +2630,8 @@ function renderDailyPnl(){
       <div class="dp-c-val"><div class="a ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}</div><div class="p ${clsOf(r.v)}">${sign(r.pct)}</div></div>
     </div>`;
   };
-  const dateLbl=periodDateLabel(pnlPeriod);
   const heroHtml=`<div class="dp-hero ${cls}">
-    <div class="lbl">${LBL[pnlPeriod]}${dateLbl?` · ${dateLbl}`:''}${approx?' · 근사치':''}${real?' <span class="real-badge">✓ 실시세 확인됨</span>':''}</div>
+    <div class="lbl">${LBL[pnlPeriod]}${approx?' · 근사치':''}${real?' <span class="real-badge">✓ 실시세 확인됨</span>':''}</div>
     <div class="num"><span id="dpHeroNum">${arrowOf(total)} ${total>=0?'+':''}${won(dpHeroShown==null?total:dpHeroShown)}</span><span class="pct">${sign(pct)}</span></div>
     <div class="sub">${rows.length}종목 반영</div>
   </div>`;
@@ -3689,18 +3693,40 @@ function initReview(){
 }
 
 /* ===== UI: 퀵 네비 / 접기 / 인쇄 ===== */
+const COLLAPSE_KEY='collapsed_sections_v1';
+async function saveCollapseState(id, collapsed){
+  try{
+    const r=await STORE.get(COLLAPSE_KEY);
+    const map = r&&r.value ? JSON.parse(r.value) : {};
+    map[id]=collapsed;
+    await STORE.set(COLLAPSE_KEY, JSON.stringify(map));
+  }catch(e){}
+}
+async function restoreCollapseState(){
+  try{
+    const r=await STORE.get(COLLAPSE_KEY);
+    if(!r||!r.value) return;
+    const map=JSON.parse(r.value);
+    Object.entries(map).forEach(([id,collapsed])=>{
+      const el=document.getElementById(id); if(!el) return;
+      el.classList.toggle('collapsed', !!collapsed);
+    });
+  }catch(e){}
+}
 function initUI(){
   // 초기 활성 탭: 홈
   document.querySelectorAll('[data-panel="home"]').forEach(el=>el.classList.add('tab-active'));
-  // 접기: 헤더 클릭 토글
+  // 접기: 헤더 클릭 토글 (섹션별 접힘 상태를 기억해서 다음 방문에도 유지)
   document.querySelectorAll('.page.collapsible').forEach(pg=>{
     const head=pg.querySelector('.page-head'); if(!head) return;
     head.addEventListener('click',e=>{
       if(e.target.closest('input,select,button,a')) return;
       pg.classList.toggle('collapsed');
       if(!pg.classList.contains('collapsed') && pg.querySelector('#trSvg')) renderTrend();
+      if(pg.id) saveCollapseState(pg.id, pg.classList.contains('collapsed'));
     });
   });
+  restoreCollapseState();
   // 모두 펼치기/접기 (현재 탭 기준)
   const ea=document.getElementById('expandAll');
   if(ea) ea.onclick=()=>{
@@ -3711,7 +3737,7 @@ function initUI(){
       pages.push(...p.querySelectorAll('.page.collapsible'));
     });
     const anyOpen=pages.some(p=>!p.classList.contains('collapsed'));
-    pages.forEach(p=>p.classList.toggle('collapsed',anyOpen));
+    pages.forEach(p=>{ p.classList.toggle('collapsed',anyOpen); if(p.id) saveCollapseState(p.id, anyOpen); });
     if(!anyOpen) renderTrend();
   };
   // 실시간 키 설정 패널 토글 (톱니바퀴)
