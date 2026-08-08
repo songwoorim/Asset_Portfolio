@@ -245,6 +245,46 @@
   .week-dot{width:6px; border-radius:3px; background:var(--line); transition:height .3s ease;}
   .week-dot.up{background:var(--stamp-red);}
   .week-dot.down{background:var(--stamp-blue);}
+
+  /* ---------- 기간별 손익 (신규 섹션) ---------- */
+  .pl-range-chips{ display:flex; gap:6px; overflow-x:auto; padding:1px 2px 2px; margin-bottom:10px; scrollbar-width:none; }
+  .pl-range-chips::-webkit-scrollbar{ display:none; }
+  .pl-range-chips button{ flex-shrink:0; border:none; background:var(--paper); color:var(--ink-soft); font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:600; padding:7px 14px; border-radius:20px; cursor:pointer; white-space:nowrap; }
+  .pl-range-chips button.on{ background:var(--brass); color:#fff; }
+  .pl-gran-seg{ position:relative; display:inline-flex; background:var(--paper); border-radius:10px; padding:3px; gap:2px; float:right; margin-bottom:14px; }
+  .pl-gran-seg button{ position:relative; z-index:1; border:none; background:transparent; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); padding:6px 13px; border-radius:8px; cursor:pointer; }
+  .pl-gran-seg button.on{ color:var(--ink); background:var(--card); box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  .pl-custom-row{ display:none; gap:8px; align-items:center; clear:both; padding:8px 2px 4px; }
+  .pl-custom-row.open{ display:flex; }
+  .pl-custom-row input[type=date]{ flex:1; font-family:'Inter',-apple-system,sans-serif; font-size:11px; background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 8px; color:var(--ink); }
+  .pl-hero{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:4px 0 16px; clear:both; }
+  .pl-hero-item{ background:linear-gradient(135deg, rgba(192,57,43,.09), rgba(192,57,43,.02)); border-radius:14px; padding:13px 14px; }
+  .pl-hero-item.down-tone{ background:linear-gradient(135deg, rgba(64,156,255,.09), rgba(64,156,255,.02)); }
+  .pl-hero-k{ font-size:10.5px; color:var(--ink-soft); font-weight:600; margin-bottom:5px; }
+  .pl-hero-v{ font-size:18px; font-weight:800; letter-spacing:-.3px; }
+  .pl-hero-v.up{ color:var(--stamp-red); } .pl-hero-v.down{ color:var(--stamp-blue); } .pl-hero-v.flat{ color:var(--ink-soft); }
+  .pl-ctable{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .pl-scroll{ max-height:420px; overflow-y:auto; -webkit-overflow-scrolling:touch; border-radius:8px; }
+  .pl-ctable thead{ position:sticky; top:0; background:var(--card2, var(--card)); z-index:2; }
+  .pl-ctable thead th{ text-align:right; font-size:9px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.02em; padding:0 6px 8px; white-space:nowrap; }
+  .pl-ctable thead th:first-child{ text-align:left; width:17%; }
+  .pl-ctable thead th:last-child{ color:var(--ink); }
+  .pl-ctable tbody tr{ transition:background .12s; cursor:default; }
+  .pl-ctable tbody tr:hover{ background:var(--paper); }
+  .pl-ctable tbody td{ padding:12px 6px; border-top:1px solid rgba(120,120,128,.08); vertical-align:middle; white-space:nowrap; overflow:hidden; }
+  .pl-ctable tbody td:not(:first-child){ text-align:right; }
+  .pl-c-date{ display:flex; align-items:center; gap:5px; }
+  .pl-dot{ width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .pl-dot.up{ background:var(--stamp-red); } .pl-dot.down{ background:var(--stamp-blue); } .pl-dot.flat{ background:var(--ink-soft); }
+  .pl-c-date-txt{ font-size:11px; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .pl-c-amt{ font-size:11px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .pl-c-pct{ font-size:9px; font-weight:600; margin-top:2px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .pl-c-amt.up, .pl-c-pct.up{ color:var(--stamp-red); }
+  .pl-c-amt.down, .pl-c-pct.down{ color:var(--stamp-blue); }
+  .pl-c-amt.flat, .pl-c-pct.flat{ color:var(--ink-soft); }
+  .pl-c-cum{ color:var(--ink-soft) !important; }
+  .pl-c-eval{ font-size:12px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-.2px; white-space:nowrap; }
+  .pl-empty{ font-size:11.5px; color:var(--ink-soft); text-align:center; padding:24px 10px; }
   .ins-badgerow{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 2px; }
   .ins-badgerow .ins-badge{ justify-content:center; }
   .ins-badgerow .ins-badge.solo{ grid-column:1 / -1; justify-content:flex-start; }
@@ -1365,6 +1405,40 @@
       <button data-p="1y" class="on">1년</button><button data-p="5y">5년</button><button data-p="all">전체</button>
     </div>
     <div class="note">실제 거래 <b>198건</b>(2021.02~현재)으로 재구성 · 회색 계단=원금, 빨간 선=평가액, 간격=평가손익.<br>매수 단가를 가격 앵커로 삼아 복원했으며 최종값 오차는 0.4% 수준입니다. 실시간 갱신 시 오늘 값이 실측치로 대체됩니다.</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- PERIOD P&L (NEW) -->
+  <div class="page collapsible" id="sec-periodpl" data-panel="pnl">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke-width="1.7"/><path d="M3 9h18M8 2v4M16 2v4" stroke-width="1.7" stroke-linecap="round"/><path d="M8 14l2.5 2.5L16 11" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>기간별 손익</h2><span style="font-size:11px; color:var(--ink-soft); font-weight:600;" id="plRangeLabel"></span></div>
+
+    <div class="pl-range-chips" id="plRangeChips">
+      <button data-r="1w">1주</button><button data-r="1m">1개월</button><button data-r="3m">3개월</button><button data-r="ytd" class="on">올해</button><button data-r="all">전체</button><button data-r="custom">직접설정</button>
+    </div>
+    <div class="pl-gran-seg" id="plGranSeg">
+      <button data-g="daily" class="on">일별</button>
+      <button data-g="monthly">월별</button>
+    </div>
+    <div style="clear:both;"></div>
+    <div class="pl-custom-row" id="plCustomRow">
+      <input type="date" id="plCustomStart">
+      <span style="color:var(--ink-soft); font-size:11px;">~</span>
+      <input type="date" id="plCustomEnd">
+    </div>
+
+    <div class="pl-hero">
+      <div class="pl-hero-item" id="plHeroPl"><div class="pl-hero-k">기간 누적손익</div><div class="pl-hero-v" id="plHeroPlV">—</div></div>
+      <div class="pl-hero-item" id="plHeroPct"><div class="pl-hero-k">누적손익률</div><div class="pl-hero-v" id="plHeroPctV">—</div></div>
+    </div>
+
+    <div class="pl-scroll">
+      <table class="pl-ctable">
+        <thead><tr><th id="plColLabel">일자</th><th>당일</th><th>누적</th><th>평가액</th></tr></thead>
+        <tbody id="plTbody"></tbody>
+      </table>
+    </div>
+    <div class="note" id="plFootNote">손익금액은 (평가액-원금)의 변화분 — 입출금(매수·매도) 영향을 제외한 순수 투자손익입니다. 누적은 선택한 기간의 첫날 대비.</div>
   </div>
 
   <div class="perf"></div>
@@ -3291,11 +3365,144 @@ function computeWhatif(){
     <div><div class="k">${wfFund==='cash'?'매수 후 예수금':'투입 신규자금'}</div><div class="v ${(wfFund==='cash'&&cashAfter<0)?'down':''}">${wfFund==='cash'?won(cashAfter):won(buyKRW)}</div></div>`;
 }
 
+/* ============ 기간별 손익 (신규) ============ */
+let PL_RANGE='ytd', PL_GRAN='daily';
+function plIndexForDate(d){ return Math.round((d-HSTART)/864e5); }
+function plDateForIndex(i){ return new Date(HSTART.getTime()+i*864e5); }
+function plFmtDate(d){ return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`; }
+function plFmtMonth(d){ return `${String(d.getFullYear()).slice(2)}.${String(d.getMonth()+1).padStart(2,'0')}`; }
+function plFmtMonthFull(d){ return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}`; }
+function plNum(n){ return Math.round(n).toLocaleString('ko-KR'); }
+function plClsOf(v){ return v>0.0001?'up':(v<-0.0001?'down':'flat'); }
+
+function plRangeIndices(){
+  if(typeof AS==='undefined' || !AS.length) return null;
+  const endIdx=AS.length-1;
+  const today=plDateForIndex(endIdx);
+  let startIdx;
+  if(PL_RANGE==='1w') startIdx=Math.max(0,endIdx-7);
+  else if(PL_RANGE==='1m') startIdx=Math.max(0,endIdx-30);
+  else if(PL_RANGE==='3m') startIdx=Math.max(0,endIdx-91);
+  else if(PL_RANGE==='ytd') startIdx=Math.max(0,plIndexForDate(new Date(today.getFullYear(),0,1)));
+  else if(PL_RANGE==='all') startIdx=0;
+  else if(PL_RANGE==='custom'){
+    const s=document.getElementById('plCustomStart'), e=document.getElementById('plCustomEnd');
+    const sv=s&&s.value, ev=e&&e.value;
+    if(!sv) return null;
+    startIdx=Math.max(0,plIndexForDate(new Date(sv+'T00:00:00')));
+    const endWanted = ev ? Math.min(endIdx, plIndexForDate(new Date(ev+'T00:00:00'))) : endIdx;
+    return {startIdx, endIdx:endWanted};
+  }
+  else startIdx=Math.max(0,endIdx-91);
+  return {startIdx, endIdx};
+}
+
+function renderPeriodPL(){
+  const tbody=document.getElementById('plTbody'); if(!tbody) return;
+  const range=plRangeIndices();
+  const rangeLbl=document.getElementById('plRangeLabel');
+  if(!range || range.endIdx<=range.startIdx){
+    tbody.innerHTML=`<tr><td colspan="4" class="pl-empty">표시할 기간을 선택해주세요</td></tr>`;
+    document.getElementById('plHeroPlV').textContent='—';
+    document.getElementById('plHeroPctV').textContent='—';
+    if(rangeLbl) rangeLbl.textContent='';
+    return;
+  }
+  const {startIdx, endIdx}=range;
+  // 결측치 없는 가장 가까운 인덱스로 보정
+  const near=(i, dir)=>{ while(i>=0 && i<AS.length && (AS[i]==null||CS[i]==null)) i+=dir; return i; };
+  const sIdx=near(startIdx,1), eIdx=near(endIdx,-1);
+  if(sIdx<0 || eIdx<0 || eIdx<=sIdx){
+    tbody.innerHTML=`<tr><td colspan="4" class="pl-empty">표시할 데이터가 부족합니다</td></tr>`;
+    return;
+  }
+  const baseUnreal=AS[sIdx]-CS[sIdx], baseEval=AS[sIdx];
+
+  if(rangeLbl) rangeLbl.textContent=`${plFmtMonthFull(plDateForIndex(sIdx))}~${plFmtMonthFull(plDateForIndex(eIdx))}`;
+
+  let rows=[];
+  if(PL_GRAN==='daily'){
+    for(let i=eIdx;i>sIdx;i--){
+      if(AS[i]==null||AS[i-1]==null||CS[i]==null||CS[i-1]==null) continue;
+      const pl=(AS[i]-CS[i])-(AS[i-1]-CS[i-1]);
+      const pct=AS[i-1]?pl/AS[i-1]*100:0;
+      const cum=(AS[i]-CS[i])-baseUnreal;
+      const cumPct=baseEval?cum/baseEval*100:0;
+      rows.push({label:plFmtDate(plDateForIndex(i)), pl, pct, cum, cumPct, ev:AS[i]});
+    }
+  } else {
+    let curEnd=eIdx;
+    const endDate=plDateForIndex(eIdx);
+    let y=endDate.getFullYear(), m=endDate.getMonth();
+    while(curEnd>sIdx){
+      const monthStartIdx=plIndexForDate(new Date(y,m,1));
+      const segStart = monthStartIdx-1<=sIdx ? sIdx : monthStartIdx-1;
+      if(AS[curEnd]==null||CS[curEnd]==null||AS[segStart]==null||CS[segStart]==null){ m--; if(m<0){m=11;y--;} continue; }
+      const pl=(AS[curEnd]-CS[curEnd])-(AS[segStart]-CS[segStart]);
+      const pct=AS[segStart]?pl/AS[segStart]*100:0;
+      const cum=(AS[curEnd]-CS[curEnd])-baseUnreal;
+      const cumPct=baseEval?cum/baseEval*100:0;
+      rows.push({label:plFmtMonth(plDateForIndex(curEnd)), pl, pct, cum, cumPct, ev:AS[curEnd]});
+      if(segStart<=sIdx) break;
+      curEnd=segStart; m--; if(m<0){m=11;y--;}
+    }
+  }
+
+  if(!rows.length){
+    tbody.innerHTML=`<tr><td colspan="4" class="pl-empty">표시할 데이터가 부족합니다</td></tr>`;
+  } else {
+    tbody.innerHTML=rows.map(r=>{
+      const c=plClsOf(r.pl), cc=plClsOf(r.cum);
+      return `<tr>
+        <td><div class="pl-c-date"><span class="pl-dot ${c}"></span><span class="pl-c-date-txt">${r.label}</span></div></td>
+        <td><div class="pl-c-amt ${c}">${r.pl>=0?'+':''}${plNum(r.pl)}</div><div class="pl-c-pct ${c}">${sign(r.pct)}</div></td>
+        <td><div class="pl-c-amt pl-c-cum">${r.cum>=0?'+':''}${plNum(r.cum)}</div><div class="pl-c-pct pl-c-cum">${sign(r.cumPct)}</div></td>
+        <td><div class="pl-c-eval">${plNum(r.ev)}</div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  const totalCum=rows.length?rows[0].cum:0, totalCumPct=rows.length?rows[0].cumPct:0;
+  const heroPlV=document.getElementById('plHeroPlV'), heroPctV=document.getElementById('plHeroPctV');
+  const heroPl=document.getElementById('plHeroPl'), heroPct=document.getElementById('plHeroPct');
+  const tc=plClsOf(totalCum);
+  heroPlV.textContent=`${totalCum>=0?'+':''}${plNum(totalCum)}`;
+  heroPlV.className='pl-hero-v '+tc;
+  heroPctV.textContent=sign(totalCumPct);
+  heroPctV.className='pl-hero-v '+tc;
+  heroPl.className='pl-hero-item'+(tc==='down'?' down-tone':'');
+  heroPct.className='pl-hero-item'+(tc==='down'?' down-tone':'');
+
+  const colLabel=document.getElementById('plColLabel');
+  if(colLabel) colLabel.textContent = PL_GRAN==='daily' ? '일자' : '월';
+}
+
+function initPeriodPL(){
+  const chips=document.getElementById('plRangeChips'), seg=document.getElementById('plGranSeg'), customRow=document.getElementById('plCustomRow');
+  if(chips) chips.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      chips.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
+      PL_RANGE=b.dataset.r;
+      if(customRow) customRow.classList.toggle('open', PL_RANGE==='custom');
+      renderPeriodPL();
+    };
+  });
+  if(seg) seg.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
+      PL_GRAN=b.dataset.g;
+      renderPeriodPL();
+    };
+  });
+  const cs=document.getElementById('plCustomStart'), ce=document.getElementById('plCustomEnd');
+  [cs,ce].forEach(inp=>{ if(inp) inp.onchange=()=>renderPeriodPL(); });
+}
+
 function renderAll(){
   renderCover(); renderIndices(); renderFX(); renderTicker();
   renderDailyPnl(); renderCurrency();
   renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat();
-  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis();
+  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL();
   const ts=document.getElementById('taxSel'); if(ts && ts.options.length) computeTax();
   const wf=document.getElementById('wfSel'); if(wf && wf.options.length) computeWhatif();
 }
@@ -4760,9 +4967,10 @@ renderRealized();
 initTxList();
 initBench();
 initReview();
-loadFutureSnaps().then(()=>{ initTrend(); renderDailyPnl(); });
+loadFutureSnaps().then(()=>{ initTrend(); renderDailyPnl(); renderPeriodPL(); });
 initUI();
 initCoverDetail();
+initPeriodPL();
 initScrollReveal();
 initPullToRefresh();
 initRipple();
