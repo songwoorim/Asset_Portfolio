@@ -4756,6 +4756,100 @@ async function ensureHistPrices(progressCb){
 }
 
 let refreshing=false;
+
+/* ============ 기간별 손익 — 최근 구간 실측 재구성 (gap-fill) ============
+   HIST(정적 데이터)의 마지막 날짜 이후 ~ 오늘까지는, 앱을 실제로 열어 새로고침한 날만
+   로컬에 스냅샷이 남고 나머지는 직전 값을 그대로 이어붙이는(flat carry-forward) 방식이라
+   "기간별 손익" 표에서 여러 날이 손익 0으로 나란히 찍히는 문제가 있었다. 이를
+   ensureHistPrices()가 이미 구축해둔 HIST_PRICE_CACHE(KIS 실제 종가)와 stateAt()
+   (TXL 재생으로 특정 과거일의 보유수량·원가를 복원)을 재사용해 실제 종가 기반으로
+   재구성한다.
+   범위/한계: 현재 보유 중인 종목만 다룬다 — 이 gap 구간 안에서 완전히 정리(전량매도)해
+   지금은 HOLDINGS에 없는 종목이 있다면 그 구간 평가액은 누락될 수 있다(드문 경우로 판단해
+   범위에서 제외). 현금은 일자별 변동을 추적할 방법이 없어 "현재 현금"으로 근사한다
+   (자산의 대부분을 차지하는 투자원금·평가액 쪽이 훨씬 정확해짐). 환율도 이 앱 전체가
+   그렇듯 분기별 근사 앵커(FX_ANCHORS)를 쓴다(일별 정밀 환율 데이터가 없음). */
+let GAPFILL_LOADING=false, GAPFILL_READY=false;
+function gapStartIndex(){ return HIST.a.length; } // HIST 마지막 baked 날짜 다음 인덱스
+function gapFillCoversToday(cache){
+  if(!cache) return false;
+  const todayYmd=(()=>{ const d=new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`; })();
+  const tickers=[...new Set(HOLDINGS.map(h=>h.ticker))];
+  if(!tickers.length) return true;
+  return tickers.every(tk=>{
+    const days=cache[tk];
+    return days && days.length && days[0].date >= todayYmd;
+  });
+}
+async function ensureGapFillPrices(progressCb){
+  if(GAPFILL_LOADING) return;
+  if(gapStartIndex() >= AS.length){ GAPFILL_READY=true; return; } // gap 자체가 없음(HIST가 오늘까지 커버)
+  const cache = HIST_PRICE_CACHE || await loadHistPriceCache();
+  HIST_PRICE_CACHE = cache;
+  if(gapFillCoversToday(cache)){ GAPFILL_READY=true; return; }
+
+  GAPFILL_LOADING=true;
+  const gStart=plDateForIndex(gapStartIndex());
+  const gYmd=`${gStart.getFullYear()}${String(gStart.getMonth()+1).padStart(2,'0')}${String(gStart.getDate()).padStart(2,'0')}`;
+  try{
+    const domCodes=Object.entries(DOMESTIC_CODE_MAP).filter(([tk,c])=>c && HOLDINGS.some(h=>h.ticker===tk));
+    if(domCodes.length){
+      if(progressCb) progressCb('국내 종목 조회 중');
+      const url=`${KIS_PROXY_URL}/hist/domestic?codes=${domCodes.map(([,c])=>c).join(',')}&from=${gYmd}`;
+      const res=await fetch(url); const json=await res.json();
+      if(json.ok) json.results.forEach(r=>{
+        if(!r||!r.days||!r.days.length) return;
+        const tk=domCodes.find(([,c])=>c===r.code)?.[0]; if(!tk) return;
+        cache[tk]=r.days.slice().sort((a,b)=>b.date-a.date);
+      });
+    }
+    const ovCodes=Object.entries(OVERSEAS_CODE_MAP).filter(([tk])=>HOLDINGS.some(h=>h.ticker===tk));
+    if(ovCodes.length){
+      if(progressCb) progressCb('해외 종목 조회 중');
+      const url=`${KIS_PROXY_URL}/hist/overseas?codes=${ovCodes.map(([,v])=>`${v.excd}:${v.symb}`).join(',')}&from=${gYmd}`;
+      const res=await fetch(url); const json=await res.json();
+      if(json.ok) json.results.forEach(r=>{
+        if(!r||!r.days||!r.days.length) return;
+        const tk=ovCodes.find(([,v])=>v.symb===r.symbol)?.[0]; if(!tk) return;
+        cache[tk]=r.days.slice().sort((a,b)=>b.date-a.date);
+      });
+    }
+    await saveHistPriceCache(cache);
+    HIST_PRICE_CACHE=cache;
+    GAPFILL_READY=gapFillCoversToday(cache);
+  } catch(e){
+    console.error('기간별 손익 실측 재구성 실패', e);
+  } finally {
+    GAPFILL_LOADING=false;
+  }
+}
+/* 실측 종가로 AS/CS의 gap 구간을 다시 계산(가능한 날만 — 캐시 없는 날은 기존 carry-forward 값 유지) */
+function reconstructGapAS(){
+  if(!HIST_PRICE_CACHE || typeof AS==='undefined') return;
+  const gStart=gapStartIndex(), lastIdx=AS.length-1;
+  if(gStart>lastIdx) return;
+  const cashNow=cashKRW()+ISA_CASH; // 일자별 현금 변동은 추적 불가 — 현재 현금으로 근사
+  for(let i=gStart;i<lastIdx;i++){ // 마지막(오늘)은 syncTrendToday()가 실시간 grandTotal()로 별도 처리
+    const d=plDateForIndex(i);
+    const ymd=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    let evalSum=0, costSum=0, anyReal=false;
+    HOLDINGS.forEach(h=>{
+      const st=stateAt(h.ticker, d);
+      if(st.shares<=0) return;
+      const days=HIST_PRICE_CACHE[h.ticker];
+      let px;
+      if(days && days.length){ px=closestClose(days, ymd); anyReal=true; }
+      else px=priceAt(h.ticker, d);
+      evalSum += (h.cur==='USD') ? st.shares*px*fxAt(d) : st.shares*px;
+      costSum += st.cost;
+    });
+    if(!anyReal) continue; // 실측 확보 못 한 날은 기존 값 그대로 둠(정확도 저하 방지)
+    AS[i]=Math.round(evalSum+cashNow);
+    CS[i]=Math.round(costSum);
+  }
+  CS[lastIdx]=Math.round(investedCost()); // 오늘 원가도 실시간 값으로 맞춤(AS는 syncTrendToday가 이미 처리)
+}
+
 async function refresh(){
   if(refreshing) return; refreshing=true;
   const btn=document.getElementById('refreshBtn'); btn.classList.add('spin'); btn.disabled=true;
@@ -4967,7 +5061,18 @@ renderRealized();
 initTxList();
 initBench();
 initReview();
-loadFutureSnaps().then(()=>{ initTrend(); renderDailyPnl(); renderPeriodPL(); });
+loadFutureSnaps().then(()=>{
+  initTrend(); renderDailyPnl(); renderPeriodPL();
+  const noteEl=document.getElementById('plFootNote');
+  const origNote=noteEl?noteEl.textContent:'';
+  ensureGapFillPrices(msg=>{ if(noteEl) noteEl.textContent=`실제 시세로 재구성 중… (${msg})`; })
+    .then(()=>{
+      reconstructGapAS();
+      renderPeriodPL();
+      if(noteEl) noteEl.textContent=origNote;
+    })
+    .catch(()=>{ if(noteEl) noteEl.textContent=origNote; });
+});
 initUI();
 initCoverDetail();
 initPeriodPL();
