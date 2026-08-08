@@ -3677,8 +3677,37 @@ async function recordTrendPoint(){
 }
 /* ===== ASSET TREND CHART (B안) ===== */
 const TR={W:700,H:200,PT:14,PB:16};
-let AS=HIST.a.slice(), CS=HIST.c.slice();
 const HSTART=new Date(HIST.start+'T00:00:00');
+let AS=HIST.a.slice(), CS=HIST.c.slice();
+/* 원가(CS) 전 구간 재계산 — 정적 HIST.c 데이터가 계좌 개설 초기부터 실제보다 부풀려져
+   있었던 것을 발견(원인 불명, 아마 HIST를 처음 만들 때의 산정 방식 차이로 추정). TXL만
+   있으면 100% 정확하게 재계산 가능하므로(네트워크 불필요) 매 로드 시 전체를 다시 계산해
+   덮어쓴다. 티커별로 거래를 한 번만 정렬한 뒤 날짜 포인터를 앞으로만 이동시키는 방식이라
+   1969일 × 18종목이어도 가볍다(반복 정렬 없음). */
+function regenerateCS(){
+  if(typeof TXL==='undefined' || !CS.length) return;
+  const byTicker={};
+  TXL.forEach(t=>{ (byTicker[t.tk]=byTicker[t.tk]||[]).push(t); });
+  Object.values(byTicker).forEach(arr=>arr.sort((a,b)=>new Date(a.d)-new Date(b.d)));
+  const n=CS.length;
+  const runningCost=new Array(n).fill(0);
+  Object.values(byTicker).forEach(txs=>{
+    let sh=0, cost=0, txi=0;
+    for(let i=0;i<n;i++){
+      const dayDate=new Date(HSTART.getTime()+i*864e5);
+      while(txi<txs.length && new Date(txs[txi].d+'T00:00:00')<=dayDate){
+        const t=txs[txi];
+        const krw = t.cur==='USD' ? t.q*t.p*fxAt(new Date(t.d+'T00:00:00')) : t.q*t.p;
+        if(t.q>0){ sh+=t.q; cost+=krw; }
+        else{ const avg = sh? cost/sh:0; sh+=t.q; cost+=t.q*avg; }
+        txi++;
+      }
+      runningCost[i]+=cost;
+    }
+  });
+  for(let i=0;i<n;i++) CS[i]=Math.round(runningCost[i]);
+}
+regenerateCS();
 const dateAt=i=>new Date(HSTART.getTime()+i*864e5);
 let trRange={a:Math.max(0,AS.length-366), b:AS.length-1};
 let trPeriod='1y';
