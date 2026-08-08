@@ -3388,7 +3388,9 @@ function plClsOf(v){ return v>0.0001?'up':(v<-0.0001?'down':'flat'); }
 let PL_SERIES=null;
 function plInvalidateSeries(){ PL_SERIES=null; }
 function plBuildSeries(){
-  if(PL_SERIES) return PL_SERIES;
+  // AS가 나중에 길어질 수 있어(당일 스냅샷 로드, gap-fill 등) 캐시 길이와 어긋나면
+  // undefined 인덱스 접근으로 NaN이 나므로, 길이가 안 맞으면 무조건 다시 계산한다.
+  if(PL_SERIES && PL_SERIES.evalArr.length===AS.length) return PL_SERIES;
   const n=AS.length;
   const evalArr=new Array(n).fill(0), costArr=new Array(n).fill(0);
   const tickers=[...new Set(TXL.map(t=>t.tk))];
@@ -3518,6 +3520,12 @@ function renderPeriodPL(){
   if(!rows.length){
     tbody.innerHTML=`<tr><td colspan="4" class="pl-empty">표시할 데이터가 부족합니다</td></tr>`;
   } else {
+    const finiteRows=rows.filter(r=>isFinite(r.pl)&&isFinite(r.pct)&&isFinite(r.cum)&&isFinite(r.cumPct)&&isFinite(r.ev));
+    if(!finiteRows.length){
+      tbody.innerHTML=`<tr><td colspan="4" class="pl-empty">일시적으로 계산에 실패했습니다. 새로고침 후 다시 시도해주세요</td></tr>`;
+      rows=[];
+    } else {
+    rows=finiteRows;
     tbody.innerHTML=rows.map(r=>{
       const c=plClsOf(r.pl);
       return `<tr>
@@ -3527,10 +3535,15 @@ function renderPeriodPL(){
         <td><div class="pl-c-eval">${plNum(r.ev)}</div></td>
       </tr>`;
     }).join('');
+    }
   }
 
-  const totalCum=rows.length?rows[0].cum:0, totalCumPct=rows.length?rows[0].cumPct:0;
   const heroPl=document.getElementById('plHeroPl'), heroPct=document.getElementById('plHeroPct');
+  if(!rows.length){
+    heroPlV.textContent='—'; heroPctV.textContent='—';
+    heroPl.className='pl-hero-item'; heroPct.className='pl-hero-item';
+  } else {
+  const totalCum=rows[0].cum, totalCumPct=rows[0].cumPct;
   const tc=plClsOf(totalCum);
   heroPlV.textContent=`${totalCum>=0?'+':''}${plNum(totalCum)}`;
   heroPlV.className='pl-hero-v '+tc;
@@ -3538,6 +3551,7 @@ function renderPeriodPL(){
   heroPctV.className='pl-hero-v '+plClsOf(totalCumPct);
   heroPl.className='pl-hero-item'+(tc==='down'?' down-tone':'');
   heroPct.className='pl-hero-item'+(plClsOf(totalCumPct)==='down'?' down-tone':'');
+  }
 
   const colLabel=document.getElementById('plColLabel');
   if(colLabel) colLabel.textContent = PL_GRAN==='daily' ? '일자' : '월';
