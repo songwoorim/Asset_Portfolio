@@ -1896,6 +1896,44 @@ const escapeHtml = s => (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>
 function evalKRW(h){ return h.cur==='USD' ? h.shares*h.price*FX : h.shares*h.price; }
 function retPct(h){ return (evalKRW(h)/h.costKRW - 1) * 100; }
 
+/* ── HOLDINGS.costKRW를 거래이력(TXL) 재생값으로 동기화 ───────────────────────
+   각 종목의 costKRW는 원래 손으로 적어 넣은 고정값이었는데, TXL과 어긋나 있었다
+   (예: PLTR 필드값 3,497,556원인데 TXL 거래 21건을 평균단가법으로 재생하면 3,188,712원.
+   각 거래의 계산 원화금액이 TXL의 amt 필드와 21건 전부 원 단위까지 일치하므로 TXL이 정답).
+   이 어긋남 때문에 "수익현황"(costKRW 사용)과 "기간별 손익"(TXL 재생 사용)의 숫자가
+   서로 맞지 않았다. costKRW를 참조하는 곳이 20군데가 넘어 개별 수정은 실수 위험이 커서,
+   로드 시점에 필드 자체를 한 번 정정해 모든 소비처가 자동으로 정확한 값을 쓰게 한다.
+   안전장치: TXL 재생 주식수가 HOLDINGS.shares와 다르면(거래 누락 가능성) 그 종목은
+   건드리지 않고 기존 값을 유지한다 — 잘못된 재생값으로 덮어쓰는 최악을 피한다.
+   계산 방식은 stateAt()과 동일(매도 시 평균단가로 원가 차감). */
+function syncHoldingsCostFromTXL(){
+  if(typeof TXL==='undefined' || !Array.isArray(TXL)) return {synced:[], skipped:[]};
+  const byTicker={};
+  TXL.forEach(t=>{ (byTicker[t.tk]=byTicker[t.tk]||[]).push(t); });
+  const synced=[], skipped=[];
+  HOLDINGS.forEach(h=>{
+    const txs=byTicker[h.ticker];
+    if(!txs || !txs.length){ skipped.push({tk:h.ticker, reason:'거래이력 없음'}); return; }
+    txs.sort((a,b)=>new Date(a.d)-new Date(b.d));
+    let sh=0, cost=0;
+    txs.forEach(t=>{
+      const td=new Date(t.d+'T00:00:00');
+      const krw = t.cur==='USD' ? t.q*t.p*fxAt(td) : t.q*t.p;
+      if(t.q>0){ sh+=t.q; cost+=krw; }
+      else { const avg = sh? cost/sh : 0; sh+=t.q; cost+=t.q*avg; }
+    });
+    if(Math.abs(sh-h.shares)>0.0001){
+      skipped.push({tk:h.ticker, reason:`주식수 불일치(TXL ${sh} vs 보유 ${h.shares})`});
+      return;
+    }
+    synced.push({tk:h.ticker, before:h.costKRW, after:cost});
+    h.costKRW=cost;
+  });
+  if(skipped.length) console.warn('[원가 동기화] 건너뜀:', skipped);
+  return {synced, skipped};
+}
+// ※ 실제 호출은 TXL/fxAt 정의 이후에서 수행한다(이 시점엔 아직 미정의).
+
 function acctTotals(){
   const t={}; ['overseas','isa','pension'].forEach(a=>t[a]={ev:0,cost:0});
   HOLDINGS.forEach(h=>{ t[h.acct].ev+=evalKRW(h); t[h.acct].cost+=h.costKRW; });
@@ -2996,6 +3034,10 @@ function fxAt(d){
     if(a<=d&&d<=b){ const t=(d-a)/(b-a||1); return va+(vb-va)*t; } }
   return FX;
 }
+/* HOLDINGS.costKRW 정정 — TXL과 fxAt이 모두 정의된 지금 시점에 실행해야 한다.
+   이 이후의 모든 계산(홈 표지 총수익, 수익현황 총 탭, 보유 탭, 자산배분, 진단&조언)이
+   정정된 값을 자동으로 쓴다. */
+const COST_SYNC_RESULT=syncHoldingsCostFromTXL();
 const _priceAnchors={};
 function priceAnchorsFor(tk){
   if(_priceAnchors[tk]) return _priceAnchors[tk];
