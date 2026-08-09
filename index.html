@@ -4869,77 +4869,89 @@ function histCoversThisWeek(cache){
   });
 }
 /** fetch 재시도 헬퍼 — "Load failed" 같은 일시적 네트워크 오류는 흔히 재시도로 해결됨 */
-async function fetchWithRetry(url, tries=3){
+async function fetchWithRetry(url, tries=2){
   let lastErr=null;
   for(let i=0;i<tries;i++){
     if(i>0) await new Promise(r=>setTimeout(r, 500*i));
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(), 10000); // 요청 하나당 10초 넘기면 포기하고 다음 시도로
     try{
-      const res=await fetch(url);
+      const res=await fetch(url, {signal:ctrl.signal});
       const json=await res.json();
       return json;
     }catch(e){ lastErr=e; }
+    finally{ clearTimeout(timer); }
   }
   throw lastErr;
 }
 let HIST_PRICE_LAST_ERROR=null; // 진단 패널에서 확인용
-/** 종목별 기간별 실제 종가를 확보(캐시 우선, 없거나 오래됐으면 Worker 조회). progressCb(단계 문자열)로 진행상황 콜백 */
+let HIST_PRICE_INFLIGHT=null; // 진행 중인 조회의 공유 Promise — 누가 먼저 불렀든 모든 호출자가 완료를 통보받게 함
+/** 종목별 기간별 실제 종가를 확보(캐시 우선, 없거나 오래됐으면 Worker 조회). progressCb(단계 문자열)로 진행상황 콜백
+    ※ 여러 곳(수익현황 탭, 기간별 손익)에서 동시에 부를 수 있어, 이미 조회 중이면 새로 시작하지 않고
+    "진행 중인 조회와 같은 Promise"를 돌려준다 — 이러면 늦게 부른 쪽도 완료 시점을 정확히 알 수 있다.
+    (예전엔 조회 중일 때 그냥 undefined를 즉시 반환해서, 나중에 부른 화면은 완료 통보를 못 받고
+    로딩 스피너가 영원히 멈춰있는 버그가 있었음) */
 async function ensureHistPrices(progressCb){
-  if(HIST_PRICE_LOADING) return;
+  if(HIST_PRICE_INFLIGHT) return HIST_PRICE_INFLIGHT;
   const cache = HIST_PRICE_CACHE || await loadHistPriceCache();
   HIST_PRICE_CACHE = cache;
   if(histCoversThisWeek(cache)){ HIST_PRICE_READY=true; return; }
 
   HIST_PRICE_LOADING = true;
   HIST_PRICE_LAST_ERROR = null;
-  const b=periodBoundaries();
-  try{
-    const domCodes=Object.entries(DOMESTIC_CODE_MAP).filter(([,c])=>c);
-    if(domCodes.length){
-      if(progressCb) progressCb('국내 ETF '+domCodes.length+'종목 조회 중');
-      const url=`${KIS_PROXY_URL}/hist/domestic?codes=${domCodes.map(([,c])=>c).join(',')}&from=${b.year}`;
-      try{
-        const json=await fetchWithRetry(url);
-        if(json.ok){
-          json.results.forEach(r=>{
-            if(!r || !r.days || !r.days.length) return;
-            const tk=domCodes.find(([,c])=>c===r.code)?.[0]; if(!tk) return;
-            cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
-          });
-        } else {
-          HIST_PRICE_LAST_ERROR={stage:'domestic', type:'api_error', detail:json.error||'응답에 ok:false'};
+  HIST_PRICE_INFLIGHT = (async()=>{
+    const b=periodBoundaries();
+    try{
+      const domCodes=Object.entries(DOMESTIC_CODE_MAP).filter(([,c])=>c);
+      if(domCodes.length){
+        if(progressCb) progressCb('국내 ETF '+domCodes.length+'종목 조회 중');
+        const url=`${KIS_PROXY_URL}/hist/domestic?codes=${domCodes.map(([,c])=>c).join(',')}&from=${b.year}`;
+        try{
+          const json=await fetchWithRetry(url);
+          if(json.ok){
+            json.results.forEach(r=>{
+              if(!r || !r.days || !r.days.length) return;
+              const tk=domCodes.find(([,c])=>c===r.code)?.[0]; if(!tk) return;
+              cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
+            });
+          } else {
+            HIST_PRICE_LAST_ERROR={stage:'domestic', type:'api_error', detail:json.error||'응답에 ok:false'};
+          }
+        }catch(e){
+          HIST_PRICE_LAST_ERROR={stage:'domestic', type:'fetch_failed', detail:String(e&&e.message||e), url};
         }
-      }catch(e){
-        HIST_PRICE_LAST_ERROR={stage:'domestic', type:'fetch_failed', detail:String(e&&e.message||e), url};
       }
-    }
-    const ovCodes=Object.entries(OVERSEAS_CODE_MAP);
-    if(ovCodes.length){
-      if(progressCb) progressCb('해외주식 '+ovCodes.length+'종목 조회 중');
-      const url=`${KIS_PROXY_URL}/hist/overseas?codes=${ovCodes.map(([,v])=>`${v.excd}:${v.symb}`).join(',')}&from=${b.year}`;
-      try{
-        const json=await fetchWithRetry(url);
-        if(json.ok){
-          json.results.forEach(r=>{
-            if(!r || !r.days || !r.days.length) return;
-            const tk=ovCodes.find(([,v])=>v.symb===r.symbol)?.[0]; if(!tk) return;
-            cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
-          });
-        } else if(!HIST_PRICE_LAST_ERROR){
-          HIST_PRICE_LAST_ERROR={stage:'overseas', type:'api_error', detail:json.error||'응답에 ok:false'};
+      const ovCodes=Object.entries(OVERSEAS_CODE_MAP);
+      if(ovCodes.length){
+        if(progressCb) progressCb('해외주식 '+ovCodes.length+'종목 조회 중');
+        const url=`${KIS_PROXY_URL}/hist/overseas?codes=${ovCodes.map(([,v])=>`${v.excd}:${v.symb}`).join(',')}&from=${b.year}`;
+        try{
+          const json=await fetchWithRetry(url);
+          if(json.ok){
+            json.results.forEach(r=>{
+              if(!r || !r.days || !r.days.length) return;
+              const tk=ovCodes.find(([,v])=>v.symb===r.symbol)?.[0]; if(!tk) return;
+              cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
+            });
+          } else if(!HIST_PRICE_LAST_ERROR){
+            HIST_PRICE_LAST_ERROR={stage:'overseas', type:'api_error', detail:json.error||'응답에 ok:false'};
+          }
+        }catch(e){
+          if(!HIST_PRICE_LAST_ERROR) HIST_PRICE_LAST_ERROR={stage:'overseas', type:'fetch_failed', detail:String(e&&e.message||e), url};
         }
-      }catch(e){
-        if(!HIST_PRICE_LAST_ERROR) HIST_PRICE_LAST_ERROR={stage:'overseas', type:'fetch_failed', detail:String(e&&e.message||e), url};
       }
+      await saveHistPriceCache(cache);
+      HIST_PRICE_CACHE = cache;
+      HIST_PRICE_READY = histCoversThisWeek(cache);
+    } catch(e){
+      console.error('기간별 시세 조회 실패', e);
+      HIST_PRICE_LAST_ERROR={stage:'unknown', type:'unexpected', detail:String(e&&e.message||e)};
+    } finally {
+      HIST_PRICE_LOADING = false;
+      HIST_PRICE_INFLIGHT = null;
     }
-    await saveHistPriceCache(cache);
-    HIST_PRICE_CACHE = cache;
-    HIST_PRICE_READY = histCoversThisWeek(cache);
-  } catch(e){
-    console.error('기간별 시세 조회 실패', e);
-    HIST_PRICE_LAST_ERROR={stage:'unknown', type:'unexpected', detail:String(e&&e.message||e)};
-  } finally {
-    HIST_PRICE_LOADING = false;
-  }
+  })();
+  return HIST_PRICE_INFLIGHT;
 }
 
 let refreshing=false;
