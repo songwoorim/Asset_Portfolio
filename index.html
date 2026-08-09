@@ -3432,7 +3432,11 @@ function plInvalidateSeries(){ PL_SERIES=null; }
 function plBuildSeries(){
   // AS가 나중에 길어질 수 있어(당일 스냅샷 로드, gap-fill 등) 캐시 길이와 어긋나면
   // undefined 인덱스 접근으로 NaN이 나므로, 길이가 안 맞으면 무조건 다시 계산한다.
-  if(PL_SERIES && PL_SERIES.evalArr.length===AS.length) return PL_SERIES;
+  // 캐시 유효 조건: ① AS 길이 불변 (앞선 NaN 버그 방지) ② 환율(FX) 불변.
+  // 새로고침으로 실시간 환율이 바뀌면 길이는 그대로라 ①은 안 걸리지만, 미국주식이
+  // 대부분인 이 포트폴리오는 환율 변화만으로도 평가액이 수백만원 단위로 어긋난다
+  // (실측: FX 1499→1412 변화 시 캐시를 안 버리면 평가액 차이 403만원 재현됨).
+  if(PL_SERIES && PL_SERIES.evalArr.length===AS.length && PL_SERIES.builtFX===FX) return PL_SERIES;
   const n=AS.length;
   const evalArr=new Array(n).fill(0), costArr=new Array(n).fill(0);
   const tickers=[...new Set(TXL.map(t=>t.tk))];
@@ -3470,7 +3474,7 @@ function plBuildSeries(){
   // 현금은 일자별 변동을 추적할 수 없어 현재 현금으로 근사(설명 문구에 명시)
   const cashNow=cashKRW()+ISA_CASH;
   for(let i=0;i<n;i++) evalArr[i]+=cashNow;
-  PL_SERIES={evalArr, costArr};
+  PL_SERIES={evalArr, costArr, builtFX:FX};
   return PL_SERIES;
 }
 
@@ -3601,6 +3605,9 @@ function renderPeriodPL(){
 }
 
 function initPeriodPL(){
+  initPeriodPLControls();
+}
+function initPeriodPLControls(){
   const chips=document.getElementById('plRangeChips'), seg=document.getElementById('plGranSeg'), customRow=document.getElementById('plCustomRow');
   if(chips) chips.querySelectorAll('button').forEach(b=>{
     b.onclick=()=>{
@@ -4861,6 +4868,20 @@ function histCoversThisWeek(cache){
     return days && days.length && days[0].date >= b.week;
   });
 }
+/** fetch 재시도 헬퍼 — "Load failed" 같은 일시적 네트워크 오류는 흔히 재시도로 해결됨 */
+async function fetchWithRetry(url, tries=3){
+  let lastErr=null;
+  for(let i=0;i<tries;i++){
+    if(i>0) await new Promise(r=>setTimeout(r, 500*i));
+    try{
+      const res=await fetch(url);
+      const json=await res.json();
+      return json;
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr;
+}
+let HIST_PRICE_LAST_ERROR=null; // 진단 패널에서 확인용
 /** 종목별 기간별 실제 종가를 확보(캐시 우선, 없거나 오래됐으면 Worker 조회). progressCb(단계 문자열)로 진행상황 콜백 */
 async function ensureHistPrices(progressCb){
   if(HIST_PRICE_LOADING) return;
@@ -4869,32 +4890,45 @@ async function ensureHistPrices(progressCb){
   if(histCoversThisWeek(cache)){ HIST_PRICE_READY=true; return; }
 
   HIST_PRICE_LOADING = true;
+  HIST_PRICE_LAST_ERROR = null;
   const b=periodBoundaries();
   try{
     const domCodes=Object.entries(DOMESTIC_CODE_MAP).filter(([,c])=>c);
     if(domCodes.length){
       if(progressCb) progressCb('국내 ETF '+domCodes.length+'종목 조회 중');
       const url=`${KIS_PROXY_URL}/hist/domestic?codes=${domCodes.map(([,c])=>c).join(',')}&from=${b.year}`;
-      const res=await fetch(url); const json=await res.json();
-      if(json.ok){
-        json.results.forEach(r=>{
-          if(!r || !r.days || !r.days.length) return;
-          const tk=domCodes.find(([,c])=>c===r.code)?.[0]; if(!tk) return;
-          cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
-        });
+      try{
+        const json=await fetchWithRetry(url);
+        if(json.ok){
+          json.results.forEach(r=>{
+            if(!r || !r.days || !r.days.length) return;
+            const tk=domCodes.find(([,c])=>c===r.code)?.[0]; if(!tk) return;
+            cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
+          });
+        } else {
+          HIST_PRICE_LAST_ERROR={stage:'domestic', type:'api_error', detail:json.error||'응답에 ok:false'};
+        }
+      }catch(e){
+        HIST_PRICE_LAST_ERROR={stage:'domestic', type:'fetch_failed', detail:String(e&&e.message||e), url};
       }
     }
     const ovCodes=Object.entries(OVERSEAS_CODE_MAP);
     if(ovCodes.length){
       if(progressCb) progressCb('해외주식 '+ovCodes.length+'종목 조회 중');
       const url=`${KIS_PROXY_URL}/hist/overseas?codes=${ovCodes.map(([,v])=>`${v.excd}:${v.symb}`).join(',')}&from=${b.year}`;
-      const res=await fetch(url); const json=await res.json();
-      if(json.ok){
-        json.results.forEach(r=>{
-          if(!r || !r.days || !r.days.length) return;
-          const tk=ovCodes.find(([,v])=>v.symb===r.symbol)?.[0]; if(!tk) return;
-          cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
-        });
+      try{
+        const json=await fetchWithRetry(url);
+        if(json.ok){
+          json.results.forEach(r=>{
+            if(!r || !r.days || !r.days.length) return;
+            const tk=ovCodes.find(([,v])=>v.symb===r.symbol)?.[0]; if(!tk) return;
+            cache[tk]=r.days.slice().sort((a,b2)=>b2.date-a.date);
+          });
+        } else if(!HIST_PRICE_LAST_ERROR){
+          HIST_PRICE_LAST_ERROR={stage:'overseas', type:'api_error', detail:json.error||'응답에 ok:false'};
+        }
+      }catch(e){
+        if(!HIST_PRICE_LAST_ERROR) HIST_PRICE_LAST_ERROR={stage:'overseas', type:'fetch_failed', detail:String(e&&e.message||e), url};
       }
     }
     await saveHistPriceCache(cache);
@@ -4902,6 +4936,7 @@ async function ensureHistPrices(progressCb){
     HIST_PRICE_READY = histCoversThisWeek(cache);
   } catch(e){
     console.error('기간별 시세 조회 실패', e);
+    HIST_PRICE_LAST_ERROR={stage:'unknown', type:'unexpected', detail:String(e&&e.message||e)};
   } finally {
     HIST_PRICE_LOADING = false;
   }
