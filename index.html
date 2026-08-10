@@ -741,15 +741,34 @@
   .m-txbtn:hover{background:#2b3a2c;}
 
   /* daily p&l */
-  .dp-hero{border-radius:14px; padding:16px 16px; margin:2px 2px 14px; position:relative; overflow:hidden;}
-  .dp-hero.up{background:linear-gradient(135deg, rgba(178,59,46,.09), rgba(178,59,46,.02));}
-  .dp-hero.down{background:linear-gradient(135deg, rgba(44,74,124,.09), rgba(44,74,124,.02));}
+  .dp-hero{border-radius:18px; padding:18px 18px 16px; margin:2px 2px 14px; position:relative; overflow:hidden;}
+  .dp-hero.up{background:linear-gradient(160deg, rgba(192,57,43,.13) 0%, rgba(192,57,43,.03) 55%, transparent 100%);}
+  .dp-hero.down{background:linear-gradient(160deg, rgba(44,74,124,.13) 0%, rgba(44,74,124,.03) 55%, transparent 100%);}
   .dp-hero.flat{background:var(--paper);}
-  .dp-hero .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
-  .dp-hero .num{font-family:'Inter',-apple-system,sans-serif; font-size:27px; font-weight:800; letter-spacing:-0.02em; display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;}
+  .dp-hero::before{content:''; position:absolute; top:-40%; right:-15%; width:180px; height:180px; border-radius:50%; pointer-events:none;}
+  .dp-hero.up::before{background:radial-gradient(circle, rgba(192,57,43,.12), transparent 70%);}
+  .dp-hero.down::before{background:radial-gradient(circle, rgba(44,74,124,.12), transparent 70%);}
+  .dp-hero .lbl{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; color:var(--ink-soft); margin-bottom:11px; position:relative;}
+  .dp-hero-mainrow{display:flex; align-items:center; gap:11px; position:relative;}
+  .dp-hero-icon{width:34px; height:34px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dp-hero.up .dp-hero-icon{background:rgba(192,57,43,.12); color:var(--stamp-red);}
+  .dp-hero.down .dp-hero-icon{background:rgba(44,74,124,.1); color:var(--stamp-blue);}
+  .dp-hero.flat .dp-hero-icon{background:var(--card); color:var(--ink-soft);}
+  .dp-hero-icon svg{width:16px; height:16px;}
+  .dp-hero .num{font-family:'Inter',-apple-system,sans-serif; font-size:27px; font-weight:800; letter-spacing:-0.02em; display:flex; align-items:baseline; gap:9px; min-width:0; white-space:nowrap;}
   .dp-hero.up .num{color:var(--stamp-red);} .dp-hero.down .num{color:var(--stamp-blue);}
-  .dp-hero .num .pct{font-size:14px; font-weight:700;}
-  .dp-hero .sub{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); margin-top:7px;}
+  .dp-hero .num .pct{font-size:13px; font-weight:700; padding:3px 9px; border-radius:20px; flex-shrink:0;}
+  .dp-hero.up .num .pct{background:rgba(192,57,43,.14);} .dp-hero.down .num .pct{background:rgba(44,74,124,.14);}
+  .dp-hero .sub{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); margin-top:11px; position:relative;}
+  .dp-breadth{display:flex; gap:8px; margin-bottom:16px;}
+  .dp-bitem{flex:1; background:var(--paper); border-radius:12px; padding:10px 12px; display:flex; align-items:center; gap:8px; white-space:nowrap;}
+  .dp-bic{width:24px; height:24px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dp-bic svg{width:12px; height:12px;}
+  .dp-bic.up{background:rgba(192,57,43,.12); color:var(--stamp-red);} .dp-bic.down{background:rgba(44,74,124,.1); color:var(--stamp-blue);} .dp-bic.flat{background:var(--card); color:var(--ink-soft);}
+  .dp-btxt{display:flex; align-items:baseline; gap:5px;}
+  .dp-btxt .n{font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:800; line-height:1;}
+  .dp-btxt .n.up{color:var(--stamp-red);} .dp-btxt .n.down{color:var(--stamp-blue);} .dp-btxt .n.flat{color:var(--ink-soft);}
+  .dp-btxt .l{font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); font-weight:600;}
   .pnl-tabs{position:relative; display:flex; background:var(--paper); border-radius:12px; padding:3px; gap:2px; margin:2px 2px 16px;}
   .pnl-tabs button{position:relative; z-index:1; flex:1; border:none; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:600; color:var(--ink-soft); background:transparent; padding:8px 2px; border-radius:9px; cursor:pointer; white-space:nowrap; transition:color .18s;}
   .pnl-tabs button.on{color:var(--ink);}
@@ -760,7 +779,8 @@
   .dp-spot:active{transform:scale(0.97);}
   .dp-spot.up{background:rgba(178,59,46,.07);}
   .dp-spot.down{background:rgba(44,74,124,.07);}
-  .dp-spot .tag{font-family:'Inter',-apple-system,sans-serif; font-size:9px; font-weight:700; padding:2px 7px; border-radius:9999px; display:inline-block; margin-bottom:7px;}
+  .dp-spot .tag{font-family:'Inter',-apple-system,sans-serif; font-size:9px; font-weight:700; padding:2px 7px; border-radius:9999px; display:inline-flex; align-items:center; gap:4px; margin-bottom:7px;}
+  .dp-spot .tag svg{width:9px; height:9px;}
   .dp-spot.up .tag{background:var(--stamp-red); color:#fff;}
   .dp-spot.down .tag{background:var(--stamp-blue); color:#fff;}
   .dp-spot-top{display:flex; align-items:center; gap:7px; margin-bottom:7px; min-width:0;}
@@ -768,8 +788,9 @@
   .dp-spot-lg img{width:100%; height:100%; object-fit:contain; padding:20%; display:block;}
   .dp-spot-nm{font-size:11.5px; font-weight:700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .dp-spot-nm span{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:400; margin-top:1px;}
-  .dp-spot-v{font-family:'Inter',-apple-system,sans-serif; font-size:13.5px; font-weight:800;}
-  .dp-spot-p{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; margin-top:1px;}
+  .dp-spot-row2{display:flex; align-items:baseline; justify-content:space-between; gap:6px; white-space:nowrap;}
+  .dp-spot-v{font-family:'Inter',-apple-system,sans-serif; font-size:13.5px; font-weight:800; white-space:nowrap;}
+  .dp-spot-p{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; white-space:nowrap; margin-left:auto;}
   .dp-contrib{padding:0 2px;}
   .dp-c-row{display:grid; grid-template-columns:28px 54px 1fr 76px; gap:8px; align-items:center; padding:9px 0; cursor:pointer; transition:transform .12s ease;}
   .dp-c-row:active{transform:scale(0.98);}
@@ -2003,6 +2024,12 @@ function dailyChangeStats(){
   return {totalDay, totalPct, contribs};
 }
 function arrowOf(n){ return n>0.0001?'▲':(n<-0.0001?'▼':'·'); }
+function arrowIcon(cls, color){
+  const c = color||'currentColor';
+  if(cls==='up') return `<svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if(cls==='down') return `<svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12l7 7 7-7" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`;
+}
 
 const ACCT_ICONS = {
   overseas:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>',
@@ -2797,7 +2824,7 @@ function initDiagnosisAcc(){
 
 let dailyPnlEverLoaded = false;
 let dpHeroShown = null, dpHeroRaf = null;
-function animateDpHero(to, arrow){
+function animateDpHero(to){
   const el=document.getElementById('dpHeroNum'); if(!el) return;
   const from = dpHeroShown==null ? to : dpHeroShown;
   if(dpHeroRaf) cancelAnimationFrame(dpHeroRaf);
@@ -2807,7 +2834,7 @@ function animateDpHero(to, arrow){
     const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
     const v=from+(to-from)*e;
     dpHeroShown=v;
-    el.textContent=`${arrow} ${v>=0?'+':''}${won(v)}`;
+    el.textContent=`${v>=0?'+':''}${won(v)}`;
     if(p<1) dpHeroRaf=requestAnimationFrame(step); else { dpHeroShown=to; dpHeroRaf=null; }
   }
   dpHeroRaf=requestAnimationFrame(step);
@@ -2868,13 +2895,15 @@ function renderDailyPnl(){
   const spotHtml=(r,tag,cls2)=>{
     const {inner,style}=avatarPiece(r.tk);
     return `<div class="dp-spot ${cls2}" data-tk="${r.tk}">
-      <span class="tag">${cls2==='up'?'▲':'▼'} ${tag}</span>
+      <span class="tag">${arrowIcon(cls2,'#fff')} ${tag}</span>
       <div class="dp-spot-top">
         <div class="dp-spot-lg" style="${style}">${inner}</div>
         <div class="dp-spot-nm">${r.n}<span>${r.tk}</span></div>
       </div>
-      <div class="dp-spot-v ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}원</div>
-      <div class="dp-spot-p ${clsOf(r.v)}">${sign(r.pct)}</div>
+      <div class="dp-spot-row2">
+        <span class="dp-spot-v ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}원</span>
+        <span class="dp-spot-p ${clsOf(r.v)}">${sign(r.pct)}</span>
+      </div>
     </div>`;
   };
   const maxAbs=Math.max(1,...rows.map(r=>Math.abs(r.v)));
@@ -2890,19 +2919,30 @@ function renderDailyPnl(){
   };
   const heroHtml=`<div class="dp-hero ${cls}">
     <div class="lbl">${LBL[pnlPeriod]}${approx?' · 근사치':''}${real?' <span class="real-badge">✓ 실시세 확인됨</span>':''}</div>
-    <div class="num"><span id="dpHeroNum">${arrowOf(total)} ${total>=0?'+':''}${won(dpHeroShown==null?total:dpHeroShown)}</span><span class="pct">${sign(pct)}</span></div>
+    <div class="dp-hero-mainrow">
+      <div class="dp-hero-icon">${arrowIcon(cls)}</div>
+      <div class="num"><span id="dpHeroNum">${total>=0?'+':''}${won(dpHeroShown==null?total:dpHeroShown)}</span><span class="pct">${sign(pct)}</span></div>
+    </div>
     <div class="sub">${rows.length}종목 반영</div>
   </div>`;
   let bodyHtml;
   if(!rows.length){
     bodyHtml='<div class="pnl-empty">해당 기간 데이터가 없습니다.</div>';
   } else {
+    const upCnt=rows.filter(r=>clsOf(r.v)==='up').length;
+    const downCnt=rows.filter(r=>clsOf(r.v)==='down').length;
+    const flatCnt=rows.length-upCnt-downCnt;
+    const breadthHtml=`<div class="dp-breadth">
+      <div class="dp-bitem"><div class="dp-bic up">${arrowIcon('up')}</div><div class="dp-btxt"><span class="n up">${upCnt}</span><span class="l">상승</span></div></div>
+      <div class="dp-bitem"><div class="dp-bic down">${arrowIcon('down')}</div><div class="dp-btxt"><span class="n down">${downCnt}</span><span class="l">하락</span></div></div>
+      <div class="dp-bitem"><div class="dp-bic flat">${arrowIcon('flat')}</div><div class="dp-btxt"><span class="n flat">${flatCnt}</span><span class="l">보합</span></div></div>
+    </div>`;
     const best=rows[0], worst=rows[rows.length-1];
     const spotSection = (rows.length>=2 && best.tk!==worst.tk)
       ? `<div class="dp-sec-lbl">베스트 · 워스트</div>
          <div class="dp-spot-row">${spotHtml(best,'베스트','up')}${spotHtml(worst,'워스트','down')}</div>`
       : '';
-    bodyHtml = spotSection
+    bodyHtml = breadthHtml + spotSection
       + `<div class="dp-sec-lbl">전체 종목 · 기여도</div>`
       + `<div class="dp-contrib">${rows.map(contribHtml).join('')}</div>`;
   }
@@ -2914,7 +2954,7 @@ function renderDailyPnl(){
   } else {
     box.innerHTML = heroHtml + bodyHtml;
   }
-  animateDpHero(total, arrowOf(total));
+  animateDpHero(total);
   box.querySelectorAll('.dp-spot, .dp-c-row').forEach(el=>el.onclick=()=>openModal(el.dataset.tk));
 }
 function initPnlTabs(){
@@ -3477,9 +3517,33 @@ function plBuildSeries(){
       }
     }
   });
-  // 현금은 일자별 변동을 추적할 수 없어 현재 현금으로 근사(설명 문구에 명시)
-  const cashNow=cashKRW()+ISA_CASH;
-  for(let i=0;i<n;i++) evalArr[i]+=cashNow;
+  /* 현금 — 예전엔 "현재 현금"을 모든 날짜에 똑같이 더하는 근사치를 썼는데, 이러면 과거에
+     매도한 대금이 그 날짜의 현금에 반영이 안 돼서 심각한 문제가 생긴다: 어떤 종목을 전량
+     매도하면 그날 "종목 평가액이 통째로 사라지는 손실"처럼 계산되고, 실제로 실현한 이익은
+     어디에도 안 잡힌다(실측: 100만원에 사서 150만원에 전량매도 = +50만원 이익인데
+     매도일 손익이 오히려 -484,991원으로 나오는 걸 확인 — 완전히 반대 부호).
+     그래서 거래이력(TXL)에서 매수=현금유출, 매도=현금유입으로 일자별 누적 현금흐름을
+     재구성하고, 오늘 시점 값이 실제 현재 현금과 정확히 맞도록 보정한다. 배당금이나
+     TXL에 안 잡히는 별도 입출금은 이 방식으로도 추적이 안 되지만(알려진 한계로 문서화),
+     매매로 인한 현금 변동은 이제 정확하게 반영된다. */
+  const cashArr=new Array(n).fill(0);
+  {
+    const txSorted=TXL.slice().sort((a,b)=>new Date(a.d)-new Date(b.d));
+    let running=0, txi2=0;
+    for(let i=0;i<n;i++){
+      const d=plDateForIndex(i);
+      while(txi2<txSorted.length && new Date(txSorted[txi2].d+'T00:00:00')<=d){
+        const t=txSorted[txi2];
+        const krw = t.cur==='USD' ? t.q*t.p*fxByDay[i] : t.q*t.p;
+        running -= krw; // 매수(q>0, krw>0)는 현금 감소, 매도(q<0, krw<0)는 현금 증가
+        txi2++;
+      }
+      cashArr[i]=running;
+    }
+    const shift=(cashKRW()+ISA_CASH)-cashArr[n-1]; // 오늘 값을 실제 현재 현금에 정확히 맞춤(초기 입금액 등 TXL에 없는 부분을 상수로 흡수)
+    for(let i=0;i<n;i++) cashArr[i]+=shift;
+  }
+  for(let i=0;i<n;i++) evalArr[i]+=cashArr[i];
   PL_SERIES={evalArr, costArr, builtFX:FX};
   return PL_SERIES;
 }
