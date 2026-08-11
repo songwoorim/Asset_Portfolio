@@ -211,6 +211,14 @@
   .cover-tv-row{display:flex; align-items:flex-end; justify-content:space-between; gap:12px;}
   .cover-total-value{font-family:'Inter',-apple-system,sans-serif; font-size:30px; font-weight:800; letter-spacing:-0.02em; color:var(--ink); line-height:1.15;}
   .cover-total-value span{font-size:15px; font-weight:400; color:var(--ink-soft); margin-left:6px;}
+  /* 다크모드 전환 리플 — 톤 누른 지점에서 원이 퍼지며 테마가 바뀜 */
+  .theme-ripple{ position:fixed; inset:0; z-index:9999; pointer-events:none; transition:clip-path .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; }
+  /* 스트릭 배지 파티클 — 탭하면 작은 반짝임이 사방으로 튐 */
+  .ins-streak{ cursor:pointer; }
+  @keyframes particleFly{
+    0%{ transform:translate(-50%,-50%) scale(1); opacity:1; }
+    100%{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity:0; }
+  }
   .cover-spark{width:100px; height:40px; flex-shrink:0;}
 
   .cover-chiprow{display:flex; flex-direction:column; gap:8px; margin:16px 0 4px;}
@@ -304,6 +312,92 @@
   .ins-contrib b{ color:var(--ink); font-weight:700; }
   .ins-empty-note{ font-size:11px; color:var(--ink-soft); padding:9px 2px; }
 
+  /* ===== 주간 리포트 + 목표 달성 진행률 (통합 카드) ===== */
+  .goal-card{ background:var(--card); border-radius:20px; padding:20px 22px; margin:16px 2px 14px; }
+  .goal-card .page-head{ margin-bottom:16px; }
+  .wk-daterange{ font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--ink-soft); }
+
+  .wk-hero{ border-radius:16px; padding:14px 16px; margin-bottom:14px; position:relative; overflow:hidden; transition:background .25s ease;
+    background:linear-gradient(160deg, rgba(192,57,43,.12) 0%, rgba(192,57,43,.02) 60%, transparent 100%); }
+  .wk-hero.down{ background:linear-gradient(160deg, rgba(44,74,124,.12) 0%, rgba(44,74,124,.02) 60%, transparent 100%); }
+  .wk-hero.flat{ background:var(--paper); }
+  .wk-hero-lbl{ font-size:10.5px; color:var(--ink-soft); margin-bottom:8px; transition:opacity .15s ease; }
+  .wk-hero-row{ display:flex; align-items:center; gap:10px; }
+  .wk-hero-ic{ width:30px; height:30px; border-radius:10px; background:rgba(192,57,43,.14); color:var(--stamp-red); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .wk-hero.down .wk-hero-ic{ background:rgba(44,74,124,.12); color:var(--stamp-blue); }
+  .wk-hero.flat .wk-hero-ic{ background:var(--card); color:var(--ink-soft); }
+  .wk-hero-ic svg{ width:15px; height:15px; }
+  .wk-hero-num{ font-family:'Inter',-apple-system,sans-serif; font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .wk-hero-num.up{ color:var(--stamp-red); } .wk-hero-num.down{ color:var(--stamp-blue); }
+  .wk-hero-pct{ font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; margin-left:2px; }
+  .wk-hero.up .wk-hero-pct{ background:rgba(192,57,43,.14); color:var(--stamp-red); }
+  .wk-hero.down .wk-hero-pct{ background:rgba(44,74,124,.14); color:var(--stamp-blue); }
+
+  .wk2-days{ display:flex; justify-content:space-between; margin-bottom:16px; padding:0 2px; }
+  .wk2-day{ display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; padding:4px 6px; border-radius:12px; transition:background .15s ease; background:none; border:none; font-family:inherit; }
+  .wk2-day:hover{ background:var(--paper); }
+  .wk2-day.sel{ background:rgba(212,175,55,.14); }
+  .wk2-day-dow{ font-size:8.5px; color:var(--ink-soft); font-weight:600; }
+  .wk2-day.sel .wk2-day-dow{ color:var(--brass); font-weight:800; }
+  .wk2-day-date{ font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:700; }
+  .wk2-day-ic{ width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:2px 0; }
+  .wk2-day-ic svg{ width:12px; height:12px; }
+  .wk2-day-ic.up{ background:rgba(192,57,43,.12); color:var(--stamp-red); }
+  .wk2-day-ic.down{ background:rgba(44,74,124,.1); color:var(--stamp-blue); }
+  .wk2-day-ic.future{ background:var(--paper); color:var(--ink-soft); opacity:.35; }
+  .wk2-day.sel .wk2-day-ic{ box-shadow:0 0 0 2px var(--brass); }
+  .wk2-day-pct{ font-size:8.5px; font-weight:700; }
+  .wk2-day-pct.up{ color:var(--stamp-red); } .wk2-day-pct.down{ color:var(--stamp-blue); } .wk2-day-pct.future{ color:var(--ink-soft); opacity:.5; }
+
+  .wk-insight-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px; }
+  .wk-insight{ background:var(--paper); border-radius:13px; padding:10px 11px; display:flex; align-items:center; gap:9px; min-width:0; }
+  .wk-insight-ic{ width:26px; height:26px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .wk-insight-ic svg{ width:13px; height:13px; }
+  .wk-insight-v{ font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .wk-insight-l{ font-size:8.8px; color:var(--ink-soft); margin-top:1px; }
+
+  .goal-divider{ height:1px; background:var(--line); margin:18px 0 16px; }
+  .wk-goal-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+  .wk-goal-lbl{ display:flex; align-items:center; gap:7px; font-size:11px; font-weight:700; color:var(--ink); }
+  .wk-goal-ic{ width:22px; height:22px; border-radius:8px; background:rgba(212,175,55,.14); color:var(--brass); display:flex; align-items:center; justify-content:center; }
+  .wk-goal-ic svg{ width:11px; height:11px; }
+  .goal-top-r{ font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; color:var(--brass); cursor:pointer; }
+  .goal-bar-track{ height:9px; background:var(--paper); border-radius:9999px; overflow:hidden; margin-bottom:8px; }
+  .goal-bar-fill{ height:100%; border-radius:9999px; background:linear-gradient(90deg, var(--brass), var(--brass-light)); transition:width .5s ease; }
+  .goal-foot-row{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-soft); }
+
+  /* ===== 투자 습관 인사이트 ===== */
+  .habit-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .habit-card{ background:var(--paper); border-radius:13px; padding:12px; }
+  .habit-ic{ width:26px; height:26px; border-radius:9px; background:rgba(0,102,204,.1); color:var(--brass); display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
+  .habit-ic svg{ width:13px; height:13px; }
+  .habit-v{ font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .habit-l{ font-size:9.5px; color:var(--ink-soft); margin-top:2px; }
+
+  /* ===== 연간 손익 캘린더 ===== */
+  .cal-grid{ display:grid; grid-auto-flow:column; grid-template-rows:repeat(7, 1fr); gap:2.5px; margin-bottom:10px; overflow-x:auto; }
+  .cal-cell{ width:11px; height:11px; border-radius:2px; }
+  .cal-legend{ display:flex; align-items:center; justify-content:flex-end; gap:4px; font-size:9px; color:var(--ink-soft); margin-bottom:14px; }
+  .cal-legend .sq{ width:8px; height:8px; border-radius:2px; }
+  .cal-summary{ display:flex; gap:8px; }
+  .cal-sitem{ flex:1; background:var(--paper); border-radius:11px; padding:9px 10px; text-align:center; }
+  .cal-sitem .n{ font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:800; }
+  .cal-sitem .l{ font-size:9px; color:var(--ink-soft); margin-top:2px; }
+
+  /* ===== 목표 vs 실제 비중 레이더 차트 ===== */
+  .dx-radar-wrap{ margin:14px 0 4px; }
+  .dx-radar-legend{ display:flex; justify-content:center; gap:16px; margin-top:6px; }
+  .dx-radar-legend-item{ display:flex; align-items:center; gap:5px; font-size:10.5px; color:var(--ink-soft); }
+  .dx-radar-legend-item i{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+
+  /* ===== 벤치마크 — 오늘 다중 지수 비교 ===== */
+  .bm-multi{ display:flex; gap:7px; margin:14px 0 4px; }
+  .bm-multi-chip{ flex:1; background:var(--paper); border-radius:12px; padding:10px 8px; text-align:center; position:relative; }
+  .bm-multi-chip.lead{ background:rgba(192,57,43,.09); }
+  .bm-multi-nm{ font-size:9.5px; color:var(--ink-soft); font-weight:600; margin-bottom:5px; }
+  .bm-multi-v{ font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800; }
+  .bm-multi-crown{ position:absolute; top:-7px; right:6px; font-size:11px; }
+
   .alloc{margin-top:20px; padding-top:18px; border-top:1px solid var(--line);}
   .alloc-title{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px;}
   .alloc-bar{display:flex; height:8px; border-radius:9999px; overflow:hidden; margin-bottom:12px;}
@@ -320,6 +414,7 @@
 
   /* ---------- Page ---------- */
   .page{background:var(--card); margin-top:16px; border-radius:16px; padding:24px 24px 10px; border:1px solid var(--line);}
+  .goal-card.page{ padding:20px 22px 20px; border-radius:20px; }
   .page + .page{margin-top:16px;}
   .page-head{display:flex; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:16px;}
   .page-head h2{font-family:'Inter',-apple-system,sans-serif; font-size:17px; font-weight:600; margin:0; display:flex; align-items:center; gap:8px; letter-spacing:-0.01em;}
@@ -1298,6 +1393,33 @@
     </div>
   </div>
 
+  <div class="goal-card page collapsible" id="goalCard" data-panel="home">
+    <div class="page-head wk-head">
+      <h2><span class="idx" style="background:rgba(212,175,55,.12);"><svg viewBox="0 0 24 24" style="stroke:#c9a227;" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke-width="1.7"/><path d="M3 9h18M8 2v4M16 2v4" stroke-width="1.7" stroke-linecap="round"/></svg></span>주간 리포트</h2>
+      <span class="wk-daterange" id="wkDateRange">—</span>
+    </div>
+
+    <div class="wk-hero" id="wkHero">
+      <div class="wk-hero-lbl" id="wkHeroLbl">이번 주 포트폴리오 변화</div>
+      <div class="wk-hero-row">
+        <div class="wk-hero-ic" id="wkHeroIc"></div>
+        <span class="wk-hero-num" id="wkHeroNum">—</span>
+        <span class="wk-hero-pct" id="wkHeroPct">—</span>
+      </div>
+    </div>
+
+    <div class="wk2-days" id="wk2Days"></div>
+    <div class="wk-insight-grid" id="wkInsightGrid"></div>
+
+    <div class="goal-divider"></div>
+    <div class="wk-goal-top">
+      <div class="wk-goal-lbl"><span class="wk-goal-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span>목표 달성률</div>
+      <div class="goal-top-r" id="goalPctBtn" title="탭해서 목표금액 수정">—</div>
+    </div>
+    <div class="goal-bar-track"><div class="goal-bar-fill" id="goalBarFill" style="width:0%;"></div></div>
+    <div class="goal-foot-row"><span id="goalAmtLine">—</span><span id="goalPace">—</span></div>
+  </div>
+
   <div class="perf" id="p0"></div>
 
   <!-- STOCK WEIGHT DONUT -->
@@ -1470,9 +1592,22 @@
 
   <div class="perf"></div>
 
+  <!-- YEAR CALENDAR HEATMAP -->
+  <div class="page collapsible" id="sec-calendar" data-panel="pnl">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke-width="1.7"/><path d="M3 9h18M8 2v4M16 2v4" stroke-width="1.7" stroke-linecap="round"/></svg></span>연간 손익 캘린더</h2><span style="font-size:11px; color:var(--ink-soft); font-weight:600;" id="calYearLabel"></span></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">적음 <span class="sq" style="background:rgba(44,74,124,.5);"></span><span class="sq" style="background:var(--paper);"></span><span class="sq" style="background:rgba(192,57,43,.5);"></span> 많음</div>
+    <div class="cal-summary" id="calSummary"></div>
+  </div>
+
+  <div class="perf"></div>
+
   <!-- BENCHMARK -->
   <div class="page collapsible" id="sec-bench" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><line x1="5" y1="21" x2="5" y2="10"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="19" y1="21" x2="19" y2="14"/><line x1="2" y1="8" x2="22" y2="8" stroke-dasharray="2 2"/></svg></span>벤치마크 비교</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">vs S&amp;P500</div></div>
+    <div class="bm-multi" id="bmMulti"></div>
+    <div class="note" style="border:none; padding:2px 0 10px; font-size:10px;">오늘 하루 등락률 비교 · KOSPI는 실시간 조회가 지원되지 않아 최근 스냅샷 기준입니다.</div>
+
     <div class="bm-hero">
       <div><div class="bm-k">내 포트폴리오</div><div class="bm-v up" id="bmP">—</div></div>
       <div><div class="bm-k">S&amp;P500에 넣었다면</div><div class="bm-v" style="color:#5878a8;" id="bmB">—</div></div>
@@ -1590,6 +1725,11 @@
   <div class="perf"></div>
 
   <!-- TX TIMELINE -->
+  <div class="page collapsible" id="sec-habit" data-panel="hist">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-width="1.7"/></svg></span>투자 습관 인사이트</h2></div>
+    <div class="habit-grid" id="habitGrid"></div>
+  </div>
+
   <div class="page collapsible" id="sec-tx" data-panel="hist">
     <div class="page-head"><h2><span class="idx" style="background:rgba(110,110,115,.1);"><svg viewBox="0 0 24 24" style="stroke:#6e6e73;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>거래 이력</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="txTotal">—</div></div>
 
@@ -1674,6 +1814,8 @@
     </div>
 
     <div class="dx-oneline" id="dxOneline">"미국 기술·성장주 + 100% 달러"에 집중한 <b>고확신 베팅</b>. 상승장에서 통한 구조이고, 하락 전환 시 변동성이 그대로 실린다. 수익의 질이 아니라 <b>리스크 구조</b>가 과제.</div>
+
+    <div class="dx-radar-wrap" id="dxRadarWrap"></div>
 
     <div class="dx-cmp-sec">
       <div class="dx-cmp-head"><svg viewBox="0 0 24 24"><path d="M9 17V9M12 17V5M15 17v-4"/></svg>지금 비중 vs 권장 범위</div>
@@ -2146,6 +2288,52 @@ function renderCover(){
   }
   renderCoverSpark();
   renderWeekDots();
+  renderGoalProgress(total);
+}
+
+/* ===== 목표 달성 진행률 ===== */
+const GOAL_KEY='goal_amount_v1';
+let GOAL_AMOUNT=100000000; // 기본값 1억원, 최초 로드 시 저장된 값 있으면 덮어씀
+async function loadGoalAmount(){
+  try{ const r=await STORE.get(GOAL_KEY); if(r&&r.value){ const n=Number(r.value); if(n>0) GOAL_AMOUNT=n; } }catch(e){}
+}
+function renderGoalProgress(total){
+  const pctEl=document.getElementById('goalPctBtn'), fillEl=document.getElementById('goalBarFill'),
+        lineEl=document.getElementById('goalAmtLine'), paceEl=document.getElementById('goalPace');
+  if(!pctEl) return;
+  const pct=Math.max(0, Math.min(999, total/GOAL_AMOUNT*100));
+  pctEl.textContent=pct.toFixed(1)+'%';
+  fillEl.style.width=Math.min(100,pct)+'%';
+  const remain=GOAL_AMOUNT-total;
+  lineEl.textContent = `${won(total)} / ${won(GOAL_AMOUNT)}`;
+
+  // 최근 90일 평균 일일 증가액으로 D-day 추정(자산이 늘고 있을 때만 표시)
+  if(remain<=0){
+    paceEl.textContent=`목표 달성! +${won(-remain)}`;
+  } else if(typeof AS!=='undefined' && AS.length>90){
+    const recentStart=AS.length-91, recentEnd=AS.length-1;
+    const a=AS[recentStart], b=total;
+    if(a!=null && b>a){
+      const dailyPace=(b-a)/90;
+      const daysLeft=Math.ceil(remain/dailyPace);
+      paceEl.textContent = (daysLeft>0 && daysLeft<3650) ? `최근 페이스면 D-${daysLeft}` : '';
+    } else paceEl.textContent='';
+  } else {
+    paceEl.textContent='';
+  }
+}
+function initGoalCard(){
+  const btn=document.getElementById('goalPctBtn');
+  if(!btn) return;
+  btn.onclick=async()=>{
+    const input=prompt('목표 금액을 원 단위로 입력해주세요(숫자만)', String(GOAL_AMOUNT));
+    if(input==null) return;
+    const n=Number(input.replace(/[^0-9]/g,''));
+    if(!n || n<=0){ alert('올바른 금액을 입력해주세요'); return; }
+    GOAL_AMOUNT=n;
+    try{ await STORE.set(GOAL_KEY, String(n)); }catch(e){}
+    renderGoalProgress(grandTotal());
+  };
 }
 function renderAthAndStreak(total){
   const row=document.getElementById('insBadgeRow');
@@ -2179,6 +2367,36 @@ function renderAthAndStreak(total){
     html+=`<span class="ins-badge ins-streak ${cls}">${dir>0?'🔥':'📉'} ${streak}일 ${word} 중</span>`;
   }
   row.innerHTML=html;
+}
+/* 스트릭 배지 파티클 효과 — 탭한 지점에서 작은 점들이 사방으로 튀며 사라짐 */
+function burstParticles(x, y, colorA, colorB){
+  const n = 12;
+  for(let i=0; i<n; i++){
+    const ang = (Math.PI*2*i/n) + (Math.random()*0.5-0.25);
+    const dist = 20 + Math.random()*28;
+    const dx = Math.cos(ang)*dist, dy = Math.sin(ang)*dist;
+    const size = 3 + Math.random()*3;
+    const p = document.createElement('div');
+    p.style.cssText = `position:fixed; left:${x}px; top:${y}px; width:${size}px; height:${size}px; border-radius:50%;
+      background:${Math.random()<0.55?colorA:colorB}; z-index:9999; pointer-events:none;
+      animation:particleFly .65s cubic-bezier(.15,.7,.3,1) forwards;`;
+    p.style.setProperty('--dx', dx+'px');
+    p.style.setProperty('--dy', dy+'px');
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 700);
+  }
+}
+function initStreakParticles(){
+  const row=document.getElementById('insBadgeRow');
+  if(!row) return;
+  row.addEventListener('click', e=>{
+    const badge=e.target.closest('.ins-streak');
+    if(!badge) return;
+    const rect=badge.getBoundingClientRect();
+    const x=rect.left+rect.width/2, y=rect.top+rect.height/2;
+    const up=badge.classList.contains('up');
+    burstParticles(x, y, up?'#ff9f0a':'#409cff', up?'#ff6f5e':'#6d9eeb');
+  });
 }
 function renderWeekDots(){
   const el=document.getElementById('weekDots'); if(!el || typeof AS==='undefined') return;
@@ -2227,6 +2445,32 @@ function idxCardHtml(key, i){
     <div class="v">${i.v.toLocaleString('en-US',{maximumFractionDigits:2})}</div>
     <div class="idx-row2"><span class="pct ${c}">${i.c>0?'▲':(i.c<0?'▼':'·')} ${sign(i.c)}</span><span class="pt">${pt>=0?'+':''}${pt.toFixed(2)}</span></div>
     <div class="idx-bar"><i class="${c}" style="width:${barW.toFixed(1)}%;"></i></div></div>`;
+}
+/* ===== 벤치마크 — 오늘 다중 지수 비교(간소화 버전) =====
+   "올해 KOSPI +3.2%" 같은 연초 대비 수치는 과거 지수 데이터가 없어 만들 수 없다(SPYM 비교처럼
+   정확히 하려면 계좌 개설 시점부터의 지수 실측 데이터가 새로 필요함). 대신 이미 정확하게 갖고
+   있는 "오늘 하루 등락률"만 정직하게 비교한다 — 새 데이터 없이 100% 정확. */
+function renderIndexCompare(){
+  const el=document.getElementById('bmMulti');
+  if(!el || typeof INDICES==='undefined') return;
+  let myPct=0;
+  try{ myPct=dailyChangeStats().totalPct; }catch(e){}
+  const items=[
+    {nm:'내 포트폴리오', pct:myPct},
+    {nm:'S&P500', pct:INDICES.sp.c},
+    {nm:'NASDAQ', pct:INDICES.ndq.c},
+    {nm:'KOSPI', pct:INDICES.kospi.c},
+  ];
+  const maxPct=Math.max(...items.map(i=>i.pct));
+  el.innerHTML=items.map(i=>{
+    const cls=clsOf(i.pct);
+    const isLead=i.pct===maxPct;
+    return `<div class="bm-multi-chip ${isLead?'lead':''}">
+      ${isLead?'<span class="bm-multi-crown">👑</span>':''}
+      <div class="bm-multi-nm">${i.nm}</div>
+      <div class="bm-multi-v ${cls}">${sign(i.pct)}</div>
+    </div>`;
+  }).join('');
 }
 function renderIndices(){
   const ins=document.getElementById('mktInsight'), g=document.getElementById('idxGrid');
@@ -2768,7 +3012,61 @@ function renderTables(){
 }
 
 const DX_TARGET={stock:60, cashLo:8, cashHi:10, pltr:10};
+/* ===== 목표 vs 실제 비중 레이더 차트 (계좌 단위: 해외주식/ISA/연금저축/현금) ===== */
+function renderAllocRadar(){
+  const wrap=document.getElementById('dxRadarWrap');
+  if(!wrap) return;
+  const total=grandTotal();
+  const t=acctTotals();
+  const cash=cashKRW()+ISA_CASH;
+  const stockTarget=Math.max(0, 100-REBAL_DEF.ISA-REBAL_DEF.PENSION-REBAL_DEF.CASH);
+  const cats=[
+    {label:'해외주식', actual:t.overseas.ev/total*100, target:stockTarget},
+    {label:'ISA', actual:t.isa.ev/total*100, target:REBAL_DEF.ISA},
+    {label:'연금저축', actual:t.pension.ev/total*100, target:REBAL_DEF.PENSION},
+    {label:'현금', actual:cash/total*100, target:REBAL_DEF.CASH},
+  ];
+  const n=cats.length, cx=100, cy=95, R=66;
+  const allVals=cats.flatMap(c=>[c.actual, c.target]);
+  const scale=Math.max(20, Math.max(...allVals)*1.15);
+  const pt=(i,val)=>{
+    const ang=-Math.PI/2 + i*2*Math.PI/n;
+    const r=Math.min(1, val/scale)*R;
+    return [cx+r*Math.cos(ang), cy+r*Math.sin(ang)];
+  };
+  let rings='';
+  [0.33,0.66,1.0].forEach(frac=>{
+    const pts=cats.map((c,i)=>pt(i,scale*frac).join(',')).join(' ');
+    rings+=`<polygon points="${pts}" fill="none" stroke="var(--line)" stroke-width="1"/>`;
+  });
+  let axes='';
+  cats.forEach((c,i)=>{
+    const [x,y]=pt(i,scale);
+    axes+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>`;
+  });
+  const targetPts=cats.map((c,i)=>pt(i,c.target).join(',')).join(' ');
+  const actualPts=cats.map((c,i)=>pt(i,c.actual).join(',')).join(' ');
+  let labels='';
+  cats.forEach((c,i)=>{
+    const [x,y]=pt(i,scale*1.22);
+    let anchor='middle';
+    if(x<cx-5) anchor='end'; else if(x>cx+5) anchor='start';
+    labels+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="9" fill="var(--ink-soft)" text-anchor="${anchor}" dominant-baseline="middle">${c.label}</text>`;
+  });
+  wrap.innerHTML=`
+    <svg viewBox="0 0 200 185" style="width:100%; height:190px;">
+      ${rings}${axes}
+      <polygon points="${targetPts}" fill="none" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <polygon points="${actualPts}" fill="rgba(192,57,43,.18)" stroke="var(--stamp-red)" stroke-width="2"/>
+      ${labels}
+    </svg>
+    <div class="dx-radar-legend">
+      <div class="dx-radar-legend-item"><i style="background:var(--stamp-red);"></i>실제 비중</div>
+      <div class="dx-radar-legend-item" style="color:var(--ink-soft);"><i style="border:1.5px dashed var(--ink-soft); background:none;"></i>목표 비중</div>
+    </div>`;
+}
 function renderDiagnosis(){
+  renderAllocRadar();
   const total=grandTotal(), cost=investedCost();
   const ret=((total-cashKRW())/cost-1)*100;
   const ov=HOLDINGS.filter(h=>h.acct==='overseas').reduce((s,h)=>s+evalKRW(h),0);
@@ -2978,6 +3276,287 @@ function initPnlTabs(){
     HIST_PRICE_READY=histCoversThisWeek(cache);
     if(HIST_PRICE_READY && pnlPeriod!=='today') renderDailyPnl();
   });
+}
+
+/* ===== 주간 리포트 공유 카드 ===== */
+/* ===== 주간 리포트(목표카드 하단 통합) — 이번 주는 롤링 7일이 아니라 "월요일~금요일" 기준 =====
+   평일 중이면 이번 주 월요일부터 오늘까지, 주말이면 방금 끝난 주의 월~금 전체를 보여준다. */
+function getWeekRangeMonFri(today){
+  const dow=today.getDay(); // 0=일 ... 6=토
+  const monday=new Date(today);
+  if(dow===0) monday.setDate(today.getDate()-6);      // 일요일 → 이번 주는 이미 끝난 지난주로 취급
+  else monday.setDate(today.getDate()-(dow-1));
+  let end;
+  if(dow===0 || dow===6){ end=new Date(monday); end.setDate(monday.getDate()+4); } // 주말엔 그 주의 금요일까지
+  else end=today; // 평일엔 오늘까지
+  return {monday, end};
+}
+
+/* 히어로 숫자 카운팅 애니메이션 — 요일 탭으로 값이 바뀔 때마다 부드럽게 굴러가도록 */
+let wkHeroShown=null, wkHeroRaf=null;
+function animateWkHero(to, cls, pctText){
+  const numEl=document.getElementById('wkHeroNum'), heroEl=document.getElementById('wkHero'),
+        icEl=document.getElementById('wkHeroIc'), pctEl=document.getElementById('wkHeroPct');
+  if(!numEl) return;
+  heroEl.className='wk-hero '+cls;
+  icEl.innerHTML = cls==='up' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
+    : cls==='down' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/></svg>';
+  pctEl.textContent=pctText;
+  const from=wkHeroShown==null ? to : wkHeroShown;
+  if(wkHeroRaf) cancelAnimationFrame(wkHeroRaf);
+  if(from===to){ wkHeroShown=to; numEl.textContent=(to>=0?'+':'')+won(to); numEl.className='wk-hero-num '+cls; return; }
+  const t0=performance.now(), dur=420;
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    const v=from+(to-from)*e;
+    wkHeroShown=v;
+    numEl.className='wk-hero-num '+cls;
+    numEl.textContent=(v>=0?'+':'')+won(v);
+    if(p<1) wkHeroRaf=requestAnimationFrame(step); else { wkHeroShown=to; wkHeroRaf=null; }
+  }
+  wkHeroRaf=requestAnimationFrame(step);
+}
+
+let WK_DAYS=[]; // 이번 주 요일별 데이터 캐시(탭 인터랙션에서 재사용)
+let WK_SELECTED=null; // 선택된 요일 인덱스(null=주 전체)
+
+function renderWeeklyReport(){
+  const rangeEl=document.getElementById('wkDateRange'), daysEl=document.getElementById('wk2Days'), gridEl=document.getElementById('wkInsightGrid');
+  if(!rangeEl || typeof AS==='undefined' || !AS.length) return;
+  const S=plBuildSeries();
+  const lastIdx=S.evalArr.length-1;
+  const today=plDateForIndex(lastIdx);
+  const {monday, end}=getWeekRangeMonFri(today);
+  let startIdx=Math.max(0, plIndexForDate(monday));
+  let endIdx=Math.min(lastIdx, plIndexForDate(end));
+  const fmtFull=d=>`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  const friday=new Date(monday); friday.setDate(monday.getDate()+4);
+  rangeEl.textContent=`${fmtFull(monday)} ~ ${fmtFull(friday)}`;
+
+  if(endIdx<=startIdx){
+    animateWkHero(0,'flat','0.0%');
+    document.getElementById('wkHeroLbl').textContent='이번 주 데이터가 아직 없어요';
+    daysEl.innerHTML=''; gridEl.innerHTML='';
+    return;
+  }
+  const unreal=i=>S.evalArr[i]-S.costArr[i];
+  const weekTotal=unreal(endIdx)-unreal(startIdx);
+  const weekBase=S.evalArr[startIdx];
+  const weekPct=weekBase>0 ? weekTotal/weekBase*100 : 0;
+
+  // 요일별(월~금) 일일 손익 계산 — 데이터 없는 미래 요일은 null로 표시
+  const dowNames=['월','화','수','목','금'];
+  WK_DAYS=dowNames.map((nm,i)=>{
+    const d=new Date(monday); d.setDate(monday.getDate()+i);
+    const idx=plIndexForDate(d);
+    if(idx>endIdx || idx<0){ return {nm, date:d, has:false}; }
+    const prevIdx=Math.max(startIdx-1, idx-1); // 월요일은 "그 전날(일요일 값=금요일 마감)" 대비
+    const v = idx===startIdx ? unreal(idx)-unreal(Math.max(0,startIdx-1)) : unreal(idx)-unreal(idx-1);
+    const base=S.evalArr[Math.max(0,idx-1)];
+    const pct = base>0 ? v/base*100 : 0;
+    return {nm, date:d, has:true, idx, v, pct};
+  });
+
+  // 요일 칩 렌더
+  daysEl.innerHTML=WK_DAYS.map((d,i)=>{
+    const md=`${d.date.getMonth()+1}/${d.date.getDate()}`;
+    if(!d.has) return `<button type="button" class="wk2-day" data-i="${i}" disabled>
+      <div class="wk2-day-dow">${d.nm}</div><div class="wk2-day-date">${md}</div>
+      <div class="wk2-day-ic future"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/></svg></div>
+      <div class="wk2-day-pct future">—</div></button>`;
+    const cls=clsOf(d.v);
+    const icon = cls==='up' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
+      : cls==='down' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/></svg>';
+    return `<button type="button" class="wk2-day${WK_SELECTED===i?' sel':''}" data-i="${i}">
+      <div class="wk2-day-dow">${d.nm}</div><div class="wk2-day-date">${md}</div>
+      <div class="wk2-day-ic ${cls}">${icon}</div>
+      <div class="wk2-day-pct ${cls}">${sign(d.pct)}</div></button>`;
+  }).join('');
+
+  // 종목별 기여도(주 전체 기준, 인사이트 카드용) — 월요일 대비 금요일/오늘
+  const dMon=plDateForIndex(startIdx), dEnd=plDateForIndex(endIdx);
+  const fx0=fxAt(dMon), fx1=fxAt(dEnd);
+  const contribRows=HOLDINGS.map(h=>{
+    const st0=stateAt(h.ticker,dMon), st1=stateAt(h.ticker,dEnd);
+    const px0=priceAt(h.ticker,dMon), px1=priceAt(h.ticker,dEnd);
+    const isUSD=h.cur==='USD';
+    const ev0=isUSD? st0.shares*px0*fx0 : st0.shares*px0;
+    const ev1=isUSD? st1.shares*px1*fx1 : st1.shares*px1;
+    const v=(ev1-st1.cost)-(ev0-st0.cost);
+    const pctV=(ev0-st0.cost)!==0 ? v/Math.abs(ev0-st0.cost)*100 : 0;
+    return {tk:h.ticker, v, pct:pctV};
+  }).sort((a,b)=>b.v-a.v);
+
+  // 지난주(같은 로직으로 한 주 전) 대비
+  let prevWeekTotal=null;
+  const prevMonday=new Date(monday); prevMonday.setDate(monday.getDate()-7);
+  const prevFriday=new Date(monday); prevFriday.setDate(monday.getDate()-3);
+  const prevStartIdx=plIndexForDate(prevMonday), prevEndIdx=plIndexForDate(prevFriday);
+  if(prevStartIdx>=0 && prevEndIdx>=prevStartIdx && prevEndIdx<=lastIdx){
+    prevWeekTotal=unreal(prevEndIdx)-unreal(prevStartIdx);
+  }
+
+  const upDays=WK_DAYS.filter(d=>d.has && d.v>0.0001).length;
+  const downDays=WK_DAYS.filter(d=>d.has && d.v<-0.0001).length;
+
+  const icStar='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+  const icScale='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M8 21h8M5 7l7-4 7 4M5 7l-3 6a3 3 0 0 0 6 0L5 7zM19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/></svg>';
+  const icCompare='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/></svg>';
+
+  const insights=[];
+  if(contribRows.length){
+    const best=contribRows[0];
+    insights.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(192,57,43,.12); color:var(--stamp-red);">${icStar}</div><div><div class="wk-insight-v">${best.tk}</div><div class="wk-insight-l">베스트 ${sign(best.pct)}</div></div></div>`);
+    const worst=contribRows[contribRows.length-1];
+    if(worst && worst.tk!==best.tk){
+      insights.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(44,74,124,.1); color:var(--stamp-blue);">${icStar}</div><div><div class="wk-insight-v">${worst.tk}</div><div class="wk-insight-l">워스트 ${sign(worst.pct)}</div></div></div>`);
+    }
+  }
+  insights.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(255,159,10,.14); color:#ff9f0a;">${icScale}</div><div><div class="wk-insight-v">${upDays}승 ${downDays}패</div><div class="wk-insight-l">상승일 · 하락일</div></div></div>`);
+  if(prevWeekTotal!=null){
+    const diff=weekTotal-prevWeekTotal;
+    insights.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(0,102,204,.1); color:#0066cc;">${icCompare}</div><div><div class="wk-insight-v">${diff>=0?'+':''}${plNum(diff)}</div><div class="wk-insight-l">지난주 대비</div></div></div>`);
+  }
+  gridEl.innerHTML=insights.join('');
+
+  // 선택된 요일이 있으면 그 요일 값을, 없으면 주 전체 값을 히어로에 표시
+  applyWkHeroSelection();
+}
+function applyWkHeroSelection(){
+  const lblEl=document.getElementById('wkHeroLbl');
+  if(!lblEl || !WK_DAYS.length) return;
+  if(WK_SELECTED!=null && WK_DAYS[WK_SELECTED] && WK_DAYS[WK_SELECTED].has){
+    const d=WK_DAYS[WK_SELECTED];
+    lblEl.textContent=`${d.date.getMonth()+1}/${d.date.getDate()} (${d.nm}) 하루 변화`;
+    animateWkHero(d.v, clsOf(d.v), sign(d.pct));
+  } else {
+    const S=plBuildSeries();
+    const lastIdx=S.evalArr.length-1;
+    const today=plDateForIndex(lastIdx);
+    const {monday, end}=getWeekRangeMonFri(today);
+    const startIdx=Math.max(0, plIndexForDate(monday));
+    const endIdx=Math.min(lastIdx, plIndexForDate(end));
+    const unreal=i=>S.evalArr[i]-S.costArr[i];
+    const total=unreal(endIdx)-unreal(startIdx);
+    const base=S.evalArr[startIdx];
+    const pct=base>0 ? total/base*100 : 0;
+    lblEl.textContent='이번 주 포트폴리오 변화';
+    animateWkHero(total, clsOf(total), sign(pct));
+  }
+}
+function initWeeklyDayTaps(){
+  const daysEl=document.getElementById('wk2Days');
+  if(!daysEl) return;
+  daysEl.addEventListener('click', e=>{
+    const btn=e.target.closest('.wk2-day'); if(!btn || btn.disabled) return;
+    const i=+btn.dataset.i;
+    WK_SELECTED = (WK_SELECTED===i) ? null : i; // 같은 요일 다시 탭하면 전체로 복귀
+    daysEl.querySelectorAll('.wk2-day').forEach(b=>b.classList.toggle('sel', +b.dataset.i===WK_SELECTED));
+    applyWkHeroSelection();
+  });
+}
+
+/* ===== 투자 습관 인사이트 ===== */
+function fmtDuration(days){
+  const y=Math.floor(days/365), m=Math.floor((days%365)/30);
+  if(y>0) return `${y}년${m>0?' '+m+'개월':''}`;
+  if(m>0) return `${m}개월`;
+  return `${days}일`;
+}
+function computeInvestHabits(){
+  const today=plDateForIndex(AS.length-1);
+  const year=today.getFullYear();
+  const buysThisYear=TXL.filter(t=>t.q>0 && t.d.slice(0,4)===String(year)).length;
+
+  // 현재 보유 중인 티커별로 "최초 매수일 ~ 오늘" 보유기간
+  const heldTickers=[...new Set(HOLDINGS.map(h=>h.ticker))];
+  const holdDurations=heldTickers.map(tk=>{
+    const txs=TXL.filter(t=>t.tk===tk && t.q>0).sort((a,b)=>new Date(a.d)-new Date(b.d));
+    if(!txs.length) return null;
+    const first=new Date(txs[0].d+'T00:00:00');
+    return {tk, days:Math.round((today-first)/864e5)};
+  }).filter(Boolean);
+  const avgDays=holdDurations.length ? Math.round(holdDurations.reduce((s,h)=>s+h.days,0)/holdDurations.length) : 0;
+  const longest=holdDurations.slice().sort((a,b)=>b.days-a.days)[0]||null;
+
+  // 매수 요일 분포(가장 많이 산 요일)
+  const dayNames=['일','월','화','수','목','금','토'];
+  const dayCounts=[0,0,0,0,0,0,0];
+  TXL.filter(t=>t.q>0).forEach(t=>{ dayCounts[new Date(t.d+'T00:00:00').getDay()]++; });
+  let favDayIdx=0, favDayCount=-1;
+  dayCounts.forEach((c,i)=>{ if(c>favDayCount){ favDayCount=c; favDayIdx=i; } });
+
+  return {buysThisYear, avgDays, longest, favDay:dayNames[favDayIdx], favDayCount, year};
+}
+function renderHabitInsights(){
+  const grid=document.getElementById('habitGrid');
+  if(!grid || typeof TXL==='undefined' || !TXL.length) return;
+  const h=computeInvestHabits();
+  const ic=path=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+  grid.innerHTML=`
+    <div class="habit-card"><div class="habit-ic">${ic('<path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>')}</div><div class="habit-v">${h.buysThisYear}회</div><div class="habit-l">${h.year}년 매수 횟수</div></div>
+    <div class="habit-card"><div class="habit-ic">${ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>')}</div><div class="habit-v">${h.avgDays?fmtDuration(h.avgDays):'—'}</div><div class="habit-l">평균 보유기간</div></div>
+    <div class="habit-card"><div class="habit-ic">${ic('<path d="M12 19V5M5 12l7-7 7 7"/>')}</div><div class="habit-v">${h.longest?h.longest.tk:'—'}</div><div class="habit-l">최장 보유${h.longest?' ('+fmtDuration(h.longest.days)+')':''}</div></div>
+    <div class="habit-card"><div class="habit-ic">${ic('<path d="M20 7h-9M14 17H5M17 7a3 3 0 11-6 0 3 3 0 016 0zM10 17a3 3 0 11-6 0 3 3 0 016 0z"/>')}</div><div class="habit-v">${h.favDayCount>0?h.favDay+'요일':'—'}</div><div class="habit-l">제일 많이 산 요일</div></div>
+  `;
+}
+
+/* ===== 연간 손익 캘린더 ===== */
+function renderYearCalendar(){
+  const grid=document.getElementById('calGrid'), sumEl=document.getElementById('calSummary'), lblEl=document.getElementById('calYearLabel');
+  if(!grid || typeof AS==='undefined' || !AS.length) return;
+  const S=plBuildSeries();
+  const lastIdx=S.evalArr.length-1;
+  const today=plDateForIndex(lastIdx);
+  const year=today.getFullYear();
+  if(lblEl) lblEl.textContent=String(year);
+  const jan1=new Date(year,0,1);
+  const startIdx=Math.max(0, plIndexForDate(jan1));
+  const endIdx=lastIdx;
+  const unreal=i=>S.evalArr[i]-S.costArr[i];
+
+  // 일별 손익 계산 + 최대 변동폭(색 강도 스케일 기준)
+  const days=[]; // {date, pl}
+  let maxAbs=1;
+  for(let i=startIdx;i<=endIdx;i++){
+    const pl = i>startIdx ? unreal(i)-unreal(i-1) : 0;
+    days.push({date:plDateForIndex(i), pl});
+    if(i>startIdx) maxAbs=Math.max(maxAbs, Math.abs(pl));
+  }
+
+  // GitHub 스타일 배치: 1월1일의 요일만큼 앞쪽을 빈 칸으로 채워 열(주) 정렬을 맞춘다
+  const firstDow=jan1.getDay(); // 0=일요일
+  let html='';
+  for(let i=0;i<firstDow;i++) html+='<div class="cal-cell" style="background:transparent;"></div>';
+  let upCount=0, downCount=0, curUpStreak=0, maxUpStreak=0, curDownStreak=0, maxDownStreak=0;
+  days.forEach((d,idx)=>{
+    let color='var(--paper)';
+    if(idx>0){ // 첫날은 기준일이라 손익 없음
+      if(d.pl>0.0001){
+        upCount++; curUpStreak++; curDownStreak=0; maxUpStreak=Math.max(maxUpStreak,curUpStreak);
+        const alpha=0.15+Math.min(1,Math.abs(d.pl)/maxAbs)*0.75;
+        color=`rgba(192,57,43,${alpha.toFixed(2)})`;
+      } else if(d.pl<-0.0001){
+        downCount++; curDownStreak++; curUpStreak=0; maxDownStreak=Math.max(maxDownStreak,curDownStreak);
+        const alpha=0.15+Math.min(1,Math.abs(d.pl)/maxAbs)*0.75;
+        color=`rgba(44,74,124,${alpha.toFixed(2)})`;
+      } else { curUpStreak=0; curDownStreak=0; }
+    }
+    const dateStr=`${d.date.getMonth()+1}/${d.date.getDate()}`;
+    const plStr = idx>0 ? `${d.pl>=0?'+':''}${plNum(d.pl)}` : '기준일';
+    html+=`<div class="cal-cell" style="background:${color};" title="${dateStr} ${plStr}"></div>`;
+  });
+  grid.innerHTML=html;
+
+  if(sumEl){
+    sumEl.innerHTML=`
+      <div class="cal-sitem"><div class="n" style="color:var(--stamp-red);">${upCount}</div><div class="l">상승일</div></div>
+      <div class="cal-sitem"><div class="n" style="color:var(--stamp-blue);">${downCount}</div><div class="l">하락일</div></div>
+      <div class="cal-sitem"><div class="n" style="color:var(--stamp-red);">${maxUpStreak}일</div><div class="l">최장 연속상승</div></div>
+    `;
+  }
 }
 
 function renderCurrency(){
@@ -3708,10 +4287,10 @@ function initPeriodPLControls(){
 }
 
 function renderAll(){
-  renderCover(); renderIndices(); renderFX(); renderTicker();
-  renderDailyPnl(); renderCurrency();
+  renderCover(); renderIndices(); renderIndexCompare(); renderFX(); renderTicker();
+  renderDailyPnl(); renderCurrency(); renderWeeklyReport();
   renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat();
-  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL();
+  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar();
   const ts=document.getElementById('taxSel'); if(ts && ts.options.length) computeTax();
   const wf=document.getElementById('wfSel'); if(wf && wf.options.length) computeWhatif();
 }
@@ -5157,11 +5736,49 @@ async function initTheme(){
     const onChange=()=>{ if(themeMode==='auto') applyTheme('auto'); };
     if(mq.addEventListener) mq.addEventListener('change', onChange); else if(mq.addListener) mq.addListener(onChange);
   }
-  document.getElementById('themeBtn').onclick=async()=>{
+  document.getElementById('themeBtn').onclick=async(e)=>{
     const next=THEME_ORDER[(THEME_ORDER.indexOf(themeMode)+1)%THEME_ORDER.length];
-    applyTheme(next);
+    const rect=e.currentTarget.getBoundingClientRect();
+    const x=rect.left+rect.width/2, y=rect.top+rect.height/2;
+    themeRippleTransition(x, y, next);
     try{ await STORE.set(THEME_KEY, next); }catch(e){}
   };
+}
+/* 톤 누른 지점에서 원이 확산되며(새 테마 색으로 화면을 덮은 뒤) 실제 테마를 바꾸고 서서히 걷어냄 —
+   underlying 콘텐츠를 실시간 clip-path로 마스킹하는 대신, "덮었다 걷는" 방식이라
+   구형 Safari 포함 대부분 환경에서 안전하게 동작(View Transitions API 불필요) */
+function themeRippleTransition(x, y, next){
+  const resolved = resolvedTheme(next);
+  const bg = resolved==='dark' ? '#1c1c1e' : '#f5f5f7';
+  const overlay = document.createElement('div');
+  overlay.className='theme-ripple';
+  overlay.style.background = bg;
+  overlay.style.opacity = '1';
+  const maxR = Math.hypot(Math.max(x, innerWidth-x), Math.max(y, innerHeight-y)) * 1.05;
+  overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{ overlay.style.clipPath = `circle(${maxR}px at ${x}px ${y}px)`; });
+  });
+  let swapped=false;
+  const doSwap=()=>{
+    if(swapped) return;
+    swapped=true;
+    // 원이 화면을 완전히 덮은 순간에만 실제 테마를 바꾼다(가려져 있어 전환이 안 보임)
+    document.documentElement.classList.add('theme-init');
+    applyTheme(next);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      document.documentElement.classList.remove('theme-init');
+      overlay.style.opacity='0';
+      setTimeout(()=>overlay.remove(), 420);
+    }));
+  };
+  overlay.addEventListener('transitionend', function onEnd(ev){
+    if(ev.propertyName!=='clip-path') return;
+    doSwap();
+  });
+  // 혹시 transitionend가 안 걸리는 예외 상황(포커스 잃음 등) 대비 안전장치
+  setTimeout(doSwap, 900);
 }
 initTheme();
 
@@ -5194,6 +5811,9 @@ document.getElementById('autoBtn').onclick=()=>{
 
 /* ============ INIT ============ */
 loadIcons();
+loadGoalAmount().then(()=>renderGoalProgress(grandTotal()));
+initGoalCard();
+initWeeklyDayTaps();
 renderAll();
 initTax();
 initWhatif();
@@ -5306,6 +5926,7 @@ loadFutureSnaps().then(()=>{
 });
 initUI();
 initCoverDetail();
+initStreakParticles();
 initPeriodPL();
 initScrollReveal();
 initPullToRefresh();
