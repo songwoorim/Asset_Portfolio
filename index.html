@@ -792,20 +792,23 @@
   .dp-spot-v{font-family:'Inter',-apple-system,sans-serif; font-size:13.5px; font-weight:800; white-space:nowrap;}
   .dp-spot-p{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; white-space:nowrap; margin-left:auto;}
   .dp-contrib{padding:0 2px;}
-  .dp-c-row{display:grid; grid-template-columns:28px 54px 1fr 76px; gap:8px; align-items:center; padding:9px 0; cursor:pointer; transition:transform .12s ease;}
+  .dp-c-row{padding:10px 2px; border-bottom:1px solid rgba(120,120,128,.07); cursor:pointer; transition:transform .12s ease;}
+  .dp-c-row:last-child{border-bottom:none;}
   .dp-c-row:active{transform:scale(0.98);}
-  .dp-c-lg{width:24px; height:24px; border-radius:50%; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; color:#fff; display:flex; align-items:center; justify-content:center;}
+  .dp-c-top{display:flex; align-items:baseline; gap:8px; margin-bottom:6px;}
+  .dp-c-lg{align-self:center; width:24px; height:24px; border-radius:50%; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; font-weight:800; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
   .dp-c-lg img{width:100%; height:100%; object-fit:contain; padding:20%; display:block;}
-  .dp-c-tk{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .dp-c-tk span{display:block; font-size:9px; color:var(--ink-soft); font-weight:400; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .dp-c-track{position:relative; height:7px; background:var(--paper); border-radius:9999px; overflow:hidden;}
+  .dp-c-nm{flex:1; min-width:0;}
+  .dp-c-nm .n{font-size:12px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .dp-c-nm .t{font-size:9.5px; color:var(--ink-soft); margin-left:5px;}
+  .dp-c-track{position:relative; height:6px; background:var(--paper); border-radius:9999px; margin-left:32px;}
+  .dp-c-mid{position:absolute; left:50%; top:-3px; bottom:-3px; width:1.5px; background:var(--line);}
   .dp-c-fill{position:absolute; top:0; bottom:0; border-radius:9999px;}
   .dp-c-fill.up{background:var(--stamp-red); left:50%;}
   .dp-c-fill.down{background:var(--stamp-blue); right:50%;}
-  .dp-c-mid{position:absolute; left:50%; top:-2px; bottom:-2px; width:1px; background:var(--line);}
-  .dp-c-val{text-align:right; font-family:'Inter',-apple-system,sans-serif;}
-  .dp-c-val .a{font-size:11px; font-weight:700;}
-  .dp-c-val .p{font-size:9.5px; font-weight:600;}
+  .dp-c-val{text-align:right; flex-shrink:0; white-space:nowrap; font-family:'Inter',-apple-system,sans-serif; display:flex; align-items:baseline; gap:6px;}
+  .dp-c-val .a{font-size:11.5px; font-weight:800;}
+  .dp-c-val .p{font-size:10px; font-weight:700;}
   .pnl-empty{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); text-align:center; padding:24px 10px;}
   .daily-movers{display:grid; grid-template-columns:1fr 1fr; gap:14px 20px; padding:4px 2px 8px;}
   .mover-col h4{font-family:'Inter',-apple-system,sans-serif; font-size:10px; letter-spacing:0.04em; color:var(--ink-soft); text-transform:uppercase; margin:0 0 6px;}
@@ -2909,12 +2912,15 @@ function renderDailyPnl(){
   const maxAbs=Math.max(1,...rows.map(r=>Math.abs(r.v)));
   const contribHtml=r=>{
     const {inner,style}=avatarPiece(r.tk);
-    const w=Math.min(45, Math.abs(r.v)/maxAbs*45);
+    const w=Math.min(50, Math.abs(r.v)/maxAbs*50);
+    const c=clsOf(r.v);
     return `<div class="dp-c-row" data-tk="${r.tk}">
-      <div class="dp-c-lg" style="${style}">${inner}</div>
-      <div class="dp-c-tk">${r.tk}<span>${r.n}</span></div>
-      <div class="dp-c-track"><div class="dp-c-mid"></div><div class="dp-c-fill ${clsOf(r.v)}" style="width:${w.toFixed(1)}%;"></div></div>
-      <div class="dp-c-val"><div class="a ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}</div><div class="p ${clsOf(r.v)}">${sign(r.pct)}</div></div>
+      <div class="dp-c-top">
+        <div class="dp-c-lg" style="${style}">${inner}</div>
+        <div class="dp-c-nm"><span class="n">${r.n}</span><span class="t">${r.tk}</span></div>
+        <div class="dp-c-val"><span class="a ${c}">${r.v>=0?'+':''}${plNum(r.v)}</span><span class="p ${c}">${sign(r.pct)}</span></div>
+      </div>
+      <div class="dp-c-track"><div class="dp-c-mid"></div><div class="dp-c-fill ${c}" style="width:${w.toFixed(1)}%;"></div></div>
     </div>`;
   };
   const heroHtml=`<div class="dp-hero ${cls}">
