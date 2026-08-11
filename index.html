@@ -375,14 +375,63 @@
   .habit-l{ font-size:9.5px; color:var(--ink-soft); margin-top:2px; }
 
   /* ===== 연간 손익 캘린더 ===== */
-  .cal-grid{ display:grid; grid-auto-flow:column; grid-template-rows:repeat(7, 1fr); gap:2.5px; margin-bottom:10px; overflow-x:auto; }
-  .cal-cell{ width:11px; height:11px; border-radius:2px; }
+  .cal-tabs{ display:flex; gap:6px; background:var(--paper); border-radius:11px; padding:3px; margin-bottom:14px; }
+  .cal-tab{ flex:1; text-align:center; font-family:inherit; font-size:11px; font-weight:700; padding:7px; border-radius:9px; color:var(--ink-soft); cursor:pointer; background:none; border:none; }
+  .cal-tab.on{ background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.15); }
+
+  .cal-hero{ border-radius:16px; padding:14px 16px; margin-bottom:14px; position:relative; overflow:hidden; transition:background .2s ease;
+    background:linear-gradient(160deg, rgba(192,57,43,.12) 0%, rgba(192,57,43,.02) 60%, transparent 100%); }
+  .cal-hero.down{ background:linear-gradient(160deg, rgba(44,74,124,.12) 0%, rgba(44,74,124,.02) 60%, transparent 100%); }
+  .cal-hero.flat{ background:var(--paper); }
+  .cal-hero-lbl{ font-size:10.5px; color:var(--ink-soft); margin-bottom:8px; }
+  .cal-hero-row{ display:flex; align-items:center; gap:10px; }
+  .cal-hero-ic{ width:30px; height:30px; border-radius:10px; background:rgba(192,57,43,.14); color:var(--stamp-red); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cal-hero.down .cal-hero-ic{ background:rgba(44,74,124,.12); color:var(--stamp-blue); }
+  .cal-hero.flat .cal-hero-ic{ background:var(--card); color:var(--ink-soft); }
+  .cal-hero-ic svg{ width:15px; height:15px; }
+  .cal-hero-num{ font-family:'Inter',-apple-system,sans-serif; font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .cal-hero-num.up{ color:var(--stamp-red); } .cal-hero-num.down{ color:var(--stamp-blue); }
+  .cal-hero-pct{ font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; margin-left:2px; }
+  .cal-hero.up .cal-hero-pct{ background:rgba(192,57,43,.14); color:var(--stamp-red); }
+  .cal-hero.down .cal-hero-pct{ background:rgba(44,74,124,.14); color:var(--stamp-blue); }
+  .cal-hero-empty{ font-size:11.5px; color:var(--ink-soft); padding:4px 0; }
+
+  .cal2-wrap{ overflow-x:auto; margin-bottom:10px; -webkit-overflow-scrolling:touch; }
+  .cal2-inner{ display:inline-block; min-width:100%; }
+  .cal2-months{ display:grid; grid-auto-flow:column; gap:2.5px; margin-bottom:4px; padding-left:20px; }
+  .cal2-month-lbl{ font-size:8.5px; color:var(--ink-soft); font-weight:600; white-space:nowrap; }
+  .cal2-body{ display:flex; gap:4px; }
+  .cal2-dow{ display:flex; flex-direction:column; gap:2.5px; }
+  .cal2-dow-lbl{ width:16px; height:11px; font-size:7.5px; color:var(--ink-soft); display:flex; align-items:center; }
+  .cal-grid{ display:grid; grid-auto-flow:column; grid-template-rows:repeat(7, 1fr); gap:2.5px; }
+  .cal-cell{ width:11px; height:11px; border-radius:2px; cursor:pointer; box-sizing:border-box; padding:0; border:none; display:block; transition:transform .1s ease; }
+  .cal-cell:hover{ transform:scale(1.25); }
+  .cal-cell.sel{ box-shadow:0 0 0 1.5px var(--brass); }
+  .cal-cell.pad{ visibility:hidden; cursor:default; }
+  .cal-cell.pad:hover{ transform:none; }
+
   .cal-legend{ display:flex; align-items:center; justify-content:flex-end; gap:4px; font-size:9px; color:var(--ink-soft); margin-bottom:14px; }
   .cal-legend .sq{ width:8px; height:8px; border-radius:2px; }
   .cal-summary{ display:flex; gap:8px; }
   .cal-sitem{ flex:1; background:var(--paper); border-radius:11px; padding:9px 10px; text-align:center; }
   .cal-sitem .n{ font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:800; }
   .cal-sitem .l{ font-size:9px; color:var(--ink-soft); margin-top:2px; }
+
+  /* 한달 뷰 */
+  .cal3-nav{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .cal3-navbtn{ width:30px; height:30px; border-radius:10px; background:var(--paper); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); cursor:pointer; flex-shrink:0; }
+  .cal3-navbtn svg{ width:15px; height:15px; }
+  .cal3-navbtn.disabled{ opacity:.3; pointer-events:none; }
+  .cal3-navtitle{ font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; color:var(--ink); }
+  .cal3-dowrow{ display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:6px; }
+  .cal3-dowrow span{ text-align:center; font-size:9.5px; color:var(--ink-soft); font-weight:600; }
+  .cal3-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:6px; touch-action:pan-y; transition:opacity .15s ease, transform .15s ease; }
+  .cal3-cell{ aspect-ratio:1; border-radius:9px; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; border:none; padding:0; background:var(--paper); }
+  .cal3-cell.empty{ visibility:hidden; cursor:default; }
+  .cal3-cell .d{ font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; color:var(--ink); }
+  .cal3-cell.sel{ box-shadow:0 0 0 2px var(--brass); }
+  .cal3-cell.today .d::after{ content:''; position:absolute; bottom:3px; left:50%; transform:translateX(-50%); width:3px; height:3px; border-radius:50%; background:var(--brass); }
+  .cal3-swipehint{ text-align:center; font-size:9.5px; color:var(--ink-soft); margin-top:2px; }
 
   /* ===== 목표 vs 실제 비중 레이더 차트 ===== */
   .dx-radar-wrap{ margin:14px 0 4px; }
@@ -1595,9 +1644,44 @@
   <!-- YEAR CALENDAR HEATMAP -->
   <div class="page collapsible" id="sec-calendar" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke-width="1.7"/><path d="M3 9h18M8 2v4M16 2v4" stroke-width="1.7" stroke-linecap="round"/></svg></span>연간 손익 캘린더</h2><span style="font-size:11px; color:var(--ink-soft); font-weight:600;" id="calYearLabel"></span></div>
-    <div class="cal-grid" id="calGrid"></div>
-    <div class="cal-legend">적음 <span class="sq" style="background:rgba(44,74,124,.5);"></span><span class="sq" style="background:var(--paper);"></span><span class="sq" style="background:rgba(192,57,43,.5);"></span> 많음</div>
-    <div class="cal-summary" id="calSummary"></div>
+
+    <div class="cal-tabs" id="calTabs">
+      <button type="button" class="cal-tab on" data-tab="all">전체</button>
+      <button type="button" class="cal-tab" data-tab="month">한달</button>
+    </div>
+
+    <div class="cal-hero" id="calHero">
+      <div class="cal-hero-lbl" id="calHeroLbl"></div>
+      <div class="cal-hero-row" id="calHeroRow">
+        <div class="cal-hero-ic" id="calHeroIc"></div>
+        <span class="cal-hero-num" id="calHeroNum">—</span>
+        <span class="cal-hero-pct" id="calHeroPct">—</span>
+      </div>
+      <div class="cal-hero-empty" id="calHeroEmpty" style="display:none;">칸을 탭하면 그 날짜의 손익이 여기 표시돼요</div>
+    </div>
+
+    <div id="calAllView">
+      <div class="cal2-wrap"><div class="cal2-inner">
+        <div class="cal2-months" id="calMonths"></div>
+        <div class="cal2-body">
+          <div class="cal2-dow"><div class="cal2-dow-lbl">월</div><div class="cal2-dow-lbl"></div><div class="cal2-dow-lbl">수</div><div class="cal2-dow-lbl"></div><div class="cal2-dow-lbl">금</div><div class="cal2-dow-lbl"></div><div class="cal2-dow-lbl"></div></div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+      </div></div>
+      <div class="cal-legend">적음 <span class="sq" style="background:rgba(44,74,124,.5);"></span><span class="sq" style="background:var(--paper);"></span><span class="sq" style="background:rgba(192,57,43,.5);"></span> 많음</div>
+      <div class="cal-summary" id="calSummary"></div>
+    </div>
+
+    <div id="calMonthView" style="display:none;">
+      <div class="cal3-nav">
+        <button type="button" class="cal3-navbtn" id="calPrevBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="cal3-navtitle" id="calMonthTitle">—</div>
+        <button type="button" class="cal3-navbtn" id="calNextBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="cal3-dowrow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+      <div class="cal3-grid" id="calMonthGrid"></div>
+      <div class="cal3-swipehint">← 좌우로 슬라이드해서 다른 달 보기 →</div>
+    </div>
   </div>
 
   <div class="perf"></div>
@@ -3504,49 +3588,113 @@ function renderHabitInsights(){
 }
 
 /* ===== 연간 손익 캘린더 ===== */
+let CAL_DAYS_CACHE=null; // {startIdx, days:[{date,pl,idx}], maxAbs} — 연간 뷰용, 요일/월 라벨과 셀 클릭 핸들러가 공유
+let CAL_TAB='all';
+let CAL_MONTH_CURSOR=null; // 한달 뷰에서 보고 있는 {year, month}
+let CAL_SELECTED=null; // {date:Date, v:number, pct:number} | null
+
+function calUnrealAt(S,i){ return S.evalArr[i]-S.costArr[i]; }
+
+/* 히어로 카운팅 애니메이션 — 주간 리포트의 animateWkHero와 동일한 패턴 재사용 */
+let calHeroShown=null, calHeroRaf=null;
+function animateCalHero(to, cls, pctText){
+  const numEl=document.getElementById('calHeroNum'), heroEl=document.getElementById('calHero'),
+        icEl=document.getElementById('calHeroIc'), pctEl=document.getElementById('calHeroPct');
+  if(!numEl) return;
+  heroEl.className='cal-hero '+cls;
+  icEl.innerHTML = cls==='up' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
+    : cls==='down' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/></svg>';
+  pctEl.textContent=pctText;
+  const from=calHeroShown==null ? to : calHeroShown;
+  if(calHeroRaf) cancelAnimationFrame(calHeroRaf);
+  if(from===to){ calHeroShown=to; numEl.className='cal-hero-num '+cls; numEl.textContent=(to>=0?'+':'')+won(to); return; }
+  const t0=performance.now(), dur=380;
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    const v=from+(to-from)*e;
+    calHeroShown=v;
+    numEl.className='cal-hero-num '+cls;
+    numEl.textContent=(v>=0?'+':'')+won(v);
+    if(p<1) calHeroRaf=requestAnimationFrame(step); else { calHeroShown=to; calHeroRaf=null; }
+  }
+  calHeroRaf=requestAnimationFrame(step);
+}
+function renderCalHero(){
+  const rowEl=document.getElementById('calHeroRow'), emptyEl=document.getElementById('calHeroEmpty'), lblEl=document.getElementById('calHeroLbl');
+  if(!rowEl) return;
+  if(!CAL_SELECTED){
+    rowEl.style.display='none'; emptyEl.style.display='block'; lblEl.textContent='';
+    calHeroShown=null; // 다음 선택 시 새로 굴러오도록 리셋
+    return;
+  }
+  rowEl.style.display='flex'; emptyEl.style.display='none';
+  const d=CAL_SELECTED.date;
+  const dowNm=['일','월','화','수','목','금','토'][d.getDay()];
+  lblEl.textContent=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} (${dowNm})`;
+  animateCalHero(CAL_SELECTED.v, clsOf(CAL_SELECTED.v), sign(CAL_SELECTED.pct));
+}
+
 function renderYearCalendar(){
-  const grid=document.getElementById('calGrid'), sumEl=document.getElementById('calSummary'), lblEl=document.getElementById('calYearLabel');
+  const grid=document.getElementById('calGrid'), sumEl=document.getElementById('calSummary'),
+        lblEl=document.getElementById('calYearLabel'), monthsEl=document.getElementById('calMonths');
   if(!grid || typeof AS==='undefined' || !AS.length) return;
   const S=plBuildSeries();
   const lastIdx=S.evalArr.length-1;
   const today=plDateForIndex(lastIdx);
   const year=today.getFullYear();
   if(lblEl) lblEl.textContent=String(year);
+  if(!CAL_MONTH_CURSOR) CAL_MONTH_CURSOR={year, month:today.getMonth()+1};
   const jan1=new Date(year,0,1);
   const startIdx=Math.max(0, plIndexForDate(jan1));
   const endIdx=lastIdx;
-  const unreal=i=>S.evalArr[i]-S.costArr[i];
 
-  // 일별 손익 계산 + 최대 변동폭(색 강도 스케일 기준)
-  const days=[]; // {date, pl}
+  const days=[]; // {date, pl, idx}
   let maxAbs=1;
   for(let i=startIdx;i<=endIdx;i++){
-    const pl = i>startIdx ? unreal(i)-unreal(i-1) : 0;
-    days.push({date:plDateForIndex(i), pl});
+    const pl = i>startIdx ? calUnrealAt(S,i)-calUnrealAt(S,i-1) : 0;
+    days.push({date:plDateForIndex(i), pl, idx:i});
     if(i>startIdx) maxAbs=Math.max(maxAbs, Math.abs(pl));
   }
+  CAL_DAYS_CACHE={startIdx, days, maxAbs};
 
-  // GitHub 스타일 배치: 1월1일의 요일만큼 앞쪽을 빈 칸으로 채워 열(주) 정렬을 맞춘다
-  const firstDow=jan1.getDay(); // 0=일요일
+  // 월 라벨 — 각 주(열)의 첫날이 새 달로 넘어가는 지점에만 표시
+  const firstDow=jan1.getDay();
+  const totalCells=firstDow+days.length;
+  const totalCols=Math.ceil(totalCells/7);
+  let monthsHtml='';
+  let lastMonthShown=-1;
+  for(let col=0; col<totalCols; col++){
+    const cellIdx=col*7-firstDow; // 이 열의 첫 행(일요일)이 가리키는 days 인덱스
+    const d = cellIdx>=0 && cellIdx<days.length ? days[cellIdx].date : null;
+    if(d && d.getMonth()!==lastMonthShown){
+      lastMonthShown=d.getMonth();
+      monthsHtml+=`<div class="cal2-month-lbl">${d.getMonth()+1}월</div>`;
+    } else {
+      monthsHtml+=`<div></div>`;
+    }
+  }
+  if(monthsEl) monthsEl.innerHTML=monthsHtml;
+
+  // 일별 셀
   let html='';
-  for(let i=0;i<firstDow;i++) html+='<div class="cal-cell" style="background:transparent;"></div>';
-  let upCount=0, downCount=0, curUpStreak=0, maxUpStreak=0, curDownStreak=0, maxDownStreak=0;
+  for(let i=0;i<firstDow;i++) html+='<button type="button" class="cal-cell pad" tabindex="-1"></button>';
+  let upCount=0, downCount=0, curUpStreak=0, maxUpStreak=0, curDownStreak=0;
   days.forEach((d,idx)=>{
     let color='var(--paper)';
-    if(idx>0){ // 첫날은 기준일이라 손익 없음
+    if(idx>0){
       if(d.pl>0.0001){
         upCount++; curUpStreak++; curDownStreak=0; maxUpStreak=Math.max(maxUpStreak,curUpStreak);
         const alpha=0.15+Math.min(1,Math.abs(d.pl)/maxAbs)*0.75;
         color=`rgba(192,57,43,${alpha.toFixed(2)})`;
       } else if(d.pl<-0.0001){
-        downCount++; curDownStreak++; curUpStreak=0; maxDownStreak=Math.max(maxDownStreak,curDownStreak);
+        downCount++; curDownStreak++; curUpStreak=0;
         const alpha=0.15+Math.min(1,Math.abs(d.pl)/maxAbs)*0.75;
         color=`rgba(44,74,124,${alpha.toFixed(2)})`;
       } else { curUpStreak=0; curDownStreak=0; }
     }
-    const dateStr=`${d.date.getMonth()+1}/${d.date.getDate()}`;
-    const plStr = idx>0 ? `${d.pl>=0?'+':''}${plNum(d.pl)}` : '기준일';
-    html+=`<div class="cal-cell" style="background:${color};" title="${dateStr} ${plStr}"></div>`;
+    const dsel = CAL_SELECTED && +CAL_SELECTED.date===+d.date ? ' sel' : '';
+    html+=`<button type="button" class="cal-cell${dsel}" data-di="${idx}" style="background:${color};"></button>`;
   });
   grid.innerHTML=html;
 
@@ -3557,6 +3705,141 @@ function renderYearCalendar(){
       <div class="cal-sitem"><div class="n" style="color:var(--stamp-red);">${maxUpStreak}일</div><div class="l">최장 연속상승</div></div>
     `;
   }
+  renderCalHero();
+}
+
+/* ---- 한달 뷰 ---- */
+function renderMonthCalendar(){
+  const gridEl=document.getElementById('calMonthGrid'), titleEl=document.getElementById('calMonthTitle'),
+        prevBtn=document.getElementById('calPrevBtn'), nextBtn=document.getElementById('calNextBtn');
+  if(!gridEl || typeof AS==='undefined' || !AS.length) return;
+  const S=plBuildSeries();
+  const lastIdx=S.evalArr.length-1;
+  const today=plDateForIndex(lastIdx);
+  if(!CAL_MONTH_CURSOR) CAL_MONTH_CURSOR={year:today.getFullYear(), month:today.getMonth()+1};
+  const {year, month}=CAL_MONTH_CURSOR;
+  titleEl.textContent=`${year}년 ${month}월`;
+
+  const firstOfMonth=new Date(year, month-1, 1);
+  const firstDow=firstOfMonth.getDay();
+  const daysInMonth=new Date(year, month, 0).getDate();
+  const unreal=i=>calUnrealAt(S,i);
+
+  let cellsHtml='';
+  for(let i=0;i<firstDow;i++) cellsHtml+='<button type="button" class="cal3-cell empty" tabindex="-1"></button>';
+  for(let day=1; day<=daysInMonth; day++){
+    const d=new Date(year, month-1, day);
+    const idx=plIndexForDate(d);
+    const isToday = d.getFullYear()===today.getFullYear() && d.getMonth()===today.getMonth() && d.getDate()===today.getDate();
+    if(idx<=0 || idx>lastIdx){
+      // HSTART 이전이거나 아직 안 지난 미래 날짜
+      cellsHtml+=`<button type="button" class="cal3-cell" style="opacity:.35; background:var(--paper);" disabled><span class="d">${day}</span></button>`;
+      continue;
+    }
+    const pl=unreal(idx)-unreal(idx-1);
+    const cls=clsOf(pl);
+    let color='var(--paper)';
+    if(cls==='up') color='rgba(192,57,43,.22)';
+    else if(cls==='down') color='rgba(44,74,124,.18)';
+    const dsel = CAL_SELECTED && +CAL_SELECTED.date===+d ? ' sel' : '';
+    const todaycls = isToday ? ' today' : '';
+    cellsHtml+=`<button type="button" class="cal3-cell${dsel}${todaycls}" data-idx="${idx}" style="background:${color};"><span class="d">${day}</span></button>`;
+  }
+  gridEl.innerHTML=cellsHtml;
+
+  // 첫 데이터(HSTART) 이전 달 / 오늘 이후 달로는 이동 못 하게 막기
+  const prevMonthLastDay=new Date(year, month-1, 0);
+  prevBtn.classList.toggle('disabled', plIndexForDate(prevMonthLastDay)<0);
+  const nextMonthFirstDay=new Date(year, month, 1);
+  nextBtn.classList.toggle('disabled', plIndexForDate(nextMonthFirstDay)>lastIdx);
+
+  renderCalHero();
+}
+
+function selectCalDate(date, v, pct){
+  CAL_SELECTED = {date, v, pct};
+  if(CAL_TAB==='all') renderYearCalendar(); else renderMonthCalendar();
+}
+function deselectCalDate(){
+  CAL_SELECTED=null;
+  if(CAL_TAB==='all') renderYearCalendar(); else renderMonthCalendar();
+}
+
+function initCalendarInteractions(){
+  const tabsEl=document.getElementById('calTabs'), allView=document.getElementById('calAllView'), monthView=document.getElementById('calMonthView');
+  if(!tabsEl) return;
+  tabsEl.addEventListener('click', e=>{
+    const btn=e.target.closest('.cal-tab'); if(!btn) return;
+    const tab=btn.dataset.tab;
+    if(tab===CAL_TAB) return;
+    CAL_TAB=tab;
+    tabsEl.querySelectorAll('.cal-tab').forEach(b=>b.classList.toggle('on', b===btn));
+    allView.style.display = tab==='all' ? 'block' : 'none';
+    monthView.style.display = tab==='month' ? 'block' : 'none';
+    CAL_SELECTED=null;
+    if(tab==='all') renderYearCalendar(); else renderMonthCalendar();
+  });
+
+  // 연간 뷰 셀 탭
+  const grid=document.getElementById('calGrid');
+  grid.addEventListener('click', e=>{
+    const cell=e.target.closest('.cal-cell'); if(!cell || cell.classList.contains('pad')) return;
+    const di=+cell.dataset.di;
+    if(Number.isNaN(di) || !CAL_DAYS_CACHE || di===0) return; // 첫날(기준일)은 손익이 없어 선택 제외
+    const d=CAL_DAYS_CACHE.days[di];
+    const isSame = CAL_SELECTED && +CAL_SELECTED.date===+d.date;
+    if(isSame){ deselectCalDate(); return; }
+    const prevEval=plBuildSeries().evalArr[d.idx-1];
+    const pct=prevEval>0 ? d.pl/prevEval*100 : 0;
+    selectCalDate(d.date, d.pl, pct);
+  });
+
+  // 한달 뷰 셀 탭
+  const mgrid=document.getElementById('calMonthGrid');
+  mgrid.addEventListener('click', e=>{
+    const cell=e.target.closest('.cal3-cell'); if(!cell || cell.disabled || cell.classList.contains('empty')) return;
+    const idx=+cell.dataset.idx;
+    if(Number.isNaN(idx)) return;
+    const S=plBuildSeries();
+    const d=plDateForIndex(idx);
+    const isSame=CAL_SELECTED && +CAL_SELECTED.date===+d;
+    if(isSame){ deselectCalDate(); return; }
+    const pl=calUnrealAt(S,idx)-calUnrealAt(S,idx-1);
+    const prevEval=S.evalArr[idx-1];
+    const pct=prevEval>0 ? pl/prevEval*100 : 0;
+    selectCalDate(d, pl, pct);
+  });
+
+  // 월 이동(화살표 버튼)
+  document.getElementById('calPrevBtn').addEventListener('click', ()=>{
+    if(!CAL_MONTH_CURSOR) return;
+    let {year,month}=CAL_MONTH_CURSOR;
+    month--; if(month<1){month=12; year--;}
+    CAL_MONTH_CURSOR={year,month}; CAL_SELECTED=null;
+    renderMonthCalendar();
+  });
+  document.getElementById('calNextBtn').addEventListener('click', ()=>{
+    if(!CAL_MONTH_CURSOR) return;
+    let {year,month}=CAL_MONTH_CURSOR;
+    month++; if(month>12){month=1; year++;}
+    CAL_MONTH_CURSOR={year,month}; CAL_SELECTED=null;
+    renderMonthCalendar();
+  });
+
+  // 월 이동(좌우 스와이프) — 세로 스크롤과 충돌 안 하도록 가로 이동이 뚜렷할 때만 처리
+  let touchStartX=0, touchStartY=0, touching=false;
+  mgrid.addEventListener('touchstart', e=>{
+    if(e.touches.length!==1) return;
+    touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY; touching=true;
+  }, {passive:true});
+  mgrid.addEventListener('touchend', e=>{
+    if(!touching) return; touching=false;
+    const dx=e.changedTouches[0].clientX-touchStartX, dy=e.changedTouches[0].clientY-touchStartY;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){
+      if(dx<0) document.getElementById('calNextBtn').click();
+      else document.getElementById('calPrevBtn').click();
+    }
+  }, {passive:true});
 }
 
 function renderCurrency(){
@@ -5814,6 +6097,7 @@ loadIcons();
 loadGoalAmount().then(()=>renderGoalProgress(grandTotal()));
 initGoalCard();
 initWeeklyDayTaps();
+initCalendarInteractions();
 renderAll();
 initTax();
 initWhatif();
