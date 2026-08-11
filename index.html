@@ -1911,7 +1911,7 @@ let HEAT_LIVE = false; // heatmap shows day change after live refresh
 let LAST_UPDATED = null;
 
 /* ============ HELPERS ============ */
-const won = n => '₩' + Math.round(n).toLocaleString('ko-KR');
+const won = n => (n<0?'-':'') + '₩' + Math.round(Math.abs(n)).toLocaleString('ko-KR');
 const wonPlain = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const sign = n => (n>0?'+':'') + n.toFixed(1) + '%';
 const clsOf = n => n>0.0001?'up':(n<-0.0001?'down':'flat');
@@ -2088,12 +2088,12 @@ function renderCover(){
   document.getElementById('chipTotalP').textContent=sign(ret);
 
   // 상세 패널 — 투자/원금/현금/총수익 pill
-  document.getElementById('cdInvest').textContent=won(invest)+'원';
-  document.getElementById('cdCost').textContent=won(cost)+'원';
-  document.getElementById('cdCash').textContent=won(cash)+'원';
+  document.getElementById('cdInvest').textContent=won(invest);
+  document.getElementById('cdCost').textContent=won(cost);
+  document.getElementById('cdCash').textContent=won(cash);
   const cdTotalPill=document.getElementById('cdTotalPill');
   cdTotalPill.className='cd-pill '+clsOf(ret);
-  cdTotalPill.textContent=`${profit>=0?'+':''}${won(profit)}원 (${sign(ret)})`;
+  cdTotalPill.textContent=`${profit>=0?'+':''}${won(profit)} (${sign(ret)})`;
 
   // allocation — 아이콘 그리드
   const t=acctTotals();
@@ -2124,7 +2124,7 @@ function renderCover(){
       document.getElementById('chipDayP').textContent=sign(dp);
       const cdDailyPill=document.getElementById('cdDailyPill');
       cdDailyPill.className='cd-pill '+clsOf(d);
-      cdDailyPill.textContent=`${d>=0?'+':''}${won(d)}원 (${sign(dp)})`;
+      cdDailyPill.textContent=`${d>=0?'+':''}${won(d)} (${sign(dp)})`;
 
       if(insContribEl){
         const sorted=[...contribs].sort((a,b)=> d>=0 ? b.d-a.d : a.d-b.d);
@@ -2132,7 +2132,7 @@ function renderCover(){
         const up=top.d>=0;
         insContribEl.innerHTML=`<div class="ins-contrib">
           <span class="ic ${up?'up':'down'}"><svg viewBox="0 0 24 24"><path d="${up?'M12 19V5M5 12l7-7 7 7':'M12 5v14M5 12l7 7 7-7'}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          오늘 ${up?'상승':'하락'} 견인 <b>${top.h.ticker} ${up?'+':''}${won(top.d)}원</b>
+          오늘 ${up?'상승':'하락'} 견인 <b>${top.h.ticker} ${up?'+':''}${won(top.d)}</b>
         </div>`;
       }
     } else if(insContribEl){
@@ -2320,14 +2320,14 @@ function renderFX(){
     </div>
     <div class="fx-chip">
       <div class="fx-chip-top"><div class="fx-chip-ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/></svg></div><span class="fx-chip-k">10원당 자산 영향</span></div>
-      <div class="fx-chip-v">±${wonPlain(impact10)}</div>
+      <div class="fx-chip-v">±${won(impact10)}</div>
     </div>`;
 }
 
 function renderTicker(){
   const track=document.getElementById('tickerTrack');
   const mk = h=>{
-    const px = h.cur==='USD' ? ('$'+h.price.toFixed(2)) : wonPlain(h.price);
+    const px = h.cur==='USD' ? ('$'+h.price.toFixed(2)) : won(h.price);
     let chv, ccls;
     if(HEAT_LIVE && DAY_CHG[h.ticker]!=null){ chv=sign(DAY_CHG[h.ticker]); ccls=clsOf(DAY_CHG[h.ticker]); }
     else { chv=sign(retPct(h)); ccls=clsOf(retPct(h)); }
@@ -2457,7 +2457,7 @@ function swRenderDetail(){
   setTimeout(()=>{
     det.innerHTML=`${s.cash?`<div class="sw-lg" style="background:#64748b;"><span>₩</span></div>`:swAvatar(s.tk,'sw-lg')}
        <div class="sw-dnm">${s.tk.replace(/_/g,' ')}<span>${s.n}</span></div>`;
-    sub.innerHTML=`평가액 <b>${wonPlain(s.ev)}</b>`
+    sub.innerHTML=`평가액 <b>${won(s.ev)}</b>`
       + (s.ret!=null?` · 수익률 <b class="${clsOf(s.ret)}">${sign(s.ret)}</b>`:' · 현금성 자산');
     det.style.opacity='1'; sub.style.opacity='1';
   }, 110);
@@ -2649,7 +2649,7 @@ function renderTables(){
     const ev=t[a].ev, cost=t[a].cost, pnl=ev-cost, ret=(ev/cost-1)*100;
     let body='';
     rows.map(h=>({...h,ev:evalKRW(h),r:retPct(h)})).sort((x,y)=>y.ev-x.ev).forEach(h=>{
-      const px = h.cur==='USD' ? ('$'+h.price.toFixed(2)) : wonPlain(h.price);
+      const px = h.cur==='USD' ? ('$'+h.price.toFixed(2)) : won(h.price);
       let priceRow;
       if(HEAT_LIVE && DAY_CHG[h.ticker]!=null){
         const d=DAY_CHG[h.ticker];
@@ -2663,7 +2663,7 @@ function renderTables(){
           <div class="hcard-top">
             ${hcardAvatar(h.ticker)}
             <div class="hcard-nm">${h.nameKr}<span>${h.ticker} · ${h.shares}주</span></div>
-            <div class="hcard-ev">${wonPlain(h.ev)}<span class="${clsOf(h.r)}">${sign(h.r)}</span></div>
+            <div class="hcard-ev">${won(h.ev)}<span class="${clsOf(h.r)}">${sign(h.r)}</span></div>
           </div>
           <div class="hcard-bottom">${priceRow}</div>
         </div>
@@ -2674,7 +2674,7 @@ function renderTables(){
         <div class="hcard-top">
           <div class="hcard-lg" style="background:rgba(110,110,115,.12); color:#6e6e73;">${ACCT_ICONS.cash}</div>
           <div class="hcard-nm">예수금<span>매도 대금 등 현금성 자산</span></div>
-          <div class="hcard-ev">${wonPlain(ISA_CASH)}</div>
+          <div class="hcard-ev">${won(ISA_CASH)}</div>
         </div>
       </div>`;
     }
@@ -2904,7 +2904,7 @@ function renderDailyPnl(){
         <div class="dp-spot-nm">${r.n}<span>${r.tk}</span></div>
       </div>
       <div class="dp-spot-row2">
-        <span class="dp-spot-v ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}원</span>
+        <span class="dp-spot-v ${clsOf(r.v)}">${r.v>=0?'+':''}${won(r.v)}</span>
         <span class="dp-spot-p ${clsOf(r.v)}">${sign(r.pct)}</span>
       </div>
     </div>`;
@@ -3760,10 +3760,10 @@ function openPeek(tk){
   const h=HOLDINGS.find(x=>x.ticker===tk); if(!h) return;
   document.getElementById('pkAv').innerHTML=txAvatar(tk,'pk-av-inner');
   document.getElementById('pkName').textContent=h.nameKr;
-  const px=h.cur==='USD'?('$'+h.price.toFixed(2)):wonPlain(h.price);
+  const px=h.cur==='USD'?('$'+h.price.toFixed(2)):won(h.price);
   document.getElementById('pkSub').textContent=`${h.ticker} · ${h.shares}주 · ${px}`;
   const ev=evalKRW(h);
-  document.getElementById('pkBig').textContent=wonPlain(ev);
+  document.getElementById('pkBig').textContent=won(ev);
   const chg=document.getElementById('pkChg');
   if(HEAT_LIVE && DAY_CHG[tk]!=null){ const d=DAY_CHG[tk]; chg.className='pk-chg '+clsOf(d); chg.textContent=`${d>0?'▲':d<0?'▼':''} ${sign(d)} (오늘)`; }
   else { const r=retPct(h); chg.className='pk-chg '+clsOf(r); chg.textContent=`${r>0?'▲':r<0?'▼':''} ${sign(r)} (누적)`; }
@@ -3806,7 +3806,7 @@ function openModal(tk){
   const h=HOLDINGS.find(x=>x.ticker===tk); if(!h) return;
   document.getElementById('mName').textContent=h.nameKr;
   document.getElementById('mTk').textContent=`${h.ticker} · ${ACCT_META[h.acct]?.name||''}`;
-  document.getElementById('mPrice').textContent = h.cur==='USD'?('$'+h.price.toFixed(2)):wonPlain(h.price);
+  document.getElementById('mPrice').textContent = h.cur==='USD'?('$'+h.price.toFixed(2)):won(h.price);
   const mchg=document.getElementById('mChg');
   if(HEAT_LIVE && DAY_CHG[h.ticker]!=null){ const d=DAY_CHG[h.ticker]; mchg.className='m-chg '+clsOf(d); mchg.textContent=`당일 ${sign(d)}`; }
   else { mchg.className='m-chg '+clsOf(retPct(h)); mchg.textContent=`누적 ${sign(retPct(h))}`; }
@@ -4026,7 +4026,7 @@ function trHead(i){
   animateTrHero(asset);
   const nm={ytd:'올해 초',1:'1달 전','1m':'1달 전','6m':'6달 전','1y':'1년 전','5y':'5년 전',all:'처음'}[trPeriod]||'처음';
   document.getElementById('trDelta').innerHTML=
-    `${nm}보다 <span class="chip-num ${cls}">${d>=0?'+':'-'}${won(Math.abs(d))}원<span class="pct">(${d>=0?'+':''}${pct.toFixed(1)}%)</span></span> ${d>=0?'늘었어요':'줄었어요'}`;
+    `${nm}보다 <span class="chip-num ${cls}">${d>=0?'+':'-'}${won(Math.abs(d))}<span class="pct">(${d>=0?'+':''}${pct.toFixed(1)}%)</span></span> ${d>=0?'늘었어요':'줄었어요'}`;
 
   const pl=asset-cost, plPct=cost?pl/cost*100:0, plCls=clsOf(pl);
   const ath=trATH(), athPct=ath.val?(asset-ath.val)/ath.val*100:0, athCls=clsOf(athPct);
@@ -4123,8 +4123,8 @@ function initBench(){
   for(let k=0;k<=4;k++){ ax.innerHTML+=`<span>${fmtTS(dAt(Math.round(a+(b-a)/4*k)))}</span>`; }
   function head(i){
     const j=(i==null)?b:i;
-    document.getElementById('bmP').textContent=won(P[j])+'원';
-    document.getElementById('bmB').textContent=won(B[j])+'원';
+    document.getElementById('bmP').textContent=won(P[j]);
+    document.getElementById('bmB').textContent=won(B[j]);
     const d=P[j]-B[j], el=document.getElementById('bmD');
     el.className='bm-v '+(d>=0?'up':'down');
     el.textContent=(d>=0?'+':'')+won(d)+'원 ('+(d>=0?'+':'')+((P[j]/B[j]-1)*100).toFixed(1)+'%)';
@@ -4210,14 +4210,14 @@ function rvModel(){
   const pctOf=(a,b)=> b? a/b*100 : 0;
   return [
     {k:'thism', bonus:false, tone:'blue', ic:'wallet', lbl:'이번 달 매수',
-      val:wonPlain(RV.thisM), vc:'', sub:mm(lastM.m),
-      hn:wonPlain(RV.thisM), hs:mm(lastM.m)+' · '+((lastM.items||[]).length)+'종목',
-      hnVal:RV.thisM, hnFmt:v=>wonPlain(v),
+      val:won(RV.thisM), vc:'', sub:mm(lastM.m),
+      hn:won(RV.thisM), hs:mm(lastM.m)+' · '+((lastM.items||[]).length)+'종목',
+      hnVal:RV.thisM, hnFmt:v=>won(v),
       rg:'올해 매수 누적 대비 '+pctOf(RV.thisM,RV.ytd).toFixed(1)+'%', pct:cap(pctOf(RV.thisM,RV.ytd))},
     {k:'ytdbuy', bonus:false, tone:'blue', ic:'bars', lbl:'올해 매수 누적',
-      val:wonPlain(RV.ytd), vc:'', sub:'월평균 '+wonPlain(avg),
-      hn:wonPlain(RV.ytd), hs:I.YR+'년 '+I.nCur+'개월 · 월평균 '+wonPlain(avg),
-      hnVal:RV.ytd, hnFmt:v=>wonPlain(v),
+      val:won(RV.ytd), vc:'', sub:'월평균 '+won(avg),
+      hn:won(RV.ytd), hs:I.YR+'년 '+I.nCur+'개월 · 월평균 '+won(avg),
+      hnVal:RV.ytd, hnFmt:v=>won(v),
       rg:'최근 12개월 매수 대비 '+pctOf(RV.ytd,tot12).toFixed(1)+'%', pct:cap(pctOf(RV.ytd,tot12))},
     {k:'growth', bonus:false, tone:'red', ic:'trend', lbl:'올해 자산 성장',
       val:sign(yg), vc:clsOf(yg), sub:M2(RV.jan1)+' → '+M2(RV.now),
@@ -4230,18 +4230,18 @@ function rvModel(){
       hnVal:y1g, hnFmt:v=>sign(v),
       rg:'올해 자산 성장 '+sign(yg), pct:cap(y1g)},
     {k:'realized', bonus:false, tone:'green', ic:'check', lbl:'올해 실현손익',
-      val:(RV.rz_ytd>=0?'+':'')+wonPlain(RV.rz_ytd), vc:clsOf(RV.rz_ytd), sub:'매도로 확정된 손익',
-      hn:(RV.rz_ytd>=0?'+':'')+wonPlain(RV.rz_ytd), hs:'매도로 확정된 손익',
-      hnVal:RV.rz_ytd, hnFmt:v=>(v>=0?'+':'')+wonPlain(v),
+      val:(RV.rz_ytd>=0?'+':'')+won(RV.rz_ytd), vc:clsOf(RV.rz_ytd), sub:'매도로 확정된 손익',
+      hn:(RV.rz_ytd>=0?'+':'')+won(RV.rz_ytd), hs:'매도로 확정된 손익',
+      hnVal:RV.rz_ytd, hnFmt:v=>(v>=0?'+':'')+won(v),
       rg:'누적 실현손익 대비 '+pctOf(RV.rz_ytd,RV.rz_all).toFixed(1)+'%', pct:cap(pctOf(RV.rz_ytd,RV.rz_all))},
     {k:'buy12', bonus:false, tone:'gray', ic:'list', lbl:'12개월 매수',
-      val:wonPlain(tot12), vc:'', sub:'누적 실현 +'+wonPlain(RV.rz_all),
-      hn:wonPlain(tot12), hs:'최근 12개월 합계 · 누적 실현 +'+wonPlain(RV.rz_all),
-      hnVal:tot12, hnFmt:v=>wonPlain(v),
+      val:won(tot12), vc:'', sub:'누적 실현 +'+won(RV.rz_all),
+      hn:won(tot12), hs:'최근 12개월 합계 · 누적 실현 +'+won(RV.rz_all),
+      hnVal:tot12, hnFmt:v=>won(v),
       rg:'이 중 올해 매수 '+pctOf(RV.ytd,tot12).toFixed(1)+'%', pct:cap(pctOf(RV.ytd,tot12))},
     {k:'bestbuy', bonus:true, tone:'amber', ic:'trophy', lbl:'최고 매수월',
-      val:ym(I.bestBuy.m), vc:'', sub:wonPlain(I.bestBuy.buy),
-      hn:ym(I.bestBuy.m), hs:wonPlain(I.bestBuy.buy)+' · 한 달 최대 매수',
+      val:ym(I.bestBuy.m), vc:'', sub:won(I.bestBuy.buy),
+      hn:ym(I.bestBuy.m), hs:won(I.bestBuy.buy)+' · 한 달 최대 매수',
       rg:'최근 12개월 매수 대비 '+pctOf(I.bestBuy.buy,tot12).toFixed(1)+'%', pct:cap(pctOf(I.bestBuy.buy,tot12))},
     {k:'streak', bonus:true, tone:'amber', ic:'flame', lbl:'매수 연속 개월',
       val:I.streak+'개월', vc:'', sub:'한 번도 안 거름',
@@ -4254,13 +4254,13 @@ function rvModel(){
       hnVal:I.bestChg.chgp, hnFmt:v=>sign(v),
       rg:'전체 기간 중 월간 최고 상승률', pct:cap(I.bestChg.chgp)},
     {k:'sold', bonus:true, tone:'amber', ic:'down', lbl:'올해 총 매도',
-      val:wonPlain(I.sold), vc:'', sub:I.YR+'년 매도 금액',
-      hn:wonPlain(I.sold), hs:I.YR+'년 매도 총액 (실현손익과 별개)',
-      hnVal:I.sold, hnFmt:v=>wonPlain(v),
+      val:won(I.sold), vc:'', sub:I.YR+'년 매도 금액',
+      hn:won(I.sold), hs:I.YR+'년 매도 총액 (실현손익과 별개)',
+      hnVal:I.sold, hnFmt:v=>won(v),
       rg:'올해 매수 대비 '+pctOf(I.sold,RV.ytd).toFixed(1)+'%', pct:cap(pctOf(I.sold,RV.ytd))},
     {k:'topbuy', bonus:true, tone:'amber', ic:'target', lbl:'올해 최다매수 종목',
-      val:I.topTk?I.topTk.n:'—', vc:'', sub:I.topTk?(I.topTk.tk+' · '+wonPlain(I.topTk.amt)):'거래 없음',
-      hn:I.topTk?I.topTk.n:'—', hs:I.topTk?(I.topTk.tk+' · '+wonPlain(I.topTk.amt)):'거래 없음',
+      val:I.topTk?I.topTk.n:'—', vc:'', sub:I.topTk?(I.topTk.tk+' · '+won(I.topTk.amt)):'거래 없음',
+      hn:I.topTk?I.topTk.n:'—', hs:I.topTk?(I.topTk.tk+' · '+won(I.topTk.amt)):'거래 없음',
       rg:I.topTk?('올해 매수 누적 대비 '+pctOf(I.topTk.amt,RV.ytd).toFixed(1)+'%'):'—',
       pct:cap(I.topTk?pctOf(I.topTk.amt,RV.ytd):0)},
     {k:'multiple', bonus:true, tone:'amber', ic:'mult', lbl:'원금 대비 배율',
@@ -4323,7 +4323,7 @@ function renderRvBars(){
     const mx=Math.max(...R.map(m=>m.a));
     html=R.map(m=>{
       const h=Math.max(3,m.a/mx*66);
-      return `<div class="rv-b ${m.a===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${wonPlain(m.a)} (${m.chgp>=0?'+':''}${m.chgp}%)">
+      return `<div class="rv-b ${m.a===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${won(m.a)} (${m.chgp>=0?'+':''}${m.chgp}%)">
         <div class="vl">${(m.a/1e6).toFixed(0)}M</div><div class="bar" style="height:${h.toFixed(0)}px"></div>
         <div class="lb">${m.m.slice(5)}월</div></div>`;
     }).join('');
@@ -4331,7 +4331,7 @@ function renderRvBars(){
     const mx=Math.max(...R.map(m=>Math.abs(m.chg)),1);
     html=R.map(m=>{
       const h=Math.max(3,Math.abs(m.chg)/mx*66);
-      return `<div class="rv-b ${m.chg<0?'neg':''} ${Math.abs(m.chg)===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${m.chg>=0?'+':''}${wonPlain(m.chg)}">
+      return `<div class="rv-b ${m.chg<0?'neg':''} ${Math.abs(m.chg)===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${m.chg>=0?'+':''}${won(m.chg)}">
         <div class="vl ${clsOf(m.chg)}">${m.chg>=0?'+':''}${(m.chg/1e6).toFixed(1)}</div>
         <div class="bar" style="height:${h.toFixed(0)}px"></div><div class="lb">${m.m.slice(5)}월</div></div>`;
     }).join('');
@@ -4339,7 +4339,7 @@ function renderRvBars(){
     const mx=Math.max(...R.map(m=>m.buy),1);
     html=R.map(m=>{
       const h=Math.max(3,m.buy/mx*66);
-      return `<div class="rv-b ${m.buy===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${wonPlain(m.buy)}">
+      return `<div class="rv-b ${m.buy===mx?'hi':''} ${rvSel===m.m?'sel':''}" data-m="${m.m}" title="${m.m} · ${won(m.buy)}">
         <div class="vl">${m.buy?(m.buy/1e4).toFixed(0):'0'}</div><div class="bar" style="height:${h.toFixed(0)}px"></div>
         <div class="lb">${m.m.slice(5)}월</div></div>`;
     }).join('');
@@ -4359,9 +4359,9 @@ function renderRvDetail(){
       <div class="q">−${sv.q}주</div><div class="a">+${won(sv.amt)}</div></div>`).join('');
   if(!rows) rows='<div class="rv-empty">이 달에는 거래가 없었습니다.</div>';
   el.innerHTML=`<div class="rv-dh"><span class="t">${y}년 ${+mm}월</span>
-      <span class="m">매수 ${won(m.buy)}원 · ${items.length}종목${sells.length?' · 매도 '+sells.length+'건':''}</span></div>
+      <span class="m">매수 ${won(m.buy)} · ${items.length}종목${sells.length?' · 매도 '+sells.length+'건':''}</span></div>
     ${rows}
-    <div class="rv-sub">월말 총자산 <b>${won(m.a)}원</b> · 전월 대비 <span class="${m.chg>=0?'up':'down'}">${m.chg>=0?'+':''}${won(m.chg)}원 (${m.chgp>=0?'+':''}${m.chgp}%)</span></div>`;
+    <div class="rv-sub">월말 총자산 <b>${won(m.a)}</b> · 전월 대비 <span class="${m.chg>=0?'up':'down'}">${m.chg>=0?'+':''}${won(m.chg)} (${m.chgp>=0?'+':''}${m.chgp}%)</span></div>`;
 }
 function initReview(){
   document.querySelectorAll('#rvSeg button').forEach(b=>b.onclick=()=>{ rvChart=b.dataset.c; renderRvBars(); });
@@ -4472,7 +4472,7 @@ function renderRealized(){
   const el=document.getElementById('rzList'); if(!el) return;
   const chips=document.getElementById('rzChips'), spot=document.getElementById('rzSpot');
   const n=REALIZED.length, tot=REALIZED.reduce((s,r)=>s+r.v,0);
-  document.getElementById('rzTotal').textContent=(tot>=0?'+':'')+wonPlain(tot);
+  document.getElementById('rzTotal').textContent=(tot>=0?'+':'')+won(tot);
   if(n===0){
     if(chips) chips.innerHTML='';
     if(spot) spot.innerHTML='';
@@ -4484,12 +4484,12 @@ function renderRealized(){
   if(chips) chips.innerHTML=`
     <div class="rz-chip"><div class="ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div class="k">총 거래</div><div class="v">${n}건</div></div>
     <div class="rz-chip"><div class="ic" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg></div><div class="k">승률</div><div class="v ${clsOf(winRate-50)}">${winRate.toFixed(0)}%</div></div>
-    <div class="rz-chip"><div class="ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div><div class="k">건당 평균</div><div class="v">${wonPlain(avg)}</div></div>`;
+    <div class="rz-chip"><div class="ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div><div class="k">건당 평균</div><div class="v">${won(avg)}</div></div>`;
   if(spot){
     const {inner,style}=rzAvatar(best.tk);
     spot.innerHTML=`<div class="rz-spot-lg" style="${style}">${inner}</div>
       <div class="rz-spot-mid"><span class="rz-spot-tag">🏆 베스트</span><div class="rz-spot-nm">${best.n}<span>${best.tk} · ${best.q}주</span></div></div>
-      <div class="rz-spot-v ${clsOf(best.v)}">${best.v>=0?'+':''}${wonPlain(best.v)}</div>`;
+      <div class="rz-spot-v ${clsOf(best.v)}">${best.v>=0?'+':''}${won(best.v)}</div>`;
     spot.dataset.tk=best.tk;
     spot.onclick=()=>openModal(best.tk);
   }
