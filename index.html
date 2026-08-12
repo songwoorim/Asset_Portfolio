@@ -5823,13 +5823,18 @@ function closestClose(days, targetYmd){
   if(cands.length) return cands[0].close;
   return days[days.length-1].close; // 그마저 없으면(캐시 범위보다 더 예전) 가진 것 중 가장 오래된 값
 }
-/** 캐시가 이번 주 시작일(가장 최근에 필요한 기준일)까지 커버하는지 확인 */
+/** 캐시가 "어제"까지는 커버하는지 확인 — 예전엔 "이번 주 시작일"까지만 확인해서, 캐시가
+    최대 6일 넘게 오래돼도(예: 지난주 시작일만 넘으면) "충분하다"고 판단해 재조회를 건너뛰는
+    문제가 있었다. 이러면 최근 며칠(예: 어제) 데이터가 통째로 비어 있어도 앱이 알아채질
+    못해서, 기간별손익·캘린더·주간리포트에 최근 날짜가 빠져 보이는 원인이 됐다.
+    "어제"까지로 기준을 높여서, 최신 데이터가 없으면 반드시 다시 받아오도록 한다. */
 function histCoversThisWeek(cache){
   if(!cache) return false;
-  const b=periodBoundaries();
+  const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yYmd=localDateStr(yesterday).replace(/-/g,'');
   return Object.keys(OVERSEAS_CODE_MAP).concat(Object.keys(DOMESTIC_CODE_MAP)).every(tk=>{
     const days=cache[tk];
-    return days && days.length && days[0].date >= b.week;
+    return days && days.length && days[0].date >= yYmd;
   });
 }
 /** fetch 재시도 헬퍼 — "Load failed" 같은 일시적 네트워크 오류는 흔히 재시도로 해결됨 */
