@@ -2141,6 +2141,14 @@ let LAST_UPDATED = null;
 
 /* ============ HELPERS ============ */
 const won = n => (n<0?'-':'') + '₩' + Math.round(Math.abs(n)).toLocaleString('ko-KR');
+/* 로컬(기기) 날짜를 YYYY-MM-DD로 반환 — new Date().toISOString()은 UTC 기준이라
+   한국시간(UTC+9) 자정~오전 9시 사이엔 "어제" 날짜로 잘못 계산되는 버그가 있었음
+   (예: 8/11 새벽 3시(KST)에 새로고침하면 UTC로는 8/10 18시라 "2026-08-10"으로 기록됨).
+   날짜가 필요한 모든 곳(트렌드 기록, 환율 캐시, 뉴스 조회 범위)에서 이 함수로 통일. */
+function localDateStr(d){
+  d = d || new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 const wonPlain = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const sign = n => (n>0?'+':'') + n.toFixed(1) + '%';
 const clsOf = n => n>0.0001?'up':(n<-0.0001?'down':'flat');
@@ -4740,7 +4748,7 @@ async function recordTrendPoint(){
   let arr=[];
   try{ const r=await STORE.get(TREND_KEY); if(r&&r.value) arr=JSON.parse(r.value); }catch(e){ arr=[]; }
   if(!Array.isArray(arr)) arr=[];
-  const today=new Date().toISOString().slice(0,10);
+  const today=localDateStr();
   const v=Math.round(grandTotal());
   const ex=arr.find(p=>p.d===today); if(ex) ex.v=v; else arr.push({d:today,v});
   arr.sort((a,b)=>a.d<b.d?-1:1); await saveTrend(arr);
@@ -4957,7 +4965,21 @@ function initTrend(){
   setTrPeriod('1y');
 }
 /* 실시간 갱신 시 오늘 값 실측치로 대체 */
-function syncTrendToday(){ AS[AS.length-1]=Math.round(grandTotal()); renderTrend(); }
+function syncTrendToday(){ ensureTodayIndex(); AS[AS.length-1]=Math.round(grandTotal()); renderTrend(); }
+/* AS/CS 배열 길이가 "정확한 로컬 날짜 기준 오늘"까지 반드시 닿도록 보장하는 안전장치.
+   예전엔 recordTrendPoint()가 기록한 스냅샷 날짜에만 의존해서 배열을 늘렸는데, 그 날짜
+   계산에 버그가 있으면(UTC vs 로컬시간) 배열 길이가 실제 오늘보다 짧아진 채로 굳어버려서
+   기간별손익·캘린더·주간리포트 등 plBuildSeries() 기반 화면 전부에서 최근 날짜가 통째로
+   빠져 보이는 문제가 있었다. plBuildSeries()는 각 날짜의 값을 AS의 저장값이 아니라
+   TXL+실측종가로 직접 계산하므로, 여기서는 배열 "길이"만 정확히 맞춰주면 된다
+   (부족한 날은 일단 직전값으로 채워두고, 실제 값은 plBuildSeries가 알아서 계산). */
+function ensureTodayIndex(){
+  const todayLocal=new Date(); todayLocal.setHours(0,0,0,0);
+  const targetIdx=Math.round((todayLocal-HSTART)/864e5);
+  let extended=false;
+  while(AS.length-1 < targetIdx){ AS.push(AS[AS.length-1]); CS.push(CS[CS.length-1]); extended=true; }
+  if(extended) plInvalidateSeries();
+}
 
 /* ===== BENCHMARK CHART ===== */
 function initBench(){
@@ -5594,7 +5616,7 @@ async function fetchFX(){
   /* FX_PREV는 "전일 종가 환율"이어야 함 (오늘의 손익에서 어제 평가액 산출에 사용).
      같은 날 여러 번 새로고침해도 값이 바뀌면 안 되므로 날짜 기준으로 보관한다.
      (예전에는 FX_PREV=FX 로 직전 새로고침 값을 넣어, 첫 새로고침 때만 환차손이 과대 계상되는 버그가 있었음) */
-  const today=new Date().toISOString().slice(0,10);
+  const today=localDateStr();
   let rec=null;
   try{ const s=await STORE.get(FX_PREV_KEY); if(s&&s.value) rec=JSON.parse(s.value); }catch(e){}
   if(rec && rec.d===today && typeof rec.prev==='number'){
@@ -5626,8 +5648,8 @@ async function fetchIndices(key){
 }
 async function fetchNewsFH(key){
   const syms=['AAPL','NVDA','PLTR','TSLA','MSFT','GOOGL'];
-  const to=new Date().toISOString().slice(0,10);
-  const from=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+  const to=localDateStr();
+  const from=localDateStr(new Date(Date.now()-7*864e5));
   const res=await Promise.allSettled(syms.map(s=>
     fetch(`https://finnhub.io/api/v1/company-news?symbol=${s}&from=${from}&to=${to}&token=${key}`)
       .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }).then(a=>({s,a}))
@@ -6189,7 +6211,8 @@ initTxList();
 initBench();
 initReview();
 loadFutureSnaps().then(()=>{
-  initTrend(); renderDailyPnl(); renderPeriodPL();
+  ensureTodayIndex(); // 배열 길이가 오늘 날짜까지 반드시 닿도록 보장(스냅샷 유무와 무관)
+  initTrend(); renderDailyPnl(); renderPeriodPL(); renderWeeklyReport(); renderYearCalendar();
   /* 기간별 손익 표를 실측 종가로 정확하게 만들기 위해 시세 캐시를 확보한다.
      ensureHistPrices()는 수익현황 탭이 쓰는 기존 함수로, 연초부터 전 종목의 실제 종가를
      받아온다(따로 만들 필요 없이 재사용). 이미 캐시가 이번 기간을 커버하면 즉시 반환하므로
@@ -6202,7 +6225,7 @@ loadFutureSnaps().then(()=>{
       .then(()=>{
         reconstructGapAS();      // 자산추이 차트용 AS/CS도 실측값으로 보정
         plInvalidateSeries();    // 기간별 손익 표는 자체 시계열을 다시 계산
-        renderPeriodPL(); renderTrend();
+        renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar();
         if(noteEl) noteEl.textContent=origNote;
       })
       .catch(()=>{ if(noteEl) noteEl.textContent=origNote; });
