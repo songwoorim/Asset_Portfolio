@@ -4334,6 +4334,33 @@ function computeWhatif(){
 
 /* ============ 기간별 손익 (신규) ============ */
 let PL_RANGE='ytd', PL_GRAN='daily';
+const PL_STATE_KEY='pl_range_state_v1';
+async function savePLState(){
+  const cs=document.getElementById('plCustomStart'), ce=document.getElementById('plCustomEnd');
+  const state={range:PL_RANGE, gran:PL_GRAN, customStart:cs?cs.value:'', customEnd:ce?ce.value:''};
+  try{ await STORE.set(PL_STATE_KEY, JSON.stringify(state)); }catch(e){}
+}
+async function loadPLState(){
+  try{
+    const r=await STORE.get(PL_STATE_KEY);
+    if(!r || !r.value) return;
+    const state=JSON.parse(r.value);
+    if(!state || typeof state!=='object') return;
+    const validRanges=['1w','1m','3m','ytd','all','custom'];
+    if(validRanges.includes(state.range)) PL_RANGE=state.range;
+    if(state.gran==='daily' || state.gran==='monthly') PL_GRAN=state.gran;
+    // 버튼 활성 표시를 저장된 값에 맞춰 갱신(기본 HTML엔 '올해'/'일별'이 on으로 박혀있음)
+    const chips=document.getElementById('plRangeChips'), seg=document.getElementById('plGranSeg'), customRow=document.getElementById('plCustomRow');
+    if(chips) chips.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===PL_RANGE));
+    if(seg) seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.g===PL_GRAN));
+    if(customRow) customRow.classList.toggle('open', PL_RANGE==='custom');
+    if(PL_RANGE==='custom'){
+      const cs=document.getElementById('plCustomStart'), ce=document.getElementById('plCustomEnd');
+      if(cs && state.customStart) cs.value=state.customStart;
+      if(ce && state.customEnd) ce.value=state.customEnd;
+    }
+  }catch(e){}
+}
 function plIndexForDate(d){ return Math.round((d-HSTART)/864e5); }
 function plDateForIndex(i){ return new Date(HSTART.getTime()+i*864e5); }
 function plFmtDate(d){ return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`; }
@@ -4555,6 +4582,7 @@ function renderPeriodPL(){
 
 function initPeriodPL(){
   initPeriodPLControls();
+  loadPLState().then(()=>renderPeriodPL());
 }
 function initPeriodPLControls(){
   const chips=document.getElementById('plRangeChips'), seg=document.getElementById('plGranSeg'), customRow=document.getElementById('plCustomRow');
@@ -4564,6 +4592,7 @@ function initPeriodPLControls(){
       PL_RANGE=b.dataset.r;
       if(customRow) customRow.classList.toggle('open', PL_RANGE==='custom');
       renderPeriodPL();
+      savePLState();
     };
   });
   if(seg) seg.querySelectorAll('button').forEach(b=>{
@@ -4571,10 +4600,11 @@ function initPeriodPLControls(){
       seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
       PL_GRAN=b.dataset.g;
       renderPeriodPL();
+      savePLState();
     };
   });
   const cs=document.getElementById('plCustomStart'), ce=document.getElementById('plCustomEnd');
-  [cs,ce].forEach(inp=>{ if(inp) inp.onchange=()=>renderPeriodPL(); });
+  [cs,ce].forEach(inp=>{ if(inp) inp.onchange=()=>{ renderPeriodPL(); savePLState(); }; });
 }
 
 function renderAll(){
