@@ -208,9 +208,57 @@
   .cover-detail-btn.open svg{transform:rotate(180deg);}
   .cover-detail-btn:active{transform:scale(.95);}
   .cover-title{font-family:'Inter',-apple-system,sans-serif; font-weight:600; font-size:13.5px; color:var(--ink-soft); margin:0 0 6px;}
-  .cover-tv-row{display:flex; align-items:flex-end; justify-content:space-between; gap:12px;}
+  .cover-tv-row{display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;}
   .cover-total-value{font-family:'Inter',-apple-system,sans-serif; font-size:30px; font-weight:800; letter-spacing:-0.02em; color:var(--ink); line-height:1.15;}
   .cover-total-value span{font-size:15px; font-weight:400; color:var(--ink-soft); margin-left:6px;}
+  /* ===== 홈 표지 카드 캐러셀 — 총자산/오늘손익/이번달손익을 좌우 스와이프 ===== */
+  .cvc-wrap{ overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -2px; }
+  .cvc-wrap::-webkit-scrollbar{ display:none; }
+  .cvc-track{ display:flex; align-items:stretch; }
+  .cvc-slide{ flex:0 0 100%; scroll-snap-align:start; padding:0 2px; box-sizing:border-box; min-width:0; display:flex; }
+  .cvc-card{ border-radius:16px; padding:14px 16px; height:104px; box-sizing:border-box; width:100%; overflow:hidden; }
+  .cvc-card.total{ background:var(--card); display:flex; flex-direction:column; justify-content:center; }
+  .cvc-card.total .cover-total-value{ font-size:24px; }
+  .cvc-lbl-row{ display:flex; align-items:center; gap:7px; margin-bottom:8px; }
+  .cvc-ic-total{ width:20px; height:20px; border-radius:7px; background:rgba(120,120,128,.14); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cvc-ic-total svg{ width:11px; height:11px; }
+  .cvc-card.today{ background:linear-gradient(160deg, rgba(192,57,43,.12), rgba(192,57,43,.02) 60%, transparent); }
+  .cvc-card.down{ background:linear-gradient(160deg, rgba(44,74,124,.12), rgba(44,74,124,.02) 60%, transparent); }
+  .cvc-card.month{ background:var(--paper); }
+  .cvc-lbl{ font-size:10.5px; color:var(--ink-soft); margin-bottom:7px; }
+  .cvc-big{ font-family:'Inter',-apple-system,sans-serif; font-size:22px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.1; }
+  .cvc-big.up{ color:var(--stamp-red); } .cvc-big.down{ color:var(--stamp-blue); }
+  .cvc-sub{ font-size:10px; color:var(--ink-soft); margin-top:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .cvc-dots{ display:flex; justify-content:center; gap:5px; margin-top:10px; }
+  .cvc-dots i{ width:5px; height:5px; border-radius:50%; background:var(--ink-soft); opacity:.35; transition:.2s; }
+  .cvc-dots i.on{ opacity:1; background:var(--brass); width:14px; border-radius:3px; }
+
+  /* ===== 리스크 지표(변동성/MDD) ===== */
+  .risk-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .risk-card{ background:var(--paper); border-radius:14px; padding:13px; }
+  .risk-lbl{ font-size:10px; color:var(--ink-soft); margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+  .risk-lbl svg{ width:11px; height:11px; }
+  .risk-val{ font-family:'Inter',-apple-system,sans-serif; font-size:19px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .risk-val.warn{ color:var(--stamp-blue); }
+  .risk-sub{ font-size:9px; color:var(--ink-soft); margin-top:3px; }
+  .risk-chart-wrap{ background:var(--paper); border-radius:14px; padding:14px; }
+  .risk-chart-lbl{ font-size:10.5px; color:var(--ink-soft); margin-bottom:8px; }
+
+  /* ===== 홈 총자산 롱프레스 — 계좌별 breakdown 팝업 ===== */
+  .lp-overlay{ position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .18s ease; }
+  .lp-overlay.on{ opacity:1; pointer-events:auto; }
+  .lp-popup{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.94); width:min(320px, calc(100vw - 48px)); z-index:9999;
+    background:var(--card); border-radius:18px; padding:16px; box-shadow:0 20px 50px rgba(0,0,0,.4); border:1px solid var(--line);
+    opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease; }
+  .lp-popup.on{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
+  .lp-popup-title{ font-size:11px; font-weight:700; color:var(--ink-soft); margin-bottom:10px; }
+  .lp-acct-row{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line); }
+  .lp-acct-row:last-child{ border-bottom:none; }
+  .lp-acct-nm{ display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--ink); }
+  .lp-acct-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .lp-acct-v{ font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:700; color:var(--ink); }
+  .lp-hint{ text-align:center; font-size:9.5px; color:var(--ink-soft); margin-top:8px; }
+  #coverTotal{ -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
   /* 다크모드 전환 리플 — 톤 누른 지점에서 원이 퍼지며 테마가 바뀜 */
   .theme-ripple{ position:fixed; inset:0; z-index:9999; pointer-events:none; transition:clip-path .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; }
   /* 스트릭 배지 파티클 — 탭하면 작은 반짝임이 사방으로 튐 */
@@ -1406,10 +1454,40 @@
       <button class="cover-detail-btn" id="coverDetailBtn">TOTAL<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
     <div class="cover-title">송우림 님의 자산 포트폴리오</div>
-    <div class="cover-tv-row">
-      <div class="cover-total-value" id="coverTotal">—<span>KRW</span></div>
-      <svg class="cover-spark" id="coverSpark" viewBox="0 0 104 42" preserveAspectRatio="none"></svg>
+    <div class="cvc-wrap" id="cvcWrap">
+      <div class="cvc-track" id="cvcTrack">
+        <div class="cvc-slide">
+          <div class="cvc-card total">
+            <div class="cvc-lbl-row">
+              <div class="cvc-ic-total"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg></div>
+              <div class="cvc-lbl">투자 자산</div>
+            </div>
+            <div class="cover-tv-row">
+              <div>
+                <div class="cover-total-value" id="coverTotal">—<span>KRW</span></div>
+                <div class="cvc-sub" id="coverTotalYoY">—</div>
+              </div>
+              <svg class="cover-spark" id="coverSpark" viewBox="0 0 104 42" preserveAspectRatio="none"></svg>
+            </div>
+          </div>
+        </div>
+        <div class="cvc-slide">
+          <div class="cvc-card today" id="cvcTodayCard">
+            <div class="cvc-lbl">오늘 손익</div>
+            <div class="cvc-big" id="cvcTodayBig">—</div>
+            <div class="cvc-sub" id="cvcTodaySub">—</div>
+          </div>
+        </div>
+        <div class="cvc-slide">
+          <div class="cvc-card month" id="cvcMonthCard">
+            <div class="cvc-lbl">이번 달 손익</div>
+            <div class="cvc-big" id="cvcMonthBig">—</div>
+            <div class="cvc-sub" id="cvcMonthSub">—</div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="cvc-dots" id="cvcDots"><i class="on"></i><i></i><i></i></div>
     <div class="cover-chiprow">
       <div class="cover-chip" id="chipDay">
         <div class="cc-k"><svg class="cc-icon" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>당일</div>
@@ -1682,6 +1760,19 @@
       <div class="cal3-grid" id="calMonthGrid"></div>
       <div class="cal3-swipehint">← 좌우로 슬라이드해서 다른 달 보기 →</div>
     </div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- RISK METRICS -->
+  <div class="page collapsible" id="sec-risk" data-panel="pnl">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(44,74,124,.1);"><svg viewBox="0 0 24 24" style="stroke:#2c4a7c; width:15px; height:15px;" fill="none"><path d="M2 12c2-4 4 4 6 0s4-4 6 0 4 4 6 0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>리스크 지표</h2></div>
+    <div class="risk-grid" id="riskGrid"></div>
+    <div class="risk-chart-wrap">
+      <div class="risk-chart-lbl">최근 90일 드로다운 추이</div>
+      <svg id="riskChart" viewBox="0 0 100 40" style="width:100%; height:70px;"></svg>
+    </div>
+    <div class="note" style="border:none; padding:8px 0 0; font-size:9.5px;">실시간 시세를 확보한 최근 구간은 실측 기준, 그 이전은 거래시점 가격 보간값이라 변동성이 실제보다 낮게 나올 수 있습니다.</div>
   </div>
 
   <div class="perf"></div>
@@ -2080,6 +2171,13 @@
   </button>
 </div>
 
+<div class="lp-overlay" id="lpOverlay"></div>
+<div class="lp-popup" id="lpPopup">
+  <div class="lp-popup-title">계좌별 평가액</div>
+  <div id="lpAcctRows"></div>
+  <div class="lp-hint">화면 아무 곳이나 탭하면 닫혀요</div>
+</div>
+
 <script>
 /* ============ BASE DATA (purchase basis fixed; prices are live-updatable) ============ */
 // costKRW = 매입 원화기준(고정). USD종목 evalKRW = shares×price×FX. KRW종목 evalKRW = shares×priceKRW.
@@ -2381,6 +2479,123 @@ function renderCover(){
   renderCoverSpark();
   renderWeekDots();
   renderGoalProgress(total);
+  renderCoverCarousel(total);
+}
+
+/* ===== 홈 표지 카드 캐러셀 — 슬라이드 2(오늘손익)·3(이번달손익) 내용 채우기 ===== */
+function renderCoverCarousel(total){
+  const yoyEl=document.getElementById('coverTotalYoY');
+  if(yoyEl && typeof AS!=='undefined' && AS.length>1){
+    const lastIdx=AS.length-1;
+    const oneYearAgoIdx=Math.max(0, lastIdx-365);
+    const past=AS[oneYearAgoIdx];
+    if(past>0){
+      const diff=total-past, pct=diff/past*100;
+      const cls=clsOf(diff);
+      yoyEl.innerHTML=`1년 전보다 <span style="color:${cls==='up'?'var(--stamp-red)':cls==='down'?'var(--stamp-blue)':'var(--ink-soft)'}; font-weight:700;">${sign(pct)}</span>`;
+    } else {
+      yoyEl.textContent='투자 자산';
+    }
+  }
+  const bigEl=document.getElementById('cvcTodayBig'), subEl=document.getElementById('cvcTodaySub'), cardEl=document.getElementById('cvcTodayCard');
+  if(bigEl && subEl){
+    if(HEAT_LIVE){
+      const {totalDay, totalPct}=dailyChangeStats();
+      const cls=clsOf(totalDay);
+      bigEl.textContent=(totalDay>=0?'+':'')+won(totalDay);
+      bigEl.className='cvc-big '+cls;
+      subEl.textContent=`${sign(totalPct)} · 18종목 반영`;
+      if(cardEl) cardEl.className='cvc-card '+(cls==='down'?'down':'today');
+    } else {
+      bigEl.textContent='—'; bigEl.className='cvc-big';
+      subEl.textContent='⟳ 새로고침하면 오늘 손익이 계산돼요';
+    }
+  }
+  const monthBigEl=document.getElementById('cvcMonthBig'), monthSubEl=document.getElementById('cvcMonthSub');
+  if(monthBigEl && monthSubEl){
+    try{
+      const {total:monthTotal, pct:monthPct}=computePeriodPL('month');
+      const cls=clsOf(monthTotal);
+      monthBigEl.textContent=(monthTotal>=0?'+':'')+won(monthTotal);
+      monthBigEl.className='cvc-big '+cls;
+      monthSubEl.textContent=sign(monthPct);
+    }catch(e){
+      monthBigEl.textContent='—'; monthBigEl.className='cvc-big';
+      monthSubEl.textContent='';
+    }
+  }
+}
+/* ===== 홈 총자산 롱프레스 — 계좌별 breakdown 팝업 ===== */
+function renderLongPressPopup(){
+  const rowsEl=document.getElementById('lpAcctRows');
+  if(!rowsEl) return;
+  const t=acctTotals();
+  const cash=cashKRW()+ISA_CASH;
+  const rows=[
+    {nm:'해외주식', v:t.overseas.ev, color:'var(--stamp-red)'},
+    {nm:'ISA', v:t.isa.ev, color:'#7d97c4'},
+    {nm:'연금저축', v:t.pension.ev, color:'#8e8e93'},
+    {nm:'현금', v:cash, color:'var(--brass)'},
+  ];
+  rowsEl.innerHTML=rows.map(r=>`<div class="lp-acct-row">
+    <div class="lp-acct-nm"><span class="lp-acct-dot" style="background:${r.color};"></span>${r.nm}</div>
+    <div class="lp-acct-v">${won(r.v)}</div>
+  </div>`).join('');
+}
+function openLongPressPopup(){
+  renderLongPressPopup();
+  const ov=document.getElementById('lpOverlay'), pp=document.getElementById('lpPopup');
+  if(ov) ov.classList.add('on');
+  if(pp) pp.classList.add('on');
+  if(navigator.vibrate) navigator.vibrate(12);
+}
+function closeLongPressPopup(){
+  const ov=document.getElementById('lpOverlay'), pp=document.getElementById('lpPopup');
+  if(ov) ov.classList.remove('on');
+  if(pp) pp.classList.remove('on');
+}
+function initLongPress(){
+  const target=document.getElementById('coverTotal');
+  const overlay=document.getElementById('lpOverlay');
+  if(!target) return;
+  let timer=null, moved=false, startX=0, startY=0;
+  const THRESHOLD_MS=480, MOVE_TOLERANCE=10;
+  const cancel=()=>{ if(timer){ clearTimeout(timer); timer=null; } };
+  target.addEventListener('touchstart', e=>{
+    if(e.touches.length!==1) return;
+    moved=false; startX=e.touches[0].clientX; startY=e.touches[0].clientY;
+    timer=setTimeout(()=>{ if(!moved) openLongPressPopup(); }, THRESHOLD_MS);
+  }, {passive:true});
+  target.addEventListener('touchmove', e=>{
+    if(!e.touches.length) return;
+    const dx=Math.abs(e.touches[0].clientX-startX), dy=Math.abs(e.touches[0].clientY-startY);
+    if(dx>MOVE_TOLERANCE || dy>MOVE_TOLERANCE){ moved=true; cancel(); }
+  }, {passive:true});
+  target.addEventListener('touchend', cancel, {passive:true});
+  target.addEventListener('touchcancel', cancel, {passive:true});
+  // 데스크톱 마우스에서도 확인할 수 있도록(길게 클릭)
+  target.addEventListener('mousedown', e=>{
+    timer=setTimeout(()=>openLongPressPopup(), THRESHOLD_MS);
+  });
+  target.addEventListener('mouseup', cancel);
+  target.addEventListener('mouseleave', cancel);
+  if(overlay) overlay.addEventListener('click', closeLongPressPopup);
+  const popupEl=document.getElementById('lpPopup');
+  if(popupEl) popupEl.addEventListener('click', closeLongPressPopup);
+}
+
+function initCoverCarousel(){
+  const wrap=document.getElementById('cvcWrap'), dotsEl=document.getElementById('cvcDots');
+  if(!wrap || !dotsEl) return;
+  const dots=dotsEl.querySelectorAll('i');
+  let raf=null;
+  wrap.addEventListener('scroll', ()=>{
+    if(raf) cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{
+      const idx=Math.round(wrap.scrollLeft / wrap.clientWidth);
+      dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
+    });
+  }, {passive:true});
 }
 
 /* ===== 목표 달성 진행률 ===== */
@@ -3595,6 +3810,81 @@ function renderHabitInsights(){
   `;
 }
 
+/* ===== 리스크 지표(변동성/MDD) ===== */
+function computeRiskMetrics(){
+  const S=plBuildSeries();
+  const lastIdx=S.evalArr.length-1;
+  const unreal=i=>S.evalArr[i]-S.costArr[i];
+  // 순수 투자성과(현금흐름 반영된 evalArr) 기준으로 일별 수익률을 구해야 입출금 왜곡이 없다.
+  // evalArr 자체엔 현금이 섞여있어 매수/매도 당일 왜곡이 있으므로, unreal(평가액-원가) 델타를
+  // 전날 평가액으로 나눈 값(기간별손익 표와 동일 방식)을 "일별 수익률" 근사치로 쓴다.
+  const returns=[];
+  const startIdx=Math.max(1, lastIdx-89); // 최근 90일(오늘 포함)
+  for(let i=startIdx;i<=lastIdx;i++){
+    const prevEval=S.evalArr[i-1];
+    if(prevEval>0){
+      const r=(unreal(i)-unreal(i-1))/prevEval;
+      returns.push(r);
+    }
+  }
+  // 연환산 변동성 = 일별수익률 표준편차 × √252(연간 거래일수)
+  let vol=0;
+  if(returns.length>1){
+    const mean=returns.reduce((s,r)=>s+r,0)/returns.length;
+    const variance=returns.reduce((s,r)=>s+(r-mean)*(r-mean),0)/(returns.length-1);
+    vol=Math.sqrt(variance)*Math.sqrt(252)*100;
+  }
+
+  // 최대 낙폭(MDD): 순수 투자성과(unreal) 기준 누적 최고치 대비 최대 하락폭
+  let peak=-Infinity, mdd=0, mddIdx=-1;
+  const drawdowns=[];
+  for(let i=startIdx-1;i<=lastIdx;i++){
+    if(i<0) continue;
+    const v=unreal(i);
+    if(v>peak) peak=v;
+    const dd = peak>0 ? (v-peak)/peak*100 : 0;
+    if(i>=startIdx){ drawdowns.push(dd); if(dd<mdd){ mdd=dd; mddIdx=i; } }
+  }
+  const mddDate = mddIdx>=0 ? plDateForIndex(mddIdx) : null;
+
+  return {vol, mdd, mddDate, drawdowns};
+}
+function renderRiskMetrics(){
+  const gridEl=document.getElementById('riskGrid'), chartEl=document.getElementById('riskChart');
+  if(!gridEl || typeof AS==='undefined' || !AS.length) return;
+  const {vol, mdd, mddDate, drawdowns}=computeRiskMetrics();
+  const mddStr = mddDate ? `${mddDate.getFullYear()}.${String(mddDate.getMonth()+1).padStart(2,'0')}.${String(mddDate.getDate()).padStart(2,'0')} 기준` : '데이터 부족';
+  gridEl.innerHTML=`
+    <div class="risk-card">
+      <div class="risk-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-4 4 4 6 0s4-4 6 0 4 4 6 0"/></svg>90일 변동성(연환산)</div>
+      <div class="risk-val">${vol.toFixed(1)}%</div>
+      <div class="risk-sub">일별 수익률 표준편차 기준</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s7 8 7 13a7 7 0 01-14 0c0-5 7-13 7-13z"/></svg>최대 낙폭(MDD)</div>
+      <div class="risk-val warn">${mdd.toFixed(1)}%</div>
+      <div class="risk-sub">${mddStr}</div>
+    </div>
+  `;
+
+  // 드로다운 영역 차트
+  if(chartEl && drawdowns.length){
+    const n=drawdowns.length;
+    const minDd=Math.min(...drawdowns, 0);
+    const scale = minDd<0 ? 34/Math.abs(minDd) : 1;
+    const pts=drawdowns.map((dd,i)=>{
+      const x=(i/(n-1||1))*100;
+      const y=2+Math.abs(dd)*scale*0.88;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    chartEl.innerHTML=`
+      <polygon points="0,2 ${pts} 100,2" fill="rgba(44,74,124,.18)"/>
+      <polyline points="${pts}" fill="none" stroke="var(--stamp-blue)" stroke-width="1.6"/>
+      <line x1="0" y1="2" x2="100" y2="2" stroke="var(--ink-soft)" stroke-width="0.5" stroke-dasharray="2 2"/>
+    `;
+  }
+}
+
 /* ===== 연간 손익 캘린더 ===== */
 let CAL_DAYS_CACHE=null; // {startIdx, days:[{date,pl,idx}], maxAbs} — 연간 뷰용, 요일/월 라벨과 셀 클릭 핸들러가 공유
 let CAL_TAB='all';
@@ -4611,7 +4901,7 @@ function renderAll(){
   renderCover(); renderIndices(); renderIndexCompare(); renderFX(); renderTicker();
   renderDailyPnl(); renderCurrency(); renderWeeklyReport();
   renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat();
-  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar();
+  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar(); renderRiskMetrics();
   const ts=document.getElementById('taxSel'); if(ts && ts.options.length) computeTax();
   const wf=document.getElementById('wfSel'); if(wf && wf.options.length) computeWhatif();
 }
@@ -6155,6 +6445,8 @@ loadGoalAmount().then(()=>renderGoalProgress(grandTotal()));
 initGoalCard();
 initWeeklyDayTaps();
 initCalendarInteractions();
+initCoverCarousel();
+initLongPress();
 renderAll();
 initTax();
 initWhatif();
