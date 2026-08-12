@@ -216,9 +216,9 @@
   .cvc-wrap::-webkit-scrollbar{ display:none; }
   .cvc-track{ display:flex; align-items:stretch; }
   .cvc-slide{ flex:0 0 100%; scroll-snap-align:start; padding:0 2px; box-sizing:border-box; min-width:0; display:flex; }
-  .cvc-card{ border-radius:16px; padding:14px 16px; height:104px; box-sizing:border-box; width:100%; overflow:hidden; }
-  .cvc-card.total{ background:var(--card); display:flex; flex-direction:column; justify-content:center; }
-  .cvc-card.total .cover-total-value{ font-size:24px; }
+  .cvc-card{ border-radius:16px; padding:14px 16px; height:110px; box-sizing:border-box; width:100%; overflow:hidden; }
+  .cvc-card.total{ background:var(--card); display:flex; flex-direction:column; justify-content:center; padding:14px 0; }
+  .cvc-card.total .cover-total-value{ font-size:30px; }
   .cvc-lbl-row{ display:flex; align-items:center; gap:7px; margin-bottom:8px; }
   .cvc-ic-total{ width:20px; height:20px; border-radius:7px; background:rgba(120,120,128,.14); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .cvc-ic-total svg{ width:11px; height:11px; }
@@ -1464,7 +1464,7 @@
             </div>
             <div class="cover-tv-row">
               <div>
-                <div class="cover-total-value" id="coverTotal">—<span>KRW</span></div>
+                <div class="cover-total-value" id="coverTotal">—</div>
                 <div class="cvc-sub" id="coverTotalYoY">—</div>
               </div>
               <svg class="cover-spark" id="coverSpark" viewBox="0 0 104 42" preserveAspectRatio="none"></svg>
@@ -2402,7 +2402,7 @@ function animateCoverTotal(to){
     const eased = 1 - Math.pow(1 - p, 3); // ease-out
     const val = from + (to - from) * eased;
     coverTotalShown = val;
-    el.innerHTML = won(val) + '<span>KRW</span>';
+    el.textContent = won(val);
     if(p < 1) coverAnimRaf = requestAnimationFrame(step);
     else { coverTotalShown = to; coverAnimRaf = null; }
   }
