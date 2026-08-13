@@ -3942,7 +3942,7 @@ function renderYearCalendar(){
   const today=plDateForIndex(lastIdx);
   const year=today.getFullYear();
   if(lblEl) lblEl.textContent=String(year);
-  if(!CAL_MONTH_CURSOR) CAL_MONTH_CURSOR={year, month:today.getMonth()+1};
+  if(!CAL_MONTH_CURSOR){ const realToday=new Date(); CAL_MONTH_CURSOR={year:realToday.getFullYear(), month:realToday.getMonth()+1}; }
   const jan1=new Date(year,0,1);
   const startIdx=Math.max(0, plIndexForDate(jan1));
   const endIdx=lastIdx;
@@ -4014,7 +4014,7 @@ function renderMonthCalendar(){
   const S=plBuildSeries();
   const lastIdx=S.evalArr.length-1;
   const today=plDateForIndex(lastIdx);
-  if(!CAL_MONTH_CURSOR) CAL_MONTH_CURSOR={year:today.getFullYear(), month:today.getMonth()+1};
+  if(!CAL_MONTH_CURSOR){ const realToday=new Date(); CAL_MONTH_CURSOR={year:realToday.getFullYear(), month:realToday.getMonth()+1}; }
   const {year, month}=CAL_MONTH_CURSOR;
   titleEl.textContent=`${year}년 ${month}월`;
 
@@ -6539,7 +6539,7 @@ initBench();
 initReview();
 loadFutureSnaps().then(()=>{
   ensureTodayIndex(); // 배열 길이가 오늘 날짜까지 반드시 닿도록 보장(스냅샷 유무와 무관)
-  initTrend(); renderDailyPnl(); renderPeriodPL(); renderWeeklyReport(); renderYearCalendar();
+  initTrend(); renderDailyPnl(); renderPeriodPL(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
   /* 기간별 손익 표를 실측 종가로 정확하게 만들기 위해 시세 캐시를 확보한다.
      ensureHistPrices()는 수익현황 탭이 쓰는 기존 함수로, 연초부터 전 종목의 실제 종가를
      받아온다(따로 만들 필요 없이 재사용). 이미 캐시가 이번 기간을 커버하면 즉시 반환하므로
@@ -6552,7 +6552,7 @@ loadFutureSnaps().then(()=>{
       .then(()=>{
         reconstructGapAS();      // 자산추이 차트용 AS/CS도 실측값으로 보정
         plInvalidateSeries();    // 기간별 손익 표는 자체 시계열을 다시 계산
-        renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar();
+        renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
         if(noteEl) noteEl.textContent=origNote;
       })
       .catch(()=>{ if(noteEl) noteEl.textContent=origNote; });
