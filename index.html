@@ -350,6 +350,8 @@
   .ins-badge{ display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:8px 12px; border-radius:12px; white-space:nowrap; box-sizing:border-box; }
   .ins-ath.up{ background:rgba(255,111,94,.14); color:var(--stamp-red); }
   .ins-ath.below{ background:var(--paper); color:var(--ink-soft); }
+  .ins-cagr{ background:rgba(212,175,55,.12); color:var(--brass); }
+  .ins-rank{ background:rgba(107,70,193,.1); color:#6b46c1; }
   .ins-streak.up{ background:rgba(255,159,10,.14); color:#ff9f0a; }
   .ins-streak.down{ background:rgba(44,74,124,.1); color:var(--stamp-blue); }
   .ins-contrib{ display:flex; align-items:center; gap:9px; background:var(--paper); border-radius:12px; padding:9px 12px; margin:10px 0 2px; font-size:11.5px; }
@@ -2660,20 +2662,46 @@ function renderAthAndStreak(total){
     else break;
   }
   const hasStreak = streak>=2;
-  const soloCls = hasStreak ? '' : ' solo'; // ATH 배지 혼자면 폭 전체를 채움
-  let html='';
+
+  const badges=[]; // 각 배지를 배열로 모아뒀다가, 홀수개면 마지막 배지를 solo(전체폭)로 처리
   if(atHigh){
-    html+=`<span class="ins-badge ins-ath up${soloCls}">🏆 역대 최고치 경신중</span>`;
+    badges.push(`<span class="ins-badge ins-ath up">🏆 역대 최고치 경신중</span>`);
   } else {
     const gap=(total/athValue-1)*100;
-    html+=`<span class="ins-badge ins-ath below${soloCls}">최고치 대비 ${sign(gap)}</span>`;
+    badges.push(`<span class="ins-badge ins-ath below">최고치 대비 ${sign(gap)}</span>`);
   }
   if(hasStreak){
     const cls=dir>0?'up':'down';
     const word=dir>0?'연속 상승':'연속 하락';
-    html+=`<span class="ins-badge ins-streak ${cls}">${dir>0?'🔥':'📉'} ${streak}일 ${word} 중</span>`;
+    badges.push(`<span class="ins-badge ins-streak ${cls}">${dir>0?'🔥':'📉'} ${streak}일 ${word} 중</span>`);
   }
-  row.innerHTML=html;
+
+  /* 연평균 성장률(CAGR) — 계좌 개설 시점(HSTART) 대비 경과 연수로 복리 환산.
+     원금 흐름이 불규칙(추가 매수 등)해서 엄밀한 XIRR은 아니고, "누적 수익률을 연 단위로
+     복리 환산하면 대략 이 정도" 수준의 근사치임. */
+  const years=(plDateForIndex(AS.length-1)-HSTART)/(365.25*864e5);
+  const cost=investedCost();
+  if(years>0.1 && cost>0){
+    const invest=total-cashKRW();
+    const ratio=invest/cost;
+    if(ratio>0){
+      const cagr=(Math.pow(ratio, 1/years)-1)*100;
+      badges.push(`<span class="ins-badge ins-cagr">📈 연평균 ${sign(cagr)}</span>`);
+    }
+  }
+
+  /* 오늘, 역대 자산일 순위 — 이미 ATH 배지가 "1위(최고치 경신중)"를 알려주므로,
+     중복을 피하기 위해 최고치가 아닐 때만 표시 */
+  if(!atHigh){
+    const higherCount=AS.filter(v=>v!=null && v>total+0.5).length;
+    const rank=higherCount+1;
+    if(rank>1) badges.push(`<span class="ins-badge ins-rank">🎖️ 역대 ${rank}위 자산일</span>`);
+  }
+
+  if(badges.length%2===1){
+    badges[badges.length-1]=badges[badges.length-1].replace('class="ins-badge', 'class="ins-badge solo');
+  }
+  row.innerHTML=badges.join('');
 }
 /* 스트릭 배지 파티클 효과 — 탭한 지점에서 작은 점들이 사방으로 튀며 사라짐 */
 function burstParticles(x, y, colorA, colorB){
