@@ -399,7 +399,14 @@
   .wk2-day-pct{ font-size:8.5px; font-weight:700; }
   .wk2-day-pct.up{ color:var(--stamp-red); } .wk2-day-pct.down{ color:var(--stamp-blue); } .wk2-day-pct.future{ color:var(--ink-soft); opacity:.5; }
 
-  .wk-insight-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px; }
+  .wk-insight-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .wic-wrap{ overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -2px; }
+  .wic-wrap::-webkit-scrollbar{ display:none; }
+  .wic-track{ display:flex; align-items:stretch; }
+  .wic-slide{ flex:0 0 100%; scroll-snap-align:start; padding:0 2px; box-sizing:border-box; min-width:0; }
+  .wic-dots{ display:flex; justify-content:center; gap:5px; margin:9px 0 4px; }
+  .wic-dots i{ width:5px; height:5px; border-radius:50%; background:var(--ink-soft); opacity:.35; transition:.2s; }
+  .wic-dots i.on{ opacity:1; background:var(--brass); width:14px; border-radius:3px; }
   .wk-insight{ background:var(--paper); border-radius:13px; padding:10px 11px; display:flex; align-items:center; gap:9px; min-width:0; }
   .wk-insight-ic{ width:26px; height:26px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .wk-insight-ic svg{ width:13px; height:13px; }
@@ -1538,7 +1545,13 @@
     </div>
 
     <div class="wk2-days" id="wk2Days"></div>
-    <div class="wk-insight-grid" id="wkInsightGrid"></div>
+    <div class="wic-wrap" id="wicWrap">
+      <div class="wic-track" id="wicTrack">
+        <div class="wic-slide"><div class="wk-insight-grid" id="wkInsightGrid"></div></div>
+        <div class="wic-slide"><div class="wk-insight-grid" id="wkInsightGrid2"></div></div>
+      </div>
+    </div>
+    <div class="wic-dots" id="wicDots"><i class="on"></i><i></i></div>
 
     <div class="goal-divider"></div>
     <div class="wk-goal-top">
@@ -2588,6 +2601,19 @@ function initLongPress(){
 
 function initCoverCarousel(){
   const wrap=document.getElementById('cvcWrap'), dotsEl=document.getElementById('cvcDots');
+  if(!wrap || !dotsEl) return;
+  const dots=dotsEl.querySelectorAll('i');
+  let raf=null;
+  wrap.addEventListener('scroll', ()=>{
+    if(raf) cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{
+      const idx=Math.round(wrap.scrollLeft / wrap.clientWidth);
+      dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
+    });
+  }, {passive:true});
+}
+function initWeeklyInsightCarousel(){
+  const wrap=document.getElementById('wicWrap'), dotsEl=document.getElementById('wicDots');
   if(!wrap || !dotsEl) return;
   const dots=dotsEl.querySelectorAll('i');
   let raf=null;
@@ -3657,7 +3683,7 @@ let WK_DAYS=[]; // 이번 주 요일별 데이터 캐시(탭 인터랙션에서 
 let WK_SELECTED=null; // 선택된 요일 인덱스(null=주 전체)
 
 function renderWeeklyReport(){
-  const rangeEl=document.getElementById('wkDateRange'), daysEl=document.getElementById('wk2Days'), gridEl=document.getElementById('wkInsightGrid');
+  const rangeEl=document.getElementById('wkDateRange'), daysEl=document.getElementById('wk2Days');
   if(!rangeEl || typeof AS==='undefined' || !AS.length) return;
   const S=plBuildSeries();
   const lastIdx=S.evalArr.length-1;
@@ -3672,7 +3698,9 @@ function renderWeeklyReport(){
   if(endIdx<=startIdx){
     animateWkHero(0,'flat','0.0%');
     document.getElementById('wkHeroLbl').textContent='이번 주 데이터가 아직 없어요';
-    daysEl.innerHTML=''; gridEl.innerHTML='';
+    daysEl.innerHTML='';
+    const g1=document.getElementById('wkInsightGrid'), g2=document.getElementById('wkInsightGrid2');
+    if(g1) g1.innerHTML=''; if(g2) g2.innerHTML='';
     return;
   }
   const unreal=i=>S.evalArr[i]-S.costArr[i];
@@ -3710,19 +3738,16 @@ function renderWeeklyReport(){
       <div class="wk2-day-pct ${cls}">${sign(d.pct)}</div></button>`;
   }).join('');
 
-  // 종목별 기여도(주 전체 기준, 인사이트 카드용) — 월요일 대비 금요일/오늘
+  // 종목별 등락률(주 전체 기준, 인사이트 카드용) — 월요일→금요일/오늘 단순 가격 변동률.
+  // (예전엔 "원가 대비 기여액" 기준이었는데, 포지션이 큰 종목이 등락률과 무관하게 항상
+  //  베스트로 뽑히는 문제가 있어 "그 주 동안 실제로 많이 오르내린 종목"이 나오도록 변경)
   const dMon=plDateForIndex(startIdx), dEnd=plDateForIndex(endIdx);
-  const fx0=fxAt(dMon), fx1=fxAt(dEnd);
   const contribRows=HOLDINGS.map(h=>{
     const st0=stateAt(h.ticker,dMon), st1=stateAt(h.ticker,dEnd);
     const px0=priceAt(h.ticker,dMon), px1=priceAt(h.ticker,dEnd);
-    const isUSD=h.cur==='USD';
-    const ev0=isUSD? st0.shares*px0*fx0 : st0.shares*px0;
-    const ev1=isUSD? st1.shares*px1*fx1 : st1.shares*px1;
-    const v=(ev1-st1.cost)-(ev0-st0.cost);
-    const pctV=(ev0-st0.cost)!==0 ? v/Math.abs(ev0-st0.cost)*100 : 0;
-    return {tk:h.ticker, v, pct:pctV};
-  }).sort((a,b)=>b.v-a.v);
+    const pct = px0>0 ? (px1-px0)/px0*100 : 0;
+    return {tk:h.ticker, pct, held: st0.shares>0 || st1.shares>0};
+  }).filter(r=>r.held).sort((a,b)=>b.pct-a.pct);
 
   // 지난주(같은 로직으로 한 주 전) 대비
   let prevWeekTotal=null;
@@ -3739,6 +3764,10 @@ function renderWeeklyReport(){
   const icStar='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
   const icScale='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M8 21h8M5 7l7-4 7 4M5 7l-3 6a3 3 0 0 0 6 0L5 7zM19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/></svg>';
   const icCompare='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/></svg>';
+  const icZap='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+  const icTarget='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>';
+  const icFire='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-1-1-2-1-2s2 1 2 4a7 7 0 0 1-14 0c0-5 4-6 4-11 0-1-.5-2-.5-2S11 2 12 2z"/></svg>';
+  const icWave='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-4 4 4 6 0s4-4 6 0 4 4 6 0"/></svg>';
 
   const insights=[];
   if(contribRows.length){
@@ -3754,7 +3783,69 @@ function renderWeeklyReport(){
     const diff=weekTotal-prevWeekTotal;
     insights.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(0,102,204,.1); color:#0066cc;">${icCompare}</div><div><div class="wk-insight-v">${diff>=0?'+':''}${plNum(diff)}</div><div class="wk-insight-l">지난주 대비</div></div></div>`);
   }
-  gridEl.innerHTML=insights.join('');
+  const gEl=document.getElementById('wkInsightGrid');
+  if(gEl) gEl.innerHTML=insights.join('');
+
+  // ---- 신규 인사이트 4개(2번째 그리드) ----
+  const insights2=[];
+  // ① 가장 크게 움직인 날(요일 중 |등락률| 최대)
+  const validDays=WK_DAYS.filter(d=>d.has);
+  if(validDays.length){
+    let maxMoveDay=validDays[0];
+    validDays.forEach(d=>{ if(Math.abs(d.pct)>Math.abs(maxMoveDay.pct)) maxMoveDay=d; });
+    insights2.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(107,70,193,.1); color:#6b46c1;">${icZap}</div><div><div class="wk-insight-v">${maxMoveDay.nm} ${sign(maxMoveDay.pct)}</div><div class="wk-insight-l">가장 크게 움직인 날</div></div></div>`);
+  }
+  // ② S&P500 대비(주간) — BM.b(S&P500 벤치마크 시계열, 계좌개설 시점부터 정확한 실측)로 계산.
+  //    KOSPI는 과거 주간 시계열을 확보하지 못해 정확한 비교가 불가능하므로 제외.
+  //    BM 데이터가 최신 날짜까지 안 늘어나 있을 수 있어(정적으로 구운 데이터), 범위를 벗어나면
+  //    가장 최근 확보된 값으로 클램핑해서 "근사치로라도" 보여준다(완전히 안 보이는 것보다 나음).
+  try{
+    const bmStart=new Date(BM.start+'T00:00:00');
+    const bmIdx=d=>Math.round((d-bmStart)/864e5);
+    const bi0=Math.max(0, Math.min(bmIdx(dMon), BM.b.length-1));
+    const bi1=Math.max(0, Math.min(bmIdx(dEnd), BM.b.length-1));
+    if(bi1>=bi0){
+      const b0=BM.b[bi0], b1=BM.b[bi1];
+      if(b0>0){
+        const spPct=(b1-b0)/b0*100;
+        const gapP=weekPct-spPct;
+        insights2.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(21,128,61,.1); color:#15803d;">${icTarget}</div><div><div class="wk-insight-v">${sign(gapP)}p</div><div class="wk-insight-l">S&amp;P500 대비</div></div></div>`);
+      }
+    }
+  }catch(e){}
+  // ③ 연속 상승/하락 주(週) — 이번 주부터 거슬러 올라가며 최대 52주까지 확인
+  (function(){
+    let count=0, dir=0, curMonday=new Date(monday);
+    for(let w=0; w<52; w++){
+      const curFriday=new Date(curMonday); curFriday.setDate(curMonday.getDate()+4);
+      const si=plIndexForDate(curMonday), ei=Math.min(lastIdx, plIndexForDate(curFriday));
+      if(si<0 || ei<si) break;
+      const wt=unreal(ei)-unreal(si);
+      const s=wt>0.0001?1:(wt<-0.0001?-1:0);
+      if(s===0) break;
+      if(dir===0){ dir=s; count=1; } else if(s===dir){ count++; } else break;
+      curMonday=new Date(curMonday); curMonday.setDate(curMonday.getDate()-7);
+    }
+    if(count>=2){
+      const word=dir>0?'연속 상승 주':'연속 하락 주';
+      insights2.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(192,57,43,.1); color:var(--stamp-red);">${icFire}</div><div><div class="wk-insight-v">${count}주째</div><div class="wk-insight-l">${word}</div></div></div>`);
+    }
+  })();
+  // ④ 주중 변동폭(최고~최저 평가액 차이, %)
+  (function(){
+    let weekMax=-Infinity, weekMin=Infinity;
+    for(let i=startIdx;i<=endIdx;i++){
+      const v=S.evalArr[i];
+      if(v>weekMax) weekMax=v;
+      if(v<weekMin) weekMin=v;
+    }
+    if(weekMax>0 && weekMax>-Infinity && weekMin<Infinity){
+      const rangePct=(weekMax-weekMin)/weekMax*100;
+      insights2.push(`<div class="wk-insight"><div class="wk-insight-ic" style="background:rgba(44,74,124,.1); color:var(--stamp-blue);">${icWave}</div><div><div class="wk-insight-v">${rangePct.toFixed(1)}%p</div><div class="wk-insight-l">주중 변동폭</div></div></div>`);
+    }
+  })();
+  const g2El=document.getElementById('wkInsightGrid2');
+  if(g2El) g2El.innerHTML=insights2.join('');
 
   // 선택된 요일이 있으면 그 요일 값을, 없으면 주 전체 값을 히어로에 표시
   applyWkHeroSelection();
@@ -6474,6 +6565,7 @@ initGoalCard();
 initWeeklyDayTaps();
 initCalendarInteractions();
 initCoverCarousel();
+initWeeklyInsightCarousel();
 initLongPress();
 renderAll();
 initTax();
