@@ -442,6 +442,19 @@
   .hub-dots{ display:flex; justify-content:center; gap:5px; margin-top:10px; }
   .hub-dots i{ width:5px; height:5px; border-radius:50%; background:var(--ink-soft); opacity:.35; transition:.2s; }
   .hub-dots i.on{ opacity:1; background:var(--brass); width:14px; border-radius:3px; }
+  .hub-card-skel{ background:var(--paper); border-radius:14px; padding:12px; min-height:98px; box-sizing:border-box; }
+  .hub-skel-ic{ width:26px; height:26px; border-radius:9px; margin-bottom:10px; }
+  .hub-skel-lbl{ width:60%; height:8px; border-radius:4px; margin-bottom:8px; }
+  .hub-skel-val{ width:75%; height:14px; border-radius:5px; margin-bottom:6px; }
+  .hub-skel-sub{ width:90%; height:7px; border-radius:4px; }
+  /* ===== 인사이트 하이라이트 크롤(파노라마) ===== */
+  .ins-crawl-wrap{ overflow:hidden; background:linear-gradient(160deg, rgba(212,175,55,.1), rgba(212,175,55,.02) 70%, transparent); border-radius:12px; padding:10px 0; margin-bottom:14px; }
+  .ins-crawl-wrap:hover .ins-crawl-track{ animation-play-state:paused; }
+  .ins-crawl-track{ display:inline-flex; white-space:nowrap; animation:insCrawlMarq 34s linear infinite; }
+  @keyframes insCrawlMarq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .ins-crawl-item{ font-family:inherit; font-size:11.5px; color:var(--ink); padding:0 16px; border-right:1px solid var(--line); display:inline-flex; align-items:center; gap:6px; font-weight:600; background:none; border-top:none; border-bottom:none; border-left:none; cursor:pointer; }
+  .ins-crawl-item .emoji{ font-size:13px; }
+  .ins-crawl-item b{ font-family:'Inter',-apple-system,sans-serif; }
   /* 재미 탭 — 스포티파이 랩드 스타일(자체 색상 배경이라 테마 영향 적음) */
   .fun-card{ border-radius:16px; padding:15px; min-height:112px; box-sizing:border-box; overflow:hidden; color:#fff; display:flex; flex-direction:column; justify-content:flex-end; }
   .fun-emoji{ font-size:24px; margin-bottom:7px; line-height:1; }
@@ -754,6 +767,18 @@
   .news-body .nt{font-size:12.5px; line-height:1.45; font-weight:500;}
   .news-body .ns{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); margin-top:3px;}
   .news-empty{font-family:'Inter',-apple-system,sans-serif; font-size:11px; color:var(--ink-soft); text-align:center; padding:24px 10px;}
+  /* ===== 뉴스 헤드라인 크롤(파노라마) ===== */
+  .news-crawl-wrap{ overflow:hidden; background:var(--paper); border-radius:12px; padding:9px 0; margin-bottom:14px; }
+  .news-crawl-wrap:hover .news-crawl-track{ animation-play-state:paused; }
+  .news-crawl-track{ display:inline-flex; white-space:nowrap; animation:newsCrawlMarq 30s linear infinite; }
+  @keyframes newsCrawlMarq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .news-crawl-item{ font-family:inherit; font-size:11px; color:var(--ink); padding:0 16px; border-right:1px solid var(--line); display:inline-flex; align-items:center; gap:6px; background:none; border-top:none; border-bottom:none; border-left:none; cursor:pointer; }
+  .news-crawl-item .tag{ font-size:9px; font-weight:700; color:var(--brass); background:rgba(212,175,55,.12); padding:2px 6px; border-radius:8px; flex-shrink:0; }
+  /* ===== 뉴스 스켈레톤 ===== */
+  .news-skel-item{ display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .news-skel-thumb{ width:48px; height:48px; border-radius:10px; flex-shrink:0; }
+  .news-skel-lines{ flex:1; display:flex; flex-direction:column; gap:7px; padding-top:3px; }
+  .news-skel-line{ height:11px; border-radius:5px; }
 
   /* ---------- Insight donut ---------- */
   .insight-grid{display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center; padding:6px 2px 16px;}
@@ -1874,6 +1899,7 @@
   <!-- NEWS -->
   <div class="page collapsible" id="sec-news" data-panel="hist">
     <div class="page-head"><h2><span class="idx" style="background:rgba(124,58,237,.1);"><svg viewBox="0 0 24 24" style="stroke:#7c3aed;"><path d="M4 4h13a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H4z"/><path d="M4 4v16"/><line x1="8" y1="9" x2="15" y2="9"/><line x1="8" y1="13" x2="15" y2="13"/></svg></span>종목 뉴스</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">보유 종목 헤드라인</div></div>
+    <div class="news-crawl-wrap" id="newsCrawlWrap" style="display:none;"><div class="news-crawl-track" id="newsCrawlTrack"></div></div>
     <div class="news-list" id="newsList"><div class="news-empty">새로고침하면 보유 종목 관련 최신 뉴스를 불러옵니다.</div></div>
   </div>
 
@@ -1945,6 +1971,7 @@
   <!-- TX TIMELINE -->
   <div class="page collapsible" id="sec-habit" data-panel="hist">
     <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-width="1.7"/></svg></span>인사이트 모음집</h2></div>
+    <div class="ins-crawl-wrap" id="insCrawlWrap" style="display:none;"><div class="ins-crawl-track" id="insCrawlTrack"></div></div>
     <div class="hub-tabs" id="hubTabs">
       <button type="button" class="hub-tab on" data-t="profit">수익</button>
       <button type="button" class="hub-tab" data-t="habit">습관</button>
@@ -3275,7 +3302,11 @@ function heatColor(v){
 
 function renderNews(){
   const list=document.getElementById('newsList');
-  if(!NEWS.length){ return; }
+  const crawlWrap=document.getElementById('newsCrawlWrap'), crawlTrack=document.getElementById('newsCrawlTrack');
+  if(!NEWS.length){
+    if(crawlWrap) crawlWrap.style.display='none';
+    return;
+  }
   list.innerHTML='';
   NEWS.forEach(n=>{
     const url = n.u && /^https?:\/\//.test(n.u) ? n.u : null;
@@ -3284,6 +3315,37 @@ function renderNews(){
       <div class="news-tk">${escapeHtml(n.tk||'')}</div>
       <div class="news-body"><div class="nt">${escapeHtml(n.t||'')}</div><div class="ns">${escapeHtml(n.s||'')}</div></div></${tag}>`;
   });
+
+  // 헤드라인 크롤(파노라마 마퀴) — 상위 6개까지, 두 번 이어붙여서 끊김 없이 순환
+  if(crawlWrap && crawlTrack){
+    const top=NEWS.slice(0,6);
+    if(top.length){
+      const itemsHtml=top.map(n=>{
+        const url=n.u && /^https?:\/\//.test(n.u) ? n.u : null;
+        const tag=url?'a':'button';
+        const extra=url?`href="${escapeHtml(url)}" target="_blank" rel="noopener"`:`type="button"`;
+        return `<${tag} class="news-crawl-item" ${extra}><span class="tag">${escapeHtml(n.tk||'')}</span>${escapeHtml(n.t||'')}</${tag}>`;
+      }).join('');
+      crawlTrack.innerHTML=itemsHtml+itemsHtml; // 두 번 반복해서 무한 스크롤처럼 보이게
+      crawlWrap.style.display='';
+    } else {
+      crawlWrap.style.display='none';
+    }
+  }
+}
+function renderNewsSkeleton(){
+  const list=document.getElementById('newsList');
+  const crawlWrap=document.getElementById('newsCrawlWrap');
+  if(!list) return;
+  if(crawlWrap) crawlWrap.style.display='none';
+  const item=`<div class="news-skel-item">
+    <div class="skel-shimmer news-skel-thumb"></div>
+    <div class="news-skel-lines">
+      <div class="skel-shimmer news-skel-line" style="width:88%;"></div>
+      <div class="skel-shimmer news-skel-line" style="width:60%;"></div>
+    </div>
+  </div>`;
+  list.innerHTML=item+item+item;
 }
 
 function renderTables(){
@@ -4270,6 +4332,7 @@ function renderInsightHub(){
   if(dotsEl){
     dotsEl.innerHTML = slides.length>1 ? slides.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('') : '';
   }
+  renderInsightHighlightCrawl();
 }
 function initInsightHub(){
   const tabsEl=document.getElementById('hubTabs'), wrap=document.getElementById('hubWrap'), dotsEl=document.getElementById('hubDots');
@@ -4294,6 +4357,46 @@ function initInsightHub(){
       });
     }, {passive:true});
   }
+}
+/* 실측 종가 확보 대기 중 — 현재 탭 카드 개수에 맞춰 스켈레톤 표시(연속기록 등 일부 카드가
+   plBuildSeries()의 실측 데이터를 기다려야 하는 탭에서 특히 유용) */
+function renderInsightHubSkeleton(){
+  const track=document.getElementById('hubTrack'), dotsEl=document.getElementById('hubDots');
+  if(!track) return;
+  const skelCard=`<div class="hub-card-skel">
+    <div class="skel-shimmer hub-skel-ic"></div>
+    <div class="skel-shimmer hub-skel-lbl"></div>
+    <div class="skel-shimmer hub-skel-val"></div>
+    <div class="skel-shimmer hub-skel-sub"></div>
+  </div>`;
+  track.innerHTML=`<div class="hub-slide"><div class="hub-grid">${skelCard.repeat(4)}</div></div>`;
+  if(dotsEl) dotsEl.innerHTML='';
+  renderInsightHighlightCrawl();
+}
+/* 인사이트 하이라이트 크롤(파노라마) — 6개 탭에서 눈에 띄는 지표 몇 개를 뽑아 미리보기로 흘려보임 */
+function renderInsightHighlightCrawl(){
+  const wrap=document.getElementById('insCrawlWrap'), track=document.getElementById('insCrawlTrack');
+  if(!wrap || !track || typeof AS==='undefined' || !AS.length) return;
+  let items=[];
+  try{
+    const total=grandTotal(), cost=investedCost();
+    const years=(plDateForIndex(AS.length-1)-HSTART)/(365.25*864e5);
+    const ratio=cost>0 ? (total-cashKRW())/cost : 0;
+    const cagr=(years>0.1 && ratio>0) ? (Math.pow(ratio,1/years)-1)*100 : 0;
+    const pastMax=Math.max(...AS.filter(v=>v!=null));
+    const athGap=pastMax>0 ? (total/pastMax-1)*100 : 0;
+    const h=computeInvestHabits();
+    items=[
+      {e:'📈', html:`연평균 <b>${sign(cagr)}</b>`},
+      {e:'🏆', html:`최고치 대비 <b>${sign(athGap)}</b>`},
+      {e:'💘', html:`최애 종목 <b>${h.longest?h.longest.tk:'—'}</b>`},
+      {e:'📅', html:`매수 ${h.year}년 <b>${h.buysThisYear}회</b>`},
+    ];
+  }catch(e){ items=[]; }
+  if(!items.length){ wrap.style.display='none'; return; }
+  const itemsHtml=items.map(it=>`<button type="button" class="ins-crawl-item"><span class="emoji">${it.e}</span>${it.html}</button>`).join('');
+  track.innerHTML=itemsHtml+itemsHtml;
+  wrap.style.display='';
 }
 /* 기존 이름 유지 — renderAll()에서 호출되므로 허브 렌더로 연결 */
 function renderHabitInsights(){ renderInsightHub(); }
@@ -6774,6 +6877,9 @@ async function refresh(){
   if(refreshing) return; refreshing=true;
   const btn=document.getElementById('refreshBtn'); btn.classList.add('spin'); btn.disabled=true;
   document.querySelectorAll('.hcard-ev, .pnl-val').forEach(el=>el.classList.add('skel-shimmer'));
+  document.querySelectorAll('.tk-item .px, .tk-item .ch').forEach(el=>el.classList.add('skel-shimmer'));
+  document.querySelectorAll('#cvcTodayBig, #cvcTodaySub, #cvcMonthBig, #cvcMonthSub').forEach(el=>el.classList.add('skel-shimmer'));
+  renderNewsSkeleton();
   const key=getKey();
   setStatus('stale', '<b>조회 중…</b>');
 
@@ -7038,14 +7144,16 @@ loadFutureSnaps().then(()=>{
   const origNote=noteEl?noteEl.textContent:'';
   if(!HIST_PRICE_READY && !HIST_PRICE_LOADING){
     if(noteEl) noteEl.textContent='실제 종가를 확인하는 중입니다… (최초 1회만, 완료되면 자동으로 갱신됩니다)';
+    renderInsightHubSkeleton(); // 연속기록처럼 실측 종가가 필요한 카드들, 대기 중엔 스켈레톤으로
     ensureHistPrices()
       .then(()=>{
         reconstructGapAS();      // 자산추이 차트용 AS/CS도 실측값으로 보정
         plInvalidateSeries();    // 기간별 손익 표는 자체 시계열을 다시 계산
         renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
+        renderInsightHub();      // 실측 데이터로 카드 다시 채움
         if(noteEl) noteEl.textContent=origNote;
       })
-      .catch(()=>{ if(noteEl) noteEl.textContent=origNote; });
+      .catch(()=>{ renderInsightHub(); if(noteEl) noteEl.textContent=origNote; });
   }
 });
 initUI();
