@@ -423,13 +423,41 @@
   .goal-bar-fill{ height:100%; border-radius:9999px; background:linear-gradient(90deg, var(--brass), var(--brass-light)); transition:width .5s ease; }
   .goal-foot-row{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-soft); }
 
-  /* ===== 투자 습관 인사이트 ===== */
-  .habit-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .habit-card{ background:var(--paper); border-radius:13px; padding:12px; }
-  .habit-ic{ width:26px; height:26px; border-radius:9px; background:rgba(0,102,204,.1); color:var(--brass); display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
-  .habit-ic svg{ width:13px; height:13px; }
-  .habit-v{ font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .habit-l{ font-size:9.5px; color:var(--ink-soft); margin-top:2px; }
+  /* ===== 인사이트 총모음집 (구 투자 습관 인사이트) ===== */
+  .hub-tabs{ display:flex; gap:4px; background:var(--paper); border-radius:12px; padding:3px; margin-bottom:14px; overflow-x:auto; scrollbar-width:none; }
+  .hub-tabs::-webkit-scrollbar{ display:none; }
+  .hub-tab{ flex:0 0 auto; text-align:center; font-family:inherit; font-size:10.5px; font-weight:700; padding:8px 12px; border-radius:9px; color:var(--ink-soft); white-space:nowrap; cursor:pointer; background:none; border:none; }
+  .hub-tab.on{ background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  .hub-wrap{ overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -2px; }
+  .hub-wrap::-webkit-scrollbar{ display:none; }
+  .hub-track{ display:flex; align-items:stretch; }
+  .hub-slide{ flex:0 0 100%; scroll-snap-align:start; padding:0 2px; box-sizing:border-box; min-width:0; }
+  .hub-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .hub-card{ background:var(--paper); border-radius:14px; padding:12px; min-height:98px; box-sizing:border-box; }
+  .hub-ic{ width:26px; height:26px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
+  .hub-ic svg{ width:13px; height:13px; }
+  .hub-lbl{ font-size:9.5px; color:var(--ink-soft); margin-bottom:4px; }
+  .hub-val{ font-family:'Inter',-apple-system,sans-serif; font-size:15px; font-weight:800; color:var(--ink); margin-bottom:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .hub-sub{ font-size:8.5px; color:var(--ink-soft); line-height:1.35; }
+  .hub-dots{ display:flex; justify-content:center; gap:5px; margin-top:10px; }
+  .hub-dots i{ width:5px; height:5px; border-radius:50%; background:var(--ink-soft); opacity:.35; transition:.2s; }
+  .hub-dots i.on{ opacity:1; background:var(--brass); width:14px; border-radius:3px; }
+  /* 재미 탭 — 스포티파이 랩드 스타일(자체 색상 배경이라 테마 영향 적음) */
+  .fun-card{ border-radius:16px; padding:15px; min-height:112px; box-sizing:border-box; overflow:hidden; color:#fff; display:flex; flex-direction:column; justify-content:flex-end; }
+  .fun-emoji{ font-size:24px; margin-bottom:7px; line-height:1; }
+  .fun-lbl{ font-size:9px; opacity:.75; margin-bottom:4px; }
+  .fun-val{ font-family:'Inter',-apple-system,sans-serif; font-size:14px; font-weight:800; margin-bottom:2px; line-height:1.25; }
+  .fun-sub{ font-size:8px; opacity:.8; line-height:1.3; }
+  .fun-xp-bar{ height:5px; background:rgba(255,255,255,.2); border-radius:9999px; margin-top:6px; overflow:hidden; }
+  .fun-xp-fill{ height:100%; background:#fff; border-radius:9999px; }
+  /* 시간축 탭 */
+  .hub-time-row{ display:flex; align-items:center; justify-content:space-between; padding:11px 4px; border-bottom:1px solid var(--line); }
+  .hub-time-row:last-child{ border-bottom:none; }
+  .hub-time-lbl{ font-size:12px; font-weight:700; color:var(--ink); width:52px; flex-shrink:0; }
+  .hub-time-bar-wrap{ flex:1; margin:0 10px; }
+  .hub-time-track{ height:6px; background:var(--paper); border-radius:9999px; overflow:hidden; }
+  .hub-time-fill{ height:100%; border-radius:9999px; transition:width .4s ease; }
+  .hub-time-val{ font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800; width:82px; text-align:right; flex-shrink:0; }
 
   /* ===== 연간 손익 캘린더 ===== */
   .cal-tabs{ display:flex; gap:6px; background:var(--paper); border-radius:11px; padding:3px; margin-bottom:14px; }
@@ -1916,8 +1944,17 @@
 
   <!-- TX TIMELINE -->
   <div class="page collapsible" id="sec-habit" data-panel="hist">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-width="1.7"/></svg></span>투자 습관 인사이트</h2></div>
-    <div class="habit-grid" id="habitGrid"></div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-width="1.7"/></svg></span>인사이트 모음집</h2></div>
+    <div class="hub-tabs" id="hubTabs">
+      <button type="button" class="hub-tab on" data-t="profit">수익</button>
+      <button type="button" class="hub-tab" data-t="habit">습관</button>
+      <button type="button" class="hub-tab" data-t="record">기록</button>
+      <button type="button" class="hub-tab" data-t="risk">리스크</button>
+      <button type="button" class="hub-tab" data-t="fun">재미</button>
+      <button type="button" class="hub-tab" data-t="time">시간축</button>
+    </div>
+    <div class="hub-wrap" id="hubWrap"><div class="hub-track" id="hubTrack"></div></div>
+    <div class="hub-dots" id="hubDots"></div>
   </div>
 
   <div class="page collapsible" id="sec-tx" data-panel="hist">
@@ -3895,6 +3932,7 @@ function computeInvestHabits(){
   const today=plDateForIndex(AS.length-1);
   const year=today.getFullYear();
   const buysThisYear=TXL.filter(t=>t.q>0 && t.d.slice(0,4)===String(year)).length;
+  const sellsThisYear=TXL.filter(t=>t.q<0 && t.d.slice(0,4)===String(year)).length;
 
   // 현재 보유 중인 티커별로 "최초 매수일 ~ 오늘" 보유기간
   const heldTickers=[...new Set(HOLDINGS.map(h=>h.ticker))];
@@ -3905,29 +3943,360 @@ function computeInvestHabits(){
     return {tk, days:Math.round((today-first)/864e5)};
   }).filter(Boolean);
   const avgDays=holdDurations.length ? Math.round(holdDurations.reduce((s,h)=>s+h.days,0)/holdDurations.length) : 0;
-  const longest=holdDurations.slice().sort((a,b)=>b.days-a.days)[0]||null;
+  const sortedDur=holdDurations.slice().sort((a,b)=>b.days-a.days);
+  const longest=sortedDur[0]||null;
+  const shortest=sortedDur[sortedDur.length-1]||null;
 
-  // 매수 요일 분포(가장 많이 산 요일)
+  // 매수 요일 분포(가장 많이 산 요일) + 전체 거래(매수+매도) 기준 가장 바쁜 요일
   const dayNames=['일','월','화','수','목','금','토'];
-  const dayCounts=[0,0,0,0,0,0,0];
-  TXL.filter(t=>t.q>0).forEach(t=>{ dayCounts[new Date(t.d+'T00:00:00').getDay()]++; });
-  let favDayIdx=0, favDayCount=-1;
-  dayCounts.forEach((c,i)=>{ if(c>favDayCount){ favDayCount=c; favDayIdx=i; } });
+  const buyDayCounts=[0,0,0,0,0,0,0], allDayCounts=[0,0,0,0,0,0,0];
+  TXL.forEach(t=>{
+    const dow=new Date(t.d+'T00:00:00').getDay();
+    allDayCounts[dow]++;
+    if(t.q>0) buyDayCounts[dow]++;
+  });
+  const pickMax=arr=>{ let mi=0, mc=-1; arr.forEach((c,i)=>{ if(c>mc){ mc=c; mi=i; } }); return {idx:mi, count:mc}; };
+  const favBuy=pickMax(buyDayCounts), busiest=pickMax(allDayCounts);
 
-  return {buysThisYear, avgDays, longest, favDay:dayNames[favDayIdx], favDayCount, year};
+  // 매수 금액/횟수 통계
+  const buys=TXL.filter(t=>t.q>0);
+  const buyAmtKRW=t=>{
+    // amt는 원화 표기(KRW) 또는 달러 표기(USD)일 수 있어 통화에 맞춰 환산
+    if(t.cur==='USD') return t.amt; // TXL의 amt는 이미 원화 환산값으로 저장되어 있음
+    return t.amt;
+  };
+  const totalBuyAmt=buys.reduce((s,t)=>s+buyAmtKRW(t),0);
+  const avgBuyAmt=buys.length ? totalBuyAmt/buys.length : 0;
+
+  // 최다 매수 종목(횟수 기준)
+  const buyCountByTk={};
+  buys.forEach(t=>{ buyCountByTk[t.tk]=(buyCountByTk[t.tk]||0)+1; });
+  let topBuyTk=null, topBuyCount=0;
+  Object.keys(buyCountByTk).forEach(tk=>{ if(buyCountByTk[tk]>topBuyCount){ topBuyCount=buyCountByTk[tk]; topBuyTk=tk; } });
+
+  // 하루 최다 거래 건수
+  const byDate={};
+  TXL.forEach(t=>{ byDate[t.d]=(byDate[t.d]||0)+1; });
+  let busiestDate=null, busiestCount=0;
+  Object.keys(byDate).forEach(d=>{ if(byDate[d]>busiestCount){ busiestCount=byDate[d]; busiestDate=d; } });
+
+  return {buysThisYear, sellsThisYear, avgDays, longest, shortest,
+    favDay:dayNames[favBuy.idx], favDayCount:favBuy.count,
+    busiestDow:dayNames[busiest.idx], busiestDowCount:busiest.count,
+    avgBuyAmt, topBuyTk, topBuyCount, busiestDate, busiestCount, year};
 }
-function renderHabitInsights(){
-  const grid=document.getElementById('habitGrid');
-  if(!grid || typeof TXL==='undefined' || !TXL.length) return;
+
+/* ===== 인사이트 모음집 — 6개 탭 데이터 계산 ===== */
+let HUB_TAB='profit';
+
+function hubIcon(path){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+}
+function hubCard(bg, color, iconPath, lbl, val, sub){
+  return `<div class="hub-card">
+    <div class="hub-ic" style="background:${bg}; color:${color};">${hubIcon(iconPath)}</div>
+    <div class="hub-lbl">${lbl}</div><div class="hub-val">${val}</div><div class="hub-sub">${sub}</div>
+  </div>`;
+}
+function funCard(grad, emoji, lbl, val, sub, extraHtml){
+  return `<div class="fun-card" style="background:${grad};">
+    <div class="fun-emoji">${emoji}</div><div class="fun-lbl">${lbl}</div>
+    <div class="fun-val">${val}</div>${extraHtml||''}<div class="fun-sub">${sub}</div>
+  </div>`;
+}
+
+/* 일별 자산 변화(AS 기반) 통계 — 여러 탭에서 공유.
+   주의: AS의 과거 구간은 거래 사이를 잇는 선형 보간값이라 매일 수십~수백원씩 한 방향으로만
+   미세하게 변한다. 그대로 "연속 상승/하락"을 세면 수백 일짜리 가짜 기록이 나오므로,
+   연속 기록 계산에는 (1) 실측 종가가 있는 최근 구간만 쓰고 (2) 자산의 0.05% 이상 움직인
+   날만 "의미 있는 등락"으로 인정한다. */
+function hubDailyStats(){
+  const deltas=[]; // {idx, date, diff, pct}
+  for(let i=1;i<AS.length;i++){
+    const a=AS[i-1], b=AS[i];
+    if(a==null||b==null||a<=0) continue;
+    deltas.push({idx:i, date:plDateForIndex(i), diff:b-a, pct:(b-a)/a*100});
+  }
+  const upCount=deltas.filter(d=>d.diff>0.0001).length;
+  const downCount=deltas.filter(d=>d.diff<-0.0001).length;
+  const sortedByDiff=deltas.slice().sort((a,b)=>b.diff-a.diff);
+  const sortedByPct=deltas.slice().sort((a,b)=>b.pct-a.pct);
+  const upAvg=upCount ? deltas.filter(d=>d.diff>0.0001).reduce((s,d)=>s+d.diff,0)/upCount : 0;
+  const downAvg=downCount ? Math.abs(deltas.filter(d=>d.diff<-0.0001).reduce((s,d)=>s+d.diff,0)/downCount) : 0;
+
+  // 연속 기록은 보간값으로 계산하면 수십~수백 일짜리 가짜 기록이 나오므로(보간 구간은 매일
+  // 같은 방향으로 미세하게만 움직임), 실측 종가 캐시가 확보된 경우에만 계산한다.
+  // 확보 전이면 null을 반환해서 카드에 "새로고침 후 표시"로 안내한다.
+  const MEANINGFUL=0.05; // %
+  let maxUp=null, maxDown=null, maxDownLoss=null;
+  const hasRealPrices = (typeof HIST_PRICE_CACHE!=='undefined' && HIST_PRICE_CACHE) &&
+                        (typeof HIST_PRICE_READY==='undefined' || HIST_PRICE_READY || (typeof HIST_PRICE_ATTEMPTED!=='undefined' && HIST_PRICE_ATTEMPTED));
+  if(hasRealPrices){
+    try{
+      const S=plBuildSeries();
+      const unreal=i=>S.evalArr[i]-S.costArr[i];
+      const plDeltas=[];
+      for(let i=1;i<S.evalArr.length;i++){
+        const prevEval=S.evalArr[i-1];
+        if(!(prevEval>0)) continue;
+        plDeltas.push({diff:unreal(i)-unreal(i-1), pct:(unreal(i)-unreal(i-1))/prevEval*100});
+      }
+      const recent=plDeltas.slice(-365);
+      let curUp=0, curDown=0, curLoss=0;
+      maxUp=0; maxDown=0; maxDownLoss=0;
+      recent.forEach(d=>{
+        if(d.pct>MEANINGFUL){ curUp++; curDown=0; curLoss=0; maxUp=Math.max(maxUp,curUp); }
+        else if(d.pct<-MEANINGFUL){ curDown++; curUp=0; curLoss+=d.diff; maxDown=Math.max(maxDown,curDown); if(curLoss<maxDownLoss) maxDownLoss=curLoss; }
+        else { curUp=0; curDown=0; curLoss=0; }
+      });
+    }catch(e){}
+  }
+  return {deltas, upCount, downCount, bestDay:sortedByDiff[0], worstDay:sortedByDiff[sortedByDiff.length-1],
+    bestPctDay:sortedByPct[0], upAvg, downAvg, maxUp, maxDown, maxDownLoss};
+}
+
+function hubProfitCards(){
+  const total=grandTotal(), cost=investedCost(), cash=cashKRW();
+  const invest=total-cash, profit=invest-cost;
+  const ret=cost>0 ? profit/cost*100 : 0;
+  const years=(plDateForIndex(AS.length-1)-HSTART)/(365.25*864e5);
+  const ratio=cost>0 ? invest/cost : 0;
+  const cagr=(years>0.1 && ratio>0) ? (Math.pow(ratio,1/years)-1)*100 : 0;
+  const pastMax=Math.max(...AS.filter(v=>v!=null));
+  const athValue=Math.max(pastMax,total);
+  const athGap=athValue>0 ? (total/athValue-1)*100 : 0;
+  const rank=AS.filter(v=>v!=null && v>total+0.5).length+1;
+  const goalPct=(typeof GOAL_AMOUNT!=='undefined' && GOAL_AMOUNT>0) ? total/GOAL_AMOUNT*100 : 0;
+  // 실현손익 누계 + 매도 1건당 평균
+  let realizedTotal=0, sellCount=0;
+  try{
+    if(typeof RV!=='undefined' && typeof RV.rz_all==='number') realizedTotal=RV.rz_all;
+    sellCount=TXL.filter(t=>t.q<0).length;
+  }catch(e){}
+  const avgRealized=sellCount ? realizedTotal/sellCount : 0;
+
+  return [
+    hubCard('rgba(212,175,55,.1)','var(--brass)','<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>','연평균(CAGR)',sign(cagr),'경과 연수로 복리 환산'),
+    hubCard('rgba(255,111,94,.14)','var(--stamp-red)','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>','최고치 대비',sign(athGap),'역대 최고 자산 대비 현재'),
+    hubCard('rgba(107,70,193,.1)','#6b46c1','<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/>','역대 자산일 순위',rank+'위','지금까지 중 몇 번째 좋은 날'),
+    hubCard('rgba(21,128,61,.1)','#15803d','<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>','원금 대비 배수',ratio.toFixed(2)+'배','투자원금이 몇 배가 됐는지'),
+    hubCard('rgba(192,57,43,.1)','var(--stamp-red)','<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>','누적 수익률',sign(ret),'투자원금 대비 전체 수익률'),
+    hubCard('rgba(212,175,55,.1)','var(--brass)','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>','목표 달성률',goalPct.toFixed(1)+'%','설정한 목표금액까지 진행도'),
+    hubCard('rgba(0,102,204,.1)','#0066cc','<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1 1-1.8 3-1.8s3 .8 3 1.7c0 2.3-6 1.1-6 3.4 0 1 1 1.8 3 1.8s3-.7 3-1.7"/>','실현손익 누계',(realizedTotal>=0?'+':'')+won(realizedTotal),'매도로 확정한 손익 합계'),
+    hubCard('rgba(255,159,10,.14)','#ff9f0a','<path d="M4 2h16v20l-3-2-3 2-3-2-3 2-3-2-1 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/>','평균 매도 손익',sellCount?((avgRealized>=0?'+':'')+won(avgRealized)):'—',sellCount?`매도 ${sellCount}건 기준`:'매도 기록 없음'),
+  ];
+}
+
+function hubHabitCards(){
   const h=computeInvestHabits();
-  const ic=path=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
-  grid.innerHTML=`
-    <div class="habit-card"><div class="habit-ic">${ic('<path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>')}</div><div class="habit-v">${h.buysThisYear}회</div><div class="habit-l">${h.year}년 매수 횟수</div></div>
-    <div class="habit-card"><div class="habit-ic">${ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>')}</div><div class="habit-v">${h.avgDays?fmtDuration(h.avgDays):'—'}</div><div class="habit-l">평균 보유기간</div></div>
-    <div class="habit-card"><div class="habit-ic">${ic('<path d="M12 19V5M5 12l7-7 7 7"/>')}</div><div class="habit-v">${h.longest?h.longest.tk:'—'}</div><div class="habit-l">최장 보유${h.longest?' ('+fmtDuration(h.longest.days)+')':''}</div></div>
-    <div class="habit-card"><div class="habit-ic">${ic('<path d="M20 7h-9M14 17H5M17 7a3 3 0 11-6 0 3 3 0 016 0zM10 17a3 3 0 11-6 0 3 3 0 016 0z"/>')}</div><div class="habit-v">${h.favDayCount>0?h.favDay+'요일':'—'}</div><div class="habit-l">제일 많이 산 요일</div></div>
-  `;
+  return [
+    hubCard('rgba(0,102,204,.1)','#0066cc','<path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>',h.year+'년 매수 횟수',h.buysThisYear+'회','올해 총 매수 거래 건수'),
+    hubCard('rgba(21,128,61,.1)','#15803d','<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>','평균 보유기간',h.avgDays?fmtDuration(h.avgDays):'—','현재 보유 종목 평균'),
+    hubCard('rgba(192,57,43,.1)','var(--stamp-red)','<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>','최장 보유 종목',h.longest?h.longest.tk:'—',h.longest?fmtDuration(h.longest.days)+'째 보유 중':'—'),
+    hubCard('rgba(255,159,10,.14)','#ff9f0a','<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/>','매수 선호 요일',h.favDayCount>0?h.favDay+'요일':'—',h.favDayCount>0?`가장 많이 매수(${h.favDayCount}회)`:'—'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>',h.year+'년 매도 횟수',h.sellsThisYear+'회','올해 총 매도 거래 건수'),
+    hubCard('rgba(212,175,55,.1)','var(--brass)','<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1 1-1.8 3-1.8s3 .8 3 1.7"/>','평균 매수 금액',won(h.avgBuyAmt),'매수 1건당 평균 투입액'),
+    hubCard('rgba(107,70,193,.1)','#6b46c1','<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>','최다 매수 종목',h.topBuyTk||'—',h.topBuyTk?`${h.topBuyCount}회로 가장 많이 매수`:'—'),
+    hubCard('rgba(0,102,204,.1)','#0066cc','<circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/>','최단 보유 종목',h.shortest?h.shortest.tk:'—',h.shortest?fmtDuration(h.shortest.days)+'째 보유(가장 짧음)':'—'),
+  ];
 }
+
+function hubRecordCards(){
+  const D=hubDailyStats();
+  const total=grandTotal();
+  const athValue=Math.max(...AS.filter(v=>v!=null), total);
+  const daysSinceStart=Math.round((plDateForIndex(AS.length-1)-HSTART)/864e5);
+  const h=computeInvestHabits();
+  const fmtD=d=>d?`${d.date.getFullYear()}.${String(d.date.getMonth()+1).padStart(2,'0')}.${String(d.date.getDate()).padStart(2,'0')}`:'—';
+  // 역대 최고 수익률 종목(현재 보유 기준)
+  let bestTk=null, bestPct=-Infinity;
+  HOLDINGS.forEach(hh=>{ const p=retPct(hh); if(isFinite(p) && p>bestPct){ bestPct=p; bestTk=hh.ticker; } });
+
+  return [
+    hubCard('rgba(192,57,43,.1)','var(--stamp-red)','<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>','하루 최대 상승',D.bestDay?('+'+won(D.bestDay.diff)):'—',D.bestDay?fmtD(D.bestDay):'—'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M22 17l-10-10-4 4L2 5"/><path d="M16 17h6v-6"/>','하루 최대 하락',D.worstDay?won(D.worstDay.diff):'—',D.worstDay?fmtD(D.worstDay):'—'),
+    hubCard('rgba(255,159,10,.14)','#ff9f0a','<path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-1-1-2-1-2s2 1 2 4a7 7 0 0 1-14 0c0-5 4-6 4-11 0-1-.5-2-.5-2S11 2 12 2z"/>','최장 연속 상승',D.maxUp!=null?D.maxUp+'일':'—',D.maxUp!=null?'최근 1년 기준 최장 기록':'⟳ 새로고침 후 표시'),
+    hubCard('rgba(21,128,61,.1)','#15803d','<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>','함께한 기간',fmtDuration(daysSinceStart),'계좌 개설부터 지금까지'),
+    hubCard('rgba(212,175,55,.1)','var(--brass)','<path d="M2 20h20M5 20V9l4 4 3-7 3 7 4-4v11"/>','역대 최고 자산',won(athValue),'역대 자산가치 최고 기록'),
+    hubCard('rgba(192,57,43,.1)','var(--stamp-red)','<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>','최고 수익률 종목',bestTk||'—',bestTk?sign(bestPct)+' (보유 중)':'—'),
+    hubCard('rgba(0,102,204,.1)','#0066cc','<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>','하루 최다 거래',h.busiestCount+'건',h.busiestDate?h.busiestDate+' 기준':'—'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-1-1-2-1-2s2 1 2 4a7 7 0 0 1-14 0c0-5 4-6 4-11 0-1-.5-2-.5-2S11 2 12 2z"/>','최장 연속 하락',D.maxDown!=null?D.maxDown+'일':'—',D.maxDown!=null?'최근 1년 기준 최장 기록':'⟳ 새로고침 후 표시'),
+  ];
+}
+
+function hubRiskCards(){
+  const R=computeRiskMetrics();
+  const D=hubDailyStats();
+  const totalDays=D.upCount+D.downCount;
+  const upRatio=totalDays ? D.upCount/totalDays*100 : 0;
+  const pnlRatio=D.downAvg>0 ? D.upAvg/D.downAvg : 0;
+  // 최근 30일 변동성(90일과 비교용)
+  let vol30=0;
+  try{
+    const S=plBuildSeries();
+    const lastIdx=S.evalArr.length-1;
+    const unreal=i=>S.evalArr[i]-S.costArr[i];
+    const rets=[];
+    for(let i=Math.max(1,lastIdx-29);i<=lastIdx;i++){
+      const prev=S.evalArr[i-1];
+      if(prev>0) rets.push((unreal(i)-unreal(i-1))/prev);
+    }
+    if(rets.length>1){
+      const m=rets.reduce((s,r)=>s+r,0)/rets.length;
+      const v=rets.reduce((s,r)=>s+(r-m)*(r-m),0)/(rets.length-1);
+      vol30=Math.sqrt(v)*Math.sqrt(252)*100;
+    }
+  }catch(e){}
+  // 리스크 등급(연환산 변동성 기준 자체 분류)
+  const grade = R.vol<15 ? '안정형' : (R.vol<30 ? '중립형' : '공격형');
+  const gradeSub = R.vol<15 ? '변동성 15% 미만' : (R.vol<30 ? '변동성 15~30%' : '변동성 30% 이상');
+  const worstStreakLoss=D.maxDownLoss;
+
+  return [
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M2 12c2-4 4 4 6 0s4-4 6 0 4 4 6 0"/>','변동성(연환산)',R.vol.toFixed(1)+'%','최근 90일 일별수익률 기준'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M22 17l-10-10-4 4L2 5"/><path d="M16 17h6v-6"/>','최대 낙폭(MDD)',R.mdd.toFixed(1)+'%','누적 최고치 대비 최대 하락'),
+    hubCard('rgba(212,175,55,.1)','var(--brass)','<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>','상승일 비율',upRatio.toFixed(1)+'%',`전체 ${totalDays}일 중 ${D.upCount}일 상승`),
+    hubCard('rgba(107,70,193,.1)','#6b46c1','<path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>','최근 30일 변동성',vol30.toFixed(1)+'%',vol30<R.vol?'90일 대비 완화':'90일 대비 확대'),
+    hubCard('rgba(21,128,61,.1)','#15803d','<path d="M12 3v18M8 21h8M5 7l7-4 7 4M5 7l-3 6a3 3 0 0 0 6 0L5 7zM19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/>','손익비',pnlRatio?pnlRatio.toFixed(2)+'배':'—','상승일 평균폭 ÷ 하락일 평균폭'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/>','최장 하락 손실액',worstStreakLoss!=null?won(worstStreakLoss):'—',worstStreakLoss!=null?'연속 하락 구간 최대 누적손실':'⟳ 새로고침 후 표시'),
+    hubCard('rgba(255,159,10,.14)','#ff9f0a','<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','리스크 등급',grade,gradeSub+' 기준 자체 분류'),
+    hubCard('rgba(0,102,204,.1)','#0066cc','<polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/>','상승일 평균폭',won(D.upAvg),'상승한 날의 평균 증가액'),
+  ];
+}
+
+function hubFunCards(){
+  const D=hubDailyStats();
+  const h=computeInvestHabits();
+  const total=grandTotal(), cost=investedCost(), cash=cashKRW();
+  const invest=total-cash;
+  // 페르소나 — 해외주식 비중과 변동성으로 분류
+  const t=acctTotals();
+  const overseasPct=total>0 ? t.overseas.ev/total*100 : 0;
+  let persona='밸런스 투자자', personaSub='자산이 고르게 분산되어 있어요';
+  const R=computeRiskMetrics();
+  if(overseasPct>70 && R.vol>=25){ persona='하이리스크 성장주 헌터'; personaSub=`해외주식 ${overseasPct.toFixed(1)}% · 변동성 ${R.vol.toFixed(0)}%`; }
+  else if(overseasPct>70){ persona='글로벌 집중 투자자'; personaSub=`해외주식 비중 ${overseasPct.toFixed(1)}%`; }
+  else if(R.vol<15){ persona='안정 추구 투자자'; personaSub=`변동성 ${R.vol.toFixed(0)}%로 낮은 편`; }
+  // 이번 주 무드(요일별 등락을 이모지로)
+  let moodStr='—', moodSub='이번 주 데이터가 아직 없어요';
+  try{
+    const S=plBuildSeries();
+    const lastIdx=S.evalArr.length-1;
+    const {monday,end}=getWeekRangeMonFri(plDateForIndex(lastIdx));
+    const unreal=i=>S.evalArr[i]-S.costArr[i];
+    const si=Math.max(0,plIndexForDate(monday)), ei=Math.min(lastIdx,plIndexForDate(end));
+    const emojis=[]; let up=0,down=0;
+    for(let k=0;k<5;k++){
+      const d=new Date(monday); d.setDate(monday.getDate()+k);
+      const idx=plIndexForDate(d);
+      if(idx<0||idx>ei){ emojis.push('⬜'); continue; }
+      const v = idx===si ? unreal(idx)-unreal(Math.max(0,si-1)) : unreal(idx)-unreal(idx-1);
+      if(v>0.0001){ emojis.push('📈'); up++; } else if(v<-0.0001){ emojis.push('📉'); down++; } else emojis.push('📊');
+    }
+    moodStr=emojis.join('');
+    moodSub = up>down ? `${up}일 상승으로 기분 좋은 한 주` : (down>up ? `${down}일 하락, 힘든 한 주였어요` : '엎치락뒤치락한 한 주');
+  }catch(e){}
+  // 투자 레벨 — 거래횟수와 보유기간을 조합한 자체 공식
+  const daysSinceStart=Math.round((plDateForIndex(AS.length-1)-HSTART)/864e5);
+  const xp=TXL.length*10 + Math.floor(daysSinceStart/30)*15;
+  const level=Math.max(1, Math.floor(Math.sqrt(xp/20)));
+  const xpForNext=Math.pow(level+1,2)*20, xpForCur=Math.pow(level,2)*20;
+  const progress=Math.max(0,Math.min(100,(xp-xpForCur)/(xpForNext-xpForCur)*100));
+  const levelName = level<10?'새싹 투자자':(level<20?'성장하는 투자자':(level<30?'베테랑 투자자':'마스터 투자자'));
+  // 이번 달 손익을 소비재로 환산
+  let monthPL=0;
+  try{ monthPL=computePeriodPL('month').total; }catch(e){}
+  const ITEM_PRICE=1500000, ITEM_NAME='아이폰 프로';
+  const itemCount=Math.abs(monthPL)/ITEM_PRICE;
+  const itemStr = monthPL>=0 ? `${ITEM_NAME} 약 ${itemCount.toFixed(1)}대` : `${ITEM_NAME} 약 ${itemCount.toFixed(1)}대 손해`;
+  const fmtD=d=>d?`${d.date.getFullYear()}.${String(d.date.getMonth()+1).padStart(2,'0')}.${String(d.date.getDate()).padStart(2,'0')}`:'—';
+
+  return [
+    funCard('linear-gradient(160deg,#7c3aed,#4c1d95)','🚀','당신의 투자 페르소나',persona,personaSub),
+    funCard('linear-gradient(160deg,#c0392b,#7f1d1d)','💘','당신의 최애 종목',h.longest?h.longest.tk:'—',h.longest?`${fmtDuration(h.longest.days)}째 함께한 원픽`:'—'),
+    funCard('linear-gradient(160deg,#0369a1,#0c4a6e)','📊','이번 주 무드',moodStr,moodSub),
+    funCard('linear-gradient(160deg,#15803d,#14532d)','🏅','상승일 승률',`${D.upCount}승 ${D.downCount}패`,'역대 전체 거래일 기준 전적'),
+    funCard('linear-gradient(160deg,#d97706,#92400e)','🛍️','이번 달 손익을 환산하면',itemStr,`${ITEM_NAME} 1대 ${won(ITEM_PRICE)} 기준`),
+    funCard('linear-gradient(160deg,#be185d,#831843)','🎮','투자 레벨',`Lv.${level} ${levelName}`,`다음 레벨까지 ${progress.toFixed(0)}%`,`<div class="fun-xp-bar"><div class="fun-xp-fill" style="width:${progress.toFixed(0)}%;"></div></div>`),
+    funCard('linear-gradient(160deg,#dc2626,#991b1b)','💓','가장 설렜던 순간',D.bestPctDay?sign(D.bestPctDay.pct):'—',D.bestPctDay?`${fmtD(D.bestPctDay)} · 역대 최고 상승률`:'—'),
+    funCard('linear-gradient(160deg,#0891b2,#164e63)','🗓️','가장 바빴던 요일',h.busiestDowCount>0?h.busiestDow+'요일':'—',h.busiestDowCount>0?`매수·매도 합쳐 ${h.busiestDowCount}건`:'—'),
+  ];
+}
+
+function hubTimeCards(){
+  const rows=[];
+  const periods=[['today','오늘'],['week','이번 주'],['month','이번 달'],['year','올해'],['all','전체']];
+  const vals=periods.map(([key,lbl])=>{
+    let pct=0, ok=false;
+    try{ const r=computePeriodPL(key); pct=r.pct; ok=isFinite(pct); }catch(e){}
+    return {lbl, pct: ok?pct:0, ok};
+  });
+  const maxAbs=Math.max(1, ...vals.map(v=>Math.abs(v.pct)));
+  vals.forEach(v=>{
+    const cls=clsOf(v.pct);
+    const color = cls==='up'?'var(--stamp-red)':(cls==='down'?'var(--stamp-blue)':'var(--ink-soft)');
+    const width=Math.min(100, Math.abs(v.pct)/maxAbs*100);
+    rows.push(`<div class="hub-time-row">
+      <div class="hub-time-lbl">${v.lbl}</div>
+      <div class="hub-time-bar-wrap"><div class="hub-time-track"><div class="hub-time-fill" style="width:${width.toFixed(1)}%; background:${color};"></div></div></div>
+      <div class="hub-time-val" style="color:${color};">${v.ok?sign(v.pct):'—'}</div>
+    </div>`);
+  });
+  // 시간축은 카드가 아니라 한 덩어리 리스트라 슬라이드 1장으로 반환
+  return [`<div class="hub-card" style="grid-column:1 / -1; min-height:auto; padding:6px 10px;">${rows.join('')}</div>`];
+}
+
+function renderInsightHub(){
+  const track=document.getElementById('hubTrack'), dotsEl=document.getElementById('hubDots'), wrap=document.getElementById('hubWrap');
+  if(!track || typeof AS==='undefined' || !AS.length) return;
+  let cards=[];
+  try{
+    if(HUB_TAB==='profit') cards=hubProfitCards();
+    else if(HUB_TAB==='habit') cards=hubHabitCards();
+    else if(HUB_TAB==='record') cards=hubRecordCards();
+    else if(HUB_TAB==='risk') cards=hubRiskCards();
+    else if(HUB_TAB==='fun') cards=hubFunCards();
+    else cards=hubTimeCards();
+  }catch(e){ cards=[]; }
+  if(!cards.length){ track.innerHTML=''; if(dotsEl) dotsEl.innerHTML=''; return; }
+
+  // 4개씩 묶어 슬라이드로 나눔(시간축은 1장짜리라 자동으로 1슬라이드)
+  const slides=[];
+  for(let i=0;i<cards.length;i+=4){
+    slides.push(`<div class="hub-slide"><div class="hub-grid">${cards.slice(i,i+4).join('')}</div></div>`);
+  }
+  track.innerHTML=slides.join('');
+  if(wrap) wrap.scrollLeft=0; // 탭 바꾸면 첫 슬라이드로
+  if(dotsEl){
+    dotsEl.innerHTML = slides.length>1 ? slides.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('') : '';
+  }
+}
+function initInsightHub(){
+  const tabsEl=document.getElementById('hubTabs'), wrap=document.getElementById('hubWrap'), dotsEl=document.getElementById('hubDots');
+  if(!tabsEl) return;
+  tabsEl.addEventListener('click', e=>{
+    const btn=e.target.closest('.hub-tab'); if(!btn) return;
+    const t=btn.dataset.t;
+    if(t===HUB_TAB) return;
+    HUB_TAB=t;
+    tabsEl.querySelectorAll('.hub-tab').forEach(b=>b.classList.toggle('on', b===btn));
+    renderInsightHub();
+  });
+  if(wrap && dotsEl){
+    let raf=null;
+    wrap.addEventListener('scroll', ()=>{
+      if(raf) cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(()=>{
+        const dots=dotsEl.querySelectorAll('i');
+        if(!dots.length) return;
+        const idx=Math.round(wrap.scrollLeft / wrap.clientWidth);
+        dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
+      });
+    }, {passive:true});
+  }
+}
+/* 기존 이름 유지 — renderAll()에서 호출되므로 허브 렌더로 연결 */
+function renderHabitInsights(){ renderInsightHub(); }
 
 /* ===== 리스크 지표(변동성/MDD) ===== */
 function computeRiskMetrics(){
@@ -6566,6 +6935,7 @@ initWeeklyDayTaps();
 initCalendarInteractions();
 initCoverCarousel();
 initWeeklyInsightCarousel();
+initInsightHub();
 initLongPress();
 renderAll();
 initTax();
