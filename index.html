@@ -3843,7 +3843,7 @@ function renderWeeklyReport(){
   const dMon=plDateForIndex(startIdx), dEnd=plDateForIndex(endIdx);
   const contribRows=HOLDINGS.map(h=>{
     const st0=stateAt(h.ticker,dMon), st1=stateAt(h.ticker,dEnd);
-    const px0=priceAt(h.ticker,dMon), px1=priceAt(h.ticker,dEnd);
+    const px0=priceAtReal(h.ticker,dMon), px1=priceAtReal(h.ticker,dEnd);
     const pct = px0>0 ? (px1-px0)/px0*100 : 0;
     return {tk:h.ticker, pct, held: st0.shares>0 || st1.shares>0};
   }).filter(r=>r.held).sort((a,b)=>b.pct-a.pct);
@@ -4860,6 +4860,19 @@ function priceAt(tk,d){
   for(let i=0;i<pts.length-1;i++){ const [a,va]=pts[i], [b,vb]=pts[i+1];
     if(a<=d&&d<=b){ const t=(b-a)?(d-a)/(b-a):0; return va+(vb-va)*t; } }
   return pts[pts.length-1][1];
+}
+/* priceAt()은 거래시점 가격끼리만 직선 보간하기 때문에, 마지막 거래가 오래전이면 최근
+   실제 시세 변동을 전혀 반영 못 하고 밋밋한 값만 나온다(주간리포트 베스트/워스트가 항상
+   ±1% 안팎의 좁은 범위로만 나오던 원인 — 실측 종가가 아니라 보간값이었기 때문).
+   plBuildSeries()에서 이미 쓰던 "실측 우선, 없으면 보간" 패턴을 재사용 가능한 함수로 분리. */
+function priceAtReal(tk, d){
+  const days=(typeof HIST_PRICE_CACHE!=='undefined' && HIST_PRICE_CACHE) ? HIST_PRICE_CACHE[tk] : null;
+  if(days && days.length){
+    const ymd=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    const c=closestClose(days, ymd);
+    if(c!=null) return c;
+  }
+  return priceAt(tk, d);
 }
 /* 기간시작 시점 보유수량·평균원가(KRW, average-cost 방식) */
 function stateAt(tk,d){
