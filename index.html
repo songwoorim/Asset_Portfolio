@@ -2580,6 +2580,7 @@ function renderCoverCarousel(total){
   }
   const bigEl=document.getElementById('cvcTodayBig'), subEl=document.getElementById('cvcTodaySub'), cardEl=document.getElementById('cvcTodayCard');
   if(bigEl && subEl){
+    subEl.className='cvc-sub'; // 스켈레톤 시머 클래스가 여기 안 지워지고 계속 남아있던 버그 수정
     if(HEAT_LIVE){
       const {totalDay, totalPct}=dailyChangeStats();
       const cls=clsOf(totalDay);
@@ -2594,6 +2595,7 @@ function renderCoverCarousel(total){
   }
   const monthBigEl=document.getElementById('cvcMonthBig'), monthSubEl=document.getElementById('cvcMonthSub');
   if(monthBigEl && monthSubEl){
+    monthSubEl.className='cvc-sub'; // 동일한 이유로 리셋
     try{
       const {total:monthTotal, pct:monthPct}=computePeriodPL('month');
       const cls=clsOf(monthTotal);
