@@ -445,6 +445,49 @@
   .hub-dots i{ width:5px; height:5px; border-radius:50%; background:var(--ink-soft); opacity:.35; transition:.2s; }
   .hub-dots i.on{ opacity:1; background:var(--brass); width:14px; border-radius:3px; }
   .hub-card-skel{ background:var(--paper); border-radius:14px; padding:12px; min-height:98px; box-sizing:border-box; }
+  /* ===== 보유종목 Top/Bottom 5 ===== */
+  .rank-wrap{ background:var(--paper); border-radius:14px; padding:6px 12px; }
+  .rank-row{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); }
+  .rank-row:last-child{ border-bottom:none; }
+  .rank-num{ width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; flex-shrink:0; font-family:'Inter',-apple-system,sans-serif; }
+  .rank-tk{ flex:1; font-size:12.5px; font-weight:700; color:var(--ink); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .rank-val{ font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:800; flex-shrink:0; }
+  .rank-empty{ font-size:11px; color:var(--ink-soft); text-align:center; padding:16px 10px; }
+  .rank-toggle{ display:flex; gap:6px; background:var(--paper); border-radius:11px; padding:3px; margin-bottom:10px; }
+  .rank-toggle button{ flex:1; font-family:inherit; font-size:11px; font-weight:700; padding:7px; border-radius:8px; color:var(--ink-soft); background:none; border:none; }
+  .rank-toggle button.on{ background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  /* ===== 환율 영향 분석 ===== */
+  .fx-split-bar{ display:flex; height:26px; border-radius:8px; overflow:hidden; margin:10px 0 8px; }
+  .fx-split-item{ display:flex; align-items:center; justify-content:center; color:#fff; font-size:9.5px; font-weight:700; white-space:nowrap; overflow:hidden; }
+  .fx-legend{ display:flex; justify-content:space-between; font-size:10.5px; color:var(--ink-soft); }
+  .fx-legend b{ font-family:'Inter',-apple-system,sans-serif; }
+  .fx-total-line{ font-size:11px; color:var(--ink-soft); margin-bottom:2px; }
+  .fx-total-line b{ font-family:'Inter',-apple-system,sans-serif; }
+  /* ===== 온보딩 툴팁(용어 설명) ===== */
+  .hub-lbl-row{ display:flex; align-items:center; gap:4px; margin-bottom:4px; }
+  .hub-tip-btn{ width:13px; height:13px; border-radius:50%; background:var(--paper); color:var(--ink-soft); display:inline-flex; align-items:center; justify-content:center; font-size:8.5px; font-weight:800; flex-shrink:0; border:1px solid var(--line); font-family:'Inter',-apple-system,sans-serif; line-height:1; padding:0; cursor:pointer; }
+  .hub-tip-overlay{ position:fixed; inset:0; z-index:9998; background:transparent; display:none; }
+  .hub-tip-overlay.on{ display:block; }
+  .hub-tip-popup{ position:fixed; z-index:9999; background:var(--ink); color:var(--card); border-radius:10px; padding:10px 12px; font-size:10.5px; line-height:1.5; max-width:250px; box-shadow:0 10px 30px rgba(0,0,0,.3); display:none; }
+  .hub-tip-popup.on{ display:block; }
+  /* ===== 리밸런싱 얼럿 배너(홈) ===== */
+  .alert-banner{ display:flex; align-items:center; gap:10px; background:linear-gradient(160deg, rgba(192,57,43,.1), rgba(192,57,43,.02) 70%, transparent); border-radius:16px; padding:13px 15px; margin:16px 2px 0; cursor:pointer; border:1px solid rgba(192,57,43,.15); }
+  .alert-ic{ width:32px; height:32px; border-radius:11px; background:rgba(192,57,43,.14); color:var(--stamp-red); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .alert-ic svg{ width:16px; height:16px; }
+  .alert-txt{ flex:1; min-width:0; }
+  .alert-title{ font-size:12px; font-weight:700; color:var(--ink); }
+  .alert-sub{ font-size:10px; color:var(--ink-soft); margin-top:2px; }
+  .alert-arrow{ color:var(--ink-soft); font-size:16px; flex-shrink:0; }
+  /* ===== 목표 도달 시뮬레이터 ===== */
+  .sim-chart-wrap{ background:var(--paper); border-radius:14px; padding:14px; margin-top:10px; }
+  .sim-legend{ display:flex; justify-content:center; gap:14px; margin-top:8px; font-size:9.5px; color:var(--ink-soft); }
+  .sim-legend i{ width:10px; height:2.5px; display:inline-block; border-radius:2px; margin-right:4px; vertical-align:middle; }
+  .sim-result{ font-size:11.5px; text-align:center; margin-top:10px; color:var(--ink); }
+  .sim-result b{ font-family:'Inter',-apple-system,sans-serif; color:var(--brass); }
+  /* ===== 주간 리포트 이미지 공유 버튼 ===== */
+  .wk-share-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:7px; background:var(--paper); border-radius:12px; padding:10px; font-size:11.5px; font-weight:700; color:var(--ink); margin-top:10px; border:none; font-family:inherit; cursor:pointer; }
+  .wk-share-btn svg{ width:14px; height:14px; }
+  .wk-share-btn:active{ opacity:.7; }
   .hub-skel-ic{ width:26px; height:26px; border-radius:9px; margin-bottom:10px; }
   .hub-skel-lbl{ width:60%; height:8px; border-radius:4px; margin-bottom:8px; }
   .hub-skel-val{ width:75%; height:14px; border-radius:5px; margin-bottom:6px; }
@@ -1508,6 +1551,13 @@
 
 <div class="book">
 
+  <!-- REBAL ALERT (평소엔 숨겨져 있다가, 목표 비중과 5%p 이상 벌어지면만 표시) -->
+  <div class="alert-banner" id="rebalAlertBanner" data-panel="home" style="display:none;">
+    <div class="alert-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+    <div class="alert-txt"><div class="alert-title" id="rebalAlertTitle">—</div><div class="alert-sub" id="rebalAlertSub">—</div></div>
+    <span class="alert-arrow">›</span>
+  </div>
+
   <!-- COVER -->
   <div class="cover" id="sec-top" data-panel="home">
     <div class="cover-topline">
@@ -1607,6 +1657,7 @@
       </div>
     </div>
     <div class="wic-dots" id="wicDots"><i class="on"></i><i></i></div>
+    <button type="button" class="wk-share-btn" id="wkShareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-3.9M8.6 13.5l6.8 3.9"/></svg>이미지로 공유하기</button>
 
     <div class="goal-divider"></div>
     <div class="wk-goal-top">
@@ -1789,6 +1840,34 @@
 
   <div class="perf"></div>
 
+  <!-- FX IMPACT -->
+  <div class="page collapsible" id="sec-fximpact" data-panel="pnl">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(44,74,124,.1);"><svg viewBox="0 0 24 24" style="stroke:#2c4a7c;" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.7"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18M3 12h18" stroke-width="1.5"/></svg></span>이번 달 손익 분해</h2></div>
+    <div class="fx-total-line" id="fxTotalLine">—</div>
+    <div class="fx-split-bar" id="fxSplitBar"></div>
+    <div class="fx-legend" id="fxLegend"></div>
+    <div class="note">달러 표시 자산의 평가액 변화를 "주가 변동"과 "환율 변동" 두 요인으로 분해한 근사치입니다. 기간 중 신규 매수·매도분은 제외하고, 기간 시작 시점부터 계속 보유한 수량만 기준으로 계산합니다.</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- GOAL SIMULATOR -->
+  <div class="page collapsible" id="sec-goalsim" data-panel="pnl">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(212,175,55,.1);"><svg viewBox="0 0 24 24" style="stroke:#c9a227;" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.7"/><circle cx="12" cy="12" r="4.5" stroke-width="1.7"/><circle cx="12" cy="12" r="1" fill="#c9a227"/></svg></span>목표 도달 시뮬레이터</h2></div>
+    <div style="font-size:11px; color:var(--ink-soft);">최근 90일 평균 페이스 기준</div>
+    <div class="sim-chart-wrap">
+      <svg viewBox="0 0 200 90" style="width:100%; height:120px;" id="simChart"></svg>
+      <div class="sim-legend">
+        <span><i style="background:var(--stamp-red);"></i>실제 자산</span>
+        <span><i style="background:var(--stamp-red); opacity:.6;"></i>예상 궤적</span>
+        <span><i style="background:var(--brass);"></i>목표</span>
+      </div>
+    </div>
+    <div class="sim-result" id="simResult">—</div>
+  </div>
+
+  <div class="perf"></div>
+
   <!-- YEAR CALENDAR HEATMAP -->
   <div class="page collapsible" id="sec-calendar" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke-width="1.7"/><path d="M3 9h18M8 2v4M16 2v4" stroke-width="1.7" stroke-linecap="round"/></svg></span>연간 손익 캘린더</h2><span style="font-size:11px; color:var(--ink-soft); font-weight:600;" id="calYearLabel"></span></div>
@@ -1952,6 +2031,18 @@
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M7 17V3M7 3l-3 3M7 3l3 3"/><path d="M17 7v14M17 21l3-3M17 21l-3-3"/></svg></span>종목별 손익률</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">해외주식 기준</div></div>
     <div class="pnl-list" id="pnlList"></div>
     <div class="note">가운데 세로선 기준 · 오른쪽(빨강) 수익 · 왼쪽(파랑) 손실</div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- HOLDINGS TOP/BOTTOM 5 -->
+  <div class="page collapsible" id="sec-rank" data-panel="hold">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>보유종목 랭킹</h2></div>
+    <div class="rank-toggle" id="rankToggle">
+      <button type="button" class="on" data-r="top">TOP 5</button>
+      <button type="button" data-r="bottom">BOTTOM 5</button>
+    </div>
+    <div class="rank-wrap"><div id="rankList"></div></div>
   </div>
 
   <div class="perf"></div>
@@ -2259,6 +2350,9 @@
   <div class="lp-hint">화면 아무 곳이나 탭하면 닫혀요</div>
 </div>
 
+<div class="hub-tip-overlay" id="hubTipOverlay"></div>
+<div class="hub-tip-popup" id="hubTipPopup"></div>
+
 <script>
 /* ============ BASE DATA (purchase basis fixed; prices are live-updatable) ============ */
 // costKRW = 매입 원화기준(고정). USD종목 evalKRW = shares×price×FX. KRW종목 evalKRW = shares×priceKRW.
@@ -2335,6 +2429,42 @@ const escapeHtml = s => (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>
 
 function evalKRW(h){ return h.cur==='USD' ? h.shares*h.price*FX : h.shares*h.price; }
 function retPct(h){ return (evalKRW(h)/h.costKRW - 1) * 100; }
+
+/* ===== 보유종목 Top/Bottom 5 ===== */
+let RANK_MODE='top';
+function renderHoldingsRank(){
+  const listEl=document.getElementById('rankList');
+  if(!listEl || typeof HOLDINGS==='undefined' || !HOLDINGS.length) return;
+  const rows=HOLDINGS.map(h=>({tk:h.ticker, pct:retPct(h)})).filter(r=>isFinite(r.pct));
+  rows.sort((a,b)=> RANK_MODE==='top' ? b.pct-a.pct : a.pct-b.pct);
+  const top=rows.slice(0,5);
+  if(!top.length){ listEl.innerHTML='<div class="rank-empty">보유 종목이 없습니다</div>'; return; }
+  const isTop=RANK_MODE==='top';
+  listEl.innerHTML=top.map((r,i)=>{
+    const up=r.pct>=0;
+    const bg = isTop
+      ? `rgba(192,57,43,${(0.14-i*0.02).toFixed(2)})`
+      : `rgba(44,74,124,${(0.14-i*0.02).toFixed(2)})`;
+    const color = up ? 'var(--stamp-red)' : 'var(--stamp-blue)';
+    return `<div class="rank-row">
+      <div class="rank-num" style="background:${bg}; color:${color};">${i+1}</div>
+      <div class="rank-tk">${escapeHtml(r.tk)}</div>
+      <div class="rank-val" style="color:${color};">${sign(r.pct)}</div>
+    </div>`;
+  }).join('');
+}
+function initHoldingsRank(){
+  const toggle=document.getElementById('rankToggle');
+  if(!toggle) return;
+  toggle.addEventListener('click', e=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    const mode=btn.dataset.r;
+    if(mode===RANK_MODE) return;
+    RANK_MODE=mode;
+    toggle.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b===btn));
+    renderHoldingsRank();
+  });
+}
 
 /* ── HOLDINGS.costKRW를 거래이력(TXL) 재생값으로 동기화 ───────────────────────
    각 종목의 costKRW는 원래 손으로 적어 넣은 고정값이었는데, TXL과 어긋나 있었다
@@ -2699,6 +2829,67 @@ const GOAL_KEY='goal_amount_v1';
 let GOAL_AMOUNT=100000000; // 기본값 1억원, 최초 로드 시 저장된 값 있으면 덮어씀
 async function loadGoalAmount(){
   try{ const r=await STORE.get(GOAL_KEY); if(r&&r.value){ const n=Number(r.value); if(n>0) GOAL_AMOUNT=n; } }catch(e){}
+}
+/* ===== 목표 도달 시뮬레이터 — renderGoalProgress()와 동일한 "최근 90일 평균 페이스"로
+   실제 자산(최근 90일)과 예상 궤적(미래, 목표선 도달까지)을 하나의 그래프로 보여준다. */
+function renderGoalSimulator(){
+  const chartEl=document.getElementById('simChart'), resultEl=document.getElementById('simResult');
+  if(!chartEl || typeof AS==='undefined' || AS.length<=90 || typeof GOAL_AMOUNT==='undefined') return;
+  const total=grandTotal();
+  const recentStart=AS.length-91;
+  const a=AS[recentStart];
+  if(a==null){ chartEl.innerHTML=''; if(resultEl) resultEl.textContent='데이터가 아직 부족합니다'; return; }
+  const dailyPace=(total-a)/90;
+
+  // 실제 구간(최근 90일, x:0~104) — null인 날은 건너뛰고 있는 값만 표시
+  const realPts=[];
+  for(let i=recentStart;i<AS.length;i++){
+    if(AS[i]==null) continue;
+    const x=(i-recentStart)/90*104;
+    realPts.push([x, AS[i]]);
+  }
+  if(realPts.length<2){ chartEl.innerHTML=''; if(resultEl) resultEl.textContent='데이터가 아직 부족합니다'; return; }
+
+  const remain=GOAL_AMOUNT-total;
+  let daysToGoal=null;
+  if(remain<=0){ daysToGoal=0; }
+  else if(dailyPace>0){ daysToGoal=Math.ceil(remain/dailyPace); }
+
+  // 예상 구간(x:104~200) — daysToGoal이 있으면 그 시점까지, 없으면(정체/하락 페이스) 그냥 평행선
+  const FUTURE_X_SPAN=96; // 104~200
+  const projDaysWindow = daysToGoal!=null ? Math.min(daysToGoal, 3650) : 90; // 상한
+  const projEndVal = dailyPace>0 ? total+dailyPace*projDaysWindow : total;
+  const projPts=[[104, total], [104+FUTURE_X_SPAN, projEndVal]];
+
+  const allVals=realPts.map(p=>p[1]).concat(projPts.map(p=>p[1])).concat([GOAL_AMOUNT]);
+  const maxV=Math.max(...allVals), minV=Math.min(...allVals, GOAL_AMOUNT*0.7);
+  const range=Math.max(1, maxV-minV);
+  const yOf=v=>80-((v-minV)/range)*70; // 상단여백10, 하단여백10(전체 90 중)
+
+  const realPath=realPts.map(([x,v])=>`${x.toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
+  const projPath=projPts.map(([x,v])=>`${x.toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
+  const goalY=yOf(GOAL_AMOUNT).toFixed(1);
+
+  chartEl.innerHTML=`
+    <line x1="0" y1="${goalY}" x2="200" y2="${goalY}" stroke="var(--brass)" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <polyline points="${realPath}" fill="none" stroke="var(--stamp-red)" stroke-width="2.5"/>
+    <polyline points="${projPath}" fill="none" stroke="var(--stamp-red)" stroke-width="2" stroke-dasharray="4 3" opacity=".6"/>
+    <circle cx="104" cy="${yOf(total).toFixed(1)}" r="3" fill="var(--stamp-red)"/>
+    <text x="106" y="${(yOf(total)-4).toFixed(1)}" font-size="7" fill="var(--ink-soft)">오늘</text>
+  `;
+
+  if(resultEl){
+    if(remain<=0){
+      resultEl.innerHTML=`이미 목표를 달성했어요! <b>+${won(-remain)}</b>`;
+    } else if(dailyPace<=0){
+      resultEl.innerHTML=`최근 90일 페이스로는 <b>목표 도달 예측이 어려워요</b>(자산이 늘지 않는 추세)`;
+    } else if(daysToGoal!=null && daysToGoal<3650){
+      const target=new Date(plDateForIndex(AS.length-1)); target.setDate(target.getDate()+daysToGoal);
+      resultEl.innerHTML=`이 페이스라면 <b>${target.getFullYear()}년 ${target.getMonth()+1}월</b> 목표 도달 예상`;
+    } else {
+      resultEl.innerHTML=`이 페이스라면 도달까지 <b>10년 이상</b> 걸릴 것으로 예상돼요`;
+    }
+  }
 }
 function renderGoalProgress(total){
   const pctEl=document.getElementById('goalPctBtn'), fillEl=document.getElementById('goalBarFill'),
@@ -3477,6 +3668,46 @@ function renderTables(){
 
 const DX_TARGET={stock:60, cashLo:8, cashHi:10, pltr:10};
 /* ===== 목표 vs 실제 비중 레이더 차트 (계좌 단위: 해외주식/ISA/연금저축/현금) ===== */
+/* ===== 리밸런싱 얼럿 배너(홈) — 계좌 단위 목표비중과 5%p 이상 벌어지면만 표시 =====
+   renderAllocRadar()와 동일한 계좌 단위 카테고리(해외주식/ISA/연금저축/현금)를 재사용해서
+   일관성을 유지한다. 가장 크게 벌어진 항목 하나만 배너에 표시(여러 개면 제일 급한 것 우선). */
+const REBAL_ALERT_THRESHOLD=5; // %p
+function renderRebalAlert(){
+  const banner=document.getElementById('rebalAlertBanner');
+  if(!banner || typeof grandTotal!=='function') return;
+  try{
+    const total=grandTotal();
+    if(!(total>0)) { banner.style.display='none'; return; }
+    const t=acctTotals();
+    const cash=cashKRW()+ISA_CASH;
+    const stockTarget=Math.max(0, 100-REBAL_DEF.ISA-REBAL_DEF.PENSION-REBAL_DEF.CASH);
+    const cats=[
+      {label:'해외주식', actual:t.overseas.ev/total*100, target:stockTarget},
+      {label:'ISA', actual:t.isa.ev/total*100, target:REBAL_DEF.ISA},
+      {label:'연금저축', actual:t.pension.ev/total*100, target:REBAL_DEF.PENSION},
+      {label:'현금', actual:cash/total*100, target:REBAL_DEF.CASH},
+    ];
+    let worst=null;
+    cats.forEach(c=>{
+      const gap=c.actual-c.target;
+      if(!worst || Math.abs(gap)>Math.abs(worst.gap)) worst={...c, gap};
+    });
+    if(!worst || Math.abs(worst.gap)<REBAL_ALERT_THRESHOLD){ banner.style.display='none'; return; }
+    const titleEl=document.getElementById('rebalAlertTitle'), subEl=document.getElementById('rebalAlertSub');
+    const dir = worst.gap>0 ? '높아요' : '낮아요';
+    if(titleEl) titleEl.textContent=`${worst.label} 비중이 목표보다 ${Math.abs(worst.gap).toFixed(1)}%p ${dir}`;
+    if(subEl) subEl.textContent=`지금 ${worst.actual.toFixed(1)}% · 목표 ${worst.target.toFixed(1)}% — 탭해서 리밸런싱 확인`;
+    banner.style.display='flex';
+  }catch(e){ banner.style.display='none'; }
+}
+function initRebalAlert(){
+  const banner=document.getElementById('rebalAlertBanner');
+  if(!banner) return;
+  banner.addEventListener('click', ()=>{
+    const tab=document.querySelector('.tab-btn[data-tab="rebal"]');
+    if(tab) tab.click();
+  });
+}
 function renderAllocRadar(){
   const wrap=document.getElementById('dxRadarWrap');
   if(!wrap) return;
@@ -3745,6 +3976,51 @@ function initPnlTabs(){
 /* ===== 주간 리포트 공유 카드 ===== */
 /* ===== 주간 리포트(목표카드 하단 통합) — 이번 주는 롤링 7일이 아니라 "월요일~금요일" 기준 =====
    평일 중이면 이번 주 월요일부터 오늘까지, 주말이면 방금 끝난 주의 월~금 전체를 보여준다. */
+/* ===== 환율 영향 분석(이번 달) — 달러 자산의 평가액 변화를 "주가" vs "환율" 요인으로 분해 =====
+   기간 시작 시점(월초)부터 계속 보유한 수량만 기준으로 계산해서, 기간 중 신규 매수/매도로
+   인한 원금 유출입이 "손익"으로 잘못 섞여 들어가지 않도록 한다.
+   분해 방식: 가격효과=수량×(종료가-시작가)×시작환율, 환율효과=수량×종료가×(종료환율-시작환율)
+   (표준적인 "가격효과를 옛 환율로 평가" 방식 — 교차항은 환율효과 쪽에 포함됨) */
+function computeFxImpact(){
+  const S=plBuildSeries();
+  const lastIdx=S.evalArr.length-1;
+  const today=plDateForIndex(lastIdx);
+  const monthStart=new Date(today.getFullYear(), today.getMonth(), 1);
+  const startIdx=Math.max(0, plIndexForDate(monthStart));
+  const dStart=plDateForIndex(startIdx), dEnd=today;
+  const fx0=fxAt(dStart), fx1=fxAt(dEnd);
+  let priceEffect=0, fxEffect=0;
+  HOLDINGS.forEach(h=>{
+    const st0=stateAt(h.ticker, dStart);
+    if(st0.shares<=0) return; // 월초에 아직 없던(월중 신규매수) 종목은 제외
+    const px0=priceAtReal(h.ticker, dStart), px1=priceAtReal(h.ticker, dEnd);
+    if(h.cur==='USD'){
+      priceEffect += st0.shares*(px1-px0)*fx0;
+      fxEffect += st0.shares*px1*(fx1-fx0);
+    } else {
+      priceEffect += st0.shares*(px1-px0);
+    }
+  });
+  return {priceEffect, fxEffect, total:priceEffect+fxEffect};
+}
+function renderFxImpact(){
+  const totalLine=document.getElementById('fxTotalLine'), bar=document.getElementById('fxSplitBar'), legend=document.getElementById('fxLegend');
+  if(!totalLine || typeof AS==='undefined' || !AS.length) return;
+  let r;
+  try{ r=computeFxImpact(); }catch(e){ return; }
+  const {priceEffect, fxEffect, total}=r;
+  const cls=clsOf(total);
+  totalLine.innerHTML=`이번 달 손익 <b style="color:${cls==='up'?'var(--stamp-red)':cls==='down'?'var(--stamp-blue)':'var(--ink-soft)'};">${total>=0?'+':''}${won(total)}</b> 중`;
+  const absP=Math.abs(priceEffect), absF=Math.abs(fxEffect), sum=absP+absF;
+  if(sum<1){ bar.innerHTML=''; legend.innerHTML='<span style="color:var(--ink-soft);">이번 달 데이터가 아직 부족합니다</span>'; return; }
+  const pPct=absP/sum*100, fPct=absF/sum*100;
+  bar.innerHTML=`
+    <div class="fx-split-item" style="width:${pPct.toFixed(1)}%; background:${priceEffect>=0?'var(--stamp-red)':'var(--stamp-blue)'};">주가 ${pPct.toFixed(0)}%</div>
+    <div class="fx-split-item" style="width:${fPct.toFixed(1)}%; background:${fxEffect>=0?'#e8b64a':'#6b8cae'};">환율 ${fPct.toFixed(0)}%</div>
+  `;
+  legend.innerHTML=`<span>주가 <b>${priceEffect>=0?'+':''}${won(priceEffect)}</b></span><span>환율 <b>${fxEffect>=0?'+':''}${won(fxEffect)}</b></span>`;
+}
+
 function getWeekRangeMonFri(today){
   const dow=today.getDay(); // 0=일 ... 6=토
   const monday=new Date(today);
@@ -3784,6 +4060,72 @@ function animateWkHero(to, cls, pctText){
 
 let WK_DAYS=[]; // 이번 주 요일별 데이터 캐시(탭 인터랙션에서 재사용)
 let WK_SELECTED=null; // 선택된 요일 인덱스(null=주 전체)
+
+/* ===== 주간 리포트 이미지로 공유 — 순수 캔버스 드로잉(외부 라이브러리 없음) =====
+   현재 화면에 표시된 값을 그대로 읽어서 그리므로, 특정 요일을 탭해서 선택한 상태에서
+   공유하면 그 요일 기준으로, 아무것도 안 눌렀으면 주 전체 기준으로 이미지가 만들어진다. */
+function shareWeeklyImage(){
+  try{
+    const dateRange=(document.getElementById('wkDateRange')||{}).textContent||'';
+    const heroLbl=(document.getElementById('wkHeroLbl')||{}).textContent||'';
+    const heroNumEl=document.getElementById('wkHeroNum');
+    const heroNum=heroNumEl?heroNumEl.textContent:'';
+    const heroPct=(document.getElementById('wkHeroPct')||{}).textContent||'';
+    const isDown=heroNumEl && heroNumEl.classList.contains('down');
+    const numColor = isDown ? '#8fc0ff' : '#ff8a7a';
+
+    const canvas=document.createElement('canvas');
+    const W=750, H=500;
+    canvas.width=W; canvas.height=H;
+    const ctx=canvas.getContext('2d');
+    if(!ctx) return;
+
+    const grad=ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,'#1a1a2e'); grad.addColorStop(1,'#16213e');
+    ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+
+    ctx.fillStyle='rgba(255,255,255,.75)';
+    ctx.font='700 26px -apple-system, "Noto Sans KR", sans-serif';
+    ctx.fillText('주간 리포트', 50, 80);
+
+    ctx.fillStyle='rgba(255,255,255,.5)';
+    ctx.font='400 18px -apple-system, "Noto Sans KR", sans-serif';
+    ctx.fillText(dateRange, 50, 112);
+
+    ctx.fillStyle='rgba(255,255,255,.65)';
+    ctx.font='400 18px -apple-system, "Noto Sans KR", sans-serif';
+    ctx.fillText(heroLbl, 50, 200);
+
+    ctx.fillStyle=numColor;
+    ctx.font='800 64px -apple-system, sans-serif';
+    ctx.fillText(heroNum, 50, 280);
+
+    ctx.fillStyle=numColor;
+    ctx.font='700 26px -apple-system, sans-serif';
+    ctx.fillText(heroPct, 50, 322);
+
+    ctx.fillStyle='rgba(255,255,255,.3)';
+    ctx.font='400 15px -apple-system, "Noto Sans KR", sans-serif';
+    ctx.fillText('자산 포트폴리오 통장', 50, H-40);
+
+    canvas.toBlob(blob=>{
+      if(!blob) return;
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='주간리포트_'+dateRange.replace(/[.\s~]/g,'')+'.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    });
+  }catch(e){ console.warn('주간 리포트 이미지 생성 실패', e); }
+}
+function initWeeklyShare(){
+  const btn=document.getElementById('wkShareBtn');
+  if(!btn) return;
+  btn.addEventListener('click', shareWeeklyImage);
+}
 
 function renderWeeklyReport(){
   const rangeEl=document.getElementById('wkDateRange'), daysEl=document.getElementById('wk2Days');
@@ -4058,11 +4400,46 @@ let HUB_TAB='profit';
 function hubIcon(path){
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
 }
-function hubCard(bg, color, iconPath, lbl, val, sub){
+/* 온보딩 툴팁 — 어려운 용어 옆에 물음표를 달아서 탭하면 짧은 설명이 뜸 */
+const HUB_TERMS={
+  cagr:'누적 수익률을 매년 복리로 얼마씩 불어났는지로 환산한 값이에요. 예를 들어 5년간 총 50% 벌었다면, 연평균 약 8.4%씩 불어난 셈이에요.',
+  mdd:'역대 최고 자산가치 대비 가장 크게 떨어졌던 폭이에요. "최악의 순간에 얼마나 아플 수 있는지"를 보여주는 지표예요.',
+  vol:'최근 자산가치가 하루하루 얼마나 출렁였는지를 1년 단위로 환산한 값이에요. 숫자가 클수록 등락이 심한 편이라는 뜻이에요.',
+  pnlratio:'상승한 날의 평균 증가폭을 하락한 날의 평균 감소폭으로 나눈 값이에요. 1보다 크면 "오를 때 더 크게 오르는" 편이라는 뜻이에요.',
+  riskgrade:'최근 변동성을 기준으로 안정형(15%↓)·중립형(15~30%)·공격형(30%↑)으로 나눈 자체 분류예요. 공식적인 투자성향 진단은 아니에요.',
+};
+function hubCard(bg, color, iconPath, lbl, val, sub, tipKey){
+  const tipBtn = tipKey ? `<button type="button" class="hub-tip-btn" data-tip="${tipKey}">?</button>` : '';
   return `<div class="hub-card">
     <div class="hub-ic" style="background:${bg}; color:${color};">${hubIcon(iconPath)}</div>
-    <div class="hub-lbl">${lbl}</div><div class="hub-val">${val}</div><div class="hub-sub">${sub}</div>
+    <div class="hub-lbl-row"><div class="hub-lbl">${lbl}</div>${tipBtn}</div><div class="hub-val">${val}</div><div class="hub-sub">${sub}</div>
   </div>`;
+}
+function showHubTip(term, anchorBtn){
+  const popup=document.getElementById('hubTipPopup'), overlay=document.getElementById('hubTipOverlay');
+  if(!popup || !overlay || !HUB_TERMS[term]) return;
+  popup.textContent=HUB_TERMS[term];
+  popup.classList.add('on'); overlay.classList.add('on');
+  const rect=anchorBtn.getBoundingClientRect();
+  const vw=(typeof innerWidth!=='undefined')?innerWidth:390;
+  let left=rect.left-100;
+  if(left<10) left=10;
+  if(left+250>vw-10) left=vw-260;
+  popup.style.left=left+'px';
+  popup.style.top=(rect.bottom+8)+'px';
+}
+function hideHubTip(){
+  const popup=document.getElementById('hubTipPopup'), overlay=document.getElementById('hubTipOverlay');
+  if(popup) popup.classList.remove('on');
+  if(overlay) overlay.classList.remove('on');
+}
+function initHubTooltips(){
+  const overlay=document.getElementById('hubTipOverlay');
+  document.addEventListener('click', e=>{
+    const btn=e.target.closest('.hub-tip-btn');
+    if(btn){ e.stopPropagation(); showHubTip(btn.dataset.tip, btn); return; }
+    hideHubTip();
+  });
 }
 function funCard(grad, emoji, lbl, val, sub, extraHtml){
   return `<div class="fun-card" style="background:${grad};">
@@ -4142,7 +4519,7 @@ function hubProfitCards(){
   const avgRealized=sellCount ? realizedTotal/sellCount : 0;
 
   return [
-    hubCard('rgba(212,175,55,.1)','var(--brass)','<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>','연평균(CAGR)',sign(cagr),'경과 연수로 복리 환산'),
+    hubCard('rgba(212,175,55,.1)','var(--brass)','<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>','연평균(CAGR)',sign(cagr),'경과 연수로 복리 환산','cagr'),
     hubCard('rgba(255,111,94,.14)','var(--stamp-red)','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>','최고치 대비',sign(athGap),'역대 최고 자산 대비 현재'),
     hubCard('rgba(107,70,193,.1)','#6b46c1','<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/>','역대 자산일 순위',rank+'위','지금까지 중 몇 번째 좋은 날'),
     hubCard('rgba(21,128,61,.1)','#15803d','<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>','원금 대비 배수',ratio.toFixed(2)+'배','투자원금이 몇 배가 됐는지'),
@@ -4219,13 +4596,13 @@ function hubRiskCards(){
   const worstStreakLoss=D.maxDownLoss;
 
   return [
-    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M2 12c2-4 4 4 6 0s4-4 6 0 4 4 6 0"/>','변동성(연환산)',R.vol.toFixed(1)+'%','최근 90일 일별수익률 기준'),
-    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M22 17l-10-10-4 4L2 5"/><path d="M16 17h6v-6"/>','최대 낙폭(MDD)',R.mdd.toFixed(1)+'%','누적 최고치 대비 최대 하락'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M2 12c2-4 4 4 6 0s4-4 6 0 4 4 6 0"/>','변동성(연환산)',R.vol.toFixed(1)+'%','최근 90일 일별수익률 기준','vol'),
+    hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<path d="M22 17l-10-10-4 4L2 5"/><path d="M16 17h6v-6"/>','최대 낙폭(MDD)',R.mdd.toFixed(1)+'%','누적 최고치 대비 최대 하락','mdd'),
     hubCard('rgba(212,175,55,.1)','var(--brass)','<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>','상승일 비율',upRatio.toFixed(1)+'%',`전체 ${totalDays}일 중 ${D.upCount}일 상승`),
     hubCard('rgba(107,70,193,.1)','#6b46c1','<path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>','최근 30일 변동성',vol30.toFixed(1)+'%',vol30<R.vol?'90일 대비 완화':'90일 대비 확대'),
-    hubCard('rgba(21,128,61,.1)','#15803d','<path d="M12 3v18M8 21h8M5 7l7-4 7 4M5 7l-3 6a3 3 0 0 0 6 0L5 7zM19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/>','손익비',pnlRatio?pnlRatio.toFixed(2)+'배':'—','상승일 평균폭 ÷ 하락일 평균폭'),
+    hubCard('rgba(21,128,61,.1)','#15803d','<path d="M12 3v18M8 21h8M5 7l7-4 7 4M5 7l-3 6a3 3 0 0 0 6 0L5 7zM19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/>','손익비',pnlRatio?pnlRatio.toFixed(2)+'배':'—','상승일 평균폭 ÷ 하락일 평균폭','pnlratio'),
     hubCard('rgba(44,74,124,.1)','var(--stamp-blue)','<circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/>','최장 하락 손실액',worstStreakLoss!=null?won(worstStreakLoss):'—',worstStreakLoss!=null?'연속 하락 구간 최대 누적손실':'⟳ 새로고침 후 표시'),
-    hubCard('rgba(255,159,10,.14)','#ff9f0a','<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','리스크 등급',grade,gradeSub+' 기준 자체 분류'),
+    hubCard('rgba(255,159,10,.14)','#ff9f0a','<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','리스크 등급',grade,gradeSub+' 기준 자체 분류','riskgrade'),
     hubCard('rgba(0,102,204,.1)','#0066cc','<polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/>','상승일 평균폭',won(D.upAvg),'상승한 날의 평균 증가액'),
   ];
 }
@@ -5518,7 +5895,7 @@ function renderAll(){
   renderCover(); renderIndices(); renderIndexCompare(); renderFX(); renderTicker();
   renderDailyPnl(); renderCurrency(); renderWeeklyReport();
   renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat();
-  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar(); renderRiskMetrics();
+  renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar(); renderRiskMetrics(); renderHoldingsRank(); renderFxImpact(); renderRebalAlert(); renderGoalSimulator();
   const ts=document.getElementById('taxSel'); if(ts && ts.options.length) computeTax();
   const wf=document.getElementById('wfSel'); if(wf && wf.options.length) computeWhatif();
 }
@@ -7068,6 +7445,10 @@ initCalendarInteractions();
 initCoverCarousel();
 initWeeklyInsightCarousel();
 initInsightHub();
+initHoldingsRank();
+initHubTooltips();
+initRebalAlert();
+initWeeklyShare();
 initLongPress();
 renderAll();
 initTax();
