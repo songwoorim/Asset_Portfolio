@@ -4149,8 +4149,13 @@ function renderWeeklyReport(){
     return;
   }
   const unreal=i=>S.evalArr[i]-S.costArr[i];
-  const weekTotal=unreal(endIdx)-unreal(startIdx);
-  const weekBase=S.evalArr[startIdx];
+  /* "이번 주 변화"는 요일 칩(월~금)이 전부 더해져서 정확히 이 숫자가 되도록,
+     월요일과 똑같은 기준(지난주 마지막 거래일=금요일)부터 계산한다.
+     예전엔 startIdx(월요일 자체 값) 기준이라, 월요일 칩만 "지난주 금요일 대비"로 따로 계산되어
+     화~금 칩을 다 더해도 히어로 숫자와 맞고 월요일까지 더하면 안 맞는 불일치가 있었음. */
+  const prevTradingIdx=Math.max(0, startIdx-1);
+  const weekTotal=unreal(endIdx)-unreal(prevTradingIdx);
+  const weekBase=S.evalArr[prevTradingIdx];
   const weekPct=weekBase>0 ? weekTotal/weekBase*100 : 0;
 
   // 요일별(월~금) 일일 손익 계산 — 데이터 없는 미래 요일은 null로 표시
@@ -4194,13 +4199,14 @@ function renderWeeklyReport(){
     return {tk:h.ticker, pct, held: st0.shares>0 || st1.shares>0};
   }).filter(r=>r.held).sort((a,b)=>b.pct-a.pct);
 
-  // 지난주(같은 로직으로 한 주 전) 대비
+  // 지난주(같은 로직으로 한 주 전) 대비 — 이번 주와 동일하게 "그 전전주 금요일→그 주 금요일" 기준
   let prevWeekTotal=null;
   const prevMonday=new Date(monday); prevMonday.setDate(monday.getDate()-7);
   const prevFriday=new Date(monday); prevFriday.setDate(monday.getDate()-3);
   const prevStartIdx=plIndexForDate(prevMonday), prevEndIdx=plIndexForDate(prevFriday);
   if(prevStartIdx>=0 && prevEndIdx>=prevStartIdx && prevEndIdx<=lastIdx){
-    prevWeekTotal=unreal(prevEndIdx)-unreal(prevStartIdx);
+    const prevPrevTradingIdx=Math.max(0, prevStartIdx-1);
+    prevWeekTotal=unreal(prevEndIdx)-unreal(prevPrevTradingIdx);
   }
 
   const upDays=WK_DAYS.filter(d=>d.has && d.v>0.0001).length;
