@@ -1,3 +1,19 @@
+## 최근 업데이트 (2026-09-21) ②
+**리밸런싱 경고 배너에 닫기(X) 버튼 추가**
+- 배너 오른쪽에 작은 X 버튼 추가 — 누르면 그 자리에서 즉시 닫히고(탭 이동 없음, `stopPropagation`), 다시 새로고침해도 "같은 상태"일 동안엔 재노출되지 않음.
+- "같은 상태" 판정: 가장 벌어진 항목명 + 반올림한 gap(%p)을 키로 `localStorage`에 저장. 비중이 더 벌어지거나 좁혀져서 gap이 1%p라도 바뀌면 자동으로 다시 나타남.
+- 언제든 하단 "리밸런싱" 탭에서 수동으로 전체 현황을 다시 확인 가능 (닫기 상태와 무관).
+- 구현: `#rebalAlertCloseBtn` 버튼, `renderRebalAlert()`의 `dismissKey`/`localStorage.rebalAlertDismissed` 체크, `.alert-close-btn` CSS.
+
+## 최근 업데이트 (2026-09-21)
+**잔액 가리기(총자산 프라이버시 토글) 기능 추가**
+- 홈 커버 카드 상단(TOTAL 버튼 왼쪽)에 눈 아이콘 버튼 추가 — 탭하면 큰 총자산 숫자가 "잔액보기" 텍스트로 바뀌고, 다시 탭하면 금액이 롤링 애니메이션과 함께 복귀.
+- "1년 전보다 +N%" 등락률 문구는 계속 항상 표시 (가려지지 않음).
+- 상태는 `localStorage`에 저장되어 새로고침해도 유지됨.
+- 구현: `#balanceEyeBtn` 버튼, `setBalanceHidden()`/`initBalanceEyeBtn()` 함수, `.balance-eye-btn`/`.cover-total-value.masked` CSS.
+
+---
+
 # 자산 포트폴리오 통장 (Asset Portfolio)
 
 개인용 투자 포트폴리오 대시보드. 단일 HTML 파일 하나(`index.html`)로 완결되며 GitHub Pages로 호스팅됩니다.
