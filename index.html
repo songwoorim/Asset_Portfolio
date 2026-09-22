@@ -341,7 +341,8 @@
   .pl-ctable thead{ position:sticky; top:0; background:var(--card2, var(--card)); z-index:2; }
   .pl-ctable thead th{ text-align:right; font-size:9px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.02em; padding:0 6px 8px; white-space:nowrap; }
   .pl-ctable thead th:first-child{ text-align:left; width:17%; }
-  .pl-ctable thead th:last-child{ color:var(--ink); }
+  .pl-ctable thead th:last-child{ color:var(--ink); white-space:normal; }
+  .pl-th-note{ display:block; font-size:8px; font-weight:600; opacity:.6; letter-spacing:0; text-transform:none; margin-top:1px; }
   .pl-ctable tbody tr{ transition:background .12s; cursor:default; }
   .pl-ctable tbody tr:hover{ background:var(--paper); }
   .pl-ctable tbody td{ padding:12px 6px; border-top:1px solid rgba(120,120,128,.08); vertical-align:middle; white-space:nowrap; overflow:hidden; }
@@ -1824,7 +1825,7 @@
       <div class="tr-stat-table" id="trStatTable"></div>
     </div>
 
-    <div class="tr-legend"><span class="a"><i></i>평가액</span><span class="c"><i></i>원금</span></div>
+    <div class="tr-legend"><span class="a"><i></i>평가액(현금제외)</span><span class="c"><i></i>원금</span></div>
     <div class="chart-box" id="trBox"><div class="tip" id="trTip"></div><svg class="chart" id="trSvg" viewBox="0 0 700 200" preserveAspectRatio="none"></svg></div>
     <div class="xaxis" id="trAxis"></div>
     <div class="periods" id="trPeriods">
@@ -1861,7 +1862,7 @@
 
     <div class="pl-scroll">
       <table class="pl-ctable">
-        <thead><tr><th id="plColLabel">일자</th><th>당일</th><th>누적</th><th>평가액</th></tr></thead>
+        <thead><tr><th id="plColLabel">일자</th><th>당일</th><th>누적</th><th>평가액<span class="pl-th-note">(현금제외)</span></th></tr></thead>
         <tbody id="plTbody"></tbody>
       </table>
     </div>
@@ -3478,9 +3479,17 @@ function initStockDonut(){
     document.getElementById('swListScroll').scrollTop=0;
     positionSegPill('swSeg');
   });
-  document.getElementById('swInsightToggle').onclick=()=>{
-    document.getElementById('swInsightWrap').classList.toggle('closed');
-    document.getElementById('swInsightToggle').classList.toggle('closed');
+  const swWrapEl=document.getElementById('swInsightWrap'), swToggleEl=document.getElementById('swInsightToggle');
+  // 종목별 보유비중 인사이트 접힘 상태를 localStorage에 저장 — 새로고침해도 유지되도록
+  let swInsightClosed=false;
+  try{ swInsightClosed = localStorage.getItem('swInsightClosed')==='1'; }catch(e){}
+  swWrapEl.classList.toggle('closed', swInsightClosed);
+  swToggleEl.classList.toggle('closed', swInsightClosed);
+  swToggleEl.onclick=()=>{
+    swInsightClosed=!swInsightClosed;
+    swWrapEl.classList.toggle('closed', swInsightClosed);
+    swToggleEl.classList.toggle('closed', swInsightClosed);
+    try{ localStorage.setItem('swInsightClosed', swInsightClosed?'1':'0'); }catch(e){}
   };
 }
 
@@ -3621,13 +3630,14 @@ function renderTables(){
       } else {
         priceRow=`<div class="hcard-empty">실시간 갱신 시 현재가 표시</div>`;
       }
+      const hPnl=h.ev-h.costKRW;
       body+=`<div class="hcard-swipe-wrap">
         <div class="hcard-swipe-action" data-goto-tk="${h.ticker}"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg><span>계산기</span></div>
         <div class="hcard clickable" data-tk="${h.ticker}">
           <div class="hcard-top">
             ${hcardAvatar(h.ticker)}
             <div class="hcard-nm">${h.nameKr}<span>${h.ticker} · ${h.shares}주</span></div>
-            <div class="hcard-ev">${won(h.ev)}<span class="${clsOf(h.r)}">${sign(h.r)}</span></div>
+            <div class="hcard-ev">${won(h.ev)}<span class="${clsOf(h.r)}">${hPnl>=0?'+':''}${won(hPnl)} (${sign(h.r)})</span></div>
           </div>
           <div class="hcard-bottom">${priceRow}</div>
         </div>
@@ -4216,7 +4226,11 @@ function renderWeeklyReport(){
   const friday=new Date(monday); friday.setDate(monday.getDate()+4);
   rangeEl.textContent=`${fmtFull(monday)} ~ ${fmtFull(friday)}`;
 
-  if(endIdx<=startIdx){
+  /* endIdx===startIdx는 "이번 주 월요일=오늘"인 정상 상황(한 주의 첫 거래일)이라
+     월요일 하루치 변화를 보여줘야 하는데, 예전엔 <=라서 이 경우까지 "데이터 없음"으로
+     잘못 처리되어 매주 월요일마다 카드가 통째로 비어 보이는 버그가 있었다.
+     진짜 데이터가 없는 경우(주말 등, monday 이전으로 clamp된 경우)만 endIdx<startIdx로 걸러진다. */
+  if(endIdx<startIdx){
     animateWkHero(0,'flat','0.0%');
     document.getElementById('wkHeroLbl').textContent='이번 주 데이터가 아직 없어요';
     daysEl.innerHTML='';
@@ -4224,6 +4238,7 @@ function renderWeeklyReport(){
     if(g1) g1.innerHTML=''; if(g2) g2.innerHTML='';
     return;
   }
+  document.getElementById('wkHeroLbl').textContent='이번 주 포트폴리오 변화';
   const unreal=i=>S.evalArr[i]-S.costArr[i];
   /* "이번 주 변화"는 요일 칩(월~금)이 전부 더해져서 정확히 이 숫자가 되도록,
      월요일과 똑같은 기준(지난주 마지막 거래일=금요일)부터 계산한다.
@@ -6084,19 +6099,39 @@ function initHcardGestures(container){
   container.querySelectorAll('.hcard-swipe-wrap').forEach(wrap=>{
     const card=wrap.querySelector('.hcard'), action=wrap.querySelector('.hcard-swipe-action');
     if(!card || !action) return;
-    let startX=0, curX=0, dragging=false, openX=0;
+    /* 세로 스크롤과 가로 스와이프를 구분하는 "방향 락". 예전엔 손가락이 조금만 대각선으로
+       움직여도(스크롤하려고 살짝 기울어진 터치 포함) 그 x축 변화량만큼 카드가 밀려서,
+       화면을 스크롤할 때마다 계산기 버튼이 잠깐씩 겹쳐 보이는 문제가 있었다.
+       이제 처음 6px 정도 움직일 때까지는 방향을 정하지 않고 지켜보다가, 가로(dx)가
+       세로(dy)보다 뚜렷하게 크면 그때만 스와이프로 확정하고, 세로가 더 크면(=스크롤 의도)
+       그 터치는 스와이프를 아예 취소해서 카드가 절대 밀리지 않도록 한다. */
+    let startX=0, startY=0, curX=0, dragging=false, openX=0, lockDir=null;
     const setX=x=>{ card.style.transform=`translateX(${x}px)`; };
-    const start=x=>{ startX=x; dragging=true; card.style.transition='none'; };
-    const move=x=>{ if(!dragging) return; curX=Math.max(-78, Math.min(0, x-startX+openX)); setX(curX); };
-    const end=()=>{
-      if(!dragging) return; dragging=false;
-      card.style.transition='transform .25s cubic-bezier(.22,1,.36,1)';
-      openX = curX < -38 ? -78 : 0;
-      setX(openX);
+    const start=(x,y)=>{ startX=x; startY=y; dragging=true; lockDir=null; card.style.transition='none'; };
+    const move=(x,y)=>{
+      if(!dragging) return;
+      const dx=x-startX, dy=y-startY;
+      if(lockDir===null){
+        if(Math.abs(dx)<6 && Math.abs(dy)<6) return; // 방향 판정 전 — 아직 스와이프도 스크롤도 아님
+        lockDir = Math.abs(dx)>Math.abs(dy) ? 'h' : 'v';
+        if(lockDir==='v'){ dragging=false; return; } // 세로 스크롤로 판정 → 이 터치는 스와이프 취소
+      }
+      if(lockDir!=='h') return;
+      curX=Math.max(-78, Math.min(0, dx+openX));
+      setX(curX);
     };
-    card.addEventListener('touchstart', e=>start(e.touches[0].clientX), {passive:true});
-    card.addEventListener('touchmove', e=>move(e.touches[0].clientX), {passive:true});
+    const end=()=>{
+      if(lockDir==='h'){
+        card.style.transition='transform .25s cubic-bezier(.22,1,.36,1)';
+        openX = curX < -38 ? -78 : 0;
+        setX(openX);
+      }
+      dragging=false; lockDir=null;
+    };
+    card.addEventListener('touchstart', e=>start(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
+    card.addEventListener('touchmove', e=>move(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
     card.addEventListener('touchend', end);
+    card.addEventListener('touchcancel', end);
     action.onclick=()=>{
       openX=0; setX(0); card.style.transition='transform .2s';
       const tk=action.dataset.gotoTk;
