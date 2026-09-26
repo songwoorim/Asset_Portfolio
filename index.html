@@ -1282,7 +1282,13 @@
   .bm-v{font-family:'Inter',-apple-system,sans-serif; font-size:18px; font-weight:700; margin-top:1px;}
   .bm-legend{display:flex; gap:16px; justify-content:center; margin:8px 0 2px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft);}
   .bm-legend i{display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:6px; vertical-align:2px;}
-  .bm-legend .p i{background:var(--stamp-red);} .bm-legend .b i{background:#7d97c4;}
+  .bm-legend .p i{background:var(--stamp-red);}
+  .bm-legend .b i{background:none; height:0; width:14px; border-top:2.4px dashed var(--ink-soft); vertical-align:4px;}
+  .idx-tabs{display:flex; gap:6px; margin:0 2px 12px;}
+  .idx-tabs button{flex:1; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; padding:8px 2px; border-radius:9999px; border:1px solid var(--line); background:transparent; color:var(--ink-soft); cursor:pointer; transition:.15s;}
+  .idx-tabs button.on{background:var(--stamp-red); border-color:var(--stamp-red); color:#fff;}
+  .idx-tabs button.soon{opacity:.5; cursor:not-allowed;}
+  .idx-tabs button .soon-tag{display:block; font-size:8px; font-weight:700; opacity:.85; margin-top:1px;}
 
   /* review */
   /* 리뷰 히어로 (선택된 카드 내용으로 전환) */
@@ -1375,6 +1381,24 @@
   .tr-legend{display:flex; gap:16px; justify-content:center; margin:14px 0 2px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft);}
   .tr-legend i{display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:6px; vertical-align:2px;}
   .tr-legend .a i{background:var(--stamp-red);} .tr-legend .c i{background:#8a8f98;}
+  .tr-legend .c i.dash{background:none; height:0; width:14px; border-top:2.4px dashed var(--ink-soft); vertical-align:4px;}
+  /* 자산추이 — 리디자인 추가 요소 */
+  .tr-actions{display:flex; gap:8px; margin:0 2px 10px; flex-wrap:wrap;}
+  .tr-action-btn{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; color:var(--ink-soft); background:var(--paper); border:1.5px solid transparent; border-radius:9999px; padding:6px 12px; cursor:pointer; transition:.15s;}
+  .tr-action-btn.on{color:var(--stamp-red); background:rgba(192,57,43,.1); border-color:rgba(192,57,43,.22);}
+  .tr-action-btn.tr-zoom-reset{display:none; color:var(--brass); background:rgba(0,102,204,.1);}
+  .tr-action-btn.tr-zoom-reset.show{display:inline-block;}
+  @keyframes trPulse{ 0%{ r:3; opacity:.5; } 75%{ r:10; opacity:0; } 100%{ r:10; opacity:0; } }
+  .tr-pulse{animation:trPulse 2.2s ease-out infinite;}
+  .tr-chip-scroll{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 4px; margin:0 0 10px; scroll-snap-type:x mandatory; -ms-overflow-style:none; scrollbar-width:none;}
+  .tr-chip-scroll::-webkit-scrollbar{display:none;}
+  .tr-chip-cell{flex:0 0 116px; scroll-snap-align:start; background:var(--paper); border-radius:13px; padding:10px 12px;}
+  .tr-chip-cell .k{font-size:9.5px; color:var(--ink-soft); font-weight:700; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tr-chip-cell .v{font-family:'Inter',-apple-system,sans-serif; font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tr-chip-dots{display:flex; gap:4px; justify-content:center; margin:2px 0 12px;}
+  .tr-chip-dots span{width:5px; height:5px; border-radius:50%; background:var(--line);}
+  .tr-chip-dots span.on{background:var(--brass); width:14px; border-radius:3px;}
+  .tr-mark{cursor:pointer;}
   .chart-box{position:relative; touch-action:pan-y; user-select:none; -webkit-user-select:none; cursor:crosshair;}
   .chart{width:100%; height:200px; display:block; overflow:visible;}
   .grid-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:9px; fill:var(--ink-soft);}
@@ -1817,6 +1841,9 @@
       <div class="story" id="trDelta"></div>
     </div>
 
+    <div class="tr-chip-scroll" id="trChipScroll"></div>
+    <div class="tr-chip-dots" id="trChipDots"></div>
+
     <div class="tr-insight-toggle" id="trInsightToggle">
       <span class="lbl2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>인사이트</span>
       <span class="chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1825,13 +1852,20 @@
       <div class="tr-stat-table" id="trStatTable"></div>
     </div>
 
-    <div class="tr-legend"><span class="a"><i></i>평가액(현금제외)</span><span class="c"><i></i>원금</span></div>
-    <div class="chart-box" id="trBox"><div class="tip" id="trTip"></div><svg class="chart" id="trSvg" viewBox="0 0 700 200" preserveAspectRatio="none"></svg></div>
+    <div class="tr-actions">
+      <button class="tr-action-btn" id="trOverlayBtn">작년 비교보기</button>
+      <button class="tr-action-btn" id="trZoomBtn">🔍 구간 확대</button>
+      <button class="tr-action-btn tr-zoom-reset" id="trZoomResetBtn">전체보기로 리셋</button>
+    </div>
+    <div class="tr-legend"><span class="a"><i></i>평가액(현금제외)</span><span class="c"><i class="dash"></i>원금</span><span class="y" id="trOverlayLegend" style="display:none;"><i class="dash" style="border-color:var(--ink-soft);"></i>작년 동기간</span></div>
+    <div class="chart-box" id="trBox"><div class="tip" id="trTip"></div><div class="tip" id="trMarkerTip"></div><svg class="chart" id="trSvg" viewBox="0 0 700 200" preserveAspectRatio="none"></svg></div>
     <div class="xaxis" id="trAxis"></div>
+    <div class="zoom-hint" id="trZoomHint" style="display:none; text-align:center; font-size:10.5px; color:var(--ink-soft); margin-top:4px;">👆 차트 위에서 드래그해 구간을 선택하세요</div>
     <div class="periods" id="trPeriods">
       <button data-p="ytd">올해</button><button data-p="1m">1달</button><button data-p="6m">6달</button>
       <button data-p="1y" class="on">1년</button><button data-p="5y">5년</button><button data-p="all">전체</button>
     </div>
+    <div class="note" style="border:none; padding:6px 0 0; font-size:9.5px;">차트 위 점은 실제 매수/매도 거래(큰 금액 위주) — 탭하면 상세 내역이 보여요.</div>
     <div class="note">실제 거래 <b>198건</b>(2021.02~현재)으로 재구성 · 회색 계단=원금, 빨간 선=평가액, 간격=평가손익.<br>매수 단가를 가격 앵커로 삼아 복원했으며 최종값 오차는 0.4% 수준입니다. 실시간 갱신 시 오늘 값이 실측치로 대체됩니다.</div>
   </div>
 
@@ -1963,15 +1997,20 @@
     <div class="bm-multi" id="bmMulti"></div>
     <div class="note" style="border:none; padding:2px 0 10px; font-size:10px;">오늘 하루 등락률 비교 · KOSPI는 실시간 조회가 지원되지 않아 최근 스냅샷 기준입니다.</div>
 
+    <div class="idx-tabs" id="idxTabs">
+      <button class="on" data-i="sp500">S&amp;P500</button>
+      <button class="soon" data-i="ndx" title="실측 시계열 데이터 준비 중">나스닥100<span class="soon-tag">준비중</span></button>
+      <button class="soon" data-i="kospi" title="실측 시계열 데이터 준비 중">코스피<span class="soon-tag">준비중</span></button>
+    </div>
     <div class="bm-hero">
       <div><div class="bm-k">내 포트폴리오</div><div class="bm-v up" id="bmP">—</div></div>
-      <div><div class="bm-k">S&amp;P500에 넣었다면</div><div class="bm-v" style="color:#5878a8;" id="bmB">—</div></div>
+      <div><div class="bm-k" id="bmBLbl">S&amp;P500에 넣었다면</div><div class="bm-v" style="color:#5878a8;" id="bmB">—</div></div>
       <div><div class="bm-k">초과성과</div><div class="bm-v up" id="bmD">—</div></div>
     </div>
-    <div class="bm-legend"><span class="p"><i></i>내 포트폴리오</span><span class="b"><i></i>S&amp;P500 (동일 매수)</span></div>
+    <div class="bm-legend"><span class="p"><i></i>내 포트폴리오</span><span class="b"><i class="dash"></i>S&amp;P500 (동일 매수)</span></div>
     <div class="chart-box" id="bmBox"><div class="tip" id="bmTip"></div><svg class="chart" id="bmSvg" viewBox="0 0 700 190" preserveAspectRatio="none"></svg></div>
     <div class="xaxis" id="bmAx"></div>
-    <div class="note"><b>같은 날, 같은 금액</b>을 S&amp;P500(SPYM)에 넣었다면 얼마였을지 시뮬레이션 — 단순 지수 비교보다 정확합니다.<br>기간은 SPYM 첫 매수(2023.06)부터 · 현금 제외 투자자산 기준 · 드래그하면 시점별 격차 확인.</div>
+    <div class="note"><b>같은 날, 같은 금액</b>을 S&amp;P500(SPYM)에 넣었다면 얼마였을지 시뮬레이션 — 단순 지수 비교보다 정확합니다.<br>기간은 SPYM 첫 매수(2023.06)부터 · 현금 제외 투자자산 기준 · 드래그하면 시점별 격차 확인 · 초록/회청 음영은 이기는 구간/지는 구간.<br>나스닥100·코스피는 같은 방식의 실측 시계열을 아직 확보하지 못해 준비중이에요.</div>
   </div>
 
   <div class="perf"></div>
@@ -6325,10 +6364,11 @@ const fmtTD=d=>`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${S
 const fmtTS=d=>`${String(d.getFullYear()%100).padStart(2,'0')}.${d.getMonth()+1}`;
 const Mn=n=>'₩'+(n/1e6).toFixed(0)+'M';
 
-function trScales(){
+function trScales(extra){
   const {a,b}=trRange, n=Math.max(1,b-a);
   let mn=Infinity,mx=-Infinity;
   for(let i=a;i<=b;i++){ const v1=AS[i],v2=CS[i]; if(v1<mn)mn=v1; if(v2<mn)mn=v2; if(v1>mx)mx=v1; if(v2>mx)mx=v2; }
+  if(extra) extra.forEach(v=>{ if(v!=null){ if(v<mn)mn=v; if(v>mx)mx=v; } });
   const p=(mx-mn)*0.12||1; mn-=p; mx+=p;
   return {x:i=>((i-a)/n)*TR.W, y:v=>TR.PT+(TR.H-TR.PT-TR.PB)*(1-(v-mn)/(mx-mn)), mn, mx, a, b};
 }
@@ -6356,19 +6396,32 @@ function animateTrHero(to){
   }
   trHeroRaf=requestAnimationFrame(step);
 }
+/* 부드러운 곡선(Catmull-Rom → Bezier) — 자산추이/벤치마크 공용 */
+function smoothPath(pts){
+  if(pts.length<2) return '';
+  let d=`M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}`;
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[i-1]||pts[i], p1=pts[i], p2=pts[i+1], p3=pts[i+2]||p2;
+    const c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+    const c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+=` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2[0].toFixed(2)},${p2[1].toFixed(2)}`;
+  }
+  return d;
+}
+function isDarkTheme(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
 function trATH(){
   let mi=0, mv=-Infinity;
   for(let i=0;i<AS.length;i++){ if(AS[i]>mv){ mv=AS[i]; mi=i; } }
   return {idx:mi, val:mv};
 }
 function trMDD(a,b){
-  let peak=AS[a], worst=0, worstI=a;
+  let peak=AS[a], worst=0, worstI=a, peakI=a, curPeakI=a;
   for(let i=a;i<=b;i++){
-    if(AS[i]>peak) peak=AS[i];
+    if(AS[i]>peak){ peak=AS[i]; curPeakI=i; }
     const dd = peak ? (AS[i]-peak)/peak*100 : 0;
-    if(dd<worst){ worst=dd; worstI=i; }
+    if(dd<worst){ worst=dd; worstI=i; peakI=curPeakI; }
   }
-  return { pct:worst, idx:worstI, val:AS[worstI] };
+  return { pct:worst, idx:worstI, peakIdx:peakI, val:AS[worstI] };
 }
 function trInvestPeriod(){
   const start=HSTART, end=dateAt(AS.length-1);
@@ -6376,51 +6429,193 @@ function trInvestPeriod(){
   if(m<0){ y--; m+=12; }
   return { startLbl:`${start.getFullYear()}.${String(start.getMonth()+1).padStart(2,'0')}~`, durLbl:`${y}년 ${m}개월` };
 }
+/* 구간 내 일별 등락 기반 추가 통계(변동성/승률/최장 연속상승·하락) — 전부 AS 실측/보간
+   데이터에서 그대로 계산(새 값 조작 없음). 비거래일 보간 구간에선 변동성이 실제보다
+   낮게 잡힐 수 있음(자산추이 하단 안내문과 동일한 한계). */
+function trExtraStats(a,b){
+  let ups=0, tot=0, curUp=0, curDown=0, maxUp=0, maxDown=0;
+  const rets=[];
+  for(let i=a+1;i<=b;i++){
+    tot++;
+    if(AS[i-1]>0) rets.push(AS[i]/AS[i-1]-1);
+    if(AS[i]>AS[i-1]){ ups++; curUp++; curDown=0; }
+    else if(AS[i]<AS[i-1]){ curDown++; curUp=0; }
+    else { curUp=0; curDown=0; }
+    if(curUp>maxUp) maxUp=curUp;
+    if(curDown>maxDown) maxDown=curDown;
+  }
+  let vol=0;
+  if(rets.length>1){
+    const mean=rets.reduce((s,v)=>s+v,0)/rets.length;
+    const varr=rets.reduce((s,v)=>s+(v-mean)*(v-mean),0)/(rets.length-1);
+    vol=Math.sqrt(varr)*Math.sqrt(252)*100;
+  }
+  return { winRate: tot?ups/tot*100:0, maxUp, maxDown, vol };
+}
+/* 거래 마커 — 현재 구간에 걸리는 실제 매수/매도(TXL). 너무 많으면 금액 큰 순으로 14건만. */
+function trMarkersInRange(a,b){
+  if(typeof TXL==='undefined' || !Array.isArray(TXL)) return [];
+  const list=[];
+  TXL.forEach(t=>{
+    const idx=Math.round((new Date(t.d+'T00:00:00')-HSTART)/864e5);
+    if(idx<a || idx>b) return;
+    list.push({ idx, t });
+  });
+  list.sort((x,y)=>Math.abs(y.t.amt)-Math.abs(x.t.amt));
+  const capped=list.slice(0,14);
+  capped.sort((x,y)=>x.idx-y.idx);
+  return capped;
+}
+/* 작년 동기간 오버레이 — 날짜가 아니라 "경과일"(365 인덱스 이전) 기준으로 정렬해 겹침 */
+let trOverlayOn=false;
+function trOverlayAvailable(a,b){ return (a-365)>=0; }
+function trOverlayVals(a,b){ const res=[]; for(let i=a;i<=b;i++) res.push(AS[i-365]); return res; }
+/* 구간 확대(줌) 상태 */
+let trZoomMode=false;
+function trBasePeriodRange(){
+  const last=AS.length-1; let a=0; const p=trPeriod;
+  if(p==='1m') a=last-30; else if(p==='6m') a=last-182; else if(p==='1y') a=last-365;
+  else if(p==='5y') a=last-1825;
+  else if(p==='ytd'){ const y=new Date(dateAt(last).getFullYear(),0,1); a=Math.round((y-HSTART)/864e5); }
+  return {a:Math.max(0,Math.min(a,last-1)), b:last};
+}
+function trUpdateZoomUI(){
+  const btn=document.getElementById('trZoomBtn'), resetBtn=document.getElementById('trZoomResetBtn'), hint=document.getElementById('trZoomHint');
+  if(btn) btn.classList.toggle('on', trZoomMode);
+  if(hint) hint.style.display = trZoomMode? '' : 'none';
+  const base=trBasePeriodRange();
+  const zoomed = trRange.a!==base.a || trRange.b!==base.b;
+  if(resetBtn) resetBtn.classList.toggle('show', zoomed);
+}
 function renderTrend(){
   const svg=document.getElementById('trSvg'); if(!svg) return;
-  const {x,y,mn,mx,a,b}=trScales();
-  let pa='',pc='';
+  let {a,b}=trRange;
+  const overlayAvail = trOverlayOn && trOverlayAvailable(a,b);
+  const ovlVals = overlayAvail ? trOverlayVals(a,b) : null;
+  const {x,y,mn,mx}=trScales(ovlVals);
+  const dark=isDarkTheme();
+  const up='var(--stamp-red)';
+
   const stride=Math.max(1,Math.floor((b-a)/700));
-  for(let i=a;i<=b;i+=stride){ pa+=(pa?'L':'M')+x(i).toFixed(2)+' '+y(AS[i]).toFixed(2)+' '; }
-  pa+='L'+x(b).toFixed(2)+' '+y(AS[b]).toFixed(2);
-  for(let i=a;i<=b;i+=stride){ pc+=(pc?'L':'M')+x(i).toFixed(2)+' '+y(CS[i]).toFixed(2)+' '; }
-  pc+='L'+x(b).toFixed(2)+' '+y(CS[b]).toFixed(2);
-  const area=pa+` L${TR.W} ${TR.H-TR.PB} L0 ${TR.H-TR.PB} Z`;
-  const g1=mn+(mx-mn)*0.85, g2=mn+(mx-mn)*0.15;
+  const idxs=[]; for(let i=a;i<=b;i+=stride) idxs.push(i); if(idxs[idxs.length-1]!==b) idxs.push(b);
+  const asPts=idxs.map(i=>[x(i),y(AS[i])]);
+  const csPts=idxs.map(i=>[x(i),y(CS[i])]);
+  const pa=smoothPath(asPts), pc=smoothPath(csPts);
+  let ovlPath='';
+  if(ovlVals) ovlPath=smoothPath(idxs.map(i=>[x(i),y(ovlVals[i-a])]));
+
+  // 원금 위(수익)/아래(손실) 구간을 세그먼트 단위로 나눠 색을 다르게 채움
+  let gainFill='', lossFill='';
+  for(let k=0;k<idxs.length-1;k++){
+    const i0=idxs[k], i1=idxs[k+1];
+    const poly=`M${x(i0).toFixed(1)} ${y(AS[i0]).toFixed(1)} L${x(i1).toFixed(1)} ${y(AS[i1]).toFixed(1)} L${x(i1).toFixed(1)} ${y(CS[i1]).toFixed(1)} L${x(i0).toFixed(1)} ${y(CS[i0]).toFixed(1)} Z `;
+    if(AS[i0]>=CS[i0]) gainFill+=poly; else lossFill+=poly;
+  }
+
+  const g1=mn+(mx-mn)*0.85, g2=mn+(mx-mn)*0.6, g3=mn+(mx-mn)*0.35, g4=mn+(mx-mn)*0.13;
   const ath=trATH();
   const msInRange = ath.idx>=a && ath.idx<=b;
   const msX=msInRange?x(ath.idx):0, msY=msInRange?y(ath.val):0;
-  svg.innerHTML=`<defs><linearGradient id="trGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#c0392b" stop-opacity="0.22"/>
-      <stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>
-    </linearGradient></defs>
-    <line x1="0" y1="${y(g1).toFixed(1)}" x2="${TR.W}" y2="${y(g1).toFixed(1)}" stroke="var(--line)" stroke-dasharray="3 4"/>
-    <line x1="0" y1="${y(g2).toFixed(1)}" x2="${TR.W}" y2="${y(g2).toFixed(1)}" stroke="var(--line)" stroke-dasharray="3 4"/>
+  const mdd=trMDD(a,b);
+  const mddInRange = mdd.peakIdx<mdd.idx;
+  const marks=trMarkersInRange(a,b);
+
+  svg.innerHTML=`<defs>
+      <filter id="trGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="${dark?3.6:2.2}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <line x1="0" y1="${y(g1).toFixed(1)}" x2="${TR.W}" y2="${y(g1).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="1 5"/>
+    <line x1="0" y1="${y(g2).toFixed(1)}" x2="${TR.W}" y2="${y(g2).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="1 5"/>
+    <line x1="0" y1="${y(g3).toFixed(1)}" x2="${TR.W}" y2="${y(g3).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="1 5"/>
+    <line x1="0" y1="${y(g4).toFixed(1)}" x2="${TR.W}" y2="${y(g4).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="1 5"/>
     <text class="grid-lbl" x="${TR.W-2}" y="${(y(g1)-4).toFixed(1)}" text-anchor="end">${Mn(g1)}</text>
     <text class="grid-lbl" x="${TR.W-2}" y="${(y(g2)-4).toFixed(1)}" text-anchor="end">${Mn(g2)}</text>
-    <path d="${area}" fill="url(#trGrad)"/>
-    <path d="${pc}" fill="none" stroke="#8a8f98" stroke-width="1.6"/>
-    <path d="${pa}" fill="none" stroke="#c0392b" stroke-width="2" stroke-linejoin="round"/>
-    ${msInRange?`<circle cx="${msX.toFixed(1)}" cy="${msY.toFixed(1)}" r="4" fill="#c0392b"/>`:''}
-    <circle cx="${x(b).toFixed(1)}" cy="${y(AS[b]).toFixed(1)}" r="4.5" fill="#c0392b" opacity="0.25"/>
-    <circle cx="${x(b).toFixed(1)}" cy="${y(AS[b]).toFixed(1)}" r="2.8" fill="#c0392b"/>
+    <text class="grid-lbl" x="${TR.W-2}" y="${(y(g3)-4).toFixed(1)}" text-anchor="end">${Mn(g3)}</text>
+    <text class="grid-lbl" x="${TR.W-2}" y="${(y(g4)-4).toFixed(1)}" text-anchor="end">${Mn(g4)}</text>
+    ${mddInRange?`<rect x="${x(mdd.peakIdx).toFixed(1)}" y="${TR.PT}" width="${Math.max(0,x(mdd.idx)-x(mdd.peakIdx)).toFixed(1)}" height="${TR.H-TR.PT-TR.PB}" fill="var(--stamp-blue)" opacity="0.08"/>`:''}
+    <path d="${gainFill}" fill="#22c55e" opacity="${dark?0.16:0.13}"/>
+    <path d="${lossFill}" fill="var(--stamp-blue)" opacity="${dark?0.14:0.10}"/>
+    ${ovlPath?`<path d="${ovlPath}" fill="none" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 6" opacity="0.8"/>`:''}
+    <path id="trPathC" d="${pc}" fill="none" stroke="var(--ink-soft)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="1 6"/>
+    <path id="trPathA" d="${pa}" fill="none" stroke="${up}" stroke-width="${dark?3.2:2.6}" stroke-linejoin="round" stroke-linecap="round" ${dark?'filter="url(#trGlow)"':''}/>
+    ${msInRange?`<circle cx="${msX.toFixed(1)}" cy="${msY.toFixed(1)}" r="4" fill="${up}"/><text x="${Math.min(TR.W-64,Math.max(2,msX-16)).toFixed(1)}" y="${(msY-9).toFixed(1)}" class="grid-lbl" style="font-weight:700; fill:${up}; opacity:1;">★ 최고점</text>`:''}
+    ${marks.map((m,mi)=>`<g class="tr-mark" data-mi="${mi}">
+        <circle cx="${x(m.idx).toFixed(1)}" cy="${y(AS[m.idx]).toFixed(1)}" r="9" fill="var(--brass)" opacity="0.001"/>
+        <circle cx="${x(m.idx).toFixed(1)}" cy="${y(AS[m.idx]).toFixed(1)}" r="6" fill="var(--brass)" opacity="0.16"/>
+        <circle cx="${x(m.idx).toFixed(1)}" cy="${y(AS[m.idx]).toFixed(1)}" r="3.4" fill="var(--brass)" stroke="var(--card)" stroke-width="1.4"/>
+      </g>`).join('')}
+    <circle cx="${x(b).toFixed(1)}" cy="${y(AS[b]).toFixed(1)}" r="6.5" fill="${up}" opacity="0.18"/>
+    <circle class="tr-pulse" cx="${x(b).toFixed(1)}" cy="${y(AS[b]).toFixed(1)}" r="3" fill="none" stroke="${up}" stroke-width="1.5"/>
+    <circle cx="${x(b).toFixed(1)}" cy="${y(AS[b]).toFixed(1)}" r="3.4" fill="${up}" stroke="var(--card)" stroke-width="1.6"/>
     <g id="trScrub" style="display:none">
-      <line id="trLine" y1="${TR.PT-6}" y2="${TR.H-TR.PB}" stroke="#1d1d1f" stroke-width="1"/>
+      <line id="trLine" y1="${TR.PT-6}" y2="${TR.H-TR.PB}" stroke="var(--ink)" stroke-width="1"/>
       <circle id="trDotA" r="4" fill="var(--stamp-red)" stroke="var(--card)" stroke-width="1.5"/>
-      <circle id="trDotC" r="3.5" fill="#8a8f98" stroke="var(--card)" stroke-width="1.5"/>
-    </g>`;
+      <circle id="trDotC" r="3.5" fill="var(--ink-soft)" stroke="var(--card)" stroke-width="1.5"/>
+    </g>
+    <rect id="trZoomSel" x="0" y="0" width="0" height="${TR.H}" fill="var(--brass)" opacity="0.12" style="display:none;"/>`;
+
   const box=document.getElementById('trBox');
+  const mtip=document.getElementById('trMarkerTip');
+  svg.querySelectorAll('.tr-mark').forEach(g=>{
+    const m=marks[+g.dataset.mi]; if(!m) return;
+    const show=()=>{
+      const r=box.getBoundingClientRect(), gr=g.getBoundingClientRect();
+      const t=m.t, qty=Math.abs(t.q), isBuy=t.q>0;
+      const priceStr = t.cur==='USD' ? ('$'+Number(t.p).toFixed(2)) : won(t.p);
+      mtip.innerHTML=`<div class="d">${fmtTD(dateAt(m.idx))} · ${isBuy?'매수':'매도'}</div>
+        <div class="r"><span>${t.n}</span><b>${qty}주 · ${priceStr}</b></div>
+        <div class="r"><span>정산금액</span><b>${won(Math.abs(t.amt))}</b></div>`;
+      mtip.className='tip on';
+      let left=(gr.left-r.left)-40;
+      left=Math.max(2,Math.min(r.width-84,left));
+      mtip.style.left=left+'px';
+      mtip.style.top='28px';
+    };
+    g.addEventListener('mouseenter',show);
+    g.addEventListener('click',e=>{ e.stopPropagation(); show(); });
+  });
+
   let msLbl=box.querySelector('.tr-ms-label');
-  if(msInRange){
-    if(!msLbl){ msLbl=document.createElement('div'); msLbl.className='tr-ms-label'; box.appendChild(msLbl); }
-    msLbl.textContent=`최고점 ${won(ath.val)}`;
-    msLbl.style.left=`${Math.max(0,Math.min(76,(msX/TR.W*100)-12))}%`;
-    msLbl.style.top='2px';
-    msLbl.style.display='';
-  } else if(msLbl){ msLbl.style.display='none'; }
+  if(msLbl) msLbl.style.display='none'; // ★ 텍스트로 대체(중복 라벨 방지)
+
+  const ovlBtn=document.getElementById('trOverlayBtn');
+  if(ovlBtn){
+    const avail=trOverlayAvailable(a,b);
+    if(!avail && trOverlayOn) trOverlayOn=false;
+    ovlBtn.style.opacity=avail?'':'.45';
+    ovlBtn.style.cursor=avail?'':'not-allowed';
+    ovlBtn.classList.toggle('on', trOverlayOn);
+    ovlBtn.textContent = trOverlayOn? '작년 비교 끄기' : '작년 비교보기';
+    const lg=document.getElementById('trOverlayLegend'); if(lg) lg.style.display = trOverlayOn? '' : 'none';
+  }
+
   const ax=document.getElementById('trAxis'); ax.innerHTML='';
-  for(let k=0;k<=4;k++){ const i=Math.round(a+(b-a)/4*k); ax.innerHTML+=`<span>${fmtTS(dateAt(i))}</span>`; }
+  for(let k=0;k<=4;k++){
+    let idx=Math.round(a+(b-a)/4*k);
+    if(k>0 && k<4){
+      const d0=dateAt(idx);
+      const snap=new Date(d0.getFullYear(), d0.getMonth()+(d0.getDate()>15?1:0), 1);
+      const snapIdx=Math.round((snap-HSTART)/864e5);
+      if(snapIdx>=a && snapIdx<=b) idx=snapIdx;
+    }
+    ax.innerHTML+=`<span>${fmtTS(dateAt(idx))}</span>`;
+  }
   trHead();
+  trUpdateZoomUI();
+}
+function trPlayEntrance(){
+  const path=document.getElementById('trPathA'); if(!path) return;
+  try{
+    const len=path.getTotalLength();
+    path.style.transition='none';
+    path.style.strokeDasharray=len;
+    path.style.strokeDashoffset=len;
+    path.getBoundingClientRect();
+    path.style.transition='stroke-dashoffset 1s cubic-bezier(.3,.8,.4,1)';
+    requestAnimationFrame(()=>{ path.style.strokeDashoffset='0'; });
+    setTimeout(()=>{ path.style.strokeDasharray=''; path.style.strokeDashoffset=''; path.style.transition=''; }, 1100);
+  }catch(e){}
 }
 function trHead(i){
   const {a,b}=trRange, idx=(i==null)?b:i;
@@ -6451,8 +6646,35 @@ function trHead(i){
       <div class="pct ${r.pctCls||''}" ${r.pctStyle?`style="${r.pctStyle}"`:''}>${r.pct}</div>
     </div>`).join('');
   }
+
+  // 칩 스와이프 — 기존 표에 없는 새 지표(변동성/승률/연속상승·하락)
+  const chipScroll=document.getElementById('trChipScroll');
+  if(chipScroll){
+    const ex=trExtraStats(a,b);
+    const chips=[
+      {k:'최고점 대비', v:sign(athPct), cls:athCls},
+      {k:'최대낙폭(MDD)', v:mdd.pct.toFixed(1)+'%', cls:'down'},
+      {k:'변동성(연환산)', v:ex.vol.toFixed(1)+'%', cls:''},
+      {k:'상승일 비율', v:ex.winRate.toFixed(0)+'%', cls:''},
+      {k:'최장 연속상승', v:ex.maxUp+'일', cls:'up'},
+      {k:'최장 연속하락', v:ex.maxDown+'일', cls:'down'},
+    ];
+    chipScroll.innerHTML=chips.map(c=>`<div class="tr-chip-cell"><div class="k">${c.k}</div><div class="v ${c.cls}">${c.v}</div></div>`).join('');
+    const dots=document.getElementById('trChipDots');
+    if(dots && !dots.dataset.bound){
+      dots.dataset.bound='1';
+      const per=3, pages=Math.ceil(chips.length/per);
+      dots.innerHTML='';
+      for(let p=0;p<pages;p++){ const s=document.createElement('span'); if(p===0) s.className='on'; dots.appendChild(s); }
+      chipScroll.addEventListener('scroll', ()=>{
+        const page=Math.round(chipScroll.scrollLeft/(chipScroll.clientWidth*0.9||1));
+        dots.querySelectorAll('span').forEach((s,pi)=>s.classList.toggle('on', pi===Math.min(page,pages-1)));
+      });
+    }
+  }
 }
 function trScrub(clientX){
+  if(trZoomMode) return;
   const box=document.getElementById('trBox'), tip=document.getElementById('trTip');
   const r=box.getBoundingClientRect(), {a,b}=trRange;
   let t=(clientX-r.left)/r.width; t=Math.max(0,Math.min(1,t));
@@ -6473,8 +6695,12 @@ function trScrub(clientX){
   tip.style.left=Math.max(62,Math.min(r.width-62,(px/TR.W)*r.width))+'px';
   trHead(i);
 }
-function trEnd(){ const g=document.getElementById('trScrub'); if(g)g.style.display='none';
-  const tip=document.getElementById('trTip'); if(tip)tip.className='tip'; trHead(); }
+function trEnd(){
+  if(trZoomMode) return;
+  const g=document.getElementById('trScrub'); if(g)g.style.display='none';
+  const tip=document.getElementById('trTip'); if(tip)tip.className='tip'; trHead();
+}
+function trZoomLocalX(box, clientX){ const r=box.getBoundingClientRect(); return Math.max(0,Math.min(1,(clientX-r.left)/r.width)); }
 function initTrend(){
   const box=document.getElementById('trBox'); if(!box) return;
   const itg=document.getElementById('trInsightToggle');
@@ -6482,18 +6708,68 @@ function initTrend(){
     document.getElementById('trInsightWrap').classList.toggle('closed');
     itg.classList.toggle('closed');
   };
-  box.addEventListener('pointerdown',e=>{ box.setPointerCapture(e.pointerId); trScrub(e.clientX); });
-  box.addEventListener('pointermove',e=>{ if(e.buttons===1) trScrub(e.clientX); });
-  box.addEventListener('pointerup',trEnd); box.addEventListener('pointercancel',trEnd); box.addEventListener('pointerleave',trEnd);
-  box.addEventListener('mousemove',e=>{ if(e.buttons===0) trScrub(e.clientX); });
-  box.addEventListener('mouseleave',trEnd);
+
+  let dragging=false, startXFrac=0;
+  box.addEventListener('pointerdown',e=>{
+    box.setPointerCapture(e.pointerId);
+    if(trZoomMode){
+      dragging=true; startXFrac=trZoomLocalX(box,e.clientX);
+      const sel=document.getElementById('trZoomSel'); if(sel){ sel.style.display=''; sel.setAttribute('width',0); }
+    } else { trScrub(e.clientX); }
+  });
+  box.addEventListener('pointermove',e=>{
+    if(trZoomMode){
+      if(!dragging) return;
+      const cur=trZoomLocalX(box,e.clientX);
+      const sel=document.getElementById('trZoomSel'); if(!sel) return;
+      const x1=Math.min(startXFrac,cur)*TR.W, x2=Math.max(startXFrac,cur)*TR.W;
+      sel.setAttribute('x',x1); sel.setAttribute('width',x2-x1);
+    } else if(e.buttons===1){ trScrub(e.clientX); }
+  });
+  function finishZoomDrag(e){
+    if(!trZoomMode || !dragging) return;
+    dragging=false;
+    const cur=trZoomLocalX(box,e.clientX);
+    const t1=Math.min(startXFrac,cur), t2=Math.max(startXFrac,cur);
+    const sel=document.getElementById('trZoomSel'); if(sel) sel.style.display='none';
+    if(t2-t1<0.035) return;
+    const {a,b}=trRange, span=b-a;
+    const na=Math.round(a+t1*span), nb=Math.round(a+t2*span);
+    if(nb-na>=3){ trRange={a:na,b:nb}; renderTrend(); }
+  }
+  box.addEventListener('pointerup',e=>{ if(trZoomMode) finishZoomDrag(e); else trEnd(); });
+  box.addEventListener('pointercancel',()=>{ if(trZoomMode){ dragging=false; const sel=document.getElementById('trZoomSel'); if(sel) sel.style.display='none'; } else trEnd(); });
+  box.addEventListener('pointerleave',()=>{ if(!trZoomMode) trEnd(); });
+  box.addEventListener('mousemove',e=>{ if(!trZoomMode && e.buttons===0) trScrub(e.clientX); });
+  box.addEventListener('mouseleave',()=>{ if(!trZoomMode) trEnd(); const mtip=document.getElementById('trMarkerTip'); if(mtip) mtip.className='tip'; });
+
   document.querySelectorAll('#trPeriods button').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('#trPeriods button').forEach(x=>x.classList.toggle('on',x===b));
     setTrPeriod(b.dataset.p);
     positionSegPill('trPeriods');
   });
   initSegPill('trPeriods');
+
+  const ovlBtn=document.getElementById('trOverlayBtn');
+  if(ovlBtn) ovlBtn.onclick=()=>{
+    if(!trOverlayAvailable(trRange.a,trRange.b)) return;
+    trOverlayOn=!trOverlayOn;
+    renderTrend();
+  };
+  const zoomBtn=document.getElementById('trZoomBtn');
+  if(zoomBtn) zoomBtn.onclick=()=>{
+    trZoomMode=!trZoomMode;
+    if(trZoomMode){
+      const g=document.getElementById('trScrub'); if(g) g.style.display='none';
+      const tip=document.getElementById('trTip'); if(tip) tip.className='tip';
+    }
+    trUpdateZoomUI();
+  };
+  const zoomResetBtn=document.getElementById('trZoomResetBtn');
+  if(zoomResetBtn) zoomResetBtn.onclick=()=>{ trRange=trBasePeriodRange(); renderTrend(); };
+
   setTrPeriod('1y');
+  trPlayEntrance();
 }
 /* 실시간 갱신 시 오늘 값 실측치로 대체 */
 function syncTrendToday(){ ensureTodayIndex(); AS[AS.length-1]=Math.round(grandTotal()); renderTrend(); }
@@ -6513,32 +6789,55 @@ function ensureTodayIndex(){
 }
 
 /* ===== BENCHMARK CHART ===== */
+let bmRedraw=null;
 function initBench(){
   const svg=document.getElementById('bmSvg'); if(!svg) return;
   const P=BM.p, B=BM.b, S=new Date(BM.start+'T00:00:00');
   const W=700,H=190,PT=14,PB=16, a=0, b=P.length-1;
   const dAt=i=>new Date(S.getTime()+i*864e5);
-  let mn=Infinity,mx=-Infinity;
-  for(let i=a;i<=b;i++){ mn=Math.min(mn,P[i],B[i]); mx=Math.max(mx,P[i],B[i]); }
-  const pd=(mx-mn)*0.12; mn-=pd; mx+=pd;
-  const x=i=>((i-a)/(b-a))*W, y=v=>PT+(H-PT-PB)*(1-(v-mn)/(mx-mn));
-  let pp='',bb=''; const st=Math.max(1,Math.floor((b-a)/700));
-  for(let i=a;i<=b;i+=st){ pp+=(pp?'L':'M')+x(i).toFixed(2)+' '+y(P[i]).toFixed(2)+' '; bb+=(bb?'L':'M')+x(i).toFixed(2)+' '+y(B[i]).toFixed(2)+' '; }
-  pp+='L'+x(b).toFixed(2)+' '+y(P[b]).toFixed(2); bb+='L'+x(b).toFixed(2)+' '+y(B[b]).toFixed(2);
-  const g1=mn+(mx-mn)*0.85, g2=mn+(mx-mn)*0.15;
-  svg.innerHTML=`<line x1="0" y1="${y(g1)}" x2="${W}" y2="${y(g1)}" stroke="#c9cfbe" stroke-dasharray="3 4"/>
-    <line x1="0" y1="${y(g2)}" x2="${W}" y2="${y(g2)}" stroke="#c9cfbe" stroke-dasharray="3 4"/>
-    <text class="grid-lbl" x="${W-2}" y="${y(g1)-4}" text-anchor="end">${Mn(g1)}</text>
-    <text class="grid-lbl" x="${W-2}" y="${y(g2)-4}" text-anchor="end">${Mn(g2)}</text>
-    <path d="${bb}" fill="none" stroke="#7d97c4" stroke-width="1.8" stroke-dasharray="5 3"/>
-    <path d="${pp}" fill="none" stroke="#b23b2e" stroke-width="2.1"/>
-    <circle cx="${x(b)}" cy="${y(P[b])}" r="2.8" fill="#b23b2e"/>
-    <circle cx="${x(b)}" cy="${y(B[b])}" r="2.8" fill="#7d97c4"/>
-    <g id="bmScrub" style="display:none"><line id="bmLine" y1="${PT-6}" y2="${H-PB}" stroke="#1e2a1f"/>
-    <circle id="bmD1" r="4" fill="#b23b2e" stroke="var(--card)" stroke-width="1.5"/>
-    <circle id="bmD2" r="4" fill="#7d97c4" stroke="var(--card)" stroke-width="1.5"/></g>`;
-  const ax=document.getElementById('bmAx'); ax.innerHTML='';
-  for(let k=0;k<=4;k++){ ax.innerHTML+=`<span>${fmtTS(dAt(Math.round(a+(b-a)/4*k)))}</span>`; }
+  function scalesNow(){
+    let mn=Infinity,mx=-Infinity;
+    for(let i=a;i<=b;i++){ if(P[i]<mn)mn=P[i]; if(B[i]<mn)mn=B[i]; if(P[i]>mx)mx=P[i]; if(B[i]>mx)mx=B[i]; }
+    const pd=(mx-mn)*0.12||1; mn-=pd; mx+=pd;
+    return { mn, mx, x:i=>((i-a)/(b-a))*W, y:v=>PT+(H-PT-PB)*(1-(v-mn)/(mx-mn)) };
+  }
+  function draw(){
+    const {mn,mx,x,y}=scalesNow();
+    const dark=isDarkTheme();
+    const up='var(--stamp-red)';
+    const stride=Math.max(1,Math.floor((b-a)/700));
+    const idxs=[]; for(let i=a;i<=b;i+=stride) idxs.push(i); if(idxs[idxs.length-1]!==b) idxs.push(b);
+    const pPts=idxs.map(i=>[x(i),y(P[i])]), bPts=idxs.map(i=>[x(i),y(B[i])]);
+    const pp=smoothPath(pPts), bb=smoothPath(bPts);
+    let winFill='', loseFill='';
+    for(let k=0;k<idxs.length-1;k++){
+      const i0=idxs[k], i1=idxs[k+1];
+      const poly=`M${x(i0).toFixed(1)} ${y(P[i0]).toFixed(1)} L${x(i1).toFixed(1)} ${y(P[i1]).toFixed(1)} L${x(i1).toFixed(1)} ${y(B[i1]).toFixed(1)} L${x(i0).toFixed(1)} ${y(B[i0]).toFixed(1)} Z `;
+      if(P[i0]>=B[i0]) winFill+=poly; else loseFill+=poly;
+    }
+    const g1=mn+(mx-mn)*0.85, g2=mn+(mx-mn)*0.15;
+    svg.innerHTML=`<defs><filter id="bmGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="${dark?3.6:2.2}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter></defs>
+      <line x1="0" y1="${y(g1).toFixed(1)}" x2="${W}" y2="${y(g1).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="1 5"/>
+      <line x1="0" y1="${y(g2).toFixed(1)}" x2="${W}" y2="${y(g2).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="1 5"/>
+      <text class="grid-lbl" x="${W-2}" y="${(y(g1)-4).toFixed(1)}" text-anchor="end">${Mn(g1)}</text>
+      <text class="grid-lbl" x="${W-2}" y="${(y(g2)-4).toFixed(1)}" text-anchor="end">${Mn(g2)}</text>
+      <path d="${winFill}" fill="#22c55e" opacity="${dark?0.16:0.13}"/>
+      <path d="${loseFill}" fill="var(--stamp-blue)" opacity="${dark?0.14:0.10}"/>
+      <path d="${bb}" fill="none" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 6"/>
+      <path id="bmPathP" d="${pp}" fill="none" stroke="${up}" stroke-width="${dark?3.2:2.6}" stroke-linecap="round" stroke-linejoin="round" ${dark?'filter="url(#bmGlow)"':''}/>
+      <circle cx="${x(b).toFixed(1)}" cy="${y(P[b]).toFixed(1)}" r="6.5" fill="${up}" opacity="0.18"/>
+      <circle class="tr-pulse" cx="${x(b).toFixed(1)}" cy="${y(P[b]).toFixed(1)}" r="3" fill="none" stroke="${up}" stroke-width="1.5"/>
+      <circle cx="${x(b).toFixed(1)}" cy="${y(P[b]).toFixed(1)}" r="3.2" fill="${up}" stroke="var(--card)" stroke-width="1.6"/>
+      <circle cx="${x(b).toFixed(1)}" cy="${y(B[b]).toFixed(1)}" r="2.8" fill="var(--ink-soft)"/>
+      <g id="bmScrub" style="display:none"><line id="bmLine" y1="${PT-6}" y2="${H-PB}" stroke="var(--ink)"/>
+      <circle id="bmD1" r="4" fill="${up}" stroke="var(--card)" stroke-width="1.5"/>
+      <circle id="bmD2" r="4" fill="var(--ink-soft)" stroke="var(--card)" stroke-width="1.5"/></g>`;
+    const ax=document.getElementById('bmAx'); ax.innerHTML='';
+    for(let k=0;k<=4;k++){ ax.innerHTML+=`<span>${fmtTS(dAt(Math.round(a+(b-a)/4*k)))}</span>`; }
+    head();
+  }
   function head(i){
     const j=(i==null)?b:i;
     document.getElementById('bmP').textContent=won(P[j]);
@@ -6547,9 +6846,9 @@ function initBench(){
     el.className='bm-v '+(d>=0?'up':'down');
     el.textContent=(d>=0?'+':'')+won(d)+'원 ('+(d>=0?'+':'')+((P[j]/B[j]-1)*100).toFixed(1)+'%)';
   }
-  head();
   const box=document.getElementById('bmBox'), tip=document.getElementById('bmTip');
   function scrub(cx){
+    const {x,y}=scalesNow();
     const r=box.getBoundingClientRect();
     let t=(cx-r.left)/r.width; t=Math.max(0,Math.min(1,t));
     const i=Math.round(a+t*(b-a)), g=document.getElementById('bmScrub'); if(!g) return;
@@ -6571,6 +6870,17 @@ function initBench(){
   box.addEventListener('pointermove',e=>{ if(e.buttons===1) scrub(e.clientX); });
   box.addEventListener('pointerup',end); box.addEventListener('pointerleave',end);
   box.addEventListener('mousemove',e=>{ if(e.buttons===0) scrub(e.clientX); });
+
+  // 지수 선택 탭 — 나스닥100/코스피는 같은 방식의 실측 시계열을 아직 확보하지 못해 준비중
+  document.querySelectorAll('#idxTabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.classList.contains('soon')) return;
+      document.querySelectorAll('#idxTabs button').forEach(b2=>b2.classList.toggle('on', b2===btn));
+    });
+  });
+
+  bmRedraw=draw;
+  draw();
 }
 
 /* ===== MONTHLY / ANNUAL REVIEW ===== */
@@ -6824,7 +7134,7 @@ function initUI(){
     head.addEventListener('click',e=>{
       if(e.target.closest('input,select,button,a')) return;
       pg.classList.toggle('collapsed');
-      if(!pg.classList.contains('collapsed') && pg.querySelector('#trSvg')) renderTrend();
+      if(!pg.classList.contains('collapsed') && pg.querySelector('#trSvg')){ renderTrend(); trPlayEntrance(); }
       if(pg.id) saveCollapseState(pg.id, pg.classList.contains('collapsed'));
     });
   });
@@ -7558,6 +7868,11 @@ function applyTheme(mode){ // mode: 'light' | 'dark' | 'auto'
   themeMode=mode;
   const resolved=resolvedTheme(mode);
   document.documentElement.setAttribute('data-theme', resolved);
+  // 다크/라이트 전환 시 자산추이·벤치마크 차트를 다시 그려 글로우 톤(네온) 갱신
+  try{
+    if(typeof renderTrend==='function' && document.getElementById('trSvg')) renderTrend();
+    if(typeof bmRedraw==='function') bmRedraw();
+  }catch(e){}
   const moon=document.getElementById('themeIconMoon'), sun=document.getElementById('themeIconSun'), auto=document.getElementById('themeIconAuto');
   if(moon && sun && auto){
     moon.style.display = mode==='dark' ? 'block' : 'none';
