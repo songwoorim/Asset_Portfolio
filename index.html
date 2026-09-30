@@ -471,6 +471,50 @@
   .rank-toggle{ display:flex; gap:6px; background:var(--paper); border-radius:11px; padding:3px; margin-bottom:10px; }
   .rank-toggle button{ flex:1; font-family:inherit; font-size:11px; font-weight:700; padding:7px; border-radius:8px; color:var(--ink-soft); background:none; border:none; }
   .rank-toggle button.on{ background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  /* ===== 순위 변화(순익/평가금액 랭킹 추이) ===== */
+  .rc-hd{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .rc-hd .sub{display:block; font-size:10.5px; font-weight:600; color:var(--ink-soft); margin-top:2px;}
+  .rc-metric-toggle{display:flex; gap:4px; background:var(--card); border-radius:9999px; padding:3px;}
+  .rc-metric-toggle button{border:none; background:transparent; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; color:var(--ink-soft); padding:5px 10px; border-radius:9999px; cursor:pointer;}
+  .rc-metric-toggle button.on{background:var(--brass); color:#fff;}
+  .rc-period-btns{display:flex; gap:6px; margin:2px 2px 12px;}
+  .rc-period-btns button{flex:1; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; padding:7px 4px; border-radius:10px; cursor:pointer; transition:.15s;}
+  .rc-period-btns button.on{background:var(--brass); border-color:var(--brass); color:#fff;}
+  .rc-row{display:flex; align-items:center; gap:10px; padding:10px 6px; border-radius:14px;}
+  .rc-accent{width:3px; align-self:stretch; border-radius:3px; flex:none; min-height:34px;}
+  .rc-num{width:22px; text-align:center; font-family:'Inter',-apple-system,sans-serif; font-weight:800; font-size:13px; color:var(--ink-soft); flex:none;}
+  .rc-num.top3{color:var(--ink);}
+  .rc-name{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px;}
+  .rc-name .tk{font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rc-delta{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:800; padding:1.5px 6px 1.5px 5px; border-radius:9999px; display:inline-flex; align-items:center; gap:2px; width:fit-content;}
+  .rc-delta.up{color:var(--stamp-red); background:rgba(192,57,43,.1);}
+  .rc-delta.down{color:var(--stamp-blue); background:rgba(44,74,124,.1);}
+  .rc-delta.flat{color:var(--ink-soft); background:var(--paper);}
+  .rc-spark{width:56px; height:20px; flex:none; opacity:.85;}
+  .rc-val{font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:800; text-align:right; flex:none; min-width:74px;}
+  .rc-expand-btn{width:100%; margin-top:6px; border:1px dashed var(--line); background:transparent; border-radius:14px; padding:11px; font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:700; color:var(--brass); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;}
+  .rc-expand-btn .arrow{transition:transform .25s;}
+  .rc-expand-btn.open .arrow{transform:rotate(180deg);}
+  .rc-bump-panel{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+  .rc-bump-panel.open{max-height:900px;}
+  .rc-bump-inner{padding-top:14px;}
+  .rc-bump-hint{font-size:10.5px; color:var(--ink-soft); text-align:center; margin-bottom:8px;}
+  .rc-bump-wrap{position:relative;}
+  .rc-bump-svg{width:100%; height:260px; display:block; overflow:visible; touch-action:pan-y; cursor:crosshair;}
+  .rc-axis-lbl{font-family:'Inter',-apple-system,sans-serif; font-size:8.5px; fill:var(--ink-soft); font-weight:700;}
+  .rc-legend{display:flex; flex-wrap:wrap; gap:6px 8px; margin-top:14px;}
+  .rc-legend .it{display:flex; align-items:center; gap:5px; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); cursor:pointer; padding:4px 9px 4px 7px; border-radius:9999px; background:var(--card); transition:.15s;}
+  .rc-legend .it.off{opacity:.4;}
+  .rc-legend .it.active{box-shadow:inset 0 0 0 1.3px currentColor;}
+  .rc-legend .it i{width:8px; height:8px; border-radius:50%; display:inline-block; flex:none;}
+  .rc-legend .more{font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--ink-soft); padding:4px 9px; cursor:pointer;}
+  .rc-bump-xaxis{display:flex; justify-content:space-between; margin-top:6px; padding:0 2px; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; color:var(--ink-soft); font-weight:600;}
+  .rc-bump-tip{position:absolute; pointer-events:none; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:8px 11px; font-size:11px; box-shadow:0 6px 18px rgba(0,0,0,.28); display:none; z-index:5; min-width:130px;}
+  .rc-bump-tip .tt{font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700; color:var(--ink-soft); margin-bottom:5px;}
+  .rc-bump-tip .row{display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; padding:1.5px 0;}
+  .rc-bump-tip .row i{width:7px; height:7px; border-radius:50%; flex:none;}
+  .rc-bump-tip .row .r{width:18px; color:var(--ink-soft); font-family:'Inter',-apple-system,sans-serif; font-weight:800; font-size:10px;}
+  .rc-crosshair{stroke:var(--ink-soft); stroke-width:1; stroke-dasharray:2 3; opacity:0; pointer-events:none;}
   /* ===== 환율 영향 분석 ===== */
   .fx-split-bar{ display:flex; height:26px; border-radius:8px; overflow:hidden; margin:10px 0 8px; }
   .fx-split-item{ display:flex; align-items:center; justify-content:center; color:#fff; font-size:9.5px; font-weight:700; white-space:nowrap; overflow:hidden; }
@@ -2113,6 +2157,39 @@
       <button type="button" data-r="bottom">BOTTOM 5</button>
     </div>
     <div class="rank-wrap"><div id="rankList"></div></div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- RANK CHANGE (순위변화) -->
+  <div class="page collapsible" id="sec-rankchange" data-panel="hold">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;" fill="none"><path d="M4 19V10M10 19V4M16 19v-7M22 19V13" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>순위 변화</h2></div>
+    <div class="rc-hd">
+      <div style="font-size:13px;font-weight:800;">순위<span class="sub" id="rcPeriodLbl"></span></div>
+      <div class="rc-metric-toggle" id="rcMetricToggle">
+        <button type="button" class="on" data-m="pnl">순익</button>
+        <button type="button" data-m="eval">평가금액</button>
+      </div>
+    </div>
+    <div class="rc-period-btns" id="rcPeriodBtns">
+      <button type="button" data-p="1m">1개월</button>
+      <button type="button" class="on" data-p="3m">3개월</button>
+      <button type="button" data-p="all">전체</button>
+    </div>
+    <div id="rcRankList"></div>
+    <button type="button" class="rc-expand-btn" id="rcExpandBtn"><span>순위 변화 흐름 보기</span><span class="arrow">▾</span></button>
+    <div class="rc-bump-panel" id="rcBumpPanel">
+      <div class="rc-bump-inner">
+        <div class="rc-bump-hint">차트를 누르고 좌우로 움직이면 날짜별 순위가 보여요 · 칩을 눌러 종목 추가/제외</div>
+        <div class="rc-bump-wrap">
+          <svg class="rc-bump-svg" id="rcBumpSvg" viewBox="0 0 400 240" preserveAspectRatio="none"></svg>
+          <div class="rc-bump-tip" id="rcBumpTip"></div>
+        </div>
+        <div class="rc-bump-xaxis" id="rcBumpXAxis"></div>
+        <div class="rc-legend" id="rcLegend"></div>
+      </div>
+    </div>
+    <div class="note" id="rcNote">보유종목의 순익(평가액－원가) 또는 평가금액 순위를 매일 실측 종가로 계산합니다.</div>
   </div>
 
   <div class="perf"></div>
@@ -6409,6 +6486,292 @@ function smoothPath(pts){
   return d;
 }
 function isDarkTheme(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
+
+/* ============ 순위 변화(보유종목 순익/평가금액 랭킹 추이) ============
+   보유종목별로 "그날 그 종목의 평가액"을 매일 계산해 순위를 매긴다. stateAt()은 그
+   날짜까지의 보유수량·평균원가만 복원할 뿐 그날의 시장가는 모르므로, plBuildSeries()와
+   같은 방식(TXL 재생 + HIST_PRICE_CACHE 실측 종가)을 종목별로 따로 적용해야 한다.
+   단, plBuildSeries()와 달리 priceAt() 보간 폴백을 쓰지 않는다 — 순위는 종목 간
+   "누가 더 큰가"를 비교하는 것이라, 보간값끼리 비교하면 실제로는 없는 역전이 생길 수
+   있다. 그래서 종목별로 "실측 종가가 처음 시작되는 날짜"를 추적해 전 종목이 실측으로
+   커버되는 가장 이른 날짜(dataStartIdx) 이전은 화면에 아예 노출하지 않는다. */
+let RC_SERIES=null;
+function rcInvalidateSeries(){ RC_SERIES=null; }
+function rcBuildSeries(){
+  if(RC_SERIES && RC_SERIES.n===AS.length && RC_SERIES.builtFX===FX) return RC_SERIES;
+  const n=AS.length;
+  const curOf={}; HOLDINGS.forEach(h=>{ curOf[h.ticker]=h.cur; });
+  const fxByDay=new Array(n);
+  for(let i=0;i<n;i++) fxByDay[i]=fxAt(plDateForIndex(i));
+  const byTk={};
+  let dataStartIdx=0;
+  HOLDINGS.forEach(h=>{
+    const tk=h.ticker;
+    const txs=TXL.filter(t=>t.tk===tk).sort((a,b)=>new Date(a.d)-new Date(b.d));
+    if(!txs.length) return;
+    const isUSD=(curOf[tk]||txs[0].cur)==='USD';
+    const cache=HIST_PRICE_CACHE && HIST_PRICE_CACHE[tk];
+    if(!cache || !cache.length) return; // 실측 종가가 없는 종목은 순위 계산에서 제외(보간만으론 부정확)
+    const asc=cache.slice().sort((a,b)=>a.date<b.date?-1:1);
+    let ci=0, lastClose=null, tkRealStartIdx=null;
+    let sh=0, cost=0, txi=0;
+    const evalArr=new Array(n).fill(0), costArr=new Array(n).fill(0);
+    for(let i=0;i<n;i++){
+      const d=plDateForIndex(i);
+      const ymd=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+      while(txi<txs.length && new Date(txs[txi].d+'T00:00:00')<=d){
+        const t=txs[txi];
+        const krw = t.cur==='USD' ? t.q*t.p*fxByDay[i] : t.q*t.p;
+        if(t.q>0){ sh+=t.q; cost+=krw; } else { const avg=sh?cost/sh:0; sh+=t.q; cost+=t.q*avg; }
+        txi++;
+      }
+      while(ci<asc.length && asc[ci].date<=ymd){ lastClose=asc[ci].close; if(tkRealStartIdx==null) tkRealStartIdx=i; ci++; }
+      if(sh>0 && lastClose!=null){
+        evalArr[i] = isUSD ? sh*lastClose*fxByDay[i] : sh*lastClose;
+        costArr[i] = cost;
+      }
+    }
+    byTk[tk]={evalArr, costArr, color:PNL_COLOR[tk]||'#8a8f98'};
+    dataStartIdx=Math.max(dataStartIdx, tkRealStartIdx==null? n : tkRealStartIdx);
+  });
+  RC_SERIES={n, byTk, dataStartIdx, builtFX:FX};
+  return RC_SERIES;
+}
+function rcTickerName(tk){ const h=HOLDINGS.find(x=>x.ticker===tk); return (h&&h.nameKr)||tk; }
+/* 지정한 구간(iStart~iEnd, inclusive)의 날짜별 순위. 반환값 ranks[tk][d]는 d번째 날의 순위(1=1위) */
+function rcRanksFor(byTk, tickers, metric, iStart, iEnd){
+  const days=iEnd-iStart+1;
+  const ranks={}; tickers.forEach(tk=>{ ranks[tk]=new Array(days); });
+  for(let d=0; d<days; d++){
+    const i=iStart+d;
+    const arr=tickers.map(tk=>{
+      const s=byTk[tk];
+      const val = metric==='pnl' ? (s.evalArr[i]-s.costArr[i]) : s.evalArr[i];
+      return {tk, val};
+    });
+    arr.sort((a,b)=>b.val-a.val);
+    arr.forEach((o,idx)=>{ ranks[o.tk][d]=idx+1; });
+  }
+  return ranks;
+}
+const RC_PERIOD_DAYS={'1m':21,'3m':63,'all':Infinity};
+let RC_STATE={period:'3m', metric:'pnl', bumpOpen:false, shown:{}, activeTk:null, moreOpen:false, _shownInit:false};
+function rcRangeFor(period){
+  const S=rcBuildSeries();
+  const endIdx=Math.max(0, S.n-1);
+  const wantDays=RC_PERIOD_DAYS[period];
+  let startIdx = wantDays===Infinity ? S.dataStartIdx : Math.max(S.dataStartIdx, endIdx-wantDays+1);
+  if(startIdx>endIdx) startIdx=endIdx;
+  return {startIdx, endIdx};
+}
+function rcInitShown(tickers, ranks, days){
+  const last=days-1;
+  const byRank=tickers.slice().sort((a,b)=>ranks[a][last]-ranks[b][last]);
+  RC_STATE.shown={};
+  byRank.forEach((tk,i)=>{ RC_STATE.shown[tk]=i<5; });
+  RC_STATE._shownInit=true;
+}
+function rcRenderRankList(){
+  const listEl=document.getElementById('rcRankList'); if(!listEl) return;
+  const S=rcBuildSeries();
+  const tickers=Object.keys(S.byTk);
+  const noteEl=document.getElementById('rcNote');
+  if(!tickers.length){
+    listEl.innerHTML='<div class="rank-empty">실측 종가 데이터를 아직 확보하지 못했습니다.</div>';
+    return;
+  }
+  const {startIdx,endIdx}=rcRangeFor(RC_STATE.period);
+  const days=endIdx-startIdx+1;
+  const lbl=document.getElementById('rcPeriodLbl');
+  if(days<2){
+    listEl.innerHTML='<div class="rank-empty">표시할 기간이 아직 충분하지 않습니다.</div>';
+    if(lbl) lbl.textContent='';
+    return;
+  }
+  const sd=plDateForIndex(startIdx), ed=plDateForIndex(endIdx);
+  if(lbl) lbl.textContent = ` · ${sd.getMonth()+1}.${sd.getDate()}~${ed.getMonth()+1}.${ed.getDate()}`;
+  if(noteEl) noteEl.textContent = `보유종목의 순익(평가액－원가) 또는 평가금액 순위를 매일 실측 종가로 계산합니다 · 종목별 실제 종가 캐시가 ${sd.getFullYear()}.${String(sd.getMonth()+1).padStart(2,'0')}.${String(sd.getDate()).padStart(2,'0')}부터 확보되어 있어 그 이전 기간은 표시하지 않습니다.`;
+  const ranks=rcRanksFor(S.byTk, tickers, RC_STATE.metric, startIdx, endIdx);
+  if(!RC_STATE._shownInit) rcInitShown(tickers, ranks, days);
+  const last=days-1, maxR=tickers.length;
+  const rows=tickers.map(tk=>{
+    const s=S.byTk[tk];
+    const val = RC_STATE.metric==='pnl' ? (s.evalArr[endIdx]-s.costArr[endIdx]) : s.evalArr[endIdx];
+    const r=ranks[tk][last], rStart=ranks[tk][0];
+    return {tk, s, r, d:(rStart-r), val};
+  }).sort((a,b)=>a.r-b.r);
+  listEl.innerHTML = rows.map(row=>{
+    const deltaCls = row.d>0?'up':row.d<0?'down':'flat';
+    const deltaTxt = row.d>0? ('▲ '+row.d) : row.d<0? ('▼ '+Math.abs(row.d)) : '유지';
+    const step=Math.max(1, Math.ceil(days/24));
+    const sparkPts=[];
+    for(let d=0; d<days; d+=step) sparkPts.push([2+(d/Math.max(1,days-1))*54, 2+((ranks[row.tk][d]-1)/(maxR-1))*16]);
+    if((days-1)%step!==0) sparkPts.push([56, 2+((ranks[row.tk][last]-1)/(maxR-1))*16]);
+    return `<div class="rc-row">
+      <div class="rc-accent" style="background:${row.s.color}"></div>
+      <div class="rc-num ${row.r<=3?'top3':''}">${row.r}</div>
+      <div class="rc-name"><span class="tk">${rcTickerName(row.tk)}</span><span class="rc-delta ${deltaCls}">${deltaTxt}</span></div>
+      <svg class="rc-spark" viewBox="0 0 58 20" preserveAspectRatio="none"><path d="${smoothPath(sparkPts)}" fill="none" stroke="${row.s.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="rc-val ${row.val>=0?'up':'down'}">${won(row.val)}</div>
+    </div>`;
+  }).join('');
+}
+let RC_CTX=null, RC_INTERACTION_BOUND=false;
+function rcBindBumpInteractionOnce(){
+  if(RC_INTERACTION_BOUND) return;
+  const svg=document.getElementById('rcBumpSvg'); if(!svg) return;
+  RC_INTERACTION_BOUND=true;
+  function showAt(clientX){
+    if(!RC_CTX) return;
+    const {xAt,ranks,S,shownList,W,padL,padR,days,startIdx}=RC_CTX;
+    const box=svg.getBoundingClientRect();
+    const localX=((clientX-box.left)/box.width)*W;
+    let w=Math.round((localX-padL)/(W-padL-padR)*(days-1));
+    w=Math.max(0, Math.min(days-1, w));
+    const x=xAt(w);
+    const crosshair=document.getElementById('rcCrosshair');
+    if(crosshair){ crosshair.setAttribute('x1', x.toFixed(1)); crosshair.setAttribute('x2', x.toFixed(1)); crosshair.style.opacity='1'; }
+    const rows=shownList.map(tk=>({tk, r:ranks[tk][w], color:S.byTk[tk].color, name:rcTickerName(tk)})).sort((a,b)=>a.r-b.r);
+    const d=plDateForIndex(startIdx+w);
+    const dayLabel = w===days-1 ? '오늘' : `${d.getMonth()+1}.${d.getDate()}`;
+    const tip=document.getElementById('rcBumpTip');
+    if(tip){
+      tip.innerHTML = `<div class="tt">${dayLabel}</div>`+rows.map(row=>`<div class="row"><span class="r">${row.r}위</span><i style="background:${row.color}"></i>${row.name}</div>`).join('');
+      const wrapBox=svg.parentNode.getBoundingClientRect();
+      const cx=box.left-wrapBox.left+(x/W)*box.width;
+      tip.style.left=Math.max(0, Math.min(Math.max(0,box.width-140), cx-60))+'px';
+      tip.style.top='4px';
+      tip.style.display='block';
+    }
+  }
+  svg.addEventListener('pointerdown', e=>showAt(e.clientX));
+  svg.addEventListener('pointermove', e=>{ if(e.buttons===1) showAt(e.clientX); });
+  svg.addEventListener('click', e=>{
+    const el=e.target.closest && e.target.closest('[data-tk]'); if(!el) return;
+    e.stopPropagation();
+    const tk=el.getAttribute('data-tk');
+    RC_STATE.activeTk = (RC_STATE.activeTk===tk)? null : tk;
+    rcRenderBump();
+  });
+  document.body.addEventListener('click', e=>{
+    if(svg.contains(e.target)) return;
+    const tip=document.getElementById('rcBumpTip'); if(tip) tip.style.display='none';
+    const crosshair=document.getElementById('rcCrosshair'); if(crosshair) crosshair.style.opacity='0';
+  });
+}
+function rcRenderLegend(){
+  const lg=document.getElementById('rcLegend'); if(!lg) return;
+  const S=rcBuildSeries();
+  const tickers=Object.keys(S.byTk);
+  const shownList=tickers.filter(tk=>RC_STATE.shown[tk]);
+  const hiddenList=tickers.filter(tk=>!RC_STATE.shown[tk]);
+  let html = shownList.map(tk=>`<div class="it active" data-tk="${tk}"><i style="background:${S.byTk[tk].color}"></i>${rcTickerName(tk)}</div>`).join('');
+  if(hiddenList.length){
+    html += RC_STATE.moreOpen
+      ? hiddenList.map(tk=>`<div class="it off" data-tk="${tk}"><i style="background:${S.byTk[tk].color}"></i>${rcTickerName(tk)}</div>`).join('')
+      : `<div class="more" id="rcMoreChip">+${hiddenList.length}개 더보기</div>`;
+  }
+  lg.innerHTML = html;
+  lg.querySelectorAll('.it').forEach(it=>{
+    it.addEventListener('click', ()=>{
+      const tk=it.getAttribute('data-tk');
+      RC_STATE.shown[tk]=!RC_STATE.shown[tk];
+      if(RC_STATE.activeTk===tk && !RC_STATE.shown[tk]) RC_STATE.activeTk=null;
+      rcRenderBump();
+    });
+  });
+  const moreChip=document.getElementById('rcMoreChip');
+  if(moreChip) moreChip.addEventListener('click', ()=>{ RC_STATE.moreOpen=true; rcRenderLegend(); });
+}
+function rcRenderBump(){
+  const svg=document.getElementById('rcBumpSvg'); if(!svg) return;
+  const S=rcBuildSeries();
+  const tickers=Object.keys(S.byTk);
+  if(!tickers.length) return;
+  const {startIdx,endIdx}=rcRangeFor(RC_STATE.period);
+  const days=endIdx-startIdx+1;
+  if(days<2) return;
+  const ranks=rcRanksFor(S.byTk, tickers, RC_STATE.metric, startIdx, endIdx);
+  if(!RC_STATE._shownInit) rcInitShown(tickers, ranks, days);
+  const maxR=tickers.length;
+  const W=400,H=210,padL=16,padR=46,padT=8,padB=8;
+  const xAt = w => days<=1 ? (padL+(W-padL-padR)/2) : padL+(w/(days-1))*(W-padL-padR);
+  const yAt = r => padT+((r-1)/(maxR-1))*(H-padT-padB);
+  const parts=[];
+  const showRankLabel={1:true}; showRankLabel[maxR]=true; showRankLabel[Math.ceil(maxR/2)]=true;
+  for(let r=1;r<=maxR;r++){
+    const y=yAt(r);
+    parts.push(`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="currentColor" stroke-opacity="0.05"/>`);
+    if(showRankLabel[r]) parts.push(`<text x="2" y="${(y+3).toFixed(1)}" class="rc-axis-lbl">${r}위</text>`);
+  }
+  const shownList=tickers.filter(tk=>RC_STATE.shown[tk]);
+  const hiddenList=tickers.filter(tk=>!RC_STATE.shown[tk]);
+  hiddenList.forEach(tk=>{
+    const pts=[]; for(let w=0;w<days;w++) pts.push([xAt(w), yAt(ranks[tk][w])]);
+    parts.push(`<path d="${smoothPath(pts)}" fill="none" stroke="currentColor" stroke-opacity="0.045" stroke-width="1.5"/>`);
+  });
+  shownList.forEach(tk=>{
+    const dim = RC_STATE.activeTk && RC_STATE.activeTk!==tk;
+    const pts=[]; for(let w=0;w<days;w++) pts.push([xAt(w), yAt(ranks[tk][w])]);
+    const color=S.byTk[tk].color;
+    parts.push(`<path data-tk="${tk}" class="rc-bump-line" d="${smoothPath(pts)}" fill="none" stroke="${color}" stroke-width="${dim?1.5:2.5}" stroke-opacity="${dim?0.18:0.95}" stroke-linecap="round"/>`);
+    const lastP=pts[days-1];
+    parts.push(`<circle data-tk="${tk}" cx="${lastP[0].toFixed(1)}" cy="${lastP[1].toFixed(1)}" r="4.5" fill="${color}" fill-opacity="${dim?0.18:1}" stroke="var(--card)" stroke-width="2"/>`);
+    if(!dim){
+      const lastR=ranks[tk][days-1];
+      parts.push(`<text x="${(xAt(days-1)+7).toFixed(1)}" y="${(yAt(lastR)+3).toFixed(1)}" font-size="8.5" font-weight="800" fill="${color}" font-family="Inter,sans-serif">${rcTickerName(tk)}</text>`);
+    }
+  });
+  parts.push(`<line id="rcCrosshair" class="rc-crosshair" x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}"/>`);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = parts.join('');
+  RC_CTX={xAt, ranks, S, shownList, W, H, padL, padR, days, startIdx};
+  rcBindBumpInteractionOnce();
+  const xa=document.getElementById('rcBumpXAxis');
+  if(xa){
+    const sd=plDateForIndex(startIdx), ed=plDateForIndex(endIdx);
+    const md=plDateForIndex(startIdx+Math.floor((days-1)/2));
+    xa.innerHTML = [sd,md,ed].map(d=>`<span>${d.getMonth()+1}.${d.getDate()}</span>`).join('');
+  }
+  rcRenderLegend();
+}
+function rcRender(){
+  rcRenderRankList();
+  if(RC_STATE.bumpOpen) rcRenderBump();
+}
+function rcInit(){
+  const expandBtn=document.getElementById('rcExpandBtn');
+  if(expandBtn) expandBtn.addEventListener('click', ()=>{
+    RC_STATE.bumpOpen=!RC_STATE.bumpOpen;
+    expandBtn.classList.toggle('open', RC_STATE.bumpOpen);
+    const lblSpan=expandBtn.querySelector('span');
+    if(lblSpan) lblSpan.textContent = RC_STATE.bumpOpen? '순위 변화 흐름 접기':'순위 변화 흐름 보기';
+    const panel=document.getElementById('rcBumpPanel');
+    if(panel) panel.classList.toggle('open', RC_STATE.bumpOpen);
+    if(RC_STATE.bumpOpen) rcRenderBump();
+  });
+  document.querySelectorAll('#rcPeriodBtns button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#rcPeriodBtns button').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      RC_STATE.period=btn.dataset.p;
+      RC_STATE._shownInit=false;
+      RC_STATE.activeTk=null;
+      rcRenderRankList();
+      if(RC_STATE.bumpOpen) rcRenderBump();
+    });
+  });
+  document.querySelectorAll('#rcMetricToggle button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#rcMetricToggle button').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      RC_STATE.metric=btn.dataset.m;
+      RC_STATE._shownInit=false;
+      rcRenderRankList();
+      if(RC_STATE.bumpOpen) rcRenderBump();
+    });
+  });
+}
 function trATH(){
   let mi=0, mv=-Infinity;
   for(let i=0;i<AS.length;i++){ if(AS[i]>mv){ mv=AS[i]; mi=i; } }
@@ -8075,6 +8438,7 @@ initReview();
 loadFutureSnaps().then(()=>{
   ensureTodayIndex(); // 배열 길이가 오늘 날짜까지 반드시 닿도록 보장(스냅샷 유무와 무관)
   initTrend(); renderDailyPnl(); renderPeriodPL(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
+  rcInit(); rcRender(); // 순위 변화 섹션 — 최초 1회 바인딩 + 현재 캐시로 우선 렌더(실측 종가 확보 전이면 이후 아래에서 다시 렌더)
   /* 기간별 손익 표를 실측 종가로 정확하게 만들기 위해 시세 캐시를 확보한다.
      ensureHistPrices()는 수익현황 탭이 쓰는 기존 함수로, 연초부터 전 종목의 실제 종가를
      받아온다(따로 만들 필요 없이 재사용). 이미 캐시가 이번 기간을 커버하면 즉시 반환하므로
@@ -8088,6 +8452,7 @@ loadFutureSnaps().then(()=>{
       .then(()=>{
         reconstructGapAS();      // 자산추이 차트용 AS/CS도 실측값으로 보정
         plInvalidateSeries();    // 기간별 손익 표는 자체 시계열을 다시 계산
+        rcInvalidateSeries(); rcRender(); // 순위 변화도 실측 종가로 다시 계산
         renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
         renderInsightHub();      // 실측 데이터로 카드 다시 채움
         if(noteEl) noteEl.textContent=origNote;
