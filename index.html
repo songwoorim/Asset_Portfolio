@@ -72,6 +72,32 @@
   }
   .live-status b{ color:var(--bar-fg); font-weight:600; }
   .livebar .spacer{ flex:1; min-width:4px; }
+
+  /* ---------- 시장 시계: 상단 칩 + 계좌 기준 배지 ---------- */
+  .livebar{ flex-wrap:wrap; }
+  .live-status{ flex:1 1 0; }
+  .livebar .spacer{ flex:0 0 0; min-width:0; }
+  .mktstrip{ flex:0 0 100%; order:9; display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 -4px -2px 0; padding-top:6px; border-top:1px solid var(--bar-border); cursor:pointer; }
+  .mkchip{ display:flex; align-items:center; gap:6px; background:var(--bar-hover-bg); border-radius:9999px; padding:3px 10px 3px 8px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--bar-fg-soft); white-space:nowrap; }
+  .mkchip .fl{ font-size:9px; font-weight:800; letter-spacing:.03em; opacity:.7; }
+  .mkchip .tm{ color:var(--bar-fg); font-weight:700; font-variant-numeric:tabular-nums; }
+  .mkchip .sd{ width:7px; height:7px; border-radius:50%; flex:none; background:#8e8e93; }
+  .mkchip .sd.regular{ background:#34c76b; animation:mkpulse 2s infinite; }
+  .mkchip .sd.pre{ background:#f0b43c; } .mkchip .sd.after{ background:#ff9040; }
+  @keyframes mkpulse{0%{box-shadow:0 0 0 0 rgba(52,199,107,.55);}70%{box-shadow:0 0 0 6px rgba(52,199,107,0);}100%{box-shadow:0 0 0 0 rgba(52,199,107,0);}}
+  .mkmore{ margin-left:auto; padding-right:4px; color:var(--bar-fg-soft); font-size:10px; display:flex; align-items:center; }
+  .mkmore svg{ width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
+  .mktstrip.open .mkmore svg{ transform:rotate(180deg); }
+  .mkdetail{ flex:0 0 100%; display:none; flex-direction:column; gap:4px; padding:6px 2px 4px 0; font-size:10.5px; line-height:1.5; color:var(--bar-fg-soft); font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
+  .mktstrip.open .mkdetail{ display:flex; }
+  .mkdetail b{ color:var(--bar-fg); font-weight:700; }
+  .mkb-row{ display:flex; margin:-2px 0 10px; }
+  .mkb{ display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; padding:5px 10px; border-radius:9999px; white-space:nowrap; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
+  .mkb .sd{ width:6px; height:6px; border-radius:50%; background:currentColor; flex:none; }
+  .mkb.live{ background:rgba(52,199,107,.15); color:#1f9d55; } .mkb.live .sd{ animation:mkpulse 2s infinite; }
+  .mkb.ext{ background:rgba(240,180,60,.18); color:#b97d0a; }
+  .mkb.off{ background:rgba(142,142,147,.16); color:var(--ink-soft); }
+  html[data-theme="dark"] .mkb.live{ color:#34c76b; } html[data-theme="dark"] .mkb.ext{ color:#f0b43c; }
   @keyframes spin{to{transform:rotate(360deg);}}
   .icon-btn.spin svg{ animation:spin .9s linear infinite; }
   .icon-btn.active{ background:rgba(41,151,255,0.22); color:var(--brass-light); }
@@ -1676,6 +1702,7 @@
       <span class="gear-pip" id="gearPip"></span>
       <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l1.9-1.5-2-3.4-2.3.6a7.7 7.7 0 0 0-2.6-1.5L14 2.4h-4l-.4 2.3a7.7 7.7 0 0 0-2.6 1.5l-2.3-.6-2 3.4L4.6 10.5a7.6 7.6 0 0 0 0 3l-1.9 1.5 2 3.4 2.3-.6c.8.7 1.7 1.2 2.6 1.5l.4 2.3h4l.4-2.3c.9-.3 1.8-.8 2.6-1.5l2.3.6 2-3.4-1.9-1.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
     </button>
+    <div class="mktstrip" id="mktStrip"></div>
   </div>
 
   <!-- API KEY BAR (기본 숨김, 톱니바퀴로 토글) -->
@@ -3789,6 +3816,103 @@ function renderNewsSkeleton(){
   list.innerHTML=item+item+item;
 }
 
+/* ============ 시장 시계(미국장·한국장) ============
+   뉴욕/서울 현지 시각을 Intl로 계산하므로 서머타임(미국 3월·11월 전환)이 자동 반영된다.
+   휴장일·조기마감일은 아래 표를 연 1회 갱신해야 한다(2027년 말까지 입력됨). */
+const MK_CFG={
+  US:{tz:'America/New_York', pre:[4,0], open:[9,30], close:[16,0], after:[20,0], earlyClose:[13,0], earlyAfter:[17,0]},
+  KR:{tz:'Asia/Seoul', pre:[8,30], open:[9,0], close:[15,30], after:[18,0]}
+};
+const MK_HOL={
+  US:{'2026-11-26':'추수감사절','2026-12-25':'크리스마스','2027-01-01':'신정','2027-01-18':'MLK 데이','2027-02-15':'대통령의 날','2027-03-26':'성금요일','2027-05-31':'메모리얼 데이','2027-06-18':'준틴스 대체휴장','2027-07-05':'독립기념일 대체휴장','2027-09-06':'노동절','2027-11-25':'추수감사절','2027-12-24':'크리스마스 대체휴장'},
+  KR:{'2026-12-25':'성탄절','2026-12-31':'연말 휴장','2027-01-01':'신정'}
+};
+const MK_EARLY={US:{'2026-11-27':'조기마감','2026-12-24':'조기마감','2027-11-26':'조기마감'}};
+const MK_DST=[{d:'2026-11-01',to:'해제'},{d:'2027-03-14',to:'적용'},{d:'2027-11-07',to:'해제'}];
+function mkParts(ms,tz){
+  const o={}; new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).formatToParts(new Date(ms)).forEach(p=>{o[p.type]=p.value;});
+  return {y:+o.year,m:+o.month,d:+o.day,h:+o.hour,mi:+o.minute,s:+o.second};
+}
+function mkOffset(ms,tz){ const p=mkParts(ms,tz); return Date.UTC(p.y,p.m-1,p.d,p.h,p.mi,p.s)-Math.floor(ms/1000)*1000; }
+function mkZoned(y,m,d,h,mi,tz){ const g=Date.UTC(y,m-1,d,h,mi); let u=g-mkOffset(g,tz); u=g-mkOffset(u,tz); return u; }
+function mkYmd(o){ return o.y+'-'+String(o.m).padStart(2,'0')+'-'+String(o.d).padStart(2,'0'); }
+function mkAddDay(o,n){ const t=new Date(Date.UTC(o.y,o.m-1,o.d+n)); return {y:t.getUTCFullYear(),m:t.getUTCMonth()+1,d:t.getUTCDate()}; }
+function mkDayInfo(k,o){
+  const c=MK_CFG[k], key=mkYmd(o), w=new Date(Date.UTC(o.y,o.m-1,o.d)).getUTCDay();
+  if(w===0||w===6) return {trading:false, reason:'주말'};
+  if(MK_HOL[k][key]) return {trading:false, reason:MK_HOL[k][key]};
+  const early=(MK_EARLY[k]||{})[key];
+  const cl=early?c.earlyClose:c.close, af=early?c.earlyAfter:c.after, t=a=>mkZoned(o.y,o.m,o.d,a[0],a[1],c.tz);
+  return {trading:true, early:early||null, b:[t(c.pre),t(c.open),t(cl),t(af)]};
+}
+function mkState(k,ms){
+  const c=MK_CFG[k], p=mkParts(ms,c.tz), o={y:p.y,m:p.m,d:p.d}, inf=mkDayInfo(k,o);
+  const r={k}; let ph='closed', reason='';
+  if(inf.trading){
+    const b=inf.b;
+    if(ms<b[0]){ ph='closed'; reason='개장 전'; r.next=b[1]; }
+    else if(ms<b[1]){ ph='pre'; r.next=b[1]; }
+    else if(ms<b[2]){ ph='regular'; r.next=b[2]; }
+    else if(ms<b[3]){ ph='after'; r.next=b[3]; }
+    else reason='장 마감';
+  } else reason=inf.reason+' 휴장';
+  if(r.next==null){
+    for(let i=1;i<15;i++){ const n=mkAddDay(o,i), ni=mkDayInfo(k,n); if(ni.trading){ r.next=ni.b[1]; break; } }
+  }
+  r.phase=ph; r.reason=reason; r.remain=Math.max(0,(r.next||ms)-ms); r.early=inf.trading?inf.early:null;
+  return r;
+}
+function mkFmtKst(ms){ const p=mkParts(ms,'Asia/Seoul'); return String(p.h).padStart(2,'0')+':'+String(p.mi).padStart(2,'0'); }
+function mkCd(ms){ const s=Math.floor(ms/1000), h=Math.floor(s/3600); if(h>=24) return Math.floor(h/24)+'일 '+(h%24)+'시간'; return h+':'+String(Math.floor(s%3600/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+const MK_PH={US:{regular:'정규장',pre:'프리마켓',after:'애프터마켓'},KR:{regular:'정규장',pre:'장전 시간외',after:'장후 시간외'}};
+function mkPhName(k,st){ return st.phase==='closed' ? (st.reason.indexOf('휴장')>=0?'휴장':'마감') : MK_PH[k][st.phase]; }
+function mkStripHtml(){
+  const ms=Date.now(), us=mkState('US',ms), kr=mkState('KR',ms);
+  const chip=(k,st)=>`<div class="mkchip"><span class="fl">${k}</span><span class="sd ${st.phase}"></span>${mkPhName(k,st)}<span class="tm">${mkCd(st.remain)}</span></div>`;
+  return chip('US',us)+chip('KR',kr)+'<span class="mkmore"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>';
+}
+function mkDetailHtml(){
+  const ms=Date.now(), np=mkParts(ms,'Asia/Seoul'), td=mkYmd(np);
+  const off=mkOffset(ms,'America/New_York')/3600000, dst=off===-4;
+  const nd=MK_DST.find(x=>x.d>=td);
+  const usOpen=mkFmtKst(mkZoned(np.y,np.m,np.d,9,30,'America/New_York')), usClose=mkFmtKst(mkZoned(np.y,np.m,np.d,16,0,'America/New_York'));
+  const usPre=mkFmtKst(mkZoned(np.y,np.m,np.d,4,0,'America/New_York')), usAft=mkFmtKst(mkZoned(np.y,np.m,np.d,20,0,'America/New_York'));
+  const hol=k=>{ const d=Object.keys(MK_HOL[k]).sort().find(x=>x>=td); if(!d) return ''; const dd=Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8))-Date.UTC(np.y,np.m-1,np.d))/86400000); return d.slice(5).replace('-','/')+' '+MK_HOL[k][d]+' (D-'+dd+')'; };
+  const dstTxt=dst?'서머타임 적용 중':'서머타임 해제 상태';
+  const nextDst=nd?` · ${nd.d.slice(5).replace('-','/')} ${nd.to}`:'';
+  const us=mkState('US',ms);
+  return `<div><b>미국장</b> 프리 ${usPre} · 정규 ${usOpen}~${usClose} · 애프터 ~${usAft} (한국시간)${us.early?' · 오늘 조기마감':''}</div>`+
+    `<div>${dstTxt}${nextDst}</div>`+
+    `<div><b>한국장</b> 장전 08:30 · 정규 09:00~15:30 · 장후 ~18:00</div>`+
+    `<div>다음 휴장 — 미국 <b>${hol('US')||'-'}</b> · 한국 <b>${hol('KR')||'-'}</b></div>`;
+}
+function mkBasisHtml(k){
+  const st=mkState(k,Date.now());
+  if(st.phase==='regular') return '<span class="sd"></span>실시간 · 정규장';
+  if(st.phase==='pre'||st.phase==='after') return '<span class="sd"></span>'+(k==='US'?(st.phase==='pre'?'프리마켓 시세':'애프터마켓 시세'):'시간외 시세');
+  return '<span class="sd"></span>직전 종가 기준 · '+mkCd(st.remain)+' 후 개장';
+}
+function mkBasisClass(k){ const st=mkState(k,Date.now()); return 'mkb '+(st.phase==='regular'?'live':(st.phase==='closed'?'off':'ext')); }
+function mkTick(){
+  const strip=document.getElementById('mktStrip');
+  if(strip){
+    const open=strip.classList.contains('open');
+    let chips=strip.querySelector('.mkchips');
+    if(!chips){
+      strip.innerHTML='<div class="mkchips" style="display:contents"></div><div class="mkdetail"></div>';
+      chips=strip.querySelector('.mkchips');
+    }
+    chips.innerHTML=mkStripHtml();
+    if(open) strip.querySelector('.mkdetail').innerHTML=mkDetailHtml();
+  }
+  document.querySelectorAll('[data-mkb]').forEach(el=>{ const k=el.getAttribute('data-mkb'); el.className=mkBasisClass(k); el.innerHTML=mkBasisHtml(k); });
+}
+function mkInit(){
+  const strip=document.getElementById('mktStrip'); if(!strip) return;
+  strip.addEventListener('click',()=>{ strip.classList.toggle('open'); mkTick(); });
+  mkTick(); setInterval(mkTick,1000);
+}
+
 function renderTables(){
   const cont=document.getElementById('acctPages'); cont.innerHTML='';
   const t=acctTotals();
@@ -3833,6 +3957,7 @@ function renderTables(){
     const headerEv = a==='isa' ? ev+ISA_CASH : ev;
     cont.innerHTML+=`<div class="page">
       <div class="page-head"><h2><span class="idx" style="background:${m.color}1a; color:${m.color};">${ACCT_ICONS[a]}</span>${m.name}</h2><div class="total">${won(headerEv)}</div></div>
+      <div class="mkb-row"><span data-mkb="${a==='overseas'?'US':'KR'}" class="${mkBasisClass(a==='overseas'?'US':'KR')}">${mkBasisHtml(a==='overseas'?'US':'KR')}</span></div>
       <div class="acct-chiprow">
         <div class="acct-chip"><div class="k">매입금액</div><div class="v">${won(cost)}</div></div>
         <div class="acct-chip ${clsOf(ret)}"><div class="k">평가손익</div><div class="v">${pnl>=0?'+':''}${won(pnl)}</div><div class="p">${sign(ret)}</div></div>
@@ -8587,6 +8712,7 @@ loadFutureSnaps().then(()=>{
   }
 });
 initUI();
+mkInit();
 initCoverDetail();
 initBalanceEyeBtn();
 initStreakParticles();
