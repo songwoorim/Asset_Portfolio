@@ -78,8 +78,8 @@
   .live-status{ flex:1 1 0; }
   .livebar .spacer{ flex:0 0 0; min-width:0; }
   .mktstrip{ flex:0 0 100%; order:9; display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 -4px -2px 0; padding-top:6px; border-top:1px solid var(--bar-border); cursor:pointer; }
-  .mkchip{ display:flex; align-items:center; gap:6px; background:var(--bar-hover-bg); border-radius:9999px; padding:3px 10px 3px 8px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--bar-fg-soft); white-space:nowrap; }
-  .mkchip .fl{ font-size:9px; font-weight:800; letter-spacing:.03em; opacity:.7; }
+  .mkchip{ display:flex; align-items:center; gap:6px; background:var(--bar-hover-bg); border-radius:9999px; padding:3px 10px 3px 4px; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; font-size:10.5px; font-weight:600; color:var(--bar-fg-soft); white-space:nowrap; }
+  .mkflag{ width:16px; height:16px; border-radius:50%; flex:none; display:block; box-shadow:0 0 0 1px rgba(128,128,128,.28); }
   .mkchip .tm{ color:var(--bar-fg); font-weight:700; font-variant-numeric:tabular-nums; }
   .mkchip .sd{ width:7px; height:7px; border-radius:50%; flex:none; background:#8e8e93; }
   .mkchip .sd.regular{ background:#34c76b; animation:mkpulse 2s infinite; }
@@ -88,11 +88,21 @@
   .mkmore{ margin-left:auto; padding-right:4px; color:var(--bar-fg-soft); font-size:10px; display:flex; align-items:center; }
   .mkmore svg{ width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
   .mktstrip.open .mkmore svg{ transform:rotate(180deg); }
-  .mkdetail{ flex:0 0 100%; display:none; flex-direction:column; gap:4px; padding:6px 2px 4px 0; font-size:10.5px; line-height:1.5; color:var(--bar-fg-soft); font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
-  .mktstrip.open .mkdetail{ display:flex; }
-  .mkdetail b{ color:var(--bar-fg); font-weight:700; }
+  .mkdetail{ flex:0 0 100%; display:none; grid-template-columns:1fr 1fr; gap:8px; padding:8px 4px 4px 0; margin-right:-4px; }
+  .mktstrip.open .mkdetail{ display:grid; }
+  @media (max-width:400px){ .mkdetail{ grid-template-columns:1fr; } }
+  .mkdc{ background:var(--bar-hover-bg); border-radius:14px; padding:10px 11px; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; cursor:default; }
+  .mkdc .h{ display:flex; align-items:center; gap:7px; font-size:11.5px; font-weight:800; color:var(--bar-fg); }
+  .mkdc .h .mkflag{ width:18px; height:18px; }
+  .mkdc .h i{ font-style:normal; font-size:9.5px; font-weight:800; padding:2px 7px; border-radius:9999px; margin-left:auto; background:rgba(142,142,147,.2); color:var(--bar-fg-soft); }
+  .mkdc .h i.regular{ background:rgba(52,199,107,.2); color:#34c76b; } .mkdc .h i.pre{ background:rgba(240,180,60,.2); color:#f0b43c; } .mkdc .h i.after{ background:rgba(255,144,64,.2); color:#ff9040; }
+  .mkdc ul{ list-style:none; margin:7px 0 0; padding:0; display:flex; flex-direction:column; gap:4px; }
+  .mkdc li{ display:flex; gap:6px; font-size:10.5px; color:var(--bar-fg-soft); line-height:1.45; font-weight:500; }
+  .mkdc li .k{ flex:none; width:58px; white-space:nowrap; opacity:.8; }
+  .mkdc li b{ color:var(--bar-fg); font-weight:700; }
   .mkb-row{ display:flex; margin:-2px 0 10px; }
-  .mkb{ display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; padding:5px 10px; border-radius:9999px; white-space:nowrap; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
+  .mkb{ display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; padding:3px 10px 3px 4px; border-radius:9999px; white-space:nowrap; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
+  .mkb .mkflag{ width:15px; height:15px; }
   .mkb .sd{ width:6px; height:6px; border-radius:50%; background:currentColor; flex:none; }
   .mkb.live{ background:rgba(52,199,107,.15); color:#1f9d55; } .mkb.live .sd{ animation:mkpulse 2s infinite; }
   .mkb.ext{ background:rgba(240,180,60,.18); color:#b97d0a; }
@@ -3866,31 +3876,49 @@ function mkFmtKst(ms){ const p=mkParts(ms,'Asia/Seoul'); return String(p.h).padS
 function mkCd(ms){ const s=Math.floor(ms/1000), h=Math.floor(s/3600); if(h>=24) return Math.floor(h/24)+'일 '+(h%24)+'시간'; return h+':'+String(Math.floor(s%3600/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
 const MK_PH={US:{regular:'정규장',pre:'프리마켓',after:'애프터마켓'},KR:{regular:'정규장',pre:'장전 시간외',after:'장후 시간외'}};
 function mkPhName(k,st){ return st.phase==='closed' ? (st.reason.indexOf('휴장')>=0?'휴장':'마감') : MK_PH[k][st.phase]; }
+function mkFlagUS(){
+  var st=''; for(var i=0;i<7;i++){ st+='<rect x="0" y="'+(i*24/7).toFixed(2)+'" width="24" height="'+(24/7+0.02).toFixed(2)+'" fill="'+(i%2?'#fff':'#c8283c')+'"/>'; }
+  var dots=''; for(var r=0;r<3;r++)for(var c=0;c<3;c++) dots+='<circle cx="'+(2.6+c*3.2)+'" cy="'+(2.4+r*3.1)+'" r=".85" fill="#fff"/>';
+  return '<svg class="mkflag" viewBox="0 0 24 24"><g>'+st+'<rect x="0" y="0" width="12.4" height="12.9" fill="#2b3f8c"/>'+dots+'</g></svg>';
+}
+function mkFlagKR(){
+  function tri(a,pat){ /* pat: 3개 막대, 1=실선 0=끊김 */
+    var o='', ys=[-1.4,0,1.4];
+    for(var i=0;i<3;i++){ var y=12-7.9+ys[i];
+      if(pat[i]) o+='<line x1="9.9" x2="14.1" y1="'+y+'" y2="'+y+'"/>';
+      else o+='<line x1="9.9" x2="11.6" y1="'+y+'" y2="'+y+'"/><line x1="12.4" x2="14.1" y1="'+y+'" y2="'+y+'"/>'; }
+    return '<g transform="rotate('+a+' 12 12)" stroke="#222" stroke-width=".95" stroke-linecap="butt">'+o+'</g>';
+  }
+  return '<svg class="mkflag" viewBox="0 0 24 24"><g><rect width="24" height="24" fill="#fff"/>'+
+    '<g transform="rotate(0 12 12) translate(12 12) scale(.86) translate(-12 -12)"><path d="M6.9 12a5.1 5.1 0 0 1 10.2 0Z" fill="#cd2e3a"/><path d="M6.9 12a5.1 5.1 0 0 0 10.2 0Z" fill="#0047a0"/>'+
+    '<circle cx="9.45" cy="12" r="2.55" fill="#cd2e3a"/><circle cx="14.55" cy="12" r="2.55" fill="#0047a0"/></g>'+
+    tri(-56,[1,1,1])+tri(56,[0,1,0])+tri(-124,[1,0,1])+tri(124,[0,0,0])+'</g></svg>';
+}
+const MK_FLAG={US:mkFlagUS(),KR:mkFlagKR()};
+function mkHol(st){ return st.phase==='closed' && st.reason.indexOf('휴장')>=0; }
 function mkStripHtml(){
   const ms=Date.now(), us=mkState('US',ms), kr=mkState('KR',ms);
-  const chip=(k,st)=>`<div class="mkchip"><span class="fl">${k}</span><span class="sd ${st.phase}"></span>${mkPhName(k,st)}<span class="tm">${mkCd(st.remain)}</span></div>`;
+  const chip=(k,st)=>`<div class="mkchip">${MK_FLAG[k]}<span class="sd ${st.phase}"></span>${mkPhName(k,st)}${mkHol(st)?'':`<span class="tm">${mkCd(st.remain)}</span>`}</div>`;
   return chip('US',us)+chip('KR',kr)+'<span class="mkmore"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>';
 }
 function mkDetailHtml(){
   const ms=Date.now(), np=mkParts(ms,'Asia/Seoul'), td=mkYmd(np);
   const off=mkOffset(ms,'America/New_York')/3600000, dst=off===-4;
   const nd=MK_DST.find(x=>x.d>=td);
-  const usOpen=mkFmtKst(mkZoned(np.y,np.m,np.d,9,30,'America/New_York')), usClose=mkFmtKst(mkZoned(np.y,np.m,np.d,16,0,'America/New_York'));
-  const usPre=mkFmtKst(mkZoned(np.y,np.m,np.d,4,0,'America/New_York')), usAft=mkFmtKst(mkZoned(np.y,np.m,np.d,20,0,'America/New_York'));
-  const hol=k=>{ const d=Object.keys(MK_HOL[k]).sort().find(x=>x>=td); if(!d) return ''; const dd=Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8))-Date.UTC(np.y,np.m-1,np.d))/86400000); return d.slice(5).replace('-','/')+' '+MK_HOL[k][d]+' (D-'+dd+')'; };
-  const dstTxt=dst?'서머타임 적용 중':'서머타임 해제 상태';
-  const nextDst=nd?` · ${nd.d.slice(5).replace('-','/')} ${nd.to}`:'';
-  const us=mkState('US',ms);
-  return `<div><b>미국장</b> 프리 ${usPre} · 정규 ${usOpen}~${usClose} · 애프터 ~${usAft} (한국시간)${us.early?' · 오늘 조기마감':''}</div>`+
-    `<div>${dstTxt}${nextDst}</div>`+
-    `<div><b>한국장</b> 장전 08:30 · 정규 09:00~15:30 · 장후 ~18:00</div>`+
-    `<div>다음 휴장 — 미국 <b>${hol('US')||'-'}</b> · 한국 <b>${hol('KR')||'-'}</b></div>`;
+  const K=(h,mi)=>mkFmtKst(mkZoned(np.y,np.m,np.d,h,mi,'America/New_York'));
+  const hol=k=>{ const d=Object.keys(MK_HOL[k]).sort().find(x=>x>=td); if(!d) return '-'; const dd=Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8))-Date.UTC(np.y,np.m-1,np.d))/86400000); return '<b>'+d.slice(5).replace('-','/')+' '+MK_HOL[k][d]+'</b> (D-'+dd+')'; };
+  const us=mkState('US',ms), kr=mkState('KR',ms);
+  const card=(k,name,st,li)=>`<div class="mkdc"><div class="h">${MK_FLAG[k]}${name}<i class="${st.phase}">${mkPhName(k,st)}</i></div><ul>${li}</ul></div>`;
+  const row=(a,b)=>`<li><span class="k">${a}</span><span>${b}</span></li>`;
+  const usLi=row('정규장','<b>'+K(9,30)+'~'+K(16,0)+'</b> 한국시간'+(us.early?' · 오늘 조기마감':''))+row('프리·애프터',K(4,0)+' / ~'+K(20,0))+row('서머타임',(dst?'적용 중':'해제 상태')+(nd?' · <b>'+nd.d.slice(5).replace('-','/')+'</b> '+nd.to:''))+row('다음 휴장',hol('US'));
+  const krLi=row('정규장','<b>09:00~15:30</b>')+row('시간외','장전 08:30 / 장후 ~18:00')+row('다음 휴장',hol('KR'));
+  return card('US','미국장 · 뉴욕',us,usLi)+card('KR','한국장 · KRX',kr,krLi);
 }
 function mkBasisHtml(k){
   const st=mkState(k,Date.now());
-  if(st.phase==='regular') return '<span class="sd"></span>실시간 · 정규장';
-  if(st.phase==='pre'||st.phase==='after') return '<span class="sd"></span>'+(k==='US'?(st.phase==='pre'?'프리마켓 시세':'애프터마켓 시세'):'시간외 시세');
-  return '<span class="sd"></span>직전 종가 기준 · '+mkCd(st.remain)+' 후 개장';
+  if(st.phase==='regular') return MK_FLAG[k]+'<span class="sd"></span>실시간 · 정규장';
+  if(st.phase==='pre'||st.phase==='after') return MK_FLAG[k]+'<span class="sd"></span>'+(k==='US'?(st.phase==='pre'?'프리마켓 시세':'애프터마켓 시세'):'시간외 시세');
+  return MK_FLAG[k]+(mkHol(st)?'종가 기준 · 휴장':'종가 기준 · '+mkCd(st.remain)+' 후 개장');
 }
 function mkBasisClass(k){ const st=mkState(k,Date.now()); return 'mkb '+(st.phase==='regular'?'live':(st.phase==='closed'?'off':'ext')); }
 function mkTick(){
