@@ -85,22 +85,142 @@
   .mkchip .sd.regular{ background:#34c76b; animation:mkpulse 2s infinite; }
   .mkchip .sd.pre{ background:#f0b43c; } .mkchip .sd.after{ background:#ff9040; }
   @keyframes mkpulse{0%{box-shadow:0 0 0 0 rgba(52,199,107,.55);}70%{box-shadow:0 0 0 6px rgba(52,199,107,0);}100%{box-shadow:0 0 0 0 rgba(52,199,107,0);}}
-  .mkmore{ margin-left:auto; padding-right:4px; color:var(--bar-fg-soft); font-size:10px; display:flex; align-items:center; }
-  .mkmore svg{ width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
-  .mktstrip.open .mkmore svg{ transform:rotate(180deg); }
-  .mkdetail{ flex:0 0 100%; display:none; grid-template-columns:1fr 1fr; gap:8px; padding:8px 4px 4px 0; margin-right:-4px; }
-  .mktstrip.open .mkdetail{ display:grid; }
-  @media (max-width:400px){ .mkdetail{ grid-template-columns:1fr; } }
-  .mkdc{ background:var(--bar-hover-bg); border-radius:14px; padding:10px 11px; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; cursor:default; }
-  .mkdc .h{ display:flex; align-items:center; gap:7px; font-size:11.5px; font-weight:800; color:var(--bar-fg); }
-  .mkdc .h .mkflag{ width:18px; height:18px; }
-  .mkdc .h i{ font-style:normal; font-size:9.5px; font-weight:800; padding:2px 7px; border-radius:9999px; margin-left:auto; background:rgba(142,142,147,.2); color:var(--bar-fg-soft); }
-  .mkdc .h i.regular{ background:rgba(52,199,107,.2); color:#34c76b; } .mkdc .h i.pre{ background:rgba(240,180,60,.2); color:#f0b43c; } .mkdc .h i.after{ background:rgba(255,144,64,.2); color:#ff9040; }
-  .mkdc ul{ list-style:none; margin:7px 0 0; padding:0; display:flex; flex-direction:column; gap:4px; }
-  .mkdc li{ display:flex; gap:6px; font-size:10.5px; color:var(--bar-fg-soft); line-height:1.45; font-weight:500; }
-  .mkdc li .k{ flex:none; width:58px; white-space:nowrap; opacity:.8; }
-  .mkdc li b{ color:var(--bar-fg); font-weight:700; }
-  .mkb-row{ display:flex; margin:-2px 0 10px; }
+
+  /* ---------- 시장 시계 바텀시트 (칩 → 시트) ---------- */
+  #mkSheet,#mkHome{ --ink-mute:#a3a3a8; --open:#1f9d55; --pre:#b97d0a; --after:#d4641a; }
+  html[data-theme="dark"] #mkSheet, html[data-theme="dark"] #mkHome{ --ink-mute:#6b6b6e; --open:#34c76b; --pre:#f0b43c; --after:#ff9040; }
+  .mk-sheet-bd{position:fixed; inset:0; background:rgba(0,0,0,.38); opacity:0; pointer-events:none; transition:opacity .25s; z-index:9992;}
+  .mk-sheet-bd.open{opacity:1; pointer-events:auto;}
+  #mkSheet{position:fixed; left:50%; bottom:0; width:min(100%,520px); transform:translate(-50%,105%); background:var(--paper); border-radius:26px 26px 0 0; padding:8px 12px calc(18px + env(safe-area-inset-bottom)); z-index:9993; transition:transform .34s cubic-bezier(.32,.72,0,1); max-height:88vh; overflow-y:auto; box-shadow:0 -8px 32px rgba(0,0,0,.22); scrollbar-width:none; -webkit-overflow-scrolling:touch;}
+  #mkSheet::-webkit-scrollbar{display:none;}
+  #mkSheet.open{transform:translate(-50%,0);}
+  #mkSheet .grab{width:38px; height:5px; border-radius:3px; background:var(--line); margin:2px auto 10px; cursor:pointer;}
+  #mkSheet .mkflag{ width:16px; height:16px; }
+  #mkSheet .mk.closed{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--paper),color-mix(in srgb,var(--paper) 88%,var(--ink-mute)));}
+  #mkSheet .mk .bgic{position:absolute;right:-8px;bottom:-14px;width:112px;height:112px;color:var(--ink-mute);opacity:.16;pointer-events:none;}
+  #mkSheet .mk .bgic svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;}
+  #mkSheet .mk .cl{position:relative;display:flex;align-items:center;gap:11px;margin-top:11px;padding:11px 12px;border-radius:13px;background:color-mix(in srgb,var(--card) 70%,transparent);}
+  #mkSheet .mk .cl .big{width:38px;height:38px;border-radius:12px;background:rgba(142,142,147,.2);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;flex:none;}
+  #mkSheet .mk .cl .big svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  #mkSheet .mk .cl .t1{font-size:13px;font-weight:800;}
+  #mkSheet .mk .cl .t2{font-size:10.5px;color:var(--ink-soft);margin-top:2px;font-weight:500;}
+  #mkSheet .mk .cl .t2 b{color:var(--ink);font-weight:700;}
+  #mkSheet .mk.closed .nxt{display:none;}
+  #mkSheet .sch{background:var(--paper);border-radius:16px;overflow:hidden;}
+  #mkSheet .sch .sh{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-size:11.5px;font-weight:800;color:var(--ink);}
+  #mkSheet .sch .sh svg.i{color:var(--ink-soft);}
+  #mkSheet .sch .sh .sm{margin-left:auto;font-size:10px;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;gap:6px;min-width:0;}
+  #mkSheet .sch .sh .sm .hint{color:var(--ink-mute);}
+  #mkSheet .sch .sh .tg{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;color:var(--brass);background:color-mix(in srgb,var(--brass) 12%,transparent);padding:3px 8px 3px 9px;border-radius:9999px;white-space:nowrap;}
+  #mkSheet .sch .sh .tg svg{width:11px;height:11px;transition:transform .2s;transform:rotate(180deg);}
+  #mkSheet .sch.shut .sh .tg svg{transform:none;}
+  #mkSheet .sch .sb{padding:2px 12px 12px;display:flex;flex-direction:column;gap:10px;}
+  #mkSheet .sch.shut .sb{display:none;}
+  #mkSheet .sch .wk .c{background:var(--card);}
+  #mkSheet .sch .wk .c.open{background:color-mix(in srgb,var(--open) 16%,var(--card));}
+  #mkSheet .sch .wk .c.early{background:color-mix(in srgb,var(--after) 18%,var(--card));}
+  #mkSheet .sch .wk .c.off{background:color-mix(in srgb,rgba(142,142,147,.2) 100%,var(--card));}
+  #mkSheet .sch .dd,#mkSheet .sch .pill{background:var(--card);}
+  #mkSheet .sch .sub2{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--ink-mute);margin-bottom:-4px;}
+  #mkSheet .sch .sub2 svg.i{width:12px;height:12px;}
+  #mkSheet svg.i{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+  #mkSheet .mc{background:var(--card);border-radius:22px;padding:14px 14px 14px;box-shadow:0 0 0 1px var(--line);font-family:'Inter','Noto Sans KR',sans-serif;}
+  #mkSheet .mc .ct{display:flex;align-items:center;gap:9px;cursor:pointer;}
+  #mkSheet .mc .ct .ic{width:28px;height:28px;border-radius:10px;background:color-mix(in srgb,var(--brass) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--brass);}
+  #mkSheet .mc .ct h3{margin:0;font-size:13.5px;font-weight:800;line-height:1.2;}
+  #mkSheet .mc .ct h3 small{display:block;font-size:10px;font-weight:600;color:var(--ink-mute);margin-top:1px;}
+  #mkSheet .mc .ct .clk{margin-left:auto;text-align:right;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:13px;font-weight:800;line-height:1.2;}
+  #mkSheet .mc .ct .clk small{display:block;font-size:9px;color:var(--ink-mute);font-weight:700;letter-spacing:.04em;}
+  #mkSheet .mc .ct .cv{color:var(--ink-mute);display:flex;transition:transform .2s;margin-left:2px;}
+  #mkSheet .mc.col .ct .cv{transform:rotate(180deg);}
+  #mkSheet .mc .body{margin-top:12px;display:flex;flex-direction:column;gap:9px;}
+  #mkSheet .mk{background:var(--paper);border-radius:16px;padding:11px 12px 9px;cursor:pointer;}
+  #mkSheet .mk .hd{display:flex;align-items:center;gap:9px;}
+  #mkSheet .mk .hd .mkflag{width:24px;height:24px;}
+  #mkSheet .mk .nm{font-size:12.5px;font-weight:800;line-height:1.2;}
+  #mkSheet .mk .nm small{display:block;font-size:9.5px;font-weight:600;color:var(--ink-mute);margin-top:1px;}
+  #mkSheet .mk .rt{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+  #mkSheet .mk .cdn{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;}
+  #mkSheet .tag{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:800;padding:2px 8px 2px 6px;border-radius:9999px;white-space:nowrap;background:rgba(142,142,147,.2);color:var(--ink-soft);}
+  #mkSheet .tag .d{width:6px;height:6px;border-radius:50%;background:currentColor;}
+  #mkSheet .tag.regular{background:color-mix(in srgb,var(--open) 18%,transparent);color:var(--open);}
+  #mkSheet .tag.regular .d{animation:pl 2s infinite;}
+  #mkSheet .tag.pre{background:color-mix(in srgb,var(--pre) 20%,transparent);color:var(--pre);}
+  #mkSheet .tag.after{background:color-mix(in srgb,var(--after) 20%,transparent);color:var(--after);}
+  #mkSheet .tl{position:relative;height:8px;border-radius:9999px;background:var(--card);margin-top:11px;}
+  #mkSheet .tl .sg{position:absolute;top:0;bottom:0;}
+  #mkSheet .tl .sg.pre{background:var(--pre);opacity:.6;border-radius:9999px 0 0 9999px;}
+  #mkSheet .tl .sg.reg{background:var(--open);}
+  #mkSheet .tl .sg.aft{background:var(--after);opacity:.6;border-radius:0 9999px 9999px 0;}
+  #mkSheet .tl.dim .sg{opacity:.2!important;}
+  #mkSheet .tl .now{position:absolute;top:-4px;width:4px;height:16px;border-radius:3px;background:var(--ink);transform:translateX(-50%);box-shadow:0 0 0 2px var(--paper);}
+  #mkSheet .tlx{position:relative;height:25px;margin-top:5px;font-size:9.5px;color:var(--ink-mute);font-weight:700;font-variant-numeric:tabular-nums;}
+  #mkSheet .tlx span{position:absolute;transform:translateX(-50%);text-align:center;line-height:1.3;white-space:nowrap;}
+  #mkSheet .tlx span i{display:flex;align-items:center;gap:2px;justify-content:center;font-style:normal;font-size:8.5px;font-weight:600;opacity:.85;}
+  #mkSheet .tlx span i svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  #mkSheet .tlx span.f{transform:none;text-align:left;}
+  #mkSheet .tlx span.f i{justify-content:flex-start;}
+  #mkSheet .tlx span.l{transform:translateX(-100%);text-align:right;}
+  #mkSheet .tlx span.l i{justify-content:flex-end;}
+  #mkSheet .nxt{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-soft);font-weight:500;padding-top:8px;border-top:1px dashed var(--line);margin-top:2px;}
+  #mkSheet .nxt b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;}
+  #mkSheet .mk .more{display:none;font-size:10.5px;color:var(--ink-soft);margin-top:8px;line-height:1.6;}
+  #mkSheet .mk.op .more{display:block;}
+  #mkSheet .mk .more b{color:var(--ink);}
+  #mkSheet .wk{display:grid;grid-template-columns:22px repeat(5,1fr);gap:5px;align-items:center;}
+  #mkSheet .wk .dh{text-align:center;font-size:9.5px;font-weight:700;color:var(--ink-mute);line-height:1.2;padding:4px 0;border-radius:10px;cursor:pointer;}
+  #mkSheet .wk .dh b{display:block;font-size:12px;color:var(--ink);font-weight:800;font-family:'Inter',sans-serif;}
+  #mkSheet .wk .dh.today{background:color-mix(in srgb,var(--brass) 14%,transparent);}
+  #mkSheet .wk .dh.today b{color:var(--brass);}
+  #mkSheet .wk .dh.sel{box-shadow:0 0 0 1.5px var(--ink-mute);}
+  #mkSheet .wk .rl .mkflag{width:18px;height:18px;}
+  #mkSheet .wk .c{height:28px;border-radius:9px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--ink-mute);cursor:pointer;}
+  #mkSheet .wk .c.open{background:color-mix(in srgb,var(--open) 16%,transparent);color:var(--open);}
+  #mkSheet .wk .c.early{background:color-mix(in srgb,var(--after) 18%,transparent);color:var(--after);}
+  #mkSheet .wk .c.off{background:rgba(142,142,147,.14);}
+  #mkSheet .wk .c.today{box-shadow:0 0 0 1.5px var(--brass);}
+  #mkSheet .wk .c.sel{outline:1.5px solid var(--ink-mute);outline-offset:1px;}
+  #mkSheet .wk .c svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
+  #mkSheet .wk .c.live svg{animation:pl 2s infinite;border-radius:50%;}
+  #mkSheet .dd{background:var(--paper);border-radius:12px;padding:8px 11px;font-size:10.5px;color:var(--ink-soft);line-height:1.6;}
+  #mkSheet .dd b{color:var(--ink);font-weight:700;}
+  #mkSheet .dd div{display:flex;align-items:center;gap:7px;}
+  #mkSheet .dd .mkflag{width:14px;height:14px;}
+  #mkSheet .pills{display:flex;flex-wrap:wrap;gap:6px;}
+  #mkSheet .pill{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border-radius:9999px;padding:4px 10px 4px 5px;font-size:10px;color:var(--ink-soft);font-weight:600;white-space:nowrap;}
+  #mkSheet .pill .mkflag{width:15px;height:15px;}
+  #mkSheet .pill b{color:var(--ink);font-weight:700;}
+  #mkSheet .pill em{font-style:normal;color:var(--brass);font-weight:800;font-family:'Inter',sans-serif;}
+  #mkSheet .pill.dst{padding-left:8px;}
+  #mkSheet .pill.dst svg{color:var(--pre);}
+  #mkSheet .ct{display:flex; align-items:center; gap:9px;}
+  #mkSheet .ct .ic{width:28px; height:28px; border-radius:10px; background:color-mix(in srgb,var(--brass) 14%,transparent); display:flex; align-items:center; justify-content:center; color:var(--brass);}
+  #mkSheet .ct h3{margin:0; font-size:13.5px; font-weight:800; line-height:1.2; font-family:'Inter','Noto Sans KR',sans-serif;}
+  #mkSheet .ct h3 small{display:block; font-size:10px; font-weight:600; color:var(--ink-mute); margin-top:1px;}
+  #mkSheet .ct .clk{margin-left:auto; text-align:right; font-family:'Inter',sans-serif; font-variant-numeric:tabular-nums; font-size:13px; font-weight:800; line-height:1.2;}
+  #mkSheet .ct .clk small{display:block; font-size:9px; color:var(--ink-mute); font-weight:700; letter-spacing:.04em;}
+  #mkSheet .ct .x{width:28px; height:28px; border-radius:50%; border:0; background:var(--paper); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; padding:0;}
+  #mkSheet .ct .x svg{width:14px; height:14px;}
+  #mkSheet .body{margin-top:12px; display:flex; flex-direction:column; gap:9px;}
+  #mkSheet .mc{background:var(--card); border-radius:22px; padding:14px; box-shadow:0 0 0 1px var(--line); font-family:'Inter','Noto Sans KR',sans-serif;}
+  #mkSheet .mk, #mkSheet .sch{ background:color-mix(in srgb,var(--ink) 5.5%,var(--card)); }
+  #mkSheet .dd, #mkSheet .pill{ background:color-mix(in srgb,var(--ink) 8%,var(--card)); }
+  #mkSheet .wk .c{ background:color-mix(in srgb,var(--ink) 8%,var(--card)); }
+  #mkSheet .wk .c.open{ background:color-mix(in srgb,var(--open) 16%,var(--card)); } #mkSheet .wk .c.early{ background:color-mix(in srgb,var(--after) 18%,var(--card)); } #mkSheet .wk .c.off{ background:color-mix(in srgb,var(--ink-mute) 18%,var(--card)); }
+  #mkSheet .tl{ background:color-mix(in srgb,var(--ink) 10%,var(--card)); }
+  #mkSheet .mk.closed{ background:linear-gradient(135deg,color-mix(in srgb,var(--ink) 5.5%,var(--card)),color-mix(in srgb,var(--ink-mute) 20%,var(--card))); }
+  /* 상단 칩 끝 아이콘 버튼 + 홈 요약 줄 */
+  .mkopen{ margin-left:auto; width:26px; height:26px; border-radius:50%; background:var(--bar-hover-bg); color:var(--bar-fg-soft); display:flex; align-items:center; justify-content:center; flex:none; }
+  .mkopen svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .mkhome{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:9px 10px 9px 12px; margin:12px 2px 0; cursor:pointer; font-size:11.5px; color:var(--ink-soft); font-weight:600; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
+  .mkhome-in{ display:flex; align-items:center; gap:8px; }
+  .mkhome .mkflag{ width:18px; height:18px; }
+  .mkhome b{ color:var(--ink); font-weight:700; }
+  .mkhome .sep{ width:1px; height:12px; background:var(--line); margin:0 2px; }
+  .mkhome .mkopen{ background:color-mix(in srgb,var(--brass) 12%,transparent); color:var(--brass); }
+  .mkhome .sd{ width:6px; height:6px; border-radius:50%; background:#8e8e93; flex:none; }
+  .mkhome .sd.regular{ background:#34c76b; animation:mkpulse 2s infinite; } .mkhome .sd.pre{ background:#f0b43c; } .mkhome .sd.after{ background:#ff9040; }
+    .mkb-row{ display:flex; margin:-2px 0 10px; }
   .mkb{ display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; padding:3px 10px 3px 4px; border-radius:9999px; white-space:nowrap; font-family:'Inter','Noto Sans KR',-apple-system,sans-serif; }
   .mkb .mkflag{ width:15px; height:15px; }
   .mkb .sd{ width:6px; height:6px; border-radius:50%; background:currentColor; flex:none; }
@@ -1825,6 +1945,8 @@
       <div class="alloc-grid" id="allocGrid"></div>
     </div>
   </div>
+
+  <div class="mkhome" id="mkHome" data-panel="home" role="button" aria-label="시장 시계 열기"></div>
 
   <div class="goal-card page collapsible" id="goalCard" data-panel="home">
     <div class="page-head wk-head">
@@ -3895,24 +4017,149 @@ function mkFlagKR(){
     tri(-56,[1,1,1])+tri(56,[0,1,0])+tri(-124,[1,0,1])+tri(124,[0,0,0])+'</g></svg>';
 }
 const MK_FLAG={US:mkFlagUS(),KR:mkFlagKR()};
-function mkHol(st){ return st.phase==='closed' && st.reason.indexOf('휴장')>=0; }
+const MK_SVG={
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ chev:'<path d="M6 9l6 6 6-6"/>',
+ rise:'<path d="M12 3v4M4.9 8.9l2.5 2.5M19.1 8.9l-2.5 2.5M3 17h18M7 17a5 5 0 0 1 10 0"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+ moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+ cal:'<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+ calclk:'<path d="M20 11V8a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h4M4 10h16M8 3v4M16 3v4"/><circle cx="17" cy="17" r="4"/><path d="M17 15.2V17l1.2.8"/>',
+ bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"/>',
+ next:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+ dot:'<circle cx="12" cy="12" r="4" fill="currentColor"/>',
+ x:'<path d="M7 7l10 10M17 7 7 17"/>',
+ early:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5h4"/>',
+ wkend:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/><path d="M15 3h4l-4 4h4"/>',
+ holi:'<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m12 12.5 1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3z"/>'
+};
+const mkI=(n,c)=>`<svg class="i ${c||''}" viewBox="0 0 24 24">${MK_SVG[n]}</svg>`;
+const MK_DOW=['일','월','화','수','목','금','토'];
+const MK_NAME={US:['미국장','뉴욕 · NYSE/나스닥'],KR:['한국장','서울 · KRX']};
+const mk2=n=>String(n).padStart(2,'0');
+const mkHol=st=>st.phase==='closed' && st.reason.indexOf('휴장')>=0;
+const mkKstDay=ms=>{ const p=mkParts(ms,'Asia/Seoul'); return p.m+'/'+p.d+'('+MK_DOW[new Date(Date.UTC(p.y,p.m-1,p.d)).getUTCDay()]+')'; };
+const MK_UI={openBlk:{US:false,KR:false}, sel:null, sheet:false, schOpen:true};
+try{ const v=localStorage.getItem('mkSchOpen'); if(v!==null) MK_UI.schOpen=(v==='1'); }catch(e){}
+function mkSess(k,ms){
+  const c=MK_CFG[k], p=mkParts(ms,c.tz), o={y:p.y,m:p.m,d:p.d};
+  for(let i=0;i<12;i++){ const n=mkAddDay(o,i), inf=mkDayInfo(k,n); if(inf.trading && (i>0 || ms<inf.b[3])) return inf.b; }
+  return null;
+}
+function mkNextEvt(k,st,ms){
+  const b=mkSess(k,ms); if(!b) return '';
+  if(st.phase==='closed') return mkI('next')+(mkHol(st)?st.reason+' · ':'')+'다음 개장 <b>'+mkKstDay(b[1])+' '+mkFmtKst(b[1])+'</b>';
+  if(st.phase==='pre') return mkI('next')+'정규장 개장 <b>'+mkFmtKst(b[1])+'</b>';
+  if(st.phase==='regular') return mkI('next')+'정규장 마감 <b>'+mkFmtKst(b[2])+'</b>';
+  return mkI('next')+'애프터 종료 <b>'+mkFmtKst(b[3])+'</b>';
+}
+function mkClosedBlock(k,st,ms){
+  const b=mkSess(k,ms), wk=st.reason.indexOf('주말')>=0, nm=st.reason.replace(' 휴장','');
+  const ic=wk?'wkend':'holi', t1=wk?'주말 휴장':nm+' 휴장';
+  return `<div class="mk closed" data-mk="${k}"><div class="bgic"><svg viewBox="0 0 24 24">${MK_SVG[ic]}</svg></div><div class="hd">${MK_FLAG[k]}<div class="nm">${MK_NAME[k][0]}<small>${MK_NAME[k][1]}</small></div><div class="rt"><span class="tag"><span class="d"></span>휴장</span></div></div>`+
+   `<div class="cl"><span class="big"><svg viewBox="0 0 24 24">${MK_SVG[ic]}</svg></span><div><div class="t1">${t1}</div><div class="t2">다음 개장 <b>${mkKstDay(b[1])} ${mkFmtKst(b[1])}</b></div></div></div></div>`;
+}
+function mkBlock(k,st,ms){
+  if(mkHol(st)) return mkClosedBlock(k,st,ms);
+  const b=mkSess(k,ms), w=b[3]-b[0], pc=t=>(t-b[0])/w*100, inWin=ms>=b[0]&&ms<b[3];
+  const seg=`<div class="sg pre" style="left:0;width:${pc(b[1])}%"></div><div class="sg reg" style="left:${pc(b[1])}%;width:${pc(b[2])-pc(b[1])}%"></div><div class="sg aft" style="left:${pc(b[2])}%;right:0"></div>`;
+  const mk=inWin?`<div class="now" style="left:${pc(ms).toFixed(2)}%"></div>`:'';
+  const lab=(t,ic,l,cls)=>`<span class="${cls||''}" style="left:${pc(t)}%">${mkFmtKst(t)}<i>${mkI(ic)}${l}</i></span>`;
+  const narrow=pc(b[1])<14;
+  const tlx=(narrow?'':lab(b[0],'rise','프리','f'))+lab(b[1],'sun','정규',narrow?'f':'')+lab(b[2],'moon','애프터')+lab(b[3],'x','종료','l');
+  const tg=`<span class="tag ${st.phase}"><span class="d"></span>${mkPhName(k,st)}</span>`;
+  let more='';
+  if(k==='US'){ const off=mkOffset(ms,'America/New_York')/3600000; more='정규장 <b>'+mkFmtKst(b[1])+'~'+mkFmtKst(b[2])+'</b> · 프리 '+mkFmtKst(b[0])+' · 애프터 ~'+mkFmtKst(b[3])+'<br>서머타임 <b>'+(off===-4?'적용 중':'해제 상태')+'</b>'+(st.early?' · 조기마감일':''); }
+  else more='정규장 <b>09:00~15:30</b> · 장전 08:30 · 장후 ~18:00';
+  return `<div class="mk${MK_UI.openBlk[k]?' op':''}" data-mk="${k}"><div class="hd">${MK_FLAG[k]}<div class="nm">${MK_NAME[k][0]}<small>${MK_NAME[k][1]}</small></div><div class="rt">${tg}<div class="cdn">${mkCd(st.remain)}</div></div></div>`+
+   `<div class="tl${inWin?'':' dim'}">${seg}${mk}</div><div class="tlx">${tlx}</div><div class="nxt">${mkNextEvt(k,st,ms)}</div><div class="more">${more}</div></div>`;
+}
+function mkWeekDays(ms){
+  const np=mkParts(ms,'Asia/Seoul'), o={y:np.y,m:np.m,d:np.d}, w=new Date(Date.UTC(o.y,o.m-1,o.d)).getUTCDay();
+  const mon=mkAddDay(o,w===0?1:(w===6?2:1-w)), a=[]; for(let i=0;i<5;i++) a.push(mkAddDay(mon,i));
+  return {days:a, td:mkYmd(o), next:(w===0||w===6)};
+}
+function mkWeekHtml(ms){
+  const W=mkWeekDays(ms);
+  let h='<div class="wk"><div></div>'+W.days.map((d,i)=>`<div class="dh${mkYmd(d)===W.td?' today':''}${MK_UI.sel===i?' sel':''}" data-d="${i}">${MK_DOW[new Date(Date.UTC(d.y,d.m-1,d.d)).getUTCDay()]}<b>${d.d}</b></div>`).join('');
+  ['US','KR'].forEach(k=>{ h+=`<div class="rl">${MK_FLAG[k]}</div>`;
+    W.days.forEach((d,i)=>{ const inf=mkDayInfo(k,d), isT=mkYmd(d)===W.td; let cls='c', ic='';
+      if(!inf.trading){ cls+=' off'; ic=inf.reason==='주말'?'':'<span style="font-size:8.5px">'+(inf.reason.length>3?inf.reason.slice(0,3):inf.reason)+'</span>'; }
+      else if(inf.early){ cls+=' early'; ic=mkI('early'); } else { cls+=' open'; ic=mkI('dot'); }
+      if(isT) cls+=' today'; if(isT&&inf.trading&&mkState(k,ms).phase==='regular') cls+=' live'; if(MK_UI.sel===i) cls+=' sel';
+      h+=`<div class="${cls}" data-d="${i}">${ic}</div>`; }); });
+  return h+'</div>';
+}
+function mkDayDetail(ms){
+  if(MK_UI.sel==null) return ''; const W=mkWeekDays(ms), d=W.days[MK_UI.sel];
+  const row=k=>{ const inf=mkDayInfo(k,d);
+    if(!inf.trading) return `<div>${MK_FLAG[k]}<span><b>${MK_NAME[k][0]}</b> ${inf.reason==='주말'?'휴장 (주말)':'휴장 · '+inf.reason}</span></div>`;
+    return `<div>${MK_FLAG[k]}<span><b>${MK_NAME[k][0]}</b> 정규 <b>${mkFmtKst(inf.b[1])}~${mkFmtKst(inf.b[2])}</b>${inf.early?' · <b style="color:var(--after)">조기마감</b>':''} <span style="color:var(--ink-mute)">(한국시간)</span></span></div>`; };
+  return `<div class="dd"><div style="color:var(--ink-mute);font-size:9.5px;font-weight:700">${d.m}/${d.d}(${MK_DOW[new Date(Date.UTC(d.y,d.m-1,d.d)).getUTCDay()]})</div>${row('US')}${row('KR')}</div>`;
+}
+function mkNextHolTxt(k,ms){
+  const np=mkParts(ms,'Asia/Seoul'), td=mkYmd(np), d=Object.keys(MK_HOL[k]).sort().find(x=>x>=td); if(!d) return '';
+  const dd=Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8))-Date.UTC(np.y,np.m-1,np.d))/86400000);
+  return '<b>'+d.slice(5).replace('-','/')+' '+MK_HOL[k][d]+'</b> <em>D-'+dd+'</em>';
+}
+function mkPills(ms){
+  const nx=MK_DST.find(x=>x.d>=mkYmd(mkParts(ms,'Asia/Seoul')));
+  return '<div class="pills"><span class="pill">'+MK_FLAG.US+'휴장 '+mkNextHolTxt('US',ms)+'</span><span class="pill">'+MK_FLAG.KR+'휴장 '+mkNextHolTxt('KR',ms)+'</span>'+
+    (nx?'<span class="pill dst">'+mkI('sun')+'서머타임 '+nx.d.slice(5).replace('-','/')+' <b>'+nx.to+'</b></span>':'')+'</div>';
+}
+function mkNextHolShort(ms){
+  const np=mkParts(ms,'Asia/Seoul'), td=mkYmd(np); let best=null;
+  ['US','KR'].forEach(k=>{ const d=Object.keys(MK_HOL[k]).sort().find(x=>x>=td); if(d&&(!best||d<best.d)) best={d,k,n:MK_HOL[k][d]}; });
+  if(!best) return '';
+  const dd=Math.round((Date.UTC(+best.d.slice(0,4),+best.d.slice(5,7)-1,+best.d.slice(8))-Date.UTC(np.y,np.m-1,np.d))/86400000);
+  return MK_FLAG[best.k].replace('class="mkflag"','class="mkflag" style="width:14px;height:14px"')+' '+best.d.slice(5).replace('-','/')+' '+best.n+' D-'+dd;
+}
+function mkSchedule(ms){
+  const open=MK_UI.schOpen;
+  const sum=open?'<span class="hint" style="color:var(--ink-mute)">날짜·칸을 누르면 상세</span>':'<span style="display:inline-flex;align-items:center;gap:5px;min-width:0;white-space:nowrap">'+mkNextHolShort(ms)+'</span>';
+  return `<div class="sch${open?'':' shut'}"><div class="sh" data-sch>${mkI('cal')}일정<span class="sm">${sum}<span class="tg">${open?'숨기기':'보기'}${mkI('chev')}</span></span></div><div class="sb"><div class="sub2">${mkWeekDays(ms).next?'다음 주':'이번 주'}</div>${mkWeekHtml(ms)}${mkDayDetail(ms)}<div class="sub2">${mkI('bell')}다가오는 일정</div>${mkPills(ms)}</div></div>`;
+}
+function mkCardHtml(ms,us,kr){
+  const np=mkParts(ms,'Asia/Seoul');
+  return `<div class="mc"><div class="ct"><span class="ic">${mkI('clock')}</span><h3>시장 시계<small>${np.m}월 ${np.d}일 ${MK_DOW[new Date(Date.UTC(np.y,np.m-1,np.d)).getUTCDay()]}요일</small></h3><div class="clk">${mk2(np.h)}:${mk2(np.mi)}:${mk2(np.s)}<small>KST</small></div><button type="button" class="x" data-close aria-label="닫기">${mkI('x')}</button></div><div class="body">${mkBlock('US',us,ms)}${mkBlock('KR',kr,ms)}${mkSchedule(ms)}</div></div>`;
+}
+function mkEnsureSheet(){
+  if(document.getElementById('mkSheet')) return;
+  const wrap=document.createElement('div');
+  wrap.innerHTML='<div class="mk-sheet-bd" id="mkSheetBd"></div><div id="mkSheet" role="dialog" aria-label="시장 시계"><div class="grab" data-close></div><div id="mkSheetBody"></div></div>';
+  while(wrap.firstChild) document.body.appendChild(wrap.firstChild);
+  document.getElementById('mkSheetBd').addEventListener('click',()=>mkOpenSheet(false));
+  document.getElementById('mkSheet').addEventListener('click',e=>{
+    if(e.target.closest('[data-close]')){ mkOpenSheet(false); return; }
+    if(e.target.closest('[data-sch]')){ MK_UI.schOpen=!MK_UI.schOpen; try{localStorage.setItem('mkSchOpen',MK_UI.schOpen?'1':'0');}catch(er){} mkRenderSheet(); return; }
+    const d=e.target.closest('[data-d]'); if(d){ const i=+d.getAttribute('data-d'); MK_UI.sel=MK_UI.sel===i?null:i; mkRenderSheet(); return; }
+    const b=e.target.closest('.mk[data-mk]'); if(b){ const k=b.getAttribute('data-mk'); MK_UI.openBlk[k]=!MK_UI.openBlk[k]; mkRenderSheet(); }
+  });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && MK_UI.sheet) mkOpenSheet(false); });
+}
+function mkRenderSheet(){
+  const sh=document.getElementById('mkSheet'), body=document.getElementById('mkSheetBody'); if(!sh||!MK_UI.sheet) return;
+  const ms=Date.now(), top=sh.scrollTop;
+  body.innerHTML=mkCardHtml(ms,mkState('US',ms),mkState('KR',ms));
+  sh.scrollTop=top;
+}
+function mkOpenSheet(open){
+  if(open) mkEnsureSheet();
+  const sh=document.getElementById('mkSheet'), bd=document.getElementById('mkSheetBd'); if(!sh) return;
+  MK_UI.sheet=open;
+  if(open) mkRenderSheet();
+  sh.classList.toggle('open',open); bd.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
 function mkStripHtml(){
   const ms=Date.now(), us=mkState('US',ms), kr=mkState('KR',ms);
   const chip=(k,st)=>`<div class="mkchip">${MK_FLAG[k]}<span class="sd ${st.phase}"></span>${mkPhName(k,st)}${mkHol(st)?'':`<span class="tm">${mkCd(st.remain)}</span>`}</div>`;
-  return chip('US',us)+chip('KR',kr)+'<span class="mkmore"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>';
+  return chip('US',us)+chip('KR',kr)+`<span class="mkopen" aria-hidden="true">${mkI('calclk')}</span>`;
 }
-function mkDetailHtml(){
-  const ms=Date.now(), np=mkParts(ms,'Asia/Seoul'), td=mkYmd(np);
-  const off=mkOffset(ms,'America/New_York')/3600000, dst=off===-4;
-  const nd=MK_DST.find(x=>x.d>=td);
-  const K=(h,mi)=>mkFmtKst(mkZoned(np.y,np.m,np.d,h,mi,'America/New_York'));
-  const hol=k=>{ const d=Object.keys(MK_HOL[k]).sort().find(x=>x>=td); if(!d) return '-'; const dd=Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8))-Date.UTC(np.y,np.m-1,np.d))/86400000); return '<b>'+d.slice(5).replace('-','/')+' '+MK_HOL[k][d]+'</b> (D-'+dd+')'; };
-  const us=mkState('US',ms), kr=mkState('KR',ms);
-  const card=(k,name,st,li)=>`<div class="mkdc"><div class="h">${MK_FLAG[k]}${name}<i class="${st.phase}">${mkPhName(k,st)}</i></div><ul>${li}</ul></div>`;
-  const row=(a,b)=>`<li><span class="k">${a}</span><span>${b}</span></li>`;
-  const usLi=row('정규장','<b>'+K(9,30)+'~'+K(16,0)+'</b> 한국시간'+(us.early?' · 오늘 조기마감':''))+row('프리·애프터',K(4,0)+' / ~'+K(20,0))+row('서머타임',(dst?'적용 중':'해제 상태')+(nd?' · <b>'+nd.d.slice(5).replace('-','/')+'</b> '+nd.to:''))+row('다음 휴장',hol('US'));
-  const krLi=row('정규장','<b>09:00~15:30</b>')+row('시간외','장전 08:30 / 장후 ~18:00')+row('다음 휴장',hol('KR'));
-  return card('US','미국장 · 뉴욕',us,usLi)+card('KR','한국장 · KRX',kr,krLi);
+function mkHomeHtml(){
+  const ms=Date.now(), us=mkState('US',ms), kr=mkState('KR',ms);
+  const part=(k,st)=>`${MK_FLAG[k]}<span class="sd ${st.phase}"></span><b>${mkPhName(k,st)}</b>`;
+  return '<div class="mkhome-in">'+part('US',us)+'<span class="sep"></span>'+part('KR',kr)+`<span style="color:var(--ink-mute)">· 시장 시계</span><span class="mkopen" aria-hidden="true">${mkI('calclk')}</span></div>`;
 }
 function mkBasisHtml(k){
   const st=mkState(k,Date.now());
@@ -3923,21 +4170,15 @@ function mkBasisHtml(k){
 function mkBasisClass(k){ const st=mkState(k,Date.now()); return 'mkb '+(st.phase==='regular'?'live':(st.phase==='closed'?'off':'ext')); }
 function mkTick(){
   const strip=document.getElementById('mktStrip');
-  if(strip){
-    const open=strip.classList.contains('open');
-    let chips=strip.querySelector('.mkchips');
-    if(!chips){
-      strip.innerHTML='<div class="mkchips" style="display:contents"></div><div class="mkdetail"></div>';
-      chips=strip.querySelector('.mkchips');
-    }
-    chips.innerHTML=mkStripHtml();
-    if(open) strip.querySelector('.mkdetail').innerHTML=mkDetailHtml();
-  }
+  if(strip) strip.innerHTML=mkStripHtml();
+  const home=document.getElementById('mkHome'); if(home) home.innerHTML=mkHomeHtml();
   document.querySelectorAll('[data-mkb]').forEach(el=>{ const k=el.getAttribute('data-mkb'); el.className=mkBasisClass(k); el.innerHTML=mkBasisHtml(k); });
+  if(MK_UI.sheet) mkRenderSheet();
 }
 function mkInit(){
   const strip=document.getElementById('mktStrip'); if(!strip) return;
-  strip.addEventListener('click',()=>{ strip.classList.toggle('open'); mkTick(); });
+  strip.addEventListener('click',()=>mkOpenSheet(true));
+  const mh=document.getElementById('mkHome'); if(mh) mh.addEventListener('click',()=>mkOpenSheet(true));
   mkTick(); setInterval(mkTick,1000);
 }
 
