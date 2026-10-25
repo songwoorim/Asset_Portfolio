@@ -86,6 +86,42 @@
   .mkchip .sd.pre{ background:#f0b43c; } .mkchip .sd.after{ background:#ff9040; }
   @keyframes mkpulse{0%{box-shadow:0 0 0 0 rgba(52,199,107,.55);}70%{box-shadow:0 0 0 6px rgba(52,199,107,0);}100%{box-shadow:0 0 0 0 rgba(52,199,107,0);}}
 
+
+  /* ---------- 자산 요약 이미지 공유 시트 ---------- */
+  .share-sum-btn{ background:rgba(0,102,204,.08); }
+  .sh-sheet-bd{position:fixed; inset:0; background:rgba(0,0,0,.42); opacity:0; pointer-events:none; transition:opacity .25s; z-index:9994;}
+  .sh-sheet-bd.open{opacity:1; pointer-events:auto;}
+  #shSheet{position:fixed; left:50%; bottom:0; width:min(100%,520px); height:92vh; transform:translate(-50%,105%); background:var(--paper); border-radius:26px 26px 0 0; z-index:9995; transition:transform .34s cubic-bezier(.32,.72,0,1); display:flex; flex-direction:column; box-shadow:0 -8px 32px rgba(0,0,0,.25); overscroll-behavior:contain; touch-action:pan-y;}
+  #shSheet.open{transform:translate(-50%,0);} #shSheet.dragging{transition:none;}
+  #shSheet .grab{position:relative; height:24px; flex:none; cursor:grab; touch-action:none;}
+  #shSheet .grab::after{content:''; position:absolute; left:50%; top:11px; width:38px; height:5px; border-radius:3px; background:var(--ink-soft); opacity:.4; transform:translateX(-50%);}
+  #shSheet .sh-hd{display:flex; align-items:center; padding:2px 16px 10px; flex:none;}
+  #shSheet .sh-hd h3{margin:0; font-size:15px; font-weight:800; font-family:'Inter','Noto Sans KR',sans-serif;}
+  #shSheet .sh-hd .x{margin-left:auto; width:30px; height:30px; border-radius:50%; border:0; background:var(--card); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0;}
+  #shSheet .sh-hd .x svg, #shSheet svg.i{width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none;}
+  #shSheet .sh-body{flex:1; overflow-y:auto; padding:0 16px 10px; scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;}
+  #shSheet .sh-body::-webkit-scrollbar{display:none;}
+  #shSheet .prevwrap{background:color-mix(in srgb,var(--ink) 6%,var(--paper)); border-radius:18px; padding:14px; display:flex; justify-content:center; min-height:200px; align-items:flex-start;}
+  #shSheet .prevwrap img{width:100%; max-width:360px; display:block; border-radius:6px; box-shadow:0 8px 24px -10px rgba(0,0,0,.35);}
+  #shSheet .opts{margin-top:12px; background:var(--card); border-radius:18px; padding:4px 14px; font-family:'Inter','Noto Sans KR',sans-serif;}
+  #shSheet .op{display:flex; align-items:center; gap:10px; padding:11px 0; font-size:12.5px; font-weight:700;}
+  #shSheet .op + .op{border-top:1px solid var(--line);}
+  #shSheet .op .ic{width:28px; height:28px; border-radius:9px; background:var(--paper); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; flex:none;}
+  #shSheet .op small{display:block; font-size:10px; font-weight:500; color:var(--ink-soft); margin-top:1px; opacity:.85;}
+  #shSheet .op .r{margin-left:auto; display:flex; align-items:center;}
+  #shSheet .op.priv{background:color-mix(in srgb,var(--brass) 8%,transparent); margin:6px -14px 2px; padding:11px 14px; border-radius:14px; border-top:0;} #shSheet .op.priv + .op{border-top:0;}
+  #shSheet .tg{width:42px; height:25px; border-radius:9999px; background:color-mix(in srgb,var(--ink-soft) 40%,transparent); position:relative; cursor:pointer; border:0; transition:background .2s; flex:none; padding:0;}
+  #shSheet .tg::after{content:''; position:absolute; left:3px; top:3px; width:19px; height:19px; border-radius:50%; background:#fff; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  #shSheet .tg.on{background:var(--brass);} #shSheet .tg.on::after{transform:translateX(17px);}
+  #shSheet .mini{display:inline-flex; background:var(--paper); border-radius:9999px; padding:2px; gap:1px;}
+  #shSheet .mini button{border:0; background:transparent; padding:5px 10px; border-radius:9999px; font-size:10.5px; font-weight:800; color:var(--ink-soft); cursor:pointer; font-family:inherit;}
+  #shSheet .mini button.on{background:var(--ink); color:var(--card);}
+  #shSheet .acts{display:flex; gap:9px; padding:10px 16px calc(14px + env(safe-area-inset-bottom)); flex:none; background:var(--paper);}
+  #shSheet .acts button{flex:1; height:48px; border-radius:16px; border:0; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:7px; cursor:pointer; font-family:'Inter','Noto Sans KR',sans-serif;}
+  #shSheet .b1{background:var(--card); color:var(--ink); box-shadow:0 0 0 1px var(--line);} #shSheet .b2{background:var(--ink); color:var(--card);}
+  #shToast{position:fixed; left:50%; bottom:110px; transform:translateX(-50%) translateY(16px); background:var(--ink); color:var(--card); font-size:12px; font-weight:700; padding:10px 16px; border-radius:9999px; opacity:0; transition:.25s; z-index:9999; white-space:nowrap; pointer-events:none;}
+  #shToast.on{opacity:1; transform:translateX(-50%);}
+
   /* ---------- 시장 시계 바텀시트 (칩 → 시트) ---------- */
   #mkSheet,#mkHome{ --ink-mute:#a3a3a8; --open:#1f9d55; --pre:#b97d0a; --after:#d4641a; }
   html[data-theme="dark"] #mkSheet, html[data-theme="dark"] #mkHome{ --ink-mute:#6b6b6e; --open:#34c76b; --pre:#f0b43c; --after:#ff9040; }
@@ -93,8 +129,10 @@
   .mk-sheet-bd.open{opacity:1; pointer-events:auto;}
   #mkSheet{position:fixed; left:50%; bottom:0; width:min(100%,520px); transform:translate(-50%,105%); background:var(--paper); border-radius:26px 26px 0 0; padding:8px 12px calc(18px + env(safe-area-inset-bottom)); z-index:9993; transition:transform .34s cubic-bezier(.32,.72,0,1); max-height:88vh; overflow-y:auto; box-shadow:0 -8px 32px rgba(0,0,0,.22); scrollbar-width:none; -webkit-overflow-scrolling:touch;}
   #mkSheet::-webkit-scrollbar{display:none;}
-  #mkSheet.open{transform:translate(-50%,0);}
-  #mkSheet .grab{width:38px; height:5px; border-radius:3px; background:var(--line); margin:2px auto 10px; cursor:pointer;}
+  #mkSheet.open{transform:translate(-50%,0);} #mkSheet{overscroll-behavior:contain; touch-action:pan-y;} #mkSheet.dragging{transition:none;}
+  html.mk-lock, html.mk-lock body{overscroll-behavior-y:none;}
+  #mkSheet .grab{position:relative; height:24px; margin:-6px -12px 2px; cursor:grab; touch-action:none;}
+  #mkSheet .grab::after{content:''; position:absolute; left:50%; top:11px; width:38px; height:5px; border-radius:3px; background:var(--ink-mute); opacity:.55; transform:translateX(-50%);}
   #mkSheet .mkflag{ width:16px; height:16px; }
   #mkSheet .mk.closed{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--paper),color-mix(in srgb,var(--paper) 88%,var(--ink-mute)));}
   #mkSheet .mk .bgic{position:absolute;right:-8px;bottom:-14px;width:112px;height:112px;color:var(--ink-mute);opacity:.16;pointer-events:none;}
@@ -363,7 +401,8 @@
   .cover-detail-btn svg{width:11px; height:11px; transition:transform .2s;}
   .cover-detail-btn.open svg{transform:rotate(180deg);}
   .cover-detail-btn:active{transform:scale(.95);}
-  .cover-topright{display:flex; align-items:center; gap:7px; flex-shrink:0;}
+  .cover-topright{display:flex; align-items:center; gap:6px; flex-shrink:0;}
+  @media (max-width:430px){ .cover-eyebrow{font-size:9.5px; letter-spacing:.03em;} .cover-badge{gap:6px;} .cover-topright .cover-detail-btn{padding-left:9px; padding-right:8px;} }
   .balance-eye-btn{
     width:28px; height:28px; border-radius:50%; border:none; cursor:pointer;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
@@ -1875,6 +1914,9 @@
         <button class="balance-eye-btn" id="balanceEyeBtn" aria-label="잔액 보기/가리기">
           <svg class="eye-on" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
           <svg class="eye-off" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+        </button>
+        <button class="balance-eye-btn share-sum-btn" id="shareSumBtn" aria-label="자산 요약 이미지 공유">
+          <svg viewBox="0 0 24 24"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-6"/></svg>
         </button>
         <button class="cover-detail-btn" id="coverDetailBtn">TOTAL<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
@@ -4136,9 +4178,29 @@ function mkEnsureSheet(){
     const b=e.target.closest('.mk[data-mk]'); if(b){ const k=b.getAttribute('data-mk'); MK_UI.openBlk[k]=!MK_UI.openBlk[k]; mkRenderSheet(); }
   });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape' && MK_UI.sheet) mkOpenSheet(false); });
+  mkBindDrag(document.getElementById('mkSheet'));
+}
+function mkBindDrag(sh){
+  let y0=0, dy=0, on=false, t0=0;
+  sh.addEventListener('touchstart',e=>{ if(e.touches.length!==1) return; y0=e.touches[0].clientY; dy=0; on=false; t0=Date.now(); MK_UI.drag=true; },{passive:true});
+  sh.addEventListener('touchmove',e=>{
+    if(!MK_UI.drag) return;
+    const d=e.touches[0].clientY-y0;
+    if(!on){ if(d>6 && sh.scrollTop<=0){ on=true; sh.classList.add('dragging'); } else return; }
+    dy=Math.max(0,d); e.preventDefault();
+    sh.style.transform='translate(-50%,'+dy+'px)';
+  },{passive:false});
+  const end=()=>{
+    if(!MK_UI.drag) return; MK_UI.drag=false;
+    if(!on) return; on=false; sh.classList.remove('dragging');
+    const fast=dy/Math.max(1,Date.now()-t0)>0.5;
+    sh.style.transform='';
+    if(dy>90||fast) mkOpenSheet(false);
+  };
+  sh.addEventListener('touchend',end); sh.addEventListener('touchcancel',end);
 }
 function mkRenderSheet(){
-  const sh=document.getElementById('mkSheet'), body=document.getElementById('mkSheetBody'); if(!sh||!MK_UI.sheet) return;
+  const sh=document.getElementById('mkSheet'), body=document.getElementById('mkSheetBody'); if(!sh||!MK_UI.sheet||MK_UI.drag) return;
   const ms=Date.now(), top=sh.scrollTop;
   body.innerHTML=mkCardHtml(ms,mkState('US',ms),mkState('KR',ms));
   sh.scrollTop=top;
@@ -4150,6 +4212,7 @@ function mkOpenSheet(open){
   if(open) mkRenderSheet();
   sh.classList.toggle('open',open); bd.classList.toggle('open',open);
   document.body.style.overflow=open?'hidden':'';
+  document.documentElement.classList.toggle('mk-lock',open);
 }
 function mkStripHtml(){
   const ms=Date.now(), us=mkState('US',ms), kr=mkState('KR',ms);
@@ -4776,6 +4839,203 @@ function shareWeeklyImage(){
     });
   }catch(e){ console.warn('주간 리포트 이미지 생성 실패', e); }
 }
+
+/* ===== 자산 요약 이미지 공유 — 순수 캔버스 드로잉 (미리보기 = 저장 결과) ===== */
+const SH_DEF={shares:false,sAlloc:true,sHold:true,sTrend:true,theme:null};
+const SH={hide:false, shares:false, sAlloc:true, sHold:true, sTrend:true, theme:'dk', open:false, drag:false};
+try{ const o=JSON.parse(localStorage.getItem('shareOpts')||'{}'); ['shares','sAlloc','sHold','sTrend'].forEach(k=>{ if(typeof o[k]==='boolean') SH[k]=o[k]; }); if(o.theme==='lt'||o.theme==='dk') SH.theme=o.theme; else SH.theme=null; }catch(e){ SH.theme=null; }
+function shSave(){ try{ localStorage.setItem('shareOpts',JSON.stringify({shares:SH.shares,sAlloc:SH.sAlloc,sHold:SH.sHold,sTrend:SH.sTrend,theme:SH.theme})); }catch(e){} }
+function shData(){
+  const total=grandTotal(), cash=cashKRW(), t=acctTotals(), cost=investedCost(), invest=total-cash, profit=invest-cost;
+  const ret=cost>0?profit/cost*100:0;
+  let yoy=null; if(typeof AS!=='undefined'&&AS.length>1){ const past=AS[Math.max(0,AS.length-1-365)]; if(past>0) yoy=(total-past)/past*100; }
+  let series=[]; if(typeof AS!=='undefined'&&AS.length>2){ const a=AS.slice(-366), N=Math.min(60,a.length); for(let i=0;i<N;i++) series.push(a[Math.round(i*(a.length-1)/(N-1))]); }
+  const acc=[
+    {n:'해외주식',v:t.overseas.ev,r:t.overseas.cost>0?(t.overseas.ev/t.overseas.cost-1)*100:null,c:'#4a9eff'},
+    {n:'ISA',v:t.isa.ev+ISA_CASH,r:t.isa.cost>0?(t.isa.ev/t.isa.cost-1)*100:null,c:'#ff6b5e'},
+    {n:'연금저축',v:t.pension.ev,r:t.pension.cost>0?(t.pension.ev/t.pension.cost-1)*100:null,c:'#7d97c4'},
+    {n:'예수금',v:cash,r:null,c:'#9a9aa0',sub:'USD '+Math.round(CASH.usd).toLocaleString('en-US')+' + CMA '+Math.round(CASH.krwCMA/1e4).toLocaleString('en-US')+'만'}
+  ];
+  acc.forEach(a=>a.w=a.v/total*100);
+  const hold=HOLDINGS.map(h=>{ const ev=evalKRW(h); return {tk:h.ticker,n:h.nameKr,sh:h.shares,ev,w:ev/total*100,r:(ev/h.costKRW-1)*100,c:h.color||'#8e8e93'}; }).sort((a,b)=>b.ev-a.ev);
+  const d=new Date(), asof=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+' 기준';
+  return {total,profit,ret,yoy,series,acc,hold,asof};
+}
+function shDraw(ctx,W,o,D,dry){
+  const dk=o.theme==='dk';
+  const C=dk?{bg:'#17181b',card:'#232427',ink:'#f2f2f4',soft:'#9a9aa0',mute:'#6b6b70',line:'#303134',up:'#ff6b5e',down:'#6aa6ff',acc:'#409cff'}
+            :{bg:'#f5f5f7',card:'#ffffff',ink:'#1d1d1f',soft:'#6e6e73',mute:'#a3a3a8',line:'#e4e4e8',up:'#c0392b',down:'#2c4a7c',acc:'#0066cc'};
+  const F=(w,px,fam)=>w+' '+px+'px '+(fam==='k'?'"Noto Sans KR","Apple SD Gothic Neo",sans-serif':'Inter,"Noto Sans KR",-apple-system,sans-serif');
+  const PX=22, IW=W-PX*2;
+  const rr=(x,y,w,h,r)=>{ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); };
+  const fillRR=(x,y,w,h,r,col)=>{ if(dry) return; rr(x,y,w,h,r); ctx.fillStyle=col; ctx.fill(); };
+  const tx=(str,x,y,font,col,al)=>{ if(dry) return; ctx.font=font; ctx.fillStyle=col; ctx.textAlign=al||'left'; ctx.textBaseline='alphabetic'; ctx.fillText(str,x,y); };
+  const fit=(str,maxW,font)=>{ ctx.font=font; if(ctx.measureText(str).width<=maxW) return str; let s2=str; while(s2.length>1 && ctx.measureText(s2+'…').width>maxW) s2=s2.slice(0,-1); return s2+'…'; };
+  const sg=v=>(v>=0?'+':'')+v.toFixed(1)+'%';
+  const won2=n=>'₩'+Math.round(n).toLocaleString('en-US');
+  const mask='₩ ••,•••,•••';
+  if(!dry){ ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,4000); const g=ctx.createRadialGradient(W-10,0,0,W-10,0,230); g.addColorStop(0,dk?'rgba(64,156,255,.26)':'rgba(0,102,204,.16)'); g.addColorStop(1,'rgba(64,156,255,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,260); }
+  let y=26;
+  fillRR(PX,y,20,20,7,dk?'rgba(64,156,255,.18)':'rgba(0,102,204,.14)');
+  if(!dry){ ctx.strokeStyle=C.acc; ctx.lineWidth=1.6; ctx.lineJoin='round'; rr(PX+5.5,y+6.5,9,8,1.6); ctx.stroke(); ctx.beginPath(); ctx.moveTo(PX+8,y+6.5); ctx.lineTo(PX+8,y+4.8); ctx.lineTo(PX+12,y+4.8); ctx.lineTo(PX+12,y+6.5); ctx.stroke(); }
+  tx('ALL-WEATHER WEALTH',PX+27,y+14.5,F(800,9.5),C.soft);
+  tx(D.asof,W-PX,y+14,F(600,9.5,'k'),C.mute,'right');
+  y+=44;
+  tx('송우림 님의 자산 포트폴리오',PX,y,F(700,12,'k'),C.soft); y+=40;
+  tx(o.hide?mask:won2(D.total),PX,y,F(800,33),o.hide?C.mute:C.ink); y+=26;
+  // 수익률 칩
+  const up=D.ret>=0, rc=up?C.up:C.down, chipTxt=(up?'▲ ':'▼ ')+sg(D.ret);
+  if(!dry) ctx.font=F(800,12); const cw=(dry?70:ctx.measureText(chipTxt).width)+20;
+  fillRR(PX,y-2,cw,24,12,dk?(up?'rgba(255,107,94,.16)':'rgba(106,166,255,.16)'):(up?'rgba(192,57,43,.12)':'rgba(44,74,124,.12)'));
+  tx(chipTxt,PX+10,y+14,F(800,12),rc);
+  let cx=PX+cw+9;
+  if(!o.hide){ const g=(D.profit>=0?'+':'-')+Math.round(Math.abs(D.profit)).toLocaleString('en-US'); tx(g,cx,y+14,F(800,12),rc); if(!dry){ctx.font=F(800,12); cx+=ctx.measureText(g).width+8;} }
+  tx('총수익률',cx,y+14,F(600,10.5,'k'),C.soft); y+=40;
+  // 추이
+  if(o.sTrend && D.series.length>2){
+    const sh=62, S=D.series, mn=Math.min(...S), mx=Math.max(...S), rg=(mx-mn)||1, n=S.length;
+    const px=i=>PX+i/(n-1)*IW, py=v=>y+sh-4-(v-mn)/rg*(sh-12);
+    if(!dry){
+      const gr=ctx.createLinearGradient(0,y,0,y+sh); const rgb=dk?'255,107,94':'192,57,43'; gr.addColorStop(0,'rgba('+rgb+',.28)'); gr.addColorStop(1,'rgba('+rgb+',0)');
+      ctx.beginPath(); S.forEach((v,i)=>{ i?ctx.lineTo(px(i),py(v)):ctx.moveTo(px(i),py(v)); }); ctx.lineTo(px(n-1),y+sh); ctx.lineTo(px(0),y+sh); ctx.closePath(); ctx.fillStyle=gr; ctx.fill();
+      ctx.beginPath(); S.forEach((v,i)=>{ i?ctx.lineTo(px(i),py(v)):ctx.moveTo(px(i),py(v)); }); ctx.strokeStyle=(S[n-1]>=S[0])?C.up:C.down; ctx.lineWidth=2.2; ctx.lineJoin='round'; ctx.lineCap='round'; ctx.stroke();
+    }
+    y+=sh+14;
+    tx('1년 전',PX,y,F(600,9),C.mute);
+    if(D.yoy!=null) tx(sg(D.yoy),W-PX,y,F(800,9),D.yoy>=0?C.up:C.down,'right');
+    y+=20;
+  }
+  // 자산 배분 · 계좌별
+  if(o.sAlloc){
+    tx('자산 배분 · 계좌별',PX,y,F(800,10.5,'k'),C.soft); y+=11;
+    let x=PX; D.acc.forEach((a,i)=>{ const w=Math.max(2,IW*a.w/100-(i<3?2:0)); fillRR(x,y,w,10,5,a.c); x+=w+2; });
+    y+=24;
+    const cwid=(IW-8)/2;
+    D.acc.forEach((a,i)=>{
+      const x2=PX+(i%2)*(cwid+8), y2=y+Math.floor(i/2)*(80+8);
+      fillRR(x2,y2,cwid,80,14,C.card);
+      fillRR(x2+12,y2+14,8,8,3,a.c);
+      tx(a.n,x2+26,y2+22,F(700,10,'k'),C.soft);
+      tx(a.w.toFixed(1)+'%',x2+cwid-12,y2+22,F(800,10.5),C.ink,'right');
+      tx(o.hide?'₩ ••••••':won2(a.v),x2+12,y2+46,F(800,14),C.ink);
+      if(a.r==null) tx(o.hide?'현금성 자산':a.sub,x2+12,y2+66,F(700,10),C.mute);
+      else tx((a.r>=0?'▲ +':'▼ ')+Math.abs(a.r).toFixed(1)+'%',x2+12,y2+66,F(800,10.5),a.r>=0?C.up:C.down);
+    });
+    y+=80*2+8+26;
+  }
+  // 보유종목
+  if(o.sHold){
+    tx('전체 보유종목',PX,y,F(800,10.5,'k'),C.soft);
+    tx(o.hide?'비중 · 수익률':'비중 · 수익률 · 평가금액',W-PX,y,F(600,9,'k'),C.mute,'right'); y+=12;
+    const RH=52, pad=4, H=D.hold.length*RH+pad*2;
+    fillRR(PX,y,IW,H,16,C.card);
+    D.hold.forEach((h,i)=>{
+      const ry=y+pad+i*RH, cy=ry+RH/2;
+      if(i>0 && !dry){ ctx.fillStyle=C.line; ctx.fillRect(PX+12,ry,IW-24,1); }
+      if(!dry){ ctx.beginPath(); ctx.arc(PX+26,cy,14,0,Math.PI*2); ctx.fillStyle=h.c; ctx.fill(); }
+      tx(h.tk.replace(/_/g,'').slice(0,2).toUpperCase(),PX+26,cy+3.5,F(800,9.5),'#fff','center');
+      const nameMax=IW-12-64-10-46-8-48;
+      tx(fit(h.n,nameMax,F(700,11.5,'k')),PX+48,cy-1,F(700,11.5,'k'),C.ink);
+      tx(h.tk.replace(/_/g,' ')+(o.shares?' · '+h.sh+'주':''),PX+48,cy+13,F(600,9.5),C.mute);
+      const wx=PX+IW-12-64-10-46;
+      tx(h.w.toFixed(1)+'%',wx+46,cy-2,F(800,11),C.ink,'right');
+      fillRR(wx,cy+5,46,4,2,C.line); fillRR(wx,cy+5,Math.max(2,Math.min(46,h.w*6*46/100*1.0)),4,2,C.acc);
+      const rx=PX+IW-12, hup=h.r>=0;
+      tx(sg(h.r),rx,cy-(o.hide?-4:2),F(800,11.5),hup?C.up:C.down,'right');
+      if(!o.hide) tx(won2(h.ev),rx,cy+13,F(600,9.5),C.soft,'right');
+    });
+    y+=H+20;
+  }
+  // 푸터
+  tx('All-Weather Wealth Dashboard',PX,y+4,F(600,9),C.mute);
+  if(o.hide) tx('금액 비공개',W-PX,y+4,F(600,9,'k'),C.mute,'right');
+  y+=26;
+  return y;
+}
+function shRender(){
+  const o=SH, D=shData(), W=360, SC=2;
+  const tmp=document.createElement('canvas').getContext('2d');
+  const H=Math.ceil(shDraw(tmp,W,o,D,true));
+  const cv=document.createElement('canvas'); cv.width=W*SC; cv.height=H*SC;
+  const ctx=cv.getContext('2d'); ctx.scale(SC,SC);
+  shDraw(ctx,W,o,D,false);
+  return cv;
+}
+function shCurTheme(){ return SH.theme || (document.documentElement.getAttribute('data-theme')==='dark'?'dk':'lt'); }
+function shRefresh(){
+  const o=Object.assign({},SH,{theme:shCurTheme()});
+  const prev=SH.theme; SH.theme=o.theme; const cv=shRender(); SH.theme=prev;
+  const img=document.getElementById('shPrev'); if(img) img.src=cv.toDataURL('image/png');
+  shRenderOpts();
+}
+function shRenderOpts(){
+  const IC={eye:'<svg class="i" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 6.1A10 10 0 0 1 12 6c7 0 10 6 10 6a17 17 0 0 1-3.2 4M6.5 6.9C3.6 8.8 2 12 2 12s3 6 10 6c1.6 0 3-.3 4.2-.8"/></svg>',
+   sh:'<svg class="i" viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>',
+   pie:'<svg class="i" viewBox="0 0 24 24"><path d="M21 12A9 9 0 1 1 12 3v9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg>',
+   list:'<svg class="i" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',
+   tr:'<svg class="i" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg>',
+   moon:'<svg class="i" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'};
+  const op=(ic,t,sub,key,cls)=>'<div class="op '+(cls||'')+'"><span class="ic">'+ic+'</span><div>'+t+(sub?'<small>'+sub+'</small>':'')+'</div><div class="r"><button type="button" class="tg'+(SH[key]?' on':'')+'" data-k="'+key+'" aria-label="'+t+'"></button></div></div>';
+  const th=shCurTheme();
+  document.getElementById('shOpts').innerHTML=
+    op(IC.eye,'금액 숨김','총자산·평가금액 대신 수익률과 비중만 표시','hide','priv')+
+    op(IC.sh,'보유 주수 표시','켜면 종목별 “N주”가 이미지에 포함돼요','shares')+
+    op(IC.pie,'자산 배분 · 계좌별','','sAlloc')+op(IC.tr,'총평가 추이','','sTrend')+op(IC.list,'전체 보유종목','','sHold')+
+    '<div class="op"><span class="ic">'+IC.moon+'</span><div>이미지 테마</div><div class="r"><span class="mini"><button type="button" data-t="lt" class="'+(th==='lt'?'on':'')+'">라이트</button><button type="button" data-t="dk" class="'+(th==='dk'?'on':'')+'">다크</button></span></div></div>';
+}
+function shToast(t){ let e=document.getElementById('shToast'); if(!e){ e=document.createElement('div'); e.id='shToast'; document.body.appendChild(e); } e.textContent=t; e.classList.add('on'); clearTimeout(e._t); e._t=setTimeout(()=>e.classList.remove('on'),1900); }
+function shFileName(){ const d=new Date(); return '자산요약_'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'.png'; }
+function shBlob(cb){ const prev=SH.theme; SH.theme=shCurTheme(); const cv=shRender(); SH.theme=prev; cv.toBlob(cb,'image/png'); }
+function shDownload(){
+  shBlob(blob=>{ if(!blob){ shToast('이미지를 만들지 못했어요'); return; }
+    const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=shFileName(); document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(()=>URL.revokeObjectURL(url),1500); shToast('이미지를 저장했어요'); });
+}
+function shShare(){
+  shBlob(async blob=>{ if(!blob){ shToast('이미지를 만들지 못했어요'); return; }
+    const file=new File([blob],shFileName(),{type:'image/png'});
+    try{
+      if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:'자산 요약'}); return; }
+    }catch(e){ if(e && e.name==='AbortError') return; }
+    shDownload(); });
+}
+function shEnsureSheet(){
+  if(document.getElementById('shSheet')) return;
+  const w=document.createElement('div');
+  w.innerHTML='<div class="sh-sheet-bd" id="shSheetBd"></div><div id="shSheet" role="dialog" aria-label="자산 요약 이미지 공유"><div class="grab"></div><div class="sh-hd"><h3>요약 이미지 공유</h3><button type="button" class="x" data-close aria-label="닫기"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></button></div><div class="sh-body"><div class="prevwrap"><img id="shPrev" alt="자산 요약 미리보기"></div><div class="opts" id="shOpts"></div></div><div class="acts"><button type="button" class="b1" data-save><svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4M5 21h14"/></svg>이미지 저장</button><button type="button" class="b2" data-share><svg class="i" viewBox="0 0 24 24"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-6"/></svg>공유하기</button></div></div>';
+  while(w.firstChild) document.body.appendChild(w.firstChild);
+  const sh=document.getElementById('shSheet');
+  document.getElementById('shSheetBd').addEventListener('click',()=>shOpen(false));
+  sh.addEventListener('click',e=>{
+    if(e.target.closest('[data-close]')){ shOpen(false); return; }
+    if(e.target.closest('[data-save]')){ shDownload(); return; }
+    if(e.target.closest('[data-share]')){ shShare(); return; }
+    const t=e.target.closest('[data-k]'); if(t){ const k=t.getAttribute('data-k'); SH[k]=!SH[k]; if(k!=='hide') shSave(); shRefresh(); return; }
+    const th=e.target.closest('[data-t]'); if(th){ SH.theme=th.getAttribute('data-t'); shSave(); shRefresh(); }
+  });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && SH.open) shOpen(false); });
+  // 아래로 끌어 닫기
+  let y0=0, dy=0, on=false, t0=0, tr=false;
+  sh.addEventListener('touchstart',e=>{ if(e.touches.length!==1) return; y0=e.touches[0].clientY; dy=0; on=false; t0=Date.now(); tr=true; },{passive:true});
+  sh.addEventListener('touchmove',e=>{ if(!tr) return; const d=e.touches[0].clientY-y0; const body=sh.querySelector('.sh-body'); const atTop=e.target.closest('.sh-body')? body.scrollTop<=0 : true;
+    if(!on){ if(d>6 && atTop){ on=true; sh.classList.add('dragging'); } else return; }
+    dy=Math.max(0,d); e.preventDefault(); sh.style.transform='translate(-50%,'+dy+'px)'; },{passive:false});
+  const end=()=>{ if(!tr) return; tr=false; if(!on) return; on=false; sh.classList.remove('dragging'); const fast=dy/Math.max(1,Date.now()-t0)>0.5; sh.style.transform=''; if(dy>90||fast) shOpen(false); };
+  sh.addEventListener('touchend',end); sh.addEventListener('touchcancel',end);
+}
+function shOpen(open){
+  if(open){ shEnsureSheet(); SH.hide=!!balanceHidden; }
+  const sh=document.getElementById('shSheet'), bd=document.getElementById('shSheetBd'); if(!sh) return;
+  SH.open=open;
+  if(open){ const finish=()=>shRefresh(); (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(finish,finish); }
+  sh.classList.toggle('open',open); bd.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+  document.documentElement.classList.toggle('mk-lock',open);
+}
+function initShareSummary(){
+  const b=document.getElementById('shareSumBtn'); if(!b) return;
+  b.addEventListener('click',()=>shOpen(true));
+}
+
 function initWeeklyShare(){
   const btn=document.getElementById('wkShareBtn');
   if(!btn) return;
@@ -8864,6 +9124,7 @@ initHoldingsRank();
 initHubTooltips();
 initRebalAlert();
 initWeeklyShare();
+initShareSummary();
 initLongPress();
 renderAll();
 initTax();
