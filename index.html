@@ -273,11 +273,8 @@
 
   /* ---------- top bar (live + nav) ---------- */
   .topbar{ position:sticky; top:0; z-index:40; max-width:760px; margin:0 auto; }
-  /* 당겨서 새로고침 */
-  .ptr-indicator{position:fixed; top:0; left:0; right:0; z-index:45; display:flex; align-items:center; justify-content:center;
-    height:0; overflow:hidden; color:#fff; background:var(--ink); transition:height .18s ease;}
-  .ptr-indicator svg{width:17px; height:17px; transition:transform .1s;}
-  .ptr-indicator.spin svg{animation:spin .7s linear infinite;}
+  /* 당겨서 새로고침 없음(헤더 새로고침 버튼 사용) — 브라우저 기본 당김 새로고침도 차단 */
+  html,body{ overscroll-behavior-y:contain; }
   @keyframes spin{to{transform:rotate(360deg);}}
   /* 버튼 리플 */
   .ripple{position:absolute; border-radius:50%; background:rgba(255,255,255,.45); transform:scale(0); pointer-events:none; animation:rippleAnim .6s ease-out;}
@@ -1844,7 +1841,6 @@
 </style>
 </head>
 <body>
-<div class="ptr-indicator" id="ptrIndicator"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 1 2.3 5.6M4 12V7m0 5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 
 <!-- TOP BAR (live + tabs) -->
 <div class="topbar" id="topbar">
@@ -9160,38 +9156,6 @@ function revealPanel(panelName){
 }
 function initScrollReveal(){ revealPanel('home'); }
 
-/* ===== 당겨서 새로고침 ===== */
-function initPullToRefresh(){
-  const ind=document.getElementById('ptrIndicator'); if(!ind) return;
-  const MAX=56, TRIGGER=48;
-  let startY=null, pulling=false;
-  function atTop(){ return (window.scrollY||document.documentElement.scrollTop||0) <= 0; }
-  function start(y){ if(atTop()) { startY=y; pulling=true; } }
-  function move(y, ev){
-    if(!pulling || startY==null) return;
-    const raw=y-startY;
-    if(raw<=0){ pulling=false; startY=null; ind.style.height='0px'; return; }
-    if(ev && ev.cancelable) ev.preventDefault();
-    const d=Math.max(0, Math.min(MAX, raw*0.5));
-    ind.style.height=d+'px';
-    ind.querySelector('svg').style.transform='rotate('+(d/MAX*200)+'deg)';
-  }
-  function end(){
-    if(!pulling) return;
-    const h=parseInt(ind.style.height||'0',10);
-    if(h>=TRIGGER && !refreshing){
-      ind.classList.add('spin'); ind.style.height=MAX+'px';
-      refresh().finally(()=>{ ind.classList.remove('spin'); ind.style.height='0px'; });
-    } else {
-      ind.style.height='0px';
-    }
-    pulling=false; startY=null;
-  }
-  document.addEventListener('touchstart', e=>start(e.touches[0].clientY), {passive:true});
-  document.addEventListener('touchmove', e=>move(e.touches[0].clientY, e), {passive:false});
-  document.addEventListener('touchend', end);
-}
-
 /* ===== 버튼 리플 효과 ===== */
 function addRipple(e){
   const btn=e.currentTarget, rect=btn.getBoundingClientRect();
@@ -9248,7 +9212,6 @@ initBalanceEyeBtn();
 initStreakParticles();
 initPeriodPL();
 initScrollReveal();
-initPullToRefresh();
 initRipple();
 fetchIcons().catch(e=>console.warn('icons',e));
 </script>
