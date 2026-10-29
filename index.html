@@ -2913,6 +2913,10 @@ function acctTotals(){
 }
 function cashKRW(){ return CASH.usd*FX + CASH.krwCMA; }
 function grandTotal(){ const t=acctTotals(); return t.overseas.ev+t.isa.ev+t.pension.ev+cashKRW()+ISA_CASH; }
+/* 총수익 = 보유 종목 미실현손익 + 매도로 확정한 실현손익 누계(REALIZED).
+   예전엔 (총자산 − 달러·CMA 현금 − 보유 원가)로 구해서, 이미 판 종목의 원금이 ISA 예수금에 섞여 수익으로 잡혔다. */
+function realizedTotal(){ return REALIZED.reduce((s,x)=>s+x.v,0); }
+function totalProfit(){ const t=acctTotals(); return (t.overseas.ev+t.isa.ev+t.pension.ev)-investedCost()+realizedTotal(); }
 function investedCost(){ const t=acctTotals(); return t.overseas.cost+t.isa.cost+t.pension.cost; }
 
 /* ============ DONUT ============ */
@@ -3052,7 +3056,7 @@ function animateCoverTotal(to){
 function renderCover(){
   const total=grandTotal(), cost=investedCost(), cash=cashKRW();
   const invest=total-cash;
-  const profit=invest-cost;
+  const profit=totalProfit();
   const ret=(profit/cost*100);
   if(balanceHidden){
     const el=document.getElementById('coverTotal');
@@ -3401,8 +3405,7 @@ function renderAthAndStreak(total){
   const years=(plDateForIndex(AS.length-1)-HSTART)/(365.25*864e5);
   const cost=investedCost();
   if(years>0.1 && cost>0){
-    const invest=total-cashKRW();
-    const ratio=invest/cost;
+    const ratio=(cost+totalProfit())/cost;
     if(ratio>0){
       const cagr=(Math.pow(ratio, 1/years)-1)*100;
       badges.push(`<span class="ins-badge ins-cagr">📈 연평균 ${sign(cagr)}</span>`);
@@ -3640,7 +3643,7 @@ function renderTicker(){
 }
 
 function renderAllocDonut(){
-  const t=acctTotals(), cash=cashKRW(), total=grandTotal();
+  const t=acctTotals(), cash=cashKRW()+ISA_CASH, total=grandTotal();
   const segs=[
     {label:'해외주식', v:t.overseas.ev, color:'#c9ab6a'},
     {label:'ISA 계좌', v:t.isa.ev, color:'#b23b2e'},
@@ -3696,7 +3699,7 @@ function swBuildItems(){
   else if(swScope==='dom') list=HOLDINGS.filter(h=>h.acct!=='overseas');
   else { list=HOLDINGS.slice(); includeCash=true; }
   let items=list.map(h=>({tk:h.ticker, n:h.nameKr, ev:evalKRW(h), ret:(evalKRW(h)/h.costKRW-1)*100, cash:false}));
-  if(includeCash) items.push({tk:'CASH', n:'예수금', ev:cashKRW(), ret:null, cash:true});
+  if(includeCash) items.push({tk:'CASH', n:'예수금', ev:cashKRW()+ISA_CASH, ret:null, cash:true});
   items.sort((a,b)=>b.ev-a.ev);
   swTotal=items.reduce((s,x)=>s+x.ev,0);
   items.forEach((x,i)=>{ x.pct=x.ev/swTotal*100; x.color=SW_PAL[i%SW_PAL.length]; });
@@ -4476,9 +4479,9 @@ function renderAllocRadar(){
 function renderDiagnosis(){
   renderAllocRadar();
   const total=grandTotal(), cost=investedCost();
-  const ret=((total-cashKRW())/cost-1)*100;
+  const ret=totalProfit()/cost*100;
   const ov=HOLDINGS.filter(h=>h.acct==='overseas').reduce((s,h)=>s+evalKRW(h),0);
-  const cash=cashKRW();
+  const cash=cashKRW()+ISA_CASH;
   const stockPct=ov/total*100, cashPct=cash/total*100;
   const pltr=HOLDINGS.find(h=>h.ticker==='PLTR');
   const pltrPct=pltr? evalKRW(pltr)/total*100 : 0;
@@ -4841,7 +4844,7 @@ const SH={hide:false, shares:false, sAlloc:true, sHold:true, sTrend:true, theme:
 try{ const o=JSON.parse(localStorage.getItem('shareOpts')||'{}'); ['shares','sAlloc','sHold','sTrend'].forEach(k=>{ if(typeof o[k]==='boolean') SH[k]=o[k]; }); if(o.theme==='lt'||o.theme==='dk') SH.theme=o.theme; else SH.theme=null; }catch(e){ SH.theme=null; }
 function shSave(){ try{ localStorage.setItem('shareOpts',JSON.stringify({shares:SH.shares,sAlloc:SH.sAlloc,sHold:SH.sHold,sTrend:SH.sTrend,theme:SH.theme})); }catch(e){} }
 function shData(){
-  const total=grandTotal(), cash=cashKRW(), t=acctTotals(), cost=investedCost(), invest=total-cash, profit=invest-cost;
+  const total=grandTotal(), cash=cashKRW(), t=acctTotals(), cost=investedCost(), invest=total-cash, profit=totalProfit();
   const ret=cost>0?profit/cost*100:0;
   let yoy=null; if(typeof AS!=='undefined'&&AS.length>1){ const past=AS[Math.max(0,AS.length-1-365)]; if(past>0) yoy=(total-past)/past*100; }
   let series=[]; if(typeof AS!=='undefined'&&AS.length>2){ const a=AS.slice(-366), N=Math.min(60,a.length); for(let i=0;i<N;i++) series.push(a[Math.round(i*(a.length-1)/(N-1))]); }
@@ -5421,10 +5424,10 @@ function hubDailyStats(){
 
 function hubProfitCards(){
   const total=grandTotal(), cost=investedCost(), cash=cashKRW();
-  const invest=total-cash, profit=invest-cost;
+  const invest=total-cash, profit=totalProfit();
   const ret=cost>0 ? profit/cost*100 : 0;
   const years=(plDateForIndex(AS.length-1)-HSTART)/(365.25*864e5);
-  const ratio=cost>0 ? invest/cost : 0;
+  const ratio=cost>0 ? (cost+totalProfit())/cost : 0;
   const cagr=(years>0.1 && ratio>0) ? (Math.pow(ratio,1/years)-1)*100 : 0;
   const pastMax=Math.max(...AS.filter(v=>v!=null));
   const athValue=Math.max(pastMax,total);
@@ -5683,7 +5686,7 @@ function renderInsightHighlightCrawl(){
   try{
     const total=grandTotal(), cost=investedCost();
     const years=(plDateForIndex(AS.length-1)-HSTART)/(365.25*864e5);
-    const ratio=cost>0 ? (total-cashKRW())/cost : 0;
+    const ratio=cost>0 ? (cost+totalProfit())/cost : 0;
     const cagr=(years>0.1 && ratio>0) ? (Math.pow(ratio,1/years)-1)*100 : 0;
     const pastMax=Math.max(...AS.filter(v=>v!=null));
     const athGap=pastMax>0 ? (total/pastMax-1)*100 : 0;
@@ -6074,14 +6077,14 @@ function renderCurrency(){
 function renderSectorAlloc(){
   const total=grandTotal(), sec={};
   HOLDINGS.forEach(h=>{ const s=SECTOR[h.ticker]||'기타'; sec[s]=(sec[s]||0)+evalKRW(h); });
-  sec['현금']=(sec['현금']||0)+cashKRW();
+  sec['현금']=(sec['현금']||0)+cashKRW()+ISA_CASH;
   const segs=Object.keys(sec).map(k=>({label:k,color:SECTOR_COLOR[k]||'#999',v:sec[k],pct:sec[k]/total*100})).sort((a,b)=>b.pct-a.pct);
   document.getElementById('sectorDonut').innerHTML=donutSVG(segs,'₩'+(total/1e6).toFixed(1)+'M','SECTOR');
   animateDonutArcs('sectorDonut');
   const leg=document.getElementById('sectorLegend'); leg.innerHTML='';
   segs.forEach(s=>{ leg.innerHTML+=`<div class="row"><span class="lbl"><span class="sw" style="background:${s.color};"></span>${s.label}</span><span><span class="val">${won(s.v)}</span> <span class="pctx">${s.pct.toFixed(1)}%</span></span></div>`; });
   const cat={theme:0,large:0,etf:0,cash:0};
-  HOLDINGS.forEach(h=>{ cat[h.cat]+=evalKRW(h); }); cat.cash=cashKRW();
+  HOLDINGS.forEach(h=>{ cat[h.cat]+=evalKRW(h); }); cat.cash=cashKRW()+ISA_CASH;
   const meta=[['theme','테마주(고위험)','#b23b2e'],['large','대형우량','#cf8a5c'],['etf','지수ETF','#8a9280'],['cash','현금','#7d97c4']];
   let bar='',lg='';
   meta.forEach(([k,label,color])=>{ const pc=cat[k]/total*100; bar+=`<div style="width:${pc}%;background:${color};"></div>`; lg+=`<span><span class="dot" style="background:${color};"></span>${label} ${pc.toFixed(1)}%</span>`; });
@@ -6416,7 +6419,7 @@ const REBAL_ROWS = [
   {id:'CASH', label:'현금 / CMA', cash:true},
 ];
 function rowCurrentKRW(r){
-  if(r.cash) return cashKRW();
+  if(r.cash) return cashKRW()+ISA_CASH;
   if(r.group) return r.group.reduce((s,tk)=>{ const h=HOLDINGS.find(x=>x.ticker===tk); return s+(h?evalKRW(h):0); },0);
   const h=HOLDINGS.find(x=>x.ticker===r.id); return h?evalKRW(h):0;
 }
