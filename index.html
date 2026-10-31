@@ -1252,6 +1252,54 @@
   .pnl-fill.neg{right:50%; background:var(--stamp-blue);}
   .pnl-val{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:600; text-align:right;}
 
+  /* ---------- 비중 변화 (일별) ---------- */
+  .wc-datebar{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:2px 2px 10px;}
+  .wc-step{display:flex; align-items:center; background:var(--paper); border-radius:9999px; padding:3px;}
+  .wc-step button{width:30px; height:30px; border:none; border-radius:50%; background:transparent; font-size:16px; color:var(--ink-soft); cursor:pointer; font-family:inherit;}
+  .wc-step button:disabled{opacity:.3;}
+  .wc-date{position:relative; display:inline-block; padding:0 8px; font-family:'Inter',-apple-system,sans-serif; font-size:12.5px; font-weight:700; cursor:pointer;}
+  .wc-date input{position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer;}
+  .wc-today{border:none; background:var(--paper); color:var(--ink-soft); font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; padding:8px 12px; border-radius:9999px; cursor:pointer;}
+  .wc-sum{display:flex; gap:8px; margin:0 0 12px;}
+  .wc-sum div{flex:1; border-radius:14px; padding:9px 12px; background:var(--paper);}
+  .wc-sum small{display:block; font-size:10px; color:var(--ink-soft); font-weight:600;}
+  .wc-sum b{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:13.5px; font-weight:800; margin-top:3px;}
+  .wc-sum .u b{color:var(--stamp-red);} .wc-sum .d b{color:var(--stamp-blue);}
+  .wc-tm{position:relative; height:290px; border-radius:16px; overflow:hidden; background:var(--paper);}
+  .wc-tile{position:absolute; padding:7px 8px; color:#fff; overflow:hidden; border:2px solid var(--card); border-radius:8px; cursor:pointer;}
+  .wc-tile:active{filter:brightness(.92);}
+  .wc-tile.sel{outline:2px solid var(--ink); outline-offset:-3px;}
+  .wc-tile b{display:block; font-size:11.5px; font-weight:700; line-height:1.2;}
+  .wc-tile small{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; opacity:.9; margin-top:2px;}
+  .wc-tile em{display:block; font-style:normal; font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700;}
+  .wc-lg{display:flex; align-items:center; justify-content:center; gap:8px; font-size:10px; color:var(--ink-soft); margin:9px 0 0;}
+  .wc-lg .g{width:120px; height:6px; border-radius:3px; background:linear-gradient(90deg,var(--stamp-blue),#b9bfcc,var(--stamp-red));}
+  .wc-sec{margin:18px 2px 4px; display:flex; justify-content:space-between; align-items:baseline; cursor:pointer; user-select:none;}
+  .wc-sec h3{margin:0; font-size:13px; font-weight:700;}
+  .wc-sec .chev{display:inline-flex; align-items:center; gap:6px; font-size:10.5px; color:var(--ink-soft);}
+  .wc-sec .chev svg{width:16px; height:16px; fill:none; stroke:var(--ink-soft); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; transition:transform .25s;}
+  .wc-sec.shut .chev svg{transform:rotate(-90deg);}
+  .wc-fold{overflow:hidden; transition:max-height .35s ease, opacity .25s;}
+  .wc-fold.shut{max-height:0 !important; opacity:0;}
+  .wc-row{display:grid; grid-template-columns:34px minmax(0,1.25fr) minmax(0,.9fr) 78px; gap:9px; align-items:center; padding:8px 0; cursor:pointer;}
+  .wc-row:active{background:var(--paper);}
+  .wc-lgo{width:34px; height:34px; border-radius:50%; overflow:hidden; flex-shrink:0;}
+  .wc-lgo img{width:100%; height:100%; object-fit:contain; padding:20%;}
+  .wc-lgo span{width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:800; color:#fff;}
+  .wc-nm{font-size:12px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .wc-nm span{font-family:'Inter',-apple-system,sans-serif; font-size:9px; color:var(--ink-soft); font-weight:400; margin-left:5px;}
+  .wc-nm small{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); font-weight:500; margin-top:2px;}
+  .wc-val{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:600; text-align:right;}
+  .wc-val .w{font-size:10px; font-weight:500; margin-top:2px;}
+  .wc-val.up, .wc-val.up .w{color:var(--stamp-red);} .wc-val.down, .wc-val.down .w{color:var(--stamp-blue);} .wc-val.flat, .wc-val.flat .w{color:var(--ink-soft);}
+  .wc-det{display:none; background:var(--paper); border-radius:14px; padding:11px 13px; margin:2px 0 8px;}
+  .wc-det.on{display:block;}
+  .wc-det .t{display:flex; justify-content:space-between; font-size:10.5px; color:var(--ink-soft); font-weight:600; margin-bottom:4px;}
+  .wc-det .c{display:flex; gap:6px; margin-top:8px;}
+  .wc-det .c span{flex:1; background:var(--card); border-radius:10px; padding:7px 9px; font-size:9.5px; color:var(--ink-soft); font-weight:600;}
+  .wc-det .c b{display:block; font-family:'Inter',-apple-system,sans-serif; font-size:12px; color:var(--ink); margin-top:2px;}
+  .wc-empty{font-size:12px; color:var(--ink-soft); text-align:center; padding:22px 8px;}
+
   /* ---------- Timeline ---------- */
   .timeline{padding:8px 2px 10px; position:relative;}
   .tl-item{display:grid; grid-template-columns:74px 1fr; gap:14px; position:relative; padding-bottom:18px;}
@@ -2055,6 +2103,22 @@
     <div class="sw-list-hint"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>아래로 스크롤해서 전체 종목 보기</div>
 
     <div class="note" id="swNote"></div>
+  </div>
+
+  <!-- WEIGHT CHANGE (일별 비중 변화) -->
+  <div class="page collapsible" id="sec-wc" data-panel="home">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M21 12A9 9 0 1 1 12 3v9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg></span>비중 변화</h2></div>
+    <div class="wc-datebar">
+      <div class="wc-step"><button type="button" id="wcPrev" aria-label="이전 거래일">‹</button><label class="wc-date"><span id="wcDateTxt"></span><input type="date" id="wcDateIn"></label><button type="button" id="wcNext" aria-label="다음 거래일">›</button></div>
+      <button type="button" class="wc-today" id="wcToday">오늘</button>
+    </div>
+    <div class="pnl-tabs" id="wcTabs"><button type="button" class="on" data-m="d">전일 대비</button><button type="button" data-m="1w">1주</button><button type="button" data-m="1m">1개월</button><button type="button" data-m="3m">3개월</button></div>
+    <div class="wc-sum"><div class="u"><small>늘어난 항목</small><b id="wcUp"></b></div><div class="d"><small>줄어든 항목</small><b id="wcDn"></b></div></div>
+    <div class="wc-tm" id="wcTm"></div>
+    <div class="wc-lg"><span>줄어듦</span><span class="g"></span><span>늘어남</span><span>· 크기 = 비중</span></div>
+    <div class="wc-sec" id="wcSecHd"><h3>항목별 증감</h3><span class="chev">%p · 금액 · 탭하면 상세<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+    <div class="wc-fold" id="wcFold"><div class="pnl-list" id="wcList"></div></div>
+    <div class="note" id="wcNote"></div>
   </div>
 
   <div class="perf"></div>
@@ -6694,7 +6758,7 @@ function plBuildSeries(){
   // (실측: FX 1499→1412 변화 시 캐시를 안 버리면 평가액 차이 403만원 재현됨).
   if(PL_SERIES && PL_SERIES.evalArr.length===AS.length && PL_SERIES.builtFX===FX) return PL_SERIES;
   const n=AS.length;
-  const evalArr=new Array(n).fill(0), costArr=new Array(n).fill(0), realArr=new Array(n).fill(0);
+  const evalArr=new Array(n).fill(0), costArr=new Array(n).fill(0), realArr=new Array(n).fill(0), byTk={};
   const tickers=[...new Set(TXL.map(t=>t.tk))];
   const curOf={}; HOLDINGS.forEach(h=>{ curOf[h.ticker]=h.cur; });
   // 환율은 날짜별로 한 번만 계산해 재사용(티커마다 다시 구하지 않도록)
@@ -6709,6 +6773,7 @@ function plBuildSeries(){
     const asc=cache? cache.slice().sort((a,b)=>a.date<b.date?-1:1) : null;
     let ci=0, lastClose=null;
     let sh=0, cost=0, txi=0, realCum=0;
+    const tkArr=new Array(n).fill(0); byTk[tk]=tkArr;
     for(let i=0;i<n;i++){
       const d=plDateForIndex(i);
       const ymd=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
@@ -6723,7 +6788,7 @@ function plBuildSeries(){
       realArr[i]+=realCum;
       if(sh>0){
         const px = lastClose!=null ? lastClose : priceAt(tk,d);
-        evalArr[i] += isUSD ? sh*px*fxByDay[i] : sh*px;
+        { const v = isUSD ? sh*px*fxByDay[i] : sh*px; evalArr[i] += v; tkArr[i]=v; }
         costArr[i] += cost;
       }
     }
@@ -6751,8 +6816,138 @@ function plBuildSeries(){
      현금은 그 자체로 손익을 만들지 않으므로(이자 미반영), 손익 측정 목적에는 이게 정확하다.
      매도 시에도 평가액과 원가가 같은 비율로 함께 줄어들어 손익이 왜곡되지 않는다
      (평균단가 방식으로 원가를 차감하므로 ①의 문제도 발생하지 않음). */
-  PL_SERIES={evalArr, costArr, realArr, builtFX:FX};
+  PL_SERIES={evalArr, costArr, realArr, byTk, builtFX:FX};
   return PL_SERIES;
+}
+
+/* ===== 일별 비중 변화 (보유 비중 카드 아래) =====
+   종목별 일별 평가액(plBuildSeries().byTk, 같은 종가·환율 로직) + 예수금으로 날짜별 비중을 만들고,
+   선택한 날짜를 기준일(전일/1주/1개월/3개월 전)과 비교한다.
+   - 오늘(마지막 날)의 종목 평가액·예수금은 실시간 값(evalKRW, cashKRW+ISA_CASH)을 쓴다.
+   - 과거 예수금은 기록이 없어서 "오늘 예수금 ± 그 뒤 거래내역"으로 거꾸로 추정한다(입출금은 반영 불가). */
+const WC={sel:null, mode:'d', open:null, shut:false};
+try{ WC.shut = localStorage.getItem('wcShut')==='1'; }catch(e){}
+function wcPad(n){ return String(n).padStart(2,'0'); }
+function wcYmd(i){ const d=plDateForIndex(i); return `${d.getFullYear()}-${wcPad(d.getMonth()+1)}-${wcPad(d.getDate())}`; }
+function wcIsWk(i){ const g=plDateForIndex(i).getDay(); return g===0||g===6; }
+function wcPrevTrading(i){ let j=i-1; while(j>0 && wcIsWk(j)) j--; return Math.max(0,j); }
+function wcNextTrading(i,max){ let j=i+1; while(j<max && wcIsWk(j)) j++; return Math.min(j,max); }
+function wcLabel(i){ const d=plDateForIndex(i), t=plDateForIndex(AS.length-1); const w='일월화수목금토'[d.getDay()];
+  return (d.getFullYear()!==t.getFullYear()?d.getFullYear()+'년 ':'')+`${d.getMonth()+1}월 ${d.getDate()}일 (${w})`; }
+function wcCtx(){
+  const S=plBuildSeries(), last=AS.length-1, cashNow=cashKRW()+ISA_CASH;
+  const tks=Object.keys(S.byTk);
+  const hOf=tk=>HOLDINGS.find(x=>x.ticker===tk);
+  /* 모든 날짜를 같은 시계열(실측 종가 우선)에서 가져온다 — 오늘만 실시간 값을 섞으면 시세가 아직 갱신되지 않았을 때 가짜 증감이 생김 */
+  const val=(tk,i)=>(S.byTk[tk]&&S.byTk[tk][i])||0;
+  const cashAt=i=>{ if(i>=last) return cashNow; const day=wcYmd(i); let c=cashNow;
+    TXL.forEach(t=>{ if(t.d>day) c += t.q>0 ? Math.abs(t.amt) : -Math.abs(t.amt); }); return Math.max(0,c); };
+  const totalAt=i=>tks.reduce((s,tk)=>s+val(tk,i),0)+cashAt(i);
+  const nameOf=tk=>{ const h=hOf(tk); if(h) return h.nameKr; const t=TXL.find(x=>x.tk===tk); return t?t.n:tk; };
+  return {S,last,tks,val,cashAt,totalAt,nameOf};
+}
+function wcCompute(selIdx, baseIdx){
+  const C=wcCtx(), T1=C.totalAt(selIdx), T0=C.totalAt(baseIdx), d0=wcYmd(baseIdx), d1=wcYmd(selIdx);
+  const net={}; let netAll=0;
+  TXL.forEach(t=>{ if(t.d>d0 && t.d<=d1){ const a=(t.q>0?1:-1)*Math.abs(t.amt); net[t.tk]=(net[t.tk]||0)+a; netAll+=a; } });
+  const items=[];
+  C.tks.forEach(tk=>{
+    const v1=C.val(tk,selIdx), v0=C.val(tk,baseIdx); if(!(v1>0||v0>0)) return;
+    const w1=v1/T1*100, w0=v0/T0*100, dv=v1-v0, tr=net[tk]||0;
+    items.push({tk, n:C.nameOf(tk), v1, v0, w1, w0, d:w1-w0, dv, trade:tr, price:dv-tr, cash:false});
+  });
+  const c1=C.cashAt(selIdx), c0=C.cashAt(baseIdx);
+  items.push({tk:'CASH', n:'예수금', v1:c1, v0:c0, w1:c1/T1*100, w0:c0/T0*100, d:c1/T1*100-c0/T0*100, dv:c1-c0, trade:-netAll, price:(c1-c0)+netAll, cash:true});
+  return {items, T1, T0, C};
+}
+function wcBaseIdx(sel){
+  if(WC.mode==='d') return wcPrevTrading(sel);
+  const N={'1w':7,'1m':30,'3m':91}[WC.mode]; return Math.max(0, sel-N);
+}
+function wcSpark(tk,sel,C,cls){
+  const pts=[]; for(let k=7;k>=0;k--){ const i=Math.max(0,sel-k); const T=C.totalAt(i); pts.push((tk==='CASH'?C.cashAt(i):C.val(tk,i))/T*100); }
+  const mn=Math.min(...pts), mx=Math.max(...pts), rg=(mx-mn)||1;
+  const xy=pts.map((v,i)=>`${(i*260/7).toFixed(1)},${(40-(v-mn)/rg*32).toFixed(1)}`);
+  return `<svg viewBox="0 0 260 44" width="100%" height="44"><polyline points="${xy.join(' ')}" fill="none" stroke="${cls==='down'?'var(--stamp-blue)':cls==='up'?'var(--stamp-red)':'var(--ink-soft)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="260" cy="${xy[7].split(',')[1]}" r="3" fill="${cls==='down'?'var(--stamp-blue)':cls==='up'?'var(--stamp-red)':'var(--ink-soft)'}"/></svg>`;
+}
+function wcLayout(it,x,y,w,h,out){
+  if(it.length===1){ out.push({it:it[0],x,y,w,h}); return; }
+  const tot=it.reduce((a,b)=>a+b.w1,0); let acc=0,k=0;
+  for(;k<it.length-1 && acc+it[k].w1<tot/2;k++) acc+=it[k].w1;
+  if(k===0){ k=1; acc=it[0].w1; }
+  const A=it.slice(0,k), B=it.slice(k), r=acc/tot;
+  if(w>=h){ wcLayout(A,x,y,w*r,h,out); wcLayout(B,x+w*r,y,w*(1-r),h,out); }
+  else { wcLayout(A,x,y,w,h*r,out); wcLayout(B,x,y+h*r,w,h*(1-r),out); }
+}
+const wcFmtP=d=>(d>0.004?'+':d<-0.004?'−':'')+Math.abs(d).toFixed(2);
+const wcFmtW=n=>{ const a=Math.round(Math.abs(n)/1000)*1000; return (a===0?'':n>0?'+':'−')+'₩'+a.toLocaleString('ko-KR'); };
+const wcCls=d=>d>0.004?'up':d<-0.004?'down':'flat';
+function wcRender(){
+  const list=document.getElementById('wcList'); if(!list || typeof AS==='undefined' || AS.length<3) return;
+  const last=AS.length-1;
+  const selRaw=WC.sel==null?last:Math.min(Math.max(WC.sel,1),last);
+  let sel=selRaw; while(sel>1 && wcIsWk(sel)) sel--;   // 주말·휴장 → 직전 평일 값 기준
+  const base=wcBaseIdx(sel);
+  const R=wcCompute(sel,base), items=R.items.slice().sort((a,b)=>b.d-a.d), C=R.C;
+  // 날짜 바
+  document.getElementById('wcDateTxt').textContent=wcLabel(selRaw);
+  const din=document.getElementById('wcDateIn'); din.min=wcYmd(1); din.max=wcYmd(last); din.value=wcYmd(selRaw);
+  document.getElementById('wcPrev').disabled = selRaw<=1;
+  document.getElementById('wcNext').disabled = selRaw>=last;
+  document.getElementById('wcToday').style.visibility = selRaw>=last ? 'hidden':'visible';
+  // 요약
+  const U=items.filter(x=>x.d>0.004), D=items.filter(x=>x.d<-0.004);
+  document.getElementById('wcUp').textContent='+'+U.reduce((a,x)=>a+x.d,0).toFixed(2)+'%p · '+U.length+'개';
+  document.getElementById('wcDn').textContent='−'+Math.abs(D.reduce((a,x)=>a+x.d,0)).toFixed(2)+'%p · '+D.length+'개';
+  const maxAbs=Math.max(0.3,...items.map(x=>Math.abs(x.d)));
+  // 히트맵
+  const tm=document.getElementById('wcTm'), W=tm.clientWidth||320, H=290;
+  const tiles=items.filter(x=>x.w1>0.01).sort((a,b)=>b.w1-a.w1), out=[];
+  if(tiles.length) wcLayout(tiles,0,0,W,H,out);
+  tm.innerHTML=out.map(t=>{ const x=t.it, m=Math.min(1,Math.abs(x.d)/maxAbs), p=Math.round(45+m*55);
+    const bg=Math.abs(x.d)<0.004?'#b9bfcc':`color-mix(in srgb, var(--stamp-${x.d>0?'red':'blue'}) ${p}%, #9aa3b2)`;
+    return `<div class="wc-tile ${WC.open===x.tk?'sel':''}" data-tk="${x.tk}" style="left:${t.x}px;top:${t.y}px;width:${t.w}px;height:${t.h}px;background:${bg};"><b>${x.n}</b>${t.h>56&&t.w>62?`<small>${x.w1.toFixed(1)}%</small><em>${wcFmtP(x.d)}%p</em>`:''}</div>`; }).join('');
+  // 목록
+  const detHtml=x=>{ const c=wcCls(x.d);
+    return `<div class="wc-det ${WC.open===x.tk?'on':''}" data-det="${x.tk}"><div class="t"><span>최근 8일 비중</span><span>${x.w0.toFixed(2)}% → ${x.w1.toFixed(2)}%</span></div>${wcSpark(x.tk,sel,C,c)}
+      <div class="c"><span>${x.cash?'거래 외 변동':'시세 변동'}<b>${wcFmtW(x.price)}</b></span><span>${x.cash?'매수·매도 영향':'매수·매도'}<b>${Math.abs(x.trade)<500?'없음':wcFmtW(x.trade)}</b></span></div></div>`; };
+  list.innerHTML=items.map(x=>{ const c=wcCls(x.d), len=Math.min(50,Math.abs(x.d)/maxAbs*50), dc=Math.abs(x.dv)<500?'flat':x.dv>0?'up':'down';
+    const av=x.cash?`<div class="wc-lgo" style="background:#64748b;"><span>₩</span></div>`:swAvatar(x.tk,'wc-lgo');
+    return `<div class="wc-row" data-tk="${x.tk}">${av}
+      <div class="wc-nm">${x.n}${x.cash?'':`<span>${x.tk.replace(/_/g,' ')}</span>`}<small>${won(x.v1)} · ${x.w1.toFixed(2)}%</small></div>
+      <div class="pnl-track"><div class="pnl-fill ${x.d>=0?'pos':'neg'}" style="width:${len}%"></div></div>
+      <div class="wc-val ${c}">${wcFmtP(x.d)}%p<div class="w" style="color:${dc==='flat'?'var(--ink-soft)':dc==='up'?'var(--stamp-red)':'var(--stamp-blue)'}">${wcFmtW(x.dv)}</div></div></div>${detHtml(x)}`; }).join('');
+  const wk=selRaw!==sel;
+  document.getElementById('wcNote').innerHTML=`${wk?wcLabel(sel)+' 기준(주말·휴장)으로 ':''}${wcLabel(base)} 대비<br>과거 예수금 잔액은 거래내역으로 추정한 값이라 약간의 오차가 있을 수 있어요.<br>비중은 줄어도 금액은 늘 수 있어요(다른 종목이 더 많이 올랐을 때).`;
+  list.querySelectorAll('.wc-row').forEach(r=>r.onclick=()=>wcOpen(r.dataset.tk,false));
+  tm.querySelectorAll('.wc-tile').forEach(t=>t.onclick=()=>wcOpen(t.dataset.tk,true));
+}
+function wcOpen(tk,scroll){
+  WC.open = WC.open===tk && !scroll ? null : tk;
+  document.querySelectorAll('#wcList .wc-det').forEach(d=>d.classList.toggle('on', d.dataset.det===WC.open));
+  document.querySelectorAll('#wcTm .wc-tile').forEach(t=>t.classList.toggle('sel', t.dataset.tk===WC.open));
+  if(scroll && WC.open){
+    const fold=document.getElementById('wcFold'); if(fold.classList.contains('shut')) wcSetShut(false);
+    const row=document.querySelector(`#wcList .wc-row[data-tk="${WC.open}"]`); if(row) row.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+function wcSetShut(v){
+  WC.shut=v; document.getElementById('wcFold').classList.toggle('shut',v); document.getElementById('wcSecHd').classList.toggle('shut',v);
+  try{ localStorage.setItem('wcShut',v?'1':'0'); }catch(e){}
+}
+function wcSetSel(i){ const last=AS.length-1; WC.sel = i>=last?null:Math.max(1,i); WC.open=null; wcRender(); }
+function initWeightChange(){
+  const root=document.getElementById('sec-wc'); if(!root) return;
+  document.getElementById('wcFold').style.maxHeight='4000px'; wcSetShut(WC.shut);
+  document.getElementById('wcSecHd').onclick=()=>wcSetShut(!WC.shut);
+  document.querySelectorAll('#wcTabs button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#wcTabs button').forEach(x=>x.classList.toggle('on',x===b)); WC.mode=b.dataset.m; WC.open=null; wcRender(); });
+  const cur=()=>Math.min(Math.max(WC.sel==null?AS.length-1:WC.sel,1),AS.length-1);
+  document.getElementById('wcPrev').onclick=()=>wcSetSel(wcPrevTrading(cur()));
+  document.getElementById('wcNext').onclick=()=>wcSetSel(wcNextTrading(cur(),AS.length-1));
+  document.getElementById('wcToday').onclick=()=>wcSetSel(AS.length-1);
+  document.getElementById('wcDateIn').onchange=e=>{ if(!e.target.value) return; wcSetSel(plIndexForDate(new Date(e.target.value+'T00:00:00'))); };
+  if(window.ResizeObserver){ let w0=0; new ResizeObserver(es=>{ const w=Math.round(es[0].contentRect.width); if(w&&w!==w0){ w0=w; wcRender(); } }).observe(document.getElementById('wcTm')); }
+  wcRender();
 }
 
 function plRangeIndices(){
@@ -6926,7 +7121,7 @@ function initPeriodPLControls(){
 function renderAll(){
   renderCover(); renderIndices(); renderIndexCompare(); renderFX(); renderTicker();
   renderDailyPnl(); renderCurrency(); renderWeeklyReport();
-  renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat();
+  renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat(); try{ wcRender(); }catch(e){}
   renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar(); renderRiskMetrics(); renderHoldingsRank(); renderFxImpact(); renderRebalAlert(); renderGoalSimulator();
   // 월간·연간 리뷰(RV)는 이제 정적 데이터가 아니라 TXL/AS에서 매번 계산하므로,
   // 새로고침 때도 최신 달·최신 시세가 반영되도록 여기서도 다시 그린다.
@@ -9208,7 +9403,8 @@ loadFutureSnaps().then(()=>{
     ensureHistPrices()
       .then(()=>{
         reconstructGapAS();      // 자산추이 차트용 AS/CS도 실측값으로 보정
-        plInvalidateSeries();    // 기간별 손익 표는 자체 시계열을 다시 계산
+        plInvalidateSeries();
+        try{ wcRender(); }catch(e){}    // 기간별 손익 표는 자체 시계열을 다시 계산
         rcInvalidateSeries(); rcRender(); // 순위 변화도 실측 종가로 다시 계산
         renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
         renderInsightHub();      // 실측 데이터로 카드 다시 채움
@@ -9219,6 +9415,7 @@ loadFutureSnaps().then(()=>{
 });
 initUI();
 mkInit();
+try{ initWeightChange(); }catch(e){ console.error(e); }
 initCoverDetail();
 initBalanceEyeBtn();
 initStreakParticles();
