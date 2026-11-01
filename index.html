@@ -983,7 +983,19 @@
   @keyframes flashUp{0%{background-color:rgba(192,57,43,.22);} 100%{background-color:rgba(192,57,43,0);}}
   @keyframes flashDown{0%{background-color:rgba(44,74,124,.22);} 100%{background-color:rgba(44,74,124,0);}}
   .hcard-ev span{display:block; font-size:11px; font-weight:700; margin-top:2px;}
-  .hcard-bottom{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); display:flex; justify-content:flex-end;}
+  .hcard-bottom{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); display:flex; justify-content:space-between; align-items:center; gap:8px;}
+  .hcard-bottom .hcard-px, .hcard-bottom .hcard-empty{margin-left:auto;}
+  .hcard-avg{display:flex; align-items:center; gap:6px; font-family:'Inter',-apple-system,sans-serif; color:var(--ink-soft); min-width:0;}
+  .hcard-avg b{font-size:11.5px; font-weight:600;} .hcard-avg u{text-decoration:none; font-size:10px; font-weight:500;}
+  .avg-ico{width:16px; height:16px; border-radius:5px; background:var(--line); display:inline-grid; place-items:center; flex-shrink:0;}
+  .avg-ico svg{width:10px; height:10px; fill:none; stroke:var(--ink-soft); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;}
+  .m-stat .v small{display:block; font-size:10.5px; color:var(--ink-soft); font-weight:500; margin-top:2px;}
+  .m-gap{margin-top:14px; background:var(--paper); border-radius:14px; padding:12px 14px;}
+  .m-gap .t{display:flex; justify-content:space-between; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); font-weight:600; margin-bottom:10px;}
+  .m-gap .trk{position:relative; height:8px; border-radius:4px; background:var(--line);}
+  .m-gap .trk i{position:absolute; top:-3px; width:2px; height:14px; background:var(--ink); border-radius:1px;}
+  .m-gap .trk em{position:absolute; top:-4px; width:12px; height:12px; border-radius:50%; margin-left:-6px; border:2px solid var(--card); box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .m-gap .lb{display:flex; justify-content:space-between; font-family:'Inter',-apple-system,sans-serif; font-size:10px; color:var(--ink-soft); margin-top:9px;}
   .hcard-px{font-family:'Inter',-apple-system,sans-serif; font-size:12px; font-weight:700; display:flex; align-items:center; gap:7px; color:var(--ink);}
   .hcard-px .daychip{margin-left:0;}
   .hcard-empty{font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); text-align:right;}
@@ -2762,6 +2774,7 @@
     <div class="m-price" id="mPrice">—</div>
     <div class="m-chg" id="mChg"></div>
     <div class="m-stats" id="mStats"></div>
+    <div class="m-gap" id="mGap"></div>
     <div class="m-news"><h4>관련 뉴스</h4><div id="mNews"><div class="empty">새로고침 후 관련 뉴스가 표시됩니다.</div></div></div>
     <button class="m-txbtn" id="mTxBtn">⌸ 이 종목 거래이력 보기</button>
   </div>
@@ -4307,6 +4320,24 @@ function mkInit(){
   mkTick(); setInterval(mkTick,1000);
 }
 
+/* 평균 매수가 — 거래내역을 평균단가 방식으로 재생해 구한다(매도는 남은 수량의 평균가를 바꾸지 않음).
+   달러 종목은 매수 당시 달러 가격의 가중평균(usd)과 매수 당시 환율을 반영한 원화 평균(krw)을 함께 돌려준다. */
+function avgCostOf(h){
+  const krwFallback = h.shares? h.costKRW/h.shares : 0;
+  if(h.cur!=='USD') return {usd:null, krw:krwFallback};
+  const txs=TXL.filter(t=>t.tk===h.ticker).sort((a,b)=>a.d<b.d?-1:1);
+  let sh=0, cu=0;
+  txs.forEach(t=>{ if(t.q>0){ sh+=t.q; cu+=t.q*t.p; } else { const au=sh?cu/sh:0; sh+=t.q; cu+=t.q*au; } });
+  const usd = (sh>0 && Math.abs(sh-h.shares)<1e-6) ? cu/sh : (krwFallback/FX);
+  return {usd, krw:krwFallback};
+}
+const AVG_ICON='<span class="avg-ico"><svg viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span>';
+function avgHtml(h){
+  const a=avgCostOf(h);
+  return a.usd!=null
+    ? `<div class="hcard-avg" title="평균 매수가">${AVG_ICON}<b>$${a.usd.toFixed(2)}</b><u>${won(a.krw)}</u></div>`
+    : `<div class="hcard-avg" title="평균 매수가">${AVG_ICON}<b>${won(a.krw)}</b></div>`;
+}
 function renderTables(){
   const cont=document.getElementById('acctPages'); cont.innerHTML='';
   const t=acctTotals();
@@ -4332,7 +4363,7 @@ function renderTables(){
             <div class="hcard-nm">${h.nameKr}<span>${h.ticker} · ${h.shares}주</span></div>
             <div class="hcard-ev">${won(h.ev)}<span class="${clsOf(h.r)}">${hPnl>=0?'+':''}${won(hPnl)} (${sign(h.r)})</span></div>
           </div>
-          <div class="hcard-bottom">${priceRow}</div>
+          <div class="hcard-bottom">${avgHtml(h)}${priceRow}</div>
         </div>
       </div>`;
     });
@@ -7248,12 +7279,20 @@ function openModal(tk){
   const mchg=document.getElementById('mChg');
   if(HEAT_LIVE && DAY_CHG[h.ticker]!=null){ const d=DAY_CHG[h.ticker]; mchg.className='m-chg '+clsOf(d); mchg.textContent=`당일 ${sign(d)}`; }
   else { mchg.className='m-chg '+clsOf(retPct(h)); mchg.textContent=`누적 ${sign(retPct(h))}`; }
-  const ev=evalKRW(h);
+  const ev=evalKRW(h), av=avgCostOf(h), isU=av.usd!=null;
+  const avgBase=isU?av.usd:av.krw, pxNow=h.price, vs=avgBase>0?(pxNow/avgBase-1)*100:0;
   document.getElementById('mStats').innerHTML=`
     <div class="m-stat"><div class="k">보유수량</div><div class="v">${h.shares}주</div></div>
+    <div class="m-stat"><div class="k">평균 매수가</div><div class="v">${isU?'$'+av.usd.toFixed(2)+`<small>${won(av.krw)}</small>`:won(av.krw)}</div></div>
     <div class="m-stat"><div class="k">평가금액</div><div class="v">${won(ev)}</div></div>
     <div class="m-stat"><div class="k">매입기준</div><div class="v">${won(h.costKRW)}</div></div>
-    <div class="m-stat"><div class="k">평가손익</div><div class="v ${clsOf(ev-h.costKRW)}">${ev-h.costKRW>=0?'+':''}${won(ev-h.costKRW)}</div></div>`;
+    <div class="m-stat"><div class="k">평가손익</div><div class="v ${clsOf(ev-h.costKRW)}">${ev-h.costKRW>=0?'+':''}${won(ev-h.costKRW)}</div></div>
+    <div class="m-stat"><div class="k">${isU?'매수가 대비(달러)':'매수가 대비'}</div><div class="v ${clsOf(vs)}">${sign(vs)}${isU?'<small>환율 영향 제외</small>':''}</div></div>`;
+  const pos=Math.max(0,Math.min(100,(vs+20)/50*100)), pc=vs>0.0001?'var(--stamp-red)':vs<-0.0001?'var(--stamp-blue)':'var(--ink-soft)';
+  const f=n=>isU?'$'+n.toFixed(2):won(n);
+  document.getElementById('mGap').innerHTML=`<div class="t"><span>매수가 위치</span><span>평균 매수가 ${f(avgBase)} → 현재 ${f(pxNow)}</span></div>
+    <div class="trk"><i style="left:40%"></i><em style="left:${pos}%; background:${pc};"></em></div>
+    <div class="lb"><span>−20%</span><span>매수가</span><span>+30% 이상</span></div>`;
   const mn=document.getElementById('mNews');
   const rel=NEWS.filter(n=>(n.tk||'').toUpperCase()===tk.toUpperCase());
   if(rel.length){ mn.innerHTML=rel.map(n=>{ const u=/^https?:\/\//.test(n.u||'')?n.u:null;
