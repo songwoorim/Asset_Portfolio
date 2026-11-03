@@ -1384,7 +1384,13 @@
   .dx-acc-chev svg{width:100%; height:100%; stroke:var(--ink-soft); fill:none; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round;}
   .dx-acc.open .dx-acc-chev{transform:rotate(180deg);}
   .dx-acc-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
-  .dx-acc.open .dx-acc-body{max-height:120px;}
+  .dx-acc.open .dx-acc-body{max-height:300px;}
+  .dx-adv-hd{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:6px 0 8px;}
+  .dx-refresh{display:inline-flex; align-items:center; gap:5px; border:none; background:var(--paper); color:var(--ink-soft); font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; padding:6px 10px; border-radius:9999px; cursor:pointer;}
+  .dx-refresh svg{width:12px; height:12px; fill:none; stroke:var(--ink-soft); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;}
+  .dx-refresh span{font-weight:500; color:var(--ink-soft); margin-left:2px; opacity:.8;}
+  .dx-refresh.spin svg{animation:dxspin .8s linear infinite;}
+  @keyframes dxspin{to{transform:rotate(360deg);}}
   .dx-acc-body p{margin:0; padding:0 12px 12px 47px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); line-height:1.55;}
   .dx-acc-body .cta{display:flex; align-items:center; gap:4px; margin:6px 12px 12px 47px; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--brass); background:none; border:none; padding:0; cursor:pointer;}
   .dx-acc-body .cta svg{width:11px; height:11px; stroke:var(--brass); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
@@ -2643,46 +2649,11 @@
       <div id="dxCmpRows"></div>
     </div>
 
-    <div class="dx-cmp-head"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>조언 (눌러서 펼치기)</div>
-    <div class="dx-acc open" data-acc="pltr">
-      <div class="dx-acc-head">
-        <div class="dx-acc-ic" style="background:rgba(192,57,43,.12);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
-        <span class="dx-acc-title">PLTR 비중 축소</span>
-        <span class="dx-acc-badge" style="background:rgba(192,57,43,.12); color:#c0392b;">긴급</span>
-        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-      </div>
-      <div class="dx-acc-body">
-        <p>단일 종목 최대 비중. 일부 익절해 10% 이하로.</p>
-        <button class="cta" data-goto="sec-calc">매수·매도 계산기에서 몇 주 팔면 될지 확인 <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </div>
+    <div class="dx-adv-hd">
+      <div class="dx-cmp-head" style="margin:0;"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>조언 (눌러서 펼치기)</div>
+      <button type="button" class="dx-refresh" id="dxRefresh" title="현재 데이터로 조언 다시 만들기"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>새로고침<span id="dxAsOf"></span></button>
     </div>
-    <div class="dx-acc" data-acc="cash">
-      <div class="dx-acc-head">
-        <div class="dx-acc-ic" style="background:rgba(192,57,43,.12);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/></svg></div>
-        <span class="dx-acc-title">현금 확보</span>
-        <span class="dx-acc-badge" style="background:rgba(192,57,43,.12); color:#c0392b;">긴급</span>
-        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-      </div>
-      <div class="dx-acc-body"><p>현재 현금 비중이 낮아 하락장 대응 여력이 적음. 8~10%로.</p></div>
-    </div>
-    <div class="dx-acc" data-acc="core">
-      <div class="dx-acc-head">
-        <div class="dx-acc-ic" style="background:rgba(0,102,204,.1);"><svg viewBox="0 0 24 24" style="stroke:#0066cc;"><path d="M3 11l18-5v12L3 14v-3z"/></svg></div>
-        <span class="dx-acc-title">코어-새틀라이트 전환 · 연금 우선 납입</span>
-        <span class="dx-acc-badge" style="background:rgba(0,102,204,.1); color:#0066cc;">전략</span>
-        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-      </div>
-      <div class="dx-acc-body"><p>지수 ETF를 본체로, 개별주를 위성으로. 신규 자금은 연금(세액공제)→ISA 순으로.</p></div>
-    </div>
-    <div class="dx-acc" data-acc="review">
-      <div class="dx-acc-head">
-        <div class="dx-acc-ic" style="background:rgba(201,130,42,.12);"><svg viewBox="0 0 24 24" style="stroke:#c9822a;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-        <span class="dx-acc-title">패자 재점검: SMR·NFLX·INTC</span>
-        <span class="dx-acc-badge" style="background:rgba(201,130,42,.12); color:#c9822a;">점검</span>
-        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-      </div>
-      <div class="dx-acc-body"><p>"물타기 vs 손절"이 아니라 매수 논리가 아직 유효한가로 판단. 논리가 깨졌으면 규모 축소.</p></div>
-    </div>
+    <div id="dxAdvice"></div>
 
     <div class="note">본 내용은 참고용 프레임워크이며 투자자문이 아닙니다. 최종 결정과 책임은 본인에게 있습니다.</div>
   </div>
@@ -4572,6 +4543,81 @@ function renderAllocRadar(){
       <div class="dx-radar-legend-item" style="color:var(--ink-soft);"><i style="border:1.5px dashed var(--ink-soft); background:none;"></i>목표 비중</div>
     </div>`;
 }
+/* ===== 리밸런싱 진단 조언 — 현재 보유·시세로 매번 새로 만든다(고정 문구 아님) ===== */
+const DX_IC={
+  down:'<path d="M12 5v14M5 12l7 7 7-7"/>', cash:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/>',
+  core:'<path d="M3 11l18-5v12L3 14v-3z"/>', review:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>', ok:'<path d="M20 6L9 17l-5-5"/>'
+};
+function dxBadge(kind){
+  return {urgent:['긴급','rgba(192,57,43,.12)','#c0392b'], warn:['점검','rgba(201,130,42,.12)','#c9822a'], room:['여력','rgba(0,102,204,.1)','#0066cc'],
+          strat:['전략','rgba(0,102,204,.1)','#0066cc'], ok:['양호','rgba(21,128,61,.12)','#15803d']}[kind];
+}
+function dxAdviceItems(){
+  const total=grandTotal(), cash=cashKRW()+ISA_CASH, cashPct=cash/total*100;
+  const hs=HOLDINGS.map(h=>{ const ev=evalKRW(h); return {h, ev, w:ev/total*100, r:retPct(h)}; });
+  const items=[];
+  // 1) 단일 종목 쏠림
+  const single=hs.filter(x=>x.h.cat!=='etf').sort((a,b)=>b.w-a.w)[0];
+  if(single){
+    const cap=DX_TARGET.pltr, gap=single.w-cap, nm=single.h.nameKr;
+    if(gap>0){
+      const exKRW=gap/100*total, unit=single.ev/single.h.shares, sh=Math.max(1,Math.ceil(exKRW/unit));
+      items.push({id:'single', ic:DX_IC.down, icBg:'rgba(192,57,43,.12)', icC:'#c0392b', title:`${nm} 비중 축소`, kind:gap>=5?'urgent':'warn',
+        text:`${nm} 비중이 ${single.w.toFixed(1)}%로 단일 종목 상한 ${cap}%를 ${gap.toFixed(1)}%p 넘어요. 상한까지 줄이려면 약 ${sh}주(${won(exKRW)}) 규모예요. 수익률 ${sign(single.r)} — 한 번에 팔기보다 나눠서 조정하는 쪽을 참고하세요.`,
+        cta:'매수·매도 계산기에서 몇 주 팔면 될지 확인', tk:single.h.ticker});
+    } else {
+      items.push({id:'single', ic:DX_IC.ok, icBg:'rgba(21,128,61,.12)', icC:'#15803d', title:'단일 종목 쏠림 없음', kind:'ok',
+        text:`가장 큰 개별 종목은 ${nm} ${single.w.toFixed(1)}%로 상한 ${cap}% 이내예요.`});
+    }
+  }
+  // 2) 현금 비중
+  const lo=DX_TARGET.cashLo, hi=DX_TARGET.cashHi;
+  const under=hs.filter(x=>TARGET[x.h.ticker]!=null).map(x=>({x,gap:x.w-TARGET[x.h.ticker]})).filter(o=>o.gap<-0.5).sort((a,b)=>a.gap-b.gap).slice(0,3);
+  const underTxt=under.length?` 목표 비중보다 가장 모자란 종목은 ${under.map(o=>`${o.x.h.nameKr}(${o.gap.toFixed(1)}%p)`).join(', ')}예요.`:'';
+  if(cashPct>hi){
+    items.push({id:'cash', ic:DX_IC.cash, icBg:'rgba(0,102,204,.1)', icC:'#0066cc', title:'현금 여력 · 분할 투입 검토', kind:'room',
+      text:`현금 비중이 ${cashPct.toFixed(1)}%로 권장 ${lo}~${hi}%보다 ${(cashPct-hi).toFixed(1)}%p(약 ${won((cashPct-hi)/100*total)}) 많아요. 하락 대응 여력은 충분하니, 한 번에 넣지 말고 나눠서 투입을 고려해보세요.${underTxt}`});
+  } else if(cashPct<lo){
+    items.push({id:'cash', ic:DX_IC.cash, icBg:'rgba(192,57,43,.12)', icC:'#c0392b', title:'현금 확보', kind:cashPct<lo-3?'urgent':'warn',
+      text:`현금 비중이 ${cashPct.toFixed(1)}%로 권장 ${lo}~${hi}%보다 ${(lo-cashPct).toFixed(1)}%p(약 ${won((lo-cashPct)/100*total)}) 부족해요. 하락장 대응 여력을 위해 ${lo}~${hi}%까지 확보하는 쪽을 참고하세요.`});
+  } else {
+    items.push({id:'cash', ic:DX_IC.ok, icBg:'rgba(21,128,61,.12)', icC:'#15803d', title:'현금 비중 적정', kind:'ok',
+      text:`현금 비중 ${cashPct.toFixed(1)}%로 권장 ${lo}~${hi}% 범위예요.${underTxt}`});
+  }
+  // 3) 코어(지수 ETF) vs 위성(개별주)
+  const coreSet=['SPYM','IQQ','RISE_NDX','TIGER_SPX'], core=hs.filter(x=>coreSet.includes(x.h.ticker));
+  const coreW=core.reduce((a,x)=>a+x.w,0);
+  items.push({id:'core', ic:DX_IC.core, icBg:'rgba(0,102,204,.1)', icC:'#0066cc', title:'코어-새틀라이트 · 연금 우선 납입', kind:'strat',
+    text:`지수 ETF(${core.map(x=>x.h.ticker.replace(/_/g,' ')).join('·')}) 비중은 ${coreW.toFixed(1)}%예요. 지수 ETF를 본체로, 개별주를 위성으로 두는 구성을 목표로 하면 신규 자금은 연금저축(세액공제 한도 내)부터 채우고 해외 지수 ETF를 분할로 늘리는 방향을 참고할 수 있어요.`});
+  // 4) 패자 재점검
+  const losers=hs.filter(x=>x.r<-10).sort((a,b)=>a.r-b.r).slice(0,3);
+  if(losers.length){
+    items.push({id:'review', ic:DX_IC.review, icBg:'rgba(201,130,42,.12)', icC:'#c9822a', title:`패자 재점검: ${losers.map(x=>x.h.ticker.replace(/_/g,' ')).join('·')}`, kind:'warn',
+      text:`손실이 큰 순: ${losers.map(x=>`${x.h.nameKr} ${sign(x.r)}(비중 ${x.w.toFixed(1)}%)`).join(' · ')}. "물타기 vs 손절"이 아니라 매수 논리가 아직 유효한가로 판단하고, 논리가 깨졌다면 규모 축소를 고려하세요.`});
+  }
+  return items;
+}
+function dxRenderAdvice(){
+  const box=document.getElementById('dxAdvice'); if(!box) return;
+  const openIds=new Set([...box.querySelectorAll('.dx-acc.open')].map(e=>e.dataset.acc));
+  const first=!box.children.length;
+  box.innerHTML=dxAdviceItems().map((it,i)=>{ const b=dxBadge(it.kind), open=first? i===0 : openIds.has(it.id);
+    return `<div class="dx-acc ${open?'open':''}" data-acc="${it.id}">
+      <div class="dx-acc-head"><div class="dx-acc-ic" style="background:${it.icBg};"><svg viewBox="0 0 24 24" style="stroke:${it.icC};">${it.ic}</svg></div>
+        <span class="dx-acc-title">${it.title}</span><span class="dx-acc-badge" style="background:${b[1]}; color:${b[2]};">${b[0]}</span>
+        <div class="dx-acc-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+      <div class="dx-acc-body"><p>${it.text}</p>${it.cta?`<button class="cta" data-goto="sec-calc" data-tk="${it.tk}">${it.cta} <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`:''}</div></div>`; }).join('');
+  initDiagnosisAcc();
+  const d=new Date(), as=document.getElementById('dxAsOf'); if(as) as.textContent=` ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function initDxRefresh(){
+  const b=document.getElementById('dxRefresh'); if(!b) return;
+  b.onclick=async ()=>{
+    b.classList.add('spin');
+    try{ if(typeof refresh==='function' && !refreshing) await refresh(); else renderDiagnosis(); }catch(e){ renderDiagnosis(); }
+    setTimeout(()=>b.classList.remove('spin'),400);
+  };
+}
 function renderDiagnosis(){
   renderAllocRadar();
   const total=grandTotal(), cost=investedCost();
@@ -4584,7 +4630,8 @@ function renderDiagnosis(){
 
   // 한줄 진단에 실제 수치 반영
   document.getElementById('dxOneline').innerHTML=
-    `"미국 기술·성장주 + 100% 달러"에 집중한 <b>고확신 베팅</b>. 상승장에서 통한 구조이고, 하락 전환 시 변동성이 그대로 실린다. 총자산 ${won(total)} · 추정수익률 <b class="${clsOf(ret)}">${sign(ret)}</b>`;
+    `${(()=>{ const usd=(HOLDINGS.filter(h=>h.cur==='USD').reduce((a,h)=>a+evalKRW(h),0)+CASH.usd*FX)/total*100;
+      return `해외주식 <b>${stockPct.toFixed(1)}%</b>(권장 ${DX_TARGET.stock}% 이하) · 달러 자산 <b>${usd.toFixed(0)}%</b> · 현금 <b>${cashPct.toFixed(1)}%</b>. ${stockPct>DX_TARGET.stock?'미국 기술·성장주에 집중한 구조라 상승장에선 유리하지만 하락 전환 시 변동성이 그대로 실려요.':'권장 범위 안에서 비교적 분산된 구조예요.'}`; })()} 총자산 ${won(total)} · 추정수익률 <b class="${clsOf(ret)}">${sign(ret)}</b>`;
 
   // 종합 스코어: 100점에서 권장범위 이탈분만큼 감점(각 항목 상한 있음)
   const stockOver=Math.max(0, stockPct-DX_TARGET.stock);
@@ -4604,9 +4651,10 @@ function renderDiagnosis(){
       gapTxt: stockOver>0 ? `${stockOver.toFixed(1)}%p 초과` : '권장 범위 이내',
       ic:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.3 9.6c0-1.4 1.1-2.1 2.7-2.1s2.7.8 2.7 2.1c0 1.3-1.1 1.8-2.7 2.1-1.6.3-2.7.8-2.7 2.1 0 1.3 1.1 2.1 2.7 2.1s2.7-.7 2.7-2.1"/>', icBg:'rgba(192,57,43,.1)', icColor:'#c0392b', barColor:'var(--stamp-red)' },
     { k:'현금 비중', now:cashPct, rec:`권장 ${DX_TARGET.cashLo}~${DX_TARGET.cashHi}%`, target:DX_TARGET.cashLo, over:cashUnder>0,
-      gapTxt: cashUnder>0 ? `${cashUnder.toFixed(1)}%p 부족` : '권장 범위 이내',
+      gapTxt: cashUnder>0 ? `${cashUnder.toFixed(1)}%p 부족` : (cashPct>DX_TARGET.cashHi ? `${(cashPct-DX_TARGET.cashHi).toFixed(1)}%p 많음 (여력)` : '권장 범위 이내'),
       ic:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v6M8 3v6"/>', icBg:'rgba(44,74,124,.1)', icColor:'#2c4a7c', barColor:'var(--stamp-blue)' },
   ];
+  dxRenderAdvice();
   document.getElementById('dxCmpRows').innerHTML=rows.map(r=>`
     <div class="dx-cmp-row">
       <div class="dx-cmp-row-top">
@@ -4626,6 +4674,7 @@ function initDiagnosisAcc(){
       e.stopPropagation();
       const target=document.getElementById(b.dataset.goto);
       if(!target) return;
+      if(b.dataset.tk){ const sel=document.getElementById('calcSel'); if(sel){ sel.value=b.dataset.tk; if(sel.onchange) sel.onchange(); } }
       const tabBtn=document.querySelector(`#tabbar .tab-btn[data-tab="rebal"]`);
       if(tabBtn) tabBtn.click();
       setTimeout(()=>target.scrollIntoView({behavior:'smooth', block:'start'}), 60);
@@ -9378,7 +9427,7 @@ initTax();
 initWhatif();
 renderStrat();
 initCalcSim();
-initDiagnosisAcc();
+initDiagnosisAcc(); initDxRefresh();
 initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 initPnlTabs();
