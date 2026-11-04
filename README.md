@@ -1,3 +1,11 @@
+## 최근 업데이트 (2026-11-04 · 3)
+**AI 조언: Gemini가 "User location is not supported"(서버 위치 제한)로 막힐 때 Cloudflare Workers AI(무료)로 자동 대체**
+
+- 원인: Gemini API가 Worker의 서버 위치(Cloudflare 출구 IP)를 지원 지역으로 보지 않아 400을 줌(사용자 위치와 무관).
+- Worker: Gemini 실패 시 `env.AI`(Workers AI 바인딩)가 있으면 `@cf/meta/llama-3.3-70b-instruct-fp8-fast`로 대신 생성(`WORKERS_AI_MODEL`로 변경 가능). Gemini 대기 12초(대체 있을 때), 키 없이 Workers AI만으로도 동작. 진단용 `GET /ai/models` 추가.
+- 앱: 결과 카드에 실제로 쓴 AI(Gemini 무료 / Cloudflare AI 무료) 표시.
+- 설정: Worker → Settings → Bindings → Add → Workers AI, 변수 이름 `AI`. Worker 코드 재배포 필요.
+
 ## 최근 업데이트 (2026-11-04 · 2)
 **"AI 조언" 버튼 추가 (Gemini 무료 API, Worker 경유) — Worker 재배포 + 키 등록 필요**
 

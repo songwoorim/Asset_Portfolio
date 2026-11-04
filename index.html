@@ -4733,16 +4733,17 @@ function dxAiPayload(){
     cashPct:(cashKRW()+ISA_CASH)/total*100, cashLo:DX_TARGET.cashLo, cashHi:DX_TARGET.cashHi, singleCapPct:DX_TARGET.pltr
   };
 }
+function dxAiLbl(res){ return res&&res.provider==='workers-ai'?'Cloudflare AI 무료':'Gemini 무료'; }
 function dxAiShow(res){
   const box=document.getElementById('dxAiBox'), note=document.getElementById('dxAiNote'), btn=document.getElementById('dxAiBtn');
   if(!box) return;
   if(!res){ box.innerHTML=''; return; }
   const t=new Date(res.at||Date.now()), hm=`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
-  box.innerHTML=`<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 조언</span><span>${hm} · Gemini 무료</span></div>
+  box.innerHTML=`<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 조언</span><span>${hm} · ${dxAiLbl(res)}</span></div>
     <p class="dx-ai-sum">${dxEsc(res.summary)}</p>
     ${(res.points||[]).map((x,i)=>`<div class="dx-ai-pt"><b>${i+1}</b><div>${dxEsc(x)}</div></div>`).join('')}
     <div class="dx-ai-foot"><span>숫자는 앱에서 계산한 값이에요. AI 설명은 참고용이며 투자자문이 아닙니다. 금액 정보는 AI에 보내지 않아요.</span><span>오늘 ${res.used}/${res.limit}회</span></div></div>`;
-  if(note) note.textContent=`오늘 AI 조언 ${res.used}/${res.limit}회 · Gemini 무료`;
+  if(note) note.textContent=`오늘 AI 조언 ${res.used}/${res.limit}회 · ${dxAiLbl(res)}`;
   if(btn) btn.querySelector('b').textContent='다시 받기';
 }
 function dxAiError(msg){ const box=document.getElementById('dxAiBox'); if(box) box.innerHTML=`<div class="dx-ai-err">${dxEsc(msg)} 아래 규칙 기반 조언은 그대로 사용할 수 있어요.</div>`; }
