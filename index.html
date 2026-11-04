@@ -4751,7 +4751,7 @@ async function dxAiRun(){
   const btn=document.getElementById('dxAiBtn'), box=document.getElementById('dxAiBox'), label=btn.querySelector('b'), prev=label.textContent;
   btn.disabled=true; btn.classList.add('spin'); label.textContent='분석 중…';
   box.innerHTML='<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 조언</span></div><div class="dx-ai-sk" style="width:90%"></div><div class="dx-ai-sk"></div><div class="dx-ai-sk" style="width:70%"></div></div>';
-  const ctl=new AbortController(), to=setTimeout(()=>ctl.abort(),30000);
+  const ctl=new AbortController(), to=setTimeout(()=>ctl.abort(),40000);
   try{
     const body=dxAiPayload(); if(DX_AI.res) body.force=true;   // 이미 결과가 있으면 "다시 받기" = 새로 생성(횟수 차감)
     const r=await fetch(`${KIS_PROXY_URL}/ai/advice`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:ctl.signal});
@@ -4761,6 +4761,7 @@ async function dxAiRun(){
       label.textContent=prev;
       if(j.error==='limit'){ dxAiError(`오늘 AI 조언을 모두 사용했어요(${j.used}/${j.limit}회).`); if(DX_AI.res) setTimeout(()=>dxAiShow(DX_AI.res),2500); }
       else if(j.error==='no_key') dxAiError('AI 연결 설정(API 키)이 아직 안 되어 있어요.');
+      else if(j.error==='upstream_timeout') dxAiError('AI 응답이 너무 오래 걸렸어요. 잠시 뒤 다시 눌러 보세요.');
       else if(j.error==='origin') dxAiError('이 주소에서는 AI 조언을 쓸 수 없게 설정돼 있어요.');
       else dxAiError(`AI 조언을 불러오지 못했어요. (오류: ${j.error||'응답 없음'}${j.status?' '+j.status:''}${j.detail?' · '+String(j.detail).slice(0,120):''})`);
     }
