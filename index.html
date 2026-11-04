@@ -4762,9 +4762,9 @@ async function dxAiRun(){
       if(j.error==='limit'){ dxAiError(`오늘 AI 조언을 모두 사용했어요(${j.used}/${j.limit}회).`); if(DX_AI.res) setTimeout(()=>dxAiShow(DX_AI.res),2500); }
       else if(j.error==='no_key') dxAiError('AI 연결 설정(API 키)이 아직 안 되어 있어요.');
       else if(j.error==='origin') dxAiError('이 주소에서는 AI 조언을 쓸 수 없게 설정돼 있어요.');
-      else dxAiError('AI 조언을 불러오지 못했어요.');
+      else dxAiError(`AI 조언을 불러오지 못했어요. (오류: ${j.error||'응답 없음'}${j.status?' '+j.status:''}${j.detail?' · '+String(j.detail).slice(0,120):''})`);
     }
-  }catch(e){ label.textContent=prev; dxAiError(e&&e.name==='AbortError'?'응답이 늦어서 중단했어요.':'AI 조언을 불러오지 못했어요(연결 문제).'); }
+  }catch(e){ label.textContent=prev; dxAiError(e&&e.name==='AbortError'?'응답이 늦어서 중단했어요.':`AI 조언을 불러오지 못했어요(연결 문제: ${e&&e.message||'알 수 없음'}).`); }
   finally{ clearTimeout(to); btn.disabled=false; btn.classList.remove('spin'); DX_AI.busy=false; }
 }
 function initDxAi(){

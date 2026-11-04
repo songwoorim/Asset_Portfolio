@@ -4,7 +4,7 @@
 - 리밸런싱 탭 "조언" 머리줄에 "✦ AI 조언" 버튼(누를 때만 호출). 앱이 계산한 비중·수익률·목표 비중·규칙 점검 결과를 Worker `POST /ai/advice`로 보내고, Gemini가 요약 1~2문장 + 포인트 2~3개로 풀어씀. 결과 카드에 사용 횟수(오늘 n/5회)와 면책 문구 표시. 오늘 받은 결과는 브라우저에 저장해 새로고침 후에도 보임.
 - 금액·총자산·계좌 정보는 보내지 않음(비중 %, 수익률 %, 종목명, 규칙 제목만). 실패·한도 초과 시 "아래 규칙 기반 조언은 그대로 사용할 수 있어요" 안내(규칙 기반 조언은 항상 동작).
 - Worker(`kis-proxy-worker.js`) 변경: `/ai/advice` 추가, CORS에 POST 허용. 하루 5회 한도(한국시간 기준, 같은 내용은 캐시라 횟수 미차감, "다시 받기"는 차감), 입력 필드 화이트리스트·길이 제한, 선택적 `ALLOWED_ORIGIN` 주소 제한. 기존 KV(`KIS_TOKEN_KV`)를 사용량·캐시에 같이 씀.
-- 필요한 Worker 설정: Secret `GEMINI_API_KEY`(필수), Text `ALLOWED_ORIGIN`(선택, 예: https://내계정.github.io), Text `GEMINI_MODEL`(선택, 기본 gemini-flash-latest). 키가 없으면 앱에 "AI 연결 설정(API 키)이 아직 안 되어 있어요" 표시.
+- 필요한 Worker 설정: Secret `GEMINI_API_KEY`(필수), Text `ALLOWED_ORIGIN`(선택, 예: https://내계정.github.io), Text `GEMINI_MODEL`(선택, 기본 gemini-flash-latest). 키가 없으면 앱에 "AI 연결 설정(API 키)이 아직 안 되어 있어요" 표시. 그 밖의 실패는 "(오류: 코드 · 상세)"를 같이 표시(원인 확인용).
 - grandTotal 84,672,992 변동 없음.
 
 ## 최근 업데이트 (2026-11-04)
