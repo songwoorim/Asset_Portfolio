@@ -1316,6 +1316,7 @@
   .rpt-pill.up{background:rgba(192,57,43,.10); color:var(--stamp-red);} .rpt-pill.down{background:rgba(44,74,124,.12); color:var(--stamp-blue);} .rpt-pill.flat{background:var(--paper); color:var(--ink-soft);}
   .rpt-spark{margin-top:10px;} .rpt-spark svg{display:block; width:100%; height:56px;}
   .rpt-spark-cap{font-size:10px; color:var(--ink-soft); margin-top:2px;}
+  .rpt-ai-hd{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:12px 0 8px; font-size:10px; color:var(--ink-soft);}
   .rpt-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;}
   .rpt-mini{background:var(--paper); border-radius:16px; padding:12px 13px;}
   .rpt-mini .t{font-size:10.5px; color:var(--ink-soft); font-weight:600; margin-bottom:6px;}
@@ -2257,6 +2258,8 @@
       <div class="rpt-big flat" id="rptBig"></div>
       <div class="rpt-sub" id="rptSub"></div>
       <div class="rpt-spark" id="rptSpark"></div>
+      <div class="rpt-ai-hd"><span id="rptAiNote">AI 요약은 누를 때만 호출돼요 · 하루 5회 · 무료</span><button type="button" class="dx-ai-btn" id="rptAiBtn" title="이 날의 숫자를 AI가 쉬운 말로 풀어줘요"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><b style="font-weight:700;">AI 요약</b></button></div>
+      <div id="rptAiBox"></div>
     </div>
     <div class="rpt-grid"><div class="rpt-mini" id="rptSplit"></div><div class="rpt-mini" id="rptCash"></div></div>
     <div class="note" id="rptNote"></div>
@@ -7246,7 +7249,7 @@ function rptRender(){
   const tot=grandTotal(), cashP=(cashKRW()+ISA_CASH)/tot*100, lo=DX_TARGET.cashLo, hi=DX_TARGET.cashHi;
   const cg=cashP>hi?`목표 ${lo}~${hi}%보다<br><b style="color:var(--stamp-blue);">${(cashP-hi).toFixed(1)}%p 많음 (여력)</b>`:cashP<lo?`목표 ${lo}~${hi}%보다<br><b style="color:var(--stamp-red);">${(lo-cashP).toFixed(1)}%p 적음</b>`:`목표 ${lo}~${hi}% <b>범위 안</b>`;
   document.getElementById('rptCash').innerHTML=`<div class="t">현금 비중 (지금)</div><div class="v">${cashP.toFixed(1)}%</div><div class="d">${cg}</div>`;
-  document.getElementById('rptNote').innerHTML='숫자는 앱이 종가·환율로 계산한 값이에요. 환율 효과는 전일 보유 수량 기준 근사치예요.<br>AI 요약과 뉴스는 아직 연결하지 않았어요.';
+  document.getElementById('rptNote').innerHTML='숫자는 앱이 종가·환율로 계산한 값이에요. 환율 효과는 전일 보유 수량 기준 근사치예요.<br>AI 요약은 버튼을 눌렀을 때만 만들어져요. 뉴스는 아직 연결하지 않았어요.';
   // 종목별 기여
   const its=R.items.slice().sort((a,b)=>b.contrib-a.contrib), mx2=Math.max(0.1,...its.map(x=>Math.abs(x.contrib)));
   document.getElementById('rptList').innerHTML=its.map(x=>{ const c=wcCls(x.contrib), len=Math.min(50,Math.abs(x.contrib)/mx2*50);
@@ -7269,6 +7272,61 @@ function rptRender(){
   const mp=[]; for(let i=ms;i<=sel;i++){ if(!wcIsWk(i)) mp.push(rptDay(i,C).pct); }
   const moCum=comp(mp), fmt=n=>`<b style="color:${col(wcCls(n))};">${sg(n)}${Math.abs(n).toFixed(1)}%</b>`;
   document.getElementById('rptWl').innerHTML=`<span>주간 누적 ${fmt(wkCum)}</span><span>이번 달 누적 ${fmt(moCum)}</span>`;
+  RPT.last={R, wkCum, moCum, wd, cashP, ymd:wcYmd(sel), isToday:sel>=last};
+  try{ rptAiRefresh(); }catch(e){}
+}
+/* ----- 일일 리포트 AI 요약 (Worker /ai/report) -----
+   숫자(등락률·기여 %p·누적)만 보내고 금액은 보내지 않는다. 날짜별로 결과를 저장해 날짜를 오가도 다시 호출하지 않는다. */
+const RPT_AI={map:{}, busy:false};
+try{ RPT_AI.map=JSON.parse(localStorage.getItem('rptAi')||'{}')||{}; }catch(e){ RPT_AI.map={}; }
+function rptAiPayload(){
+  const L=RPT.last; if(!L) return null; const R=L.R, T0=R.T0||1;
+  const its=R.items.filter(x=>Math.abs(x.contrib)>=0.005).slice().sort((a,b)=>b.contrib-a.contrib);
+  const pick=[...its.filter(x=>x.contrib>0).slice(0,3), ...its.filter(x=>x.contrib<0).slice(-3)];
+  return { date:L.ymd, isToday:L.isToday, totalPct:R.pct, pricePct:R.price/T0*100, fxPct:R.fx/T0*100,
+    movers:pick.map(x=>({name:x.n, retPct:x.ret, contribPct:x.contrib})), cashPct:L.cashP, weekCumPct:L.wkCum, monthCumPct:L.moCum,
+    weekdays:L.wd.filter(x=>x.p!=null).map(x=>({day:x.n, pct:x.p})) };
+}
+function rptAiShow(res, stale){
+  const box=document.getElementById('rptAiBox'), note=document.getElementById('rptAiNote'), btn=document.getElementById('rptAiBtn'); if(!box) return;
+  if(!res){ box.innerHTML=''; if(btn) btn.querySelector('b').textContent='AI 요약'; if(note) note.textContent='AI 요약은 누를 때만 호출돼요 · 하루 5회 · 무료'; return; }
+  const t=new Date(res.at||Date.now()), hm=`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  box.innerHTML=`<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 요약</span><span>${hm} · ${dxAiLbl(res)}</span></div>
+    <p class="dx-ai-sum">${dxEsc(res.summary)}</p>
+    ${(res.points||[]).map((x,i)=>`<div class="dx-ai-pt"><b>${i+1}</b><div>${dxEsc(x)}</div></div>`).join('')}
+    <div class="dx-ai-foot"><span>${stale?'그 뒤 숫자가 바뀌었어요 — "다시 받기"로 새로 만들 수 있어요. ':''}숫자는 앱에서 계산한 값이고, AI는 뉴스·이유를 알지 못해요. 참고용이며 투자자문이 아닙니다. 금액 정보는 보내지 않아요.</span><span>오늘 ${res.used}/${res.limit}회</span></div></div>`;
+  if(btn) btn.querySelector('b').textContent='다시 받기';
+  if(note) note.textContent=`오늘 AI 요약 ${res.used}/${res.limit}회 · ${dxAiLbl(res)}`;
+}
+function rptAiRefresh(){
+  const L=RPT.last; if(!L) return;
+  const v=RPT_AI.map[L.ymd];
+  if(v && v.res) rptAiShow(v.res, Math.abs((v.pct||0)-L.R.pct)>=0.005); else rptAiShow(null);
+}
+async function rptAiRun(){
+  if(RPT_AI.busy) return; const L=RPT.last, pl=rptAiPayload(); if(!L||!pl) return; RPT_AI.busy=true;
+  const btn=document.getElementById('rptAiBtn'), box=document.getElementById('rptAiBox'), label=btn.querySelector('b'), prev=label.textContent;
+  const err=m=>{ box.innerHTML=`<div class="dx-ai-err">${dxEsc(m)}</div>`; };
+  btn.disabled=true; btn.classList.add('spin'); label.textContent='분석 중…';
+  box.innerHTML='<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 요약</span></div><div class="dx-ai-sk" style="width:90%"></div><div class="dx-ai-sk"></div><div class="dx-ai-sk" style="width:70%"></div></div>';
+  const ctl=new AbortController(), to=setTimeout(()=>ctl.abort(),40000), had=RPT_AI.map[L.ymd];
+  try{
+    if(had && had.res) pl.force=true;
+    const r=await fetch(`${KIS_PROXY_URL}/ai/report`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pl),signal:ctl.signal});
+    const j=await r.json().catch(()=>({ok:false}));
+    if(j.ok){ RPT_AI.map[L.ymd]={res:j, pct:L.R.pct};
+      const ks=Object.keys(RPT_AI.map).sort(); while(ks.length>14) delete RPT_AI.map[ks.shift()];
+      try{ localStorage.setItem('rptAi',JSON.stringify(RPT_AI.map)); }catch(e){}
+      rptAiShow(j,false); }
+    else{
+      label.textContent=prev;
+      if(j.error==='limit'){ err(`오늘 AI 요약을 모두 사용했어요(${j.used}/${j.limit}회).`); if(had&&had.res) setTimeout(()=>rptAiRefresh(),2500); }
+      else if(j.error==='origin') err('이 주소에서는 AI를 쓸 수 없게 설정돼 있어요.');
+      else if(j.error==='no_key') err('AI 연결 설정이 아직 안 되어 있어요.');
+      else err(`AI 요약을 불러오지 못했어요. (오류: ${j.error||'응답 없음'}${j.status?' '+j.status:''}${j.detail?' · '+String(j.detail).slice(0,120):''})`);
+    }
+  }catch(e){ label.textContent=prev; err(e&&e.name==='AbortError'?'응답이 늦어서 중단했어요.':`AI 요약을 불러오지 못했어요(연결 문제: ${e&&e.message||'알 수 없음'}).`); }
+  finally{ clearTimeout(to); btn.disabled=false; btn.classList.remove('spin'); RPT_AI.busy=false; }
 }
 function initDailyReport(){
   if(!document.getElementById('sec-rpt')) return;
@@ -7276,6 +7334,7 @@ function initDailyReport(){
   document.getElementById('rptPrev').onclick=()=>rptSetSel(wcPrevTrading(cur()));
   document.getElementById('rptNext').onclick=()=>rptSetSel(wcNextTrading(cur(),AS.length-1));
   document.getElementById('rptToday').onclick=()=>rptSetSel(AS.length-1);
+  document.getElementById('rptAiBtn').onclick=rptAiRun;
   document.getElementById('rptDateIn').onchange=e=>{ if(!e.target.value) return; rptSetSel(plIndexForDate(new Date(e.target.value+'T00:00:00'))); };
   rptRender();
 }
