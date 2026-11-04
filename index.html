@@ -7200,27 +7200,52 @@ function initWeightChange(){
    - 환율 효과 = 전일 평가액 × (당일환율/전일환율 − 1) (달러 자산만, 전일 보유 수량 기준 근사치). 나머지는 주가 효과.
    - 기여(%p) = 종목 변동 ÷ 전일 총자산(예수금 포함) × 100.  AI 문장·뉴스는 아직 붙이지 않았다(준비 중). */
 const RPT={sel:null};
+/* 시장 시간대 보정: 한국 종목은 그날(i) 종가, 미국 종목은 "한국시간 i일 아침에 마감한 미국장"(= i-1일 거래일) 종가를 쓴다.
+   예) 11/4(수) 저녁 → 국내 11/4 종가 · 미국 11/3 종가(어젯밤 마감), 각각 직전 거래일 대비. 달력 날짜로만 비교하면
+   미국 종목이 "오늘 종가 없음 → 어제 값 이어붙임"이라 변동이 전부 0으로 나온다.
+   실제 종가가 없는 종목(캐시 미확보)은 보간값으로 가짜 변동이 생기므로 계산에서 제외하고 개수만 알린다. */
+function rptUsIdx(i){ let k=i-1; while(k>1 && wcIsWk(k)) k--; return k; }
+function rptHistOk(){ return !!(HIST_PRICE_CACHE && Object.keys(HIST_PRICE_CACHE).length); }
 function rptDay(i,C){
-  const j=wcPrevTrading(i), d0=wcYmd(j), d1=wcYmd(i), fx0=fxAt(plDateForIndex(j)), fx1=fxAt(plDateForIndex(i));
-  const T0=C.totalAt(j), net={};
-  TXL.forEach(t=>{ if(t.d>d0 && t.d<=d1){ net[t.tk]=(net[t.tk]||0)+(t.q>0?1:-1)*Math.abs(t.amt); } });
+  const kr0=wcPrevTrading(i), us1=rptUsIdx(i), us0=wcPrevTrading(us1);
+  const T0=C.totalAt(kr0);
   const curOf={}; HOLDINGS.forEach(h=>{ curOf[h.ticker]=h.cur; });
-  const items=[]; let move=0, fxE=0;
+  const hasReal=tk=>!!(HIST_PRICE_CACHE && HIST_PRICE_CACHE[tk] && HIST_PRICE_CACHE[tk].length);
+  const items=[]; let move=0, fxE=0, skipped=0;
   C.tks.forEach(tk=>{
-    const v0=C.val(tk,j), v1=C.val(tk,i); if(!(v0>0)) return;
-    const m=v1-v0-(net[tk]||0);
-    const f=(curOf[tk]==='USD' && fx0>0)? v0*(fx1/fx0-1) : 0;
+    const us=curOf[tk]==='USD', a=us?us0:kr0, b=us?us1:i;
+    const v0=C.val(tk,a), v1=C.val(tk,b); if(!(v0>0)) return;
+    if(!hasReal(tk)){ skipped++; return; }
+    const d0=wcYmd(a), d1=wcYmd(b); let net=0;
+    TXL.forEach(t=>{ if(t.tk===tk && t.d>d0 && t.d<=d1) net+=(t.q>0?1:-1)*Math.abs(t.amt); });
+    const fx0=fxAt(plDateForIndex(a)), fx1=fxAt(plDateForIndex(b));
+    const m=v1-v0-net, f=(us && fx0>0)? v0*(fx1/fx0-1) : 0;
     items.push({tk, n:C.nameOf(tk), v0, v1, move:m, fx:f, price:m-f, ret:m/v0*100, contrib:m/T0*100});
     move+=m; fxE+=f;
   });
-  return {i,j,T0,items,move,fx:fxE,price:move-fxE,pct:T0>0?move/T0*100:0};
+  return {i,j:kr0,us1,skipped,T0,items,move,fx:fxE,price:move-fxE,pct:T0>0?move/T0*100:0};
 }
 function rptSetSel(i){ RPT.sel=Math.min(Math.max(i,1),AS.length-1); rptRender(); }
+function rptRenderChecks(){
+  let ck=[]; try{ ck=dxAdviceItems(); }catch(e){}
+  const order={urgent:0,warn:1,room:2,strat:3,ok:4}; ck.sort((a,b)=>(order[a.kind]??9)-(order[b.kind]??9));
+  document.getElementById('rptChecks').innerHTML=ck.map(it=>{ const b=dxBadge(it.kind);
+    return `<div class="rpt-ck"><div class="ic" style="background:${it.icBg};"><svg viewBox="0 0 24 24" style="stroke:${it.icC};">${it.ic}</svg></div><div><h4>${it.title}<span style="background:${b[1]};color:${b[2]};">${b[0]}</span></h4><p>${it.text}</p></div></div>`; }).join('')||'<div class="note">지금 확인할 항목이 없어요.</div>';
+}
 function rptRender(){
   const box=document.getElementById('rptBig'); if(!box || typeof AS==='undefined' || AS.length<3) return;
   const C=wcCtx(), last=AS.length-1;
   const selRaw=RPT.sel==null?last:Math.min(Math.max(RPT.sel,1),last);
   let sel=selRaw; while(sel>1 && wcIsWk(sel)) sel--;
+  if(!rptHistOk()){   // 실제 종가를 아직 못 받았으면 보간값으로 가짜 숫자를 보여주지 않는다
+    document.getElementById('rptDateTxt').textContent=wcLabel(selRaw);
+    document.getElementById('rptBig').className='rpt-big flat'; document.getElementById('rptBig').textContent='—';
+    document.getElementById('rptLb').textContent='실제 종가를 불러오는 중이에요…';
+    ['rptSub','rptSpark','rptSplit','rptCash','rptList','rptWk','rptWl'].forEach(id=>{ const e=document.getElementById(id); if(e) e.innerHTML=''; });
+    document.getElementById('rptNote').innerHTML='종가를 받으면 자동으로 채워져요. 새로고침(⟳)을 한 번 눌러 보세요.';
+    rptRenderChecks();
+    return;
+  }
   const R=rptDay(sel,C), cls=wcCls(R.pct), col=c=>c==='up'?'var(--stamp-red)':c==='down'?'var(--stamp-blue)':'var(--ink-soft)';
   const sg=n=>(n>=0.005?'+':n<=-0.005?'−':'');
   const amt=n=>(Math.abs(n)<500?'':n>0?'+':'−')+won(Math.abs(n));
@@ -7231,7 +7256,8 @@ function rptRender(){
   document.getElementById('rptNext').disabled=selRaw>=last;
   document.getElementById('rptToday').style.visibility=selRaw>=last?'hidden':'visible';
   // 히어로
-  document.getElementById('rptLb').textContent=(selRaw!==sel?wcLabel(sel)+' 기준 · ':'')+wcLabel(R.j)+' 종가 대비 총자산 변동';
+  const md=k=>{ const d=plDateForIndex(k); return `${d.getMonth()+1}/${d.getDate()}`; };
+  document.getElementById('rptLb').textContent=(selRaw!==sel?wcLabel(sel)+' 기준 · ':'')+`국내 ${md(sel)} · 미국 ${md(R.us1)} 마감 기준 총자산 변동`;
   box.className='rpt-big '+cls; box.innerHTML=`${sg(R.pct)}${Math.abs(R.pct).toFixed(2)}<small>%</small>`;
   document.getElementById('rptSub').innerHTML=`<span class="rpt-pill ${cls}">${amt(R.move)||'₩0'}</span><span>거래로 늘고 준 금액은 뺀 시세 변동</span>`;
   // 최근 한 달 평가액 흐름(주식 평가액 합계)
@@ -7249,16 +7275,12 @@ function rptRender(){
   const tot=grandTotal(), cashP=(cashKRW()+ISA_CASH)/tot*100, lo=DX_TARGET.cashLo, hi=DX_TARGET.cashHi;
   const cg=cashP>hi?`목표 ${lo}~${hi}%보다<br><b style="color:var(--stamp-blue);">${(cashP-hi).toFixed(1)}%p 많음 (여력)</b>`:cashP<lo?`목표 ${lo}~${hi}%보다<br><b style="color:var(--stamp-red);">${(lo-cashP).toFixed(1)}%p 적음</b>`:`목표 ${lo}~${hi}% <b>범위 안</b>`;
   document.getElementById('rptCash').innerHTML=`<div class="t">현금 비중 (지금)</div><div class="v">${cashP.toFixed(1)}%</div><div class="d">${cg}</div>`;
-  document.getElementById('rptNote').innerHTML='숫자는 앱이 종가·환율로 계산한 값이에요. 환율 효과는 전일 보유 수량 기준 근사치예요.<br>AI 요약은 버튼을 눌렀을 때만 만들어져요. 뉴스는 아직 연결하지 않았어요.';
+  document.getElementById('rptNote').innerHTML='숫자는 앱이 종가·환율로 계산한 값이에요. 국내는 그날, 미국은 한국시간 아침에 마감한 거래일 종가 기준이에요. 환율 효과는 근사치예요.'+(R.skipped?`<br>종가를 못 받은 ${R.skipped}개 종목은 계산에서 뺐어요.`:'')+'<br>AI 요약은 버튼을 눌렀을 때만 만들어져요. 뉴스는 아직 연결하지 않았어요.';
   // 종목별 기여
   const its=R.items.slice().sort((a,b)=>b.contrib-a.contrib), mx2=Math.max(0.1,...its.map(x=>Math.abs(x.contrib)));
   document.getElementById('rptList').innerHTML=its.map(x=>{ const c=wcCls(x.contrib), len=Math.min(50,Math.abs(x.contrib)/mx2*50);
     return `<div class="wc-row rpt-row">${swAvatar(x.tk,'wc-lgo')}<div class="wc-nm">${x.n}<span>${x.tk.replace(/_/g,' ')}</span><small>${sg(x.ret)}${Math.abs(x.ret).toFixed(2)}%</small></div><div class="pnl-track"><div class="pnl-fill ${x.contrib>=0?'pos':'neg'}" style="width:${len}%"></div></div><div class="wc-val ${c}">${sg(x.contrib)}${Math.abs(x.contrib).toFixed(2)}%p<div class="w">${amt(x.move)||'₩0'}</div></div></div>`; }).join('')||'<div class="note">표시할 종목이 없어요.</div>';
-  // 확인할 것 (기존 진단 규칙 재사용)
-  let ck=[]; try{ ck=dxAdviceItems(); }catch(e){}
-  const order={urgent:0,warn:1,room:2,strat:3,ok:4}; ck.sort((a,b)=>(order[a.kind]??9)-(order[b.kind]??9));
-  document.getElementById('rptChecks').innerHTML=ck.map(it=>{ const b=dxBadge(it.kind);
-    return `<div class="rpt-ck"><div class="ic" style="background:${it.icBg};"><svg viewBox="0 0 24 24" style="stroke:${it.icC};">${it.ic}</svg></div><div><h4>${it.title}<span style="background:${b[1]};color:${b[2]};">${b[0]}</span></h4><p>${it.text}</p></div></div>`; }).join('')||'<div class="note">지금 확인할 항목이 없어요.</div>';
+  rptRenderChecks();
   // 이번 주 흐름 (월~금)
   const dow=(plDateForIndex(sel).getDay()+6)%7, mon=sel-dow, days=['월','화','수','목','금'];
   const wd=days.map((n,k)=>{ const i=mon+k; if(i<1||i>sel) return {n,i,p:null}; return {n,i,p:rptDay(i,C).pct}; });
