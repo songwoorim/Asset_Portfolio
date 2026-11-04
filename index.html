@@ -1304,6 +1304,42 @@
   .wc-val{font-family:'Inter',-apple-system,sans-serif; font-size:11.5px; font-weight:600; text-align:right;}
   .wc-val .w{font-size:10px; font-weight:500; margin-top:2px;}
   .wc-val.up, .wc-val.up .w{color:var(--stamp-red);} .wc-val.down, .wc-val.down .w{color:var(--stamp-blue);} .wc-val.flat, .wc-val.flat .w{color:var(--ink-soft);}
+
+  /* ===== 일일 리포트 탭 ===== */
+  .rpt-hero{padding:2px 2px 4px;}
+  .rpt-lb{font-size:11px; color:var(--ink-soft); font-weight:600;}
+  .rpt-big{font-family:'Inter',-apple-system,sans-serif; font-size:38px; font-weight:800; letter-spacing:-.03em; margin:6px 0 4px; line-height:1.1;}
+  .rpt-big small{font-size:18px; font-weight:700; margin-left:2px;}
+  .rpt-big.up{color:var(--stamp-red);} .rpt-big.down{color:var(--stamp-blue);} .rpt-big.flat{color:var(--ink);}
+  .rpt-sub{display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-soft);}
+  .rpt-pill{font-family:'Inter',-apple-system,sans-serif; font-size:11px; font-weight:700; padding:4px 9px; border-radius:9999px;}
+  .rpt-pill.up{background:rgba(192,57,43,.10); color:var(--stamp-red);} .rpt-pill.down{background:rgba(44,74,124,.12); color:var(--stamp-blue);} .rpt-pill.flat{background:var(--paper); color:var(--ink-soft);}
+  .rpt-spark{margin-top:10px;} .rpt-spark svg{display:block; width:100%; height:56px;}
+  .rpt-spark-cap{font-size:10px; color:var(--ink-soft); margin-top:2px;}
+  .rpt-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;}
+  .rpt-mini{background:var(--paper); border-radius:16px; padding:12px 13px;}
+  .rpt-mini .t{font-size:10.5px; color:var(--ink-soft); font-weight:600; margin-bottom:6px;}
+  .rpt-mini .v{font-family:'Inter',-apple-system,sans-serif; font-size:17px; font-weight:800; letter-spacing:-.02em;}
+  .rpt-mini .d{font-size:10.5px; color:var(--ink-soft); margin-top:4px; line-height:1.45;}
+  .rpt-split{display:flex; height:8px; border-radius:5px; overflow:hidden; margin:9px 0 6px; background:var(--line);}
+  .rpt-split i{display:block; height:100%;}
+  .rpt-leg{display:flex; justify-content:space-between; font-size:10px; color:var(--ink-soft);}
+  .rpt-leg b{font-family:'Inter',-apple-system,sans-serif; font-weight:700; color:var(--ink);}
+  .rpt-row{cursor:default;}
+  .rpt-ck{display:flex; gap:11px; padding:11px 0; border-top:1px solid var(--line);}
+  .rpt-ck:first-child{border-top:none; padding-top:2px;}
+  .rpt-ck .ic{width:30px; height:30px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .rpt-ck .ic svg{width:15px; height:15px; fill:none; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round;}
+  .rpt-ck h4{margin:0 0 3px; font-size:12.5px; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .rpt-ck h4 span{font-size:9px; font-weight:800; padding:2px 7px; border-radius:9999px;}
+  .rpt-ck p{margin:0; font-size:11px; color:var(--ink-soft); line-height:1.55;}
+  .rpt-wk{display:flex; gap:8px; align-items:flex-end; height:92px;}
+  .rpt-wk>div{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:5px; height:100%;}
+  .rpt-wk .b{width:100%; border-radius:8px 8px 4px 4px; min-height:5px;}
+  .rpt-wk em{font-style:normal; font-family:'Inter',-apple-system,sans-serif; font-size:9.5px; font-weight:700;}
+  .rpt-wk small{font-size:10px; color:var(--ink-soft);} .rpt-wk .on small{color:var(--ink); font-weight:800;}
+  .rpt-wl{display:flex; justify-content:space-between; margin-top:12px; font-size:11px; color:var(--ink-soft);}
+  .rpt-wl b{font-family:'Inter',-apple-system,sans-serif; font-weight:800;}
   .wc-det{display:none; background:var(--paper); border-radius:14px; padding:11px 13px; margin:2px 0 8px;}
   .wc-det.on{display:block;}
   .wc-det .t{display:flex; justify-content:space-between; font-size:10.5px; color:var(--ink-soft); font-weight:600; margin-bottom:4px;}
@@ -1391,6 +1427,23 @@
   .dx-refresh span{font-weight:500; color:var(--ink-soft); margin-left:2px; opacity:.8;}
   .dx-refresh.spin svg{animation:dxspin .8s linear infinite;}
   @keyframes dxspin{to{transform:rotate(360deg);}}
+  /* AI 조언 */
+  .dx-btns{display:flex; gap:6px; align-items:center;}
+  .dx-ai-btn{display:inline-flex; align-items:center; gap:5px; border:none; background:var(--ink); color:var(--card); font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; font-weight:700; padding:6px 11px; border-radius:9999px; cursor:pointer;}
+  .dx-ai-btn svg{width:12px; height:12px; fill:currentColor; stroke:none;}
+  .dx-ai-btn:disabled{opacity:.6; cursor:default;}
+  .dx-ai-btn.spin svg{animation:dxspin .9s linear infinite;}
+  .dx-ai-note{font-size:10px; color:var(--ink-soft); margin:-2px 2px 8px; text-align:right;}
+  .dx-ai-card{background:var(--paper); border-radius:16px; padding:14px; margin:0 0 10px;}
+  .dx-ai-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; font-size:10px; font-weight:800; color:var(--ink-soft);}
+  .dx-ai-top span:last-child{font-family:'Inter',-apple-system,sans-serif; font-weight:500;}
+  .dx-ai-sum{margin:0 0 10px; font-size:13px; font-weight:700; line-height:1.5;}
+  .dx-ai-pt{display:flex; gap:8px; margin:0 0 8px; font-size:11.5px; line-height:1.55;}
+  .dx-ai-pt b{flex:0 0 18px; height:18px; border-radius:50%; background:var(--ink); color:var(--card); font-family:'Inter',-apple-system,sans-serif; font-size:10px; display:flex; align-items:center; justify-content:center; margin-top:1px;}
+  .dx-ai-foot{border-top:1px dashed var(--line); margin-top:10px; padding-top:9px; font-size:9.5px; color:var(--ink-soft); line-height:1.55; display:flex; justify-content:space-between; gap:10px;}
+  .dx-ai-sk{height:11px; border-radius:6px; background:var(--line); opacity:.6; margin:9px 0; animation:dxpulse 1.1s ease-in-out infinite;}
+  @keyframes dxpulse{50%{opacity:.25;}}
+  .dx-ai-err{font-size:11px; line-height:1.6; color:var(--ink-soft); background:var(--paper); border-radius:12px; padding:10px 12px; margin:0 0 10px;}
   .dx-acc-body p{margin:0; padding:0 12px 12px 47px; font-family:'Inter',-apple-system,sans-serif; font-size:10.5px; color:var(--ink-soft); line-height:1.55;}
   .dx-acc-body .cta{display:flex; align-items:center; gap:4px; margin:6px 12px 12px 47px; font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; color:var(--brass); background:none; border:none; padding:0; cursor:pointer;}
   .dx-acc-body .cta svg{width:11px; height:11px; stroke:var(--brass); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
@@ -2193,6 +2246,46 @@
   <div class="perf"></div>
 
   <!-- DAILY P&L -->
+  <div class="page collapsible" id="sec-rpt" data-panel="rpt">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2.5" stroke-width="1.8"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4" stroke-width="1.8" stroke-linecap="round"/></svg></span>일일 리포트</h2></div>
+    <div class="wc-datebar">
+      <div class="wc-step"><button type="button" id="rptPrev" aria-label="이전 거래일">‹</button><label class="wc-date"><span id="rptDateTxt"></span><input type="date" id="rptDateIn"></label><button type="button" id="rptNext" aria-label="다음 거래일">›</button></div>
+      <button type="button" class="wc-today" id="rptToday">오늘</button>
+    </div>
+    <div class="rpt-hero">
+      <div class="rpt-lb" id="rptLb"></div>
+      <div class="rpt-big flat" id="rptBig"></div>
+      <div class="rpt-sub" id="rptSub"></div>
+      <div class="rpt-spark" id="rptSpark"></div>
+    </div>
+    <div class="rpt-grid"><div class="rpt-mini" id="rptSplit"></div><div class="rpt-mini" id="rptCash"></div></div>
+    <div class="note" id="rptNote"></div>
+  </div>
+
+  <div class="perf"></div>
+
+  <div class="page collapsible" id="sec-rptc" data-panel="rpt">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(44,74,124,.1);"><svg viewBox="0 0 24 24" style="stroke:#2c4a7c;" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke-width="1.8" stroke-linecap="round"/></svg></span>종목별 기여</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">총자산 대비 %p</div></div>
+    <div class="pnl-list" id="rptList"></div>
+  </div>
+
+  <div class="perf"></div>
+
+  <div class="page collapsible" id="sec-rptk" data-panel="rpt">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(201,130,42,.12);"><svg viewBox="0 0 24 24" style="stroke:#c9822a;" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>오늘 확인할 것</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">규칙으로 계산</div></div>
+    <div id="rptChecks"></div>
+  </div>
+
+  <div class="perf"></div>
+
+  <div class="page collapsible" id="sec-rptw" data-panel="rpt">
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.12);"><svg viewBox="0 0 24 24" style="stroke:#15803d;" fill="none"><path d="M4 15l4.5-5 3.5 3 6-7M18 6h3v3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>이번 주 흐름</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">일별 총자산 변동</div></div>
+    <div class="rpt-wk" id="rptWk"></div>
+    <div class="rpt-wl" id="rptWl"></div>
+  </div>
+
+  <div class="perf"></div>
+
   <div class="page collapsible" id="sec-daily" data-panel="pnl">
     <div class="page-head"><h2><span class="idx" style="background:rgba(192,57,43,.1);"><svg viewBox="0 0 24 24" style="stroke:#c0392b;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>수익 현황</h2><div class="total" style="font-size:12px;color:var(--ink-soft);" id="dailyAsOf">전일대비</div></div>
     <div class="pnl-tabs" id="pnlTabs">
@@ -2651,8 +2744,13 @@
 
     <div class="dx-adv-hd">
       <div class="dx-cmp-head" style="margin:0;"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>조언 (눌러서 펼치기)</div>
-      <button type="button" class="dx-refresh" id="dxRefresh" title="현재 데이터로 조언 다시 만들기"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>새로고침<span id="dxAsOf"></span></button>
+      <div class="dx-btns">
+        <button type="button" class="dx-refresh" id="dxRefresh" title="현재 데이터로 조언 다시 만들기"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>새로고침<span id="dxAsOf"></span></button>
+        <button type="button" class="dx-ai-btn" id="dxAiBtn" title="AI가 위 규칙 결과를 쉬운 말로 풀어줘요"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><b style="font-weight:700;">AI 조언</b></button>
+      </div>
     </div>
+    <div class="dx-ai-note" id="dxAiNote">AI 조언은 누를 때만 호출돼요 · 하루 5회 · Gemini 무료</div>
+    <div id="dxAiBox"></div>
     <div id="dxAdvice"></div>
 
     <div class="note">본 내용은 참고용 프레임워크이며 투자자문이 아닙니다. 최종 결정과 책임은 본인에게 있습니다.</div>
@@ -2770,6 +2868,10 @@
   <button class="tab-btn on" data-tab="home">
     <svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5M6 10v9h5v-5h2v5h5v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span>홈</span>
+  </button>
+  <button class="tab-btn" data-tab="rpt">
+    <svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>리포트</span>
   </button>
   <button class="tab-btn" data-tab="pnl">
     <svg viewBox="0 0 24 24"><path d="M4 15l4.5-5 3.5 3 6-7M18 6h3v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -4617,6 +4719,58 @@ function initDxRefresh(){
     try{ if(typeof refresh==='function' && !refreshing) await refresh(); else renderDiagnosis(); }catch(e){ renderDiagnosis(); }
     setTimeout(()=>b.classList.remove('spin'),400);
   };
+}
+/* ===== AI 조언 (Gemini, Worker 경유) =====
+   앱이 계산한 비중·수익률·규칙 결과(금액 제외)만 Worker(/ai/advice)로 보내고, AI는 그 숫자를 쉬운 말로 풀어쓴다.
+   키는 Worker에만 있고, 하루 5회 한도·결과 캐시는 Worker가 관리한다. 실패해도 위 규칙 기반 조언은 그대로 보인다. */
+const DX_AI={busy:false, res:null};
+function dxEsc(t){ return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function dxAiPayload(){
+  const total=grandTotal();
+  return {
+    positions:HOLDINGS.map(h=>({name:h.nameKr, kind:h.cat, weightPct:evalKRW(h)/total*100, returnPct:retPct(h), targetPct:TARGET[h.ticker]!=null?TARGET[h.ticker]:null})),
+    rules:dxAdviceItems().map(it=>({title:it.title, level:it.kind})),
+    cashPct:(cashKRW()+ISA_CASH)/total*100, cashLo:DX_TARGET.cashLo, cashHi:DX_TARGET.cashHi, singleCapPct:DX_TARGET.pltr
+  };
+}
+function dxAiShow(res){
+  const box=document.getElementById('dxAiBox'), note=document.getElementById('dxAiNote'), btn=document.getElementById('dxAiBtn');
+  if(!box) return;
+  if(!res){ box.innerHTML=''; return; }
+  const t=new Date(res.at||Date.now()), hm=`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  box.innerHTML=`<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 조언</span><span>${hm} · Gemini 무료</span></div>
+    <p class="dx-ai-sum">${dxEsc(res.summary)}</p>
+    ${(res.points||[]).map((x,i)=>`<div class="dx-ai-pt"><b>${i+1}</b><div>${dxEsc(x)}</div></div>`).join('')}
+    <div class="dx-ai-foot"><span>숫자는 앱에서 계산한 값이에요. AI 설명은 참고용이며 투자자문이 아닙니다. 금액 정보는 AI에 보내지 않아요.</span><span>오늘 ${res.used}/${res.limit}회</span></div></div>`;
+  if(note) note.textContent=`오늘 AI 조언 ${res.used}/${res.limit}회 · Gemini 무료`;
+  if(btn) btn.querySelector('b').textContent='다시 받기';
+}
+function dxAiError(msg){ const box=document.getElementById('dxAiBox'); if(box) box.innerHTML=`<div class="dx-ai-err">${dxEsc(msg)} 아래 규칙 기반 조언은 그대로 사용할 수 있어요.</div>`; }
+async function dxAiRun(){
+  if(DX_AI.busy) return; DX_AI.busy=true;
+  const btn=document.getElementById('dxAiBtn'), box=document.getElementById('dxAiBox'), label=btn.querySelector('b'), prev=label.textContent;
+  btn.disabled=true; btn.classList.add('spin'); label.textContent='분석 중…';
+  box.innerHTML='<div class="dx-ai-card"><div class="dx-ai-top"><span>✦ AI 조언</span></div><div class="dx-ai-sk" style="width:90%"></div><div class="dx-ai-sk"></div><div class="dx-ai-sk" style="width:70%"></div></div>';
+  const ctl=new AbortController(), to=setTimeout(()=>ctl.abort(),30000);
+  try{
+    const body=dxAiPayload(); if(DX_AI.res) body.force=true;   // 이미 결과가 있으면 "다시 받기" = 새로 생성(횟수 차감)
+    const r=await fetch(`${KIS_PROXY_URL}/ai/advice`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:ctl.signal});
+    const j=await r.json().catch(()=>({ok:false}));
+    if(j.ok){ DX_AI.res=j; dxAiShow(j); try{ localStorage.setItem('dxAiLast',JSON.stringify({day:localDateStr(new Date()),res:j})); }catch(e){} label.textContent='다시 받기'; }
+    else{
+      label.textContent=prev;
+      if(j.error==='limit'){ dxAiError(`오늘 AI 조언을 모두 사용했어요(${j.used}/${j.limit}회).`); if(DX_AI.res) setTimeout(()=>dxAiShow(DX_AI.res),2500); }
+      else if(j.error==='no_key') dxAiError('AI 연결 설정(API 키)이 아직 안 되어 있어요.');
+      else if(j.error==='origin') dxAiError('이 주소에서는 AI 조언을 쓸 수 없게 설정돼 있어요.');
+      else dxAiError('AI 조언을 불러오지 못했어요.');
+    }
+  }catch(e){ label.textContent=prev; dxAiError(e&&e.name==='AbortError'?'응답이 늦어서 중단했어요.':'AI 조언을 불러오지 못했어요(연결 문제).'); }
+  finally{ clearTimeout(to); btn.disabled=false; btn.classList.remove('spin'); DX_AI.busy=false; }
+}
+function initDxAi(){
+  const b=document.getElementById('dxAiBtn'); if(!b) return;
+  b.onclick=dxAiRun;
+  try{ const v=JSON.parse(localStorage.getItem('dxAiLast')||'null'); if(v && v.day===localDateStr(new Date()) && v.res && v.res.ok){ DX_AI.res=v.res; dxAiShow(v.res); } }catch(e){}
 }
 function renderDiagnosis(){
   renderAllocRadar();
@@ -7035,6 +7189,95 @@ function initWeightChange(){
   wcRender();
 }
 
+/* ===== 일일 리포트 탭 =====
+   비중 변화(wc*)와 같은 일별 시계열(plBuildSeries)·환율(fxAt)을 쓴다.
+   - 변동 = (평가액 변화) − (그날 매수·매도 금액): 거래로 늘고 줄어든 몫은 "시세 변동"이 아니므로 뺀다.
+   - 환율 효과 = 전일 평가액 × (당일환율/전일환율 − 1) (달러 자산만, 전일 보유 수량 기준 근사치). 나머지는 주가 효과.
+   - 기여(%p) = 종목 변동 ÷ 전일 총자산(예수금 포함) × 100.  AI 문장·뉴스는 아직 붙이지 않았다(준비 중). */
+const RPT={sel:null};
+function rptDay(i,C){
+  const j=wcPrevTrading(i), d0=wcYmd(j), d1=wcYmd(i), fx0=fxAt(plDateForIndex(j)), fx1=fxAt(plDateForIndex(i));
+  const T0=C.totalAt(j), net={};
+  TXL.forEach(t=>{ if(t.d>d0 && t.d<=d1){ net[t.tk]=(net[t.tk]||0)+(t.q>0?1:-1)*Math.abs(t.amt); } });
+  const curOf={}; HOLDINGS.forEach(h=>{ curOf[h.ticker]=h.cur; });
+  const items=[]; let move=0, fxE=0;
+  C.tks.forEach(tk=>{
+    const v0=C.val(tk,j), v1=C.val(tk,i); if(!(v0>0)) return;
+    const m=v1-v0-(net[tk]||0);
+    const f=(curOf[tk]==='USD' && fx0>0)? v0*(fx1/fx0-1) : 0;
+    items.push({tk, n:C.nameOf(tk), v0, v1, move:m, fx:f, price:m-f, ret:m/v0*100, contrib:m/T0*100});
+    move+=m; fxE+=f;
+  });
+  return {i,j,T0,items,move,fx:fxE,price:move-fxE,pct:T0>0?move/T0*100:0};
+}
+function rptSetSel(i){ RPT.sel=Math.min(Math.max(i,1),AS.length-1); rptRender(); }
+function rptRender(){
+  const box=document.getElementById('rptBig'); if(!box || typeof AS==='undefined' || AS.length<3) return;
+  const C=wcCtx(), last=AS.length-1;
+  const selRaw=RPT.sel==null?last:Math.min(Math.max(RPT.sel,1),last);
+  let sel=selRaw; while(sel>1 && wcIsWk(sel)) sel--;
+  const R=rptDay(sel,C), cls=wcCls(R.pct), col=c=>c==='up'?'var(--stamp-red)':c==='down'?'var(--stamp-blue)':'var(--ink-soft)';
+  const sg=n=>(n>=0.005?'+':n<=-0.005?'−':'');
+  const amt=n=>(Math.abs(n)<500?'':n>0?'+':'−')+won(Math.abs(n));
+  // 날짜 바
+  document.getElementById('rptDateTxt').textContent=wcLabel(selRaw);
+  const din=document.getElementById('rptDateIn'); din.min=wcYmd(1); din.max=wcYmd(last); din.value=wcYmd(selRaw);
+  document.getElementById('rptPrev').disabled=selRaw<=1;
+  document.getElementById('rptNext').disabled=selRaw>=last;
+  document.getElementById('rptToday').style.visibility=selRaw>=last?'hidden':'visible';
+  // 히어로
+  document.getElementById('rptLb').textContent=(selRaw!==sel?wcLabel(sel)+' 기준 · ':'')+wcLabel(R.j)+' 종가 대비 총자산 변동';
+  box.className='rpt-big '+cls; box.innerHTML=`${sg(R.pct)}${Math.abs(R.pct).toFixed(2)}<small>%</small>`;
+  document.getElementById('rptSub').innerHTML=`<span class="rpt-pill ${cls}">${amt(R.move)||'₩0'}</span><span>거래로 늘고 준 금액은 뺀 시세 변동</span>`;
+  // 최근 한 달 평가액 흐름(주식 평가액 합계)
+  const from=Math.max(1,sel-29), pts=[]; for(let i=from;i<=sel;i++){ pts.push(C.tks.reduce((a,tk)=>a+C.val(tk,i),0)); }
+  if(pts.length>1){ const mn=Math.min(...pts), mx=Math.max(...pts), rg=(mx-mn)||1;
+    const xy=pts.map((v,k)=>`${(k*300/(pts.length-1)).toFixed(1)},${(50-(v-mn)/rg*44).toFixed(1)}`);
+    const sc=pts[pts.length-1]>=pts[0]?'var(--stamp-red)':'var(--stamp-blue)';
+    document.getElementById('rptSpark').innerHTML=`<svg viewBox="0 0 300 56" preserveAspectRatio="none"><polyline points="${xy.join(' ')}" fill="none" stroke="${sc}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="rpt-spark-cap">최근 ${pts.length}일 주식 평가액 흐름</div>`;
+  } else document.getElementById('rptSpark').innerHTML='';
+  // 원인 분해
+  const aP=Math.abs(R.price), aF=Math.abs(R.fx), sm=aP+aF;
+  document.getElementById('rptSplit').innerHTML=`<div class="t">${R.move>=0?'오른':'내린'} 원인 분해</div><div class="v" style="color:${col(cls)};">${amt(R.move)||'₩0'}</div>`+
+    (sm<500?'<div class="d">변동이 거의 없어요</div>':`<div class="rpt-split"><i style="width:${(aP/sm*100).toFixed(1)}%;background:${R.price>=0?'var(--stamp-red)':'var(--stamp-blue)'};"></i><i style="width:${(aF/sm*100).toFixed(1)}%;background:${R.fx>=0?'#e8b64a':'#6b8cae'};"></i></div><div class="rpt-leg"><span>주가 <b>${amt(R.price)||'₩0'}</b></span><span>환율 <b>${amt(R.fx)||'₩0'}</b></span></div>`);
+  // 현금 비중 (현재 시점 기준)
+  const tot=grandTotal(), cashP=(cashKRW()+ISA_CASH)/tot*100, lo=DX_TARGET.cashLo, hi=DX_TARGET.cashHi;
+  const cg=cashP>hi?`목표 ${lo}~${hi}%보다<br><b style="color:var(--stamp-blue);">${(cashP-hi).toFixed(1)}%p 많음 (여력)</b>`:cashP<lo?`목표 ${lo}~${hi}%보다<br><b style="color:var(--stamp-red);">${(lo-cashP).toFixed(1)}%p 적음</b>`:`목표 ${lo}~${hi}% <b>범위 안</b>`;
+  document.getElementById('rptCash').innerHTML=`<div class="t">현금 비중 (지금)</div><div class="v">${cashP.toFixed(1)}%</div><div class="d">${cg}</div>`;
+  document.getElementById('rptNote').innerHTML='숫자는 앱이 종가·환율로 계산한 값이에요. 환율 효과는 전일 보유 수량 기준 근사치예요.<br>AI 요약과 뉴스는 아직 연결하지 않았어요.';
+  // 종목별 기여
+  const its=R.items.slice().sort((a,b)=>b.contrib-a.contrib), mx2=Math.max(0.1,...its.map(x=>Math.abs(x.contrib)));
+  document.getElementById('rptList').innerHTML=its.map(x=>{ const c=wcCls(x.contrib), len=Math.min(50,Math.abs(x.contrib)/mx2*50);
+    return `<div class="wc-row rpt-row">${swAvatar(x.tk,'wc-lgo')}<div class="wc-nm">${x.n}<span>${x.tk.replace(/_/g,' ')}</span><small>${sg(x.ret)}${Math.abs(x.ret).toFixed(2)}%</small></div><div class="pnl-track"><div class="pnl-fill ${x.contrib>=0?'pos':'neg'}" style="width:${len}%"></div></div><div class="wc-val ${c}">${sg(x.contrib)}${Math.abs(x.contrib).toFixed(2)}%p<div class="w">${amt(x.move)||'₩0'}</div></div></div>`; }).join('')||'<div class="note">표시할 종목이 없어요.</div>';
+  // 확인할 것 (기존 진단 규칙 재사용)
+  let ck=[]; try{ ck=dxAdviceItems(); }catch(e){}
+  const order={urgent:0,warn:1,room:2,strat:3,ok:4}; ck.sort((a,b)=>(order[a.kind]??9)-(order[b.kind]??9));
+  document.getElementById('rptChecks').innerHTML=ck.map(it=>{ const b=dxBadge(it.kind);
+    return `<div class="rpt-ck"><div class="ic" style="background:${it.icBg};"><svg viewBox="0 0 24 24" style="stroke:${it.icC};">${it.ic}</svg></div><div><h4>${it.title}<span style="background:${b[1]};color:${b[2]};">${b[0]}</span></h4><p>${it.text}</p></div></div>`; }).join('')||'<div class="note">지금 확인할 항목이 없어요.</div>';
+  // 이번 주 흐름 (월~금)
+  const dow=(plDateForIndex(sel).getDay()+6)%7, mon=sel-dow, days=['월','화','수','목','금'];
+  const wd=days.map((n,k)=>{ const i=mon+k; if(i<1||i>sel) return {n,i,p:null}; return {n,i,p:rptDay(i,C).pct}; });
+  const mxw=Math.max(0.3,...wd.filter(x=>x.p!=null).map(x=>Math.abs(x.p)));
+  document.getElementById('rptWk').innerHTML=wd.map(x=>{ if(x.p==null) return `<div><span class="b" style="height:6px;background:var(--line);"></span><small>${x.n}</small></div>`;
+    const c=wcCls(x.p), h=Math.max(6,Math.abs(x.p)/mxw*60);
+    return `<div class="${x.i===sel?'on':''}"><em style="color:${col(c)};">${sg(x.p)}${Math.abs(x.p).toFixed(1)}</em><span class="b" style="height:${h.toFixed(0)}px;background:${col(c)};opacity:${x.i===sel?1:.55};"></span><small>${x.n}</small></div>`; }).join('');
+  const comp=arr=>(arr.reduce((a,p)=>a*(1+p/100),1)-1)*100;
+  const wkCum=comp(wd.filter(x=>x.p!=null).map(x=>x.p));
+  const m0=plDateForIndex(sel).getMonth(); let ms=sel; while(ms>1 && plDateForIndex(ms-1).getMonth()===m0) ms--;
+  const mp=[]; for(let i=ms;i<=sel;i++){ if(!wcIsWk(i)) mp.push(rptDay(i,C).pct); }
+  const moCum=comp(mp), fmt=n=>`<b style="color:${col(wcCls(n))};">${sg(n)}${Math.abs(n).toFixed(1)}%</b>`;
+  document.getElementById('rptWl').innerHTML=`<span>주간 누적 ${fmt(wkCum)}</span><span>이번 달 누적 ${fmt(moCum)}</span>`;
+}
+function initDailyReport(){
+  if(!document.getElementById('sec-rpt')) return;
+  const cur=()=>Math.min(Math.max(RPT.sel==null?AS.length-1:RPT.sel,1),AS.length-1);
+  document.getElementById('rptPrev').onclick=()=>rptSetSel(wcPrevTrading(cur()));
+  document.getElementById('rptNext').onclick=()=>rptSetSel(wcNextTrading(cur(),AS.length-1));
+  document.getElementById('rptToday').onclick=()=>rptSetSel(AS.length-1);
+  document.getElementById('rptDateIn').onchange=e=>{ if(!e.target.value) return; rptSetSel(plIndexForDate(new Date(e.target.value+'T00:00:00'))); };
+  rptRender();
+}
+
 function plRangeIndices(){
   if(typeof AS==='undefined' || !AS.length) return null;
   const endIdx=AS.length-1;
@@ -7207,6 +7450,7 @@ function renderAll(){
   renderCover(); renderIndices(); renderIndexCompare(); renderFX(); renderTicker();
   renderDailyPnl(); renderCurrency(); renderWeeklyReport();
   renderAllocDonut(); renderSectorAlloc(); renderStockDonut(); renderPnl(); renderHeat(); try{ wcRender(); }catch(e){}
+  try{ rptRender(); }catch(e){}
   renderNews(); renderTables(); renderRebalCheckpoint(); renderDiagnosis(); renderPeriodPL(); renderHabitInsights(); renderYearCalendar(); renderRiskMetrics(); renderHoldingsRank(); renderFxImpact(); renderRebalAlert(); renderGoalSimulator();
   // 월간·연간 리뷰(RV)는 이제 정적 데이터가 아니라 TXL/AS에서 매번 계산하므로,
   // 새로고침 때도 최신 달·최신 시세가 반영되도록 여기서도 다시 그린다.
@@ -9427,7 +9671,7 @@ initTax();
 initWhatif();
 renderStrat();
 initCalcSim();
-initDiagnosisAcc(); initDxRefresh();
+initDiagnosisAcc(); initDxRefresh(); initDxAi();
 initKeyBar();
 document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
 initPnlTabs();
@@ -9498,6 +9742,7 @@ loadFutureSnaps().then(()=>{
         reconstructGapAS();      // 자산추이 차트용 AS/CS도 실측값으로 보정
         plInvalidateSeries();
         try{ wcRender(); }catch(e){}    // 기간별 손익 표는 자체 시계열을 다시 계산
+        try{ rptRender(); }catch(e){}
         rcInvalidateSeries(); rcRender(); // 순위 변화도 실측 종가로 다시 계산
         renderPeriodPL(); renderTrend(); renderWeeklyReport(); renderYearCalendar(); renderMonthCalendar();
         renderInsightHub();      // 실측 데이터로 카드 다시 채움
@@ -9509,6 +9754,7 @@ loadFutureSnaps().then(()=>{
 initUI();
 mkInit();
 try{ initWeightChange(); }catch(e){ console.error(e); }
+try{ initDailyReport(); }catch(e){ console.error(e); }
 initCoverDetail();
 initBalanceEyeBtn();
 initStreakParticles();
