@@ -1960,6 +1960,66 @@
   .keybar a:hover{text-decoration:underline;}
   .keybar .kb-state{font-size:10px;}
 </style>
+<style id="liquidGlass">
+/* 리퀴드 글래스 스타일 (2026-11-05) — 이 블록만 지우면 이전 디자인으로 복귀 */
+/* ===== 리퀴드 글래스 미리보기(운영 파일 복사본에만 적용) ===== */
+:root{--g-fill:rgba(255,255,255,.60);--g-border:rgba(255,255,255,.85);--g-hi:rgba(255,255,255,.95);--g-lo:rgba(20,24,40,.08);--g-shadow:rgba(20,24,40,.16);--g-sel:rgba(110,120,140,.20);--g-soft:rgba(120,130,150,.12)}
+html[data-theme="dark"]{--g-fill:rgba(44,46,54,.58);--g-border:rgba(255,255,255,.14);--g-hi:rgba(255,255,255,.22);--g-lo:rgba(0,0,0,.35);--g-shadow:rgba(0,0,0,.5);--g-sel:rgba(255,255,255,.14);--g-soft:rgba(255,255,255,.08)}
+body{padding-top:2px}
+/* 헤더: 화면 폭 막대 → 떠 있는 유리 알약 */
+.livebar{background:var(--g-fill) !important;backdrop-filter:blur(22px) saturate(190%);-webkit-backdrop-filter:blur(22px) saturate(190%);
+  border:1px solid var(--g-border);border-radius:28px !important;margin:8px 10px 0 !important;padding:8px 8px 8px 14px !important;
+  box-shadow:0 10px 28px -8px var(--g-shadow),inset 0 1.5px 1px var(--g-hi),inset 0 -1.5px 2px var(--g-lo) !important}
+.livebar .icon-btn{border-radius:50%}
+.livebar .icon-btn:hover{background:var(--g-soft)}
+.mktstrip{border-top:1px solid var(--g-soft) !important}
+.mkchip{background:var(--g-soft) !important}
+/* 하단 탭바 */
+.tabbar{background:var(--g-fill) !important;backdrop-filter:blur(24px) saturate(190%) !important;-webkit-backdrop-filter:blur(24px) saturate(190%) !important;
+  border:1px solid var(--g-border);border-radius:999px !important;padding:7px !important;
+  box-shadow:0 14px 34px -10px var(--g-shadow),inset 0 1.5px 1px var(--g-hi),inset 0 -1.5px 2px var(--g-lo) !important}
+.tab-btn{border-radius:999px !important}
+.tab-btn.on{background:var(--g-sel);box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo)}
+/* 세그먼트(기간 선택 등) */
+.pnl-tabs{background:var(--g-soft) !important;border-radius:999px !important;box-shadow:inset 0 1px 2px var(--g-lo)}
+.pnl-tabs button{border-radius:999px !important}
+.seg-pill{border-radius:999px !important;background:var(--g-fill) !important;border:1px solid var(--g-border);
+  box-shadow:0 3px 10px -3px var(--g-shadow),inset 0 1px 1px var(--g-hi) !important}
+/* 날짜 이동·작은 버튼 */
+.wc-step,.wc-today,.dx-refresh{background:var(--g-soft) !important;border:1px solid var(--g-border);box-shadow:inset 0 1px 1px var(--g-hi)}
+.page{background:var(--g-fill) !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--g-border) !important;border-radius:28px !important;box-shadow:0 12px 30px -12px var(--g-shadow),inset 0 1.5px 1px var(--g-hi),inset 0 -1.5px 2px var(--g-lo)}
+.rpt-mini,.dx-ai-card,.dx-acc,.dx-ai-err,.dx-cmp-bar{background:var(--g-soft) !important;border:1px solid var(--g-border);box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo)}
+.rpt-mini,.dx-ai-card{border-radius:20px !important}
+.dx-ai-btn{box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 6px 14px -6px var(--g-shadow)}
+:root{--g-dense:rgba(255,255,255,.90)}html[data-theme="dark"]{--g-dense:rgba(38,40,48,.90)}
+#sec-sw,#sec-rptc,#sec-rptk,#sec-daily,#sec-periodpl,#sec-realized,#sec-rank,#sec-rankchange,#sec-stockret,#sec-tx,#sec-calc,#sec-rebal,#sec-tax,#sec-sim,#sec-calendar,#sec-bench,#sec-analysis,#sec-habit,#sec-sector,#sec-review,#sec-heat,#sec-wc,#sec-diag,#sec-checkpoint,#sec-fximpact,#sec-risk,#sec-currency{background:var(--g-dense) !important;backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%)}
+
+.cover,.goal-card{background:var(--g-fill) !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--g-border) !important;border-radius:28px !important;box-shadow:0 12px 30px -12px var(--g-shadow),inset 0 1.5px 1px var(--g-hi),inset 0 -1.5px 2px var(--g-lo) !important}
+.cover,.goal-card{background:var(--g-dense) !important}
+.week-dots-wrap,.alloc-grid>*{background:var(--g-soft) !important;border:1px solid var(--g-border);box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo)}
+.week-dots-wrap{border-radius:20px !important}
+.mkhome{background:var(--g-fill) !important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid var(--g-border) !important;border-radius:999px !important;box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo)}
+.alert-banner{background:rgba(192,57,43,.10) !important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border-radius:22px !important;box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo)}
+.ticker-wrap{background:var(--g-fill) !important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid var(--g-border) !important;border-radius:999px !important;box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo)}
+body{background-image:radial-gradient(420px 320px at 8% 4%,rgba(99,140,255,.11),transparent 70%),radial-gradient(380px 300px at 100% 30%,rgba(255,150,120,.11),transparent 70%),radial-gradient(420px 340px at 0% 70%,rgba(120,210,170,.11),transparent 70%),radial-gradient(380px 300px at 100% 100%,rgba(190,140,255,.11),transparent 70%);background-attachment:fixed}html[data-theme="dark"] body{background-image:radial-gradient(420px 320px at 8% 4%,rgba(70,100,220,.11),transparent 70%),radial-gradient(380px 300px at 100% 30%,rgba(200,100,80,.11),transparent 70%),radial-gradient(420px 340px at 0% 70%,rgba(60,150,120,.11),transparent 70%),radial-gradient(380px 300px at 100% 100%,rgba(140,90,210,.11),transparent 70%)}
+.ticker-wrap{-webkit-mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent)}
+@supports selector(:has(*)){.hcard-swipe-action{opacity:0;transition:opacity .15s}.hcard-swipe-wrap:has(.hcard[style*="translateX(-"]) .hcard-swipe-action{opacity:1}}
+/* 설정(키 패널) */
+.keypanel{background:transparent !important}
+.keypanel.open{margin:6px 10px 0;border:1px solid var(--g-border) !important;border-radius:24px;background:var(--g-fill) !important;backdrop-filter:blur(22px) saturate(190%);-webkit-backdrop-filter:blur(22px) saturate(190%);box-shadow:0 10px 28px -8px var(--g-shadow),inset 0 1.5px 1px var(--g-hi),inset 0 -1.5px 2px var(--g-lo)}
+.keybar{background:transparent !important;padding:12px 16px}
+.keybar input{background:var(--g-soft) !important;border:1px solid var(--g-border) !important;box-shadow:inset 0 1px 2px var(--g-lo)}
+.keybar button{box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 6px 14px -6px var(--g-shadow)}
+/* 시장 시계 시트 */
+.mk-sheet-bd{backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#mkSheet{background:var(--g-dense) !important;backdrop-filter:blur(28px) saturate(190%);-webkit-backdrop-filter:blur(28px) saturate(190%);border:1px solid var(--g-border);border-bottom:0;border-radius:32px 32px 0 0 !important;box-shadow:0 -10px 36px -8px var(--g-shadow),inset 0 1.5px 1px var(--g-hi) !important}
+#mkSheet .mc{background:var(--g-soft) !important;border:1px solid var(--g-border);box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo) !important;border-radius:26px !important}
+#mkSheet .mk,#mkSheet .sch{background:var(--g-fill) !important;border:1px solid var(--g-border);box-shadow:inset 0 1px 1px var(--g-hi),inset 0 -1px 2px var(--g-lo);border-radius:22px !important}
+#mkSheet .mk.closed{background:var(--g-soft) !important}
+#mkSheet .sch .wk .c{background:var(--g-fill)}
+#mkSheet .sch .dd,#mkSheet .sch .pill{background:var(--g-fill);border:1px solid var(--g-border)}
+#mkSheet .mc .ct .ic,#mkSheet .mc .ct .cv{box-shadow:inset 0 1px 1px var(--g-hi)}
+</style>
 </head>
 <body>
 
