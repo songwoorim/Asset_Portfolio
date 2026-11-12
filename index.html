@@ -2062,7 +2062,7 @@ body{background-image:radial-gradient(420px 320px at 8% 4%,rgba(99,140,255,.11),
 #tfCash button{font-size:11.5px;padding:8px 4px;line-height:1.25}
 .tf-tk{position:relative;display:flex;align-items:center;gap:10px;background:var(--g-soft);border:1px solid var(--g-border,var(--line));border-radius:14px;padding:8px 12px;margin-bottom:10px}
 .tf-tk select{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;border:0}
-.tf-lg{width:30px;height:30px;border-radius:50%;flex:none;color:#fff;font:800 10px Inter,sans-serif;display:flex;align-items:center;justify-content:center;font-style:normal}
+.tf-lg{width:34px;height:34px;border-radius:50%;flex:none;display:block;font-style:normal;overflow:hidden}.tf-lg .hcard-lg{width:34px;height:34px}
 .tf-tkt{flex:1;min-width:0}.tf-tkt b{display:block;font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tf-tkt small{display:block;font-size:11px;color:var(--ink-soft);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tf-tk>span{font-size:11.5px;font-weight:700;color:var(--ink-soft)}
 .tf-qty{margin-bottom:10px}
@@ -2122,7 +2122,10 @@ html[data-theme="dark"] .hd-strip.live b{color:#52d171}html[data-theme="dark"] .
 html[data-theme="dark"] .hd-dock .icon-btn,html[data-theme="dark"] .hd-strip .icon-btn,html[data-theme="dark"] .hd-ring .icon-btn{background:#2b2d36 !important;border-color:rgba(255,255,255,.12);box-shadow:none;color:#f2f2f6}
 .hd-dock .icon-btn svg{width:19px;height:19px}
 .hd-dock .icon-btn.active,.hd-dock .icon-btn.on{background:var(--ink);color:#fff;border-color:transparent}html[data-theme="dark"] .hd-dock .icon-btn.active,html[data-theme="dark"] .hd-dock .icon-btn.on{color:#111}
-.hd-badge{position:absolute;top:1px;right:1px;min-width:15px;height:15px;border-radius:99px;background:var(--brass);color:#fff;font:700 9px/15px Inter,sans-serif;text-align:center;padding:0 4px}
+.hd-badge{position:absolute;top:-3px;right:-3px;box-shadow:0 0 0 2px #fff;min-width:15px;height:15px;border-radius:99px;background:var(--brass);color:#fff;font:700 9px/15px Inter,sans-serif;text-align:center;padding:0 4px}
+.hd-dock .icon-btn,.hd-strip .icon-btn{overflow:visible}.hd-dock .check-pop,.hd-strip .check-pop{border-radius:50%}
+.hd-dock .gear-pip{top:-1px;right:-1px;width:10px;height:10px;border:2px solid #fff;box-sizing:border-box}
+html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="dark"] .hd-dock .gear-pip{border-color:#2b2d36}
 .hd-badge:empty{display:none}.hd-badge::before{content:none}
 .hd-ring{--rp:18%;width:46px;height:46px;border-radius:50%;padding:3px;display:flex;flex:none;background:conic-gradient(#e69614 0 var(--rp),rgba(128,128,128,.2) 0)}
 .hd-ring.live{background:conic-gradient(#2bb24c 0 var(--rp),rgba(128,128,128,.2) 0)}.hd-ring.err{background:conic-gradient(#d5483a 0 var(--rp),rgba(128,128,128,.2) 0)}
@@ -7401,7 +7404,9 @@ function initWeightChange(){
   const root=document.getElementById('sec-wc'); if(!root) return;
   document.getElementById('wcFold').style.maxHeight='4000px'; wcSetShut(WC.shut);
   document.getElementById('wcSecHd').onclick=()=>wcSetShut(!WC.shut);
-  document.querySelectorAll('#wcTabs button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#wcTabs button').forEach(x=>x.classList.toggle('on',x===b)); WC.mode=b.dataset.m; WC.open=null; wcRender(); });
+  document.querySelectorAll('#wcTabs button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#wcTabs button').forEach(x=>x.classList.toggle('on',x===b)); WC.mode=b.dataset.m; WC.open=null; wcRender(); positionSegPill('wcTabs'); });
+  initSegPill('wcTabs');
+  if(window.ResizeObserver) new ResizeObserver(()=>positionSegPill('wcTabs',true)).observe(document.getElementById('wcTabs'));
   const cur=()=>Math.min(Math.max(WC.sel==null?AS.length-1:WC.sel,1),AS.length-1);
   document.getElementById('wcPrev').onclick=()=>wcSetSel(wcPrevTrading(cur()));
   document.getElementById('wcNext').onclick=()=>wcSetSel(wcNextTrading(cur(),AS.length-1));
@@ -10146,7 +10151,9 @@ function cashLabels(c){
 function updTk(c){
   const COL=['#7cb82f','#4f7de0','#3d9be0','#c0564a','#b7813f','#7a62c9','#1a1a1a','#2a9d8f'];
   let h=0; for(const ch of (c.tk||'?')) h=(h*31+ch.charCodeAt(0))%97;
-  const lg=$('tfLg'); lg.textContent=(c.tk||'＋').slice(0,2); lg.style.background=c.isNew&&!c.tk?'#888':COL[h%COL.length];
+  const lg=$('tfLg'); lg.style.background='transparent';
+  if(c.tk&&typeof hcardAvatar==='function') lg.innerHTML=hcardAvatar(c.tk);
+  else { lg.textContent=''; lg.innerHTML='<div class="hcard-lg" style="background:'+(c.tk?COL[h%COL.length]:'#888')+'"><span>'+(c.tk||'＋').slice(0,2)+'</span></div>'; }
   $('tfTkName').textContent=c.isNew?(c.name||'새 종목 직접 입력'):c.name;
   $('tfTkSub').textContent=c.isNew?'보유 목록에 없는 종목':(c.tk+' · '+(ACCT_META[c.acct]?ACCT_META[c.acct].name:c.acct)+(c.h?' · 보유 '+c.h.shares+'주':''));
 }
