@@ -2083,10 +2083,94 @@ body{background-image:radial-gradient(420px 320px at 8% 4%,rgba(99,140,255,.11),
 .tf-new{border-radius:14px;padding:10px;margin-bottom:10px}
 </style>
 <style id="tradeSync">
-.tf-sync{background:var(--g-soft);border:1px solid var(--g-border,var(--line));border-radius:16px;padding:12px;margin:2px 0 10px}
-.ts-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.ts-h b{font-size:13.5px;color:var(--ink)}
-#tsState{font-size:11px;font-weight:700;color:var(--ink-soft);text-align:right}#tsState[data-k="ok"]{color:#1e8f3e}#tsState[data-k="err"]{color:#b23b2e}#tsState[data-k="busy"]{color:#a8680c}
-.ts-row{display:flex;gap:6px;margin-bottom:6px}.ts-row .tf-in{flex:1;min-width:0}.ts-row .tf-btn{padding:10px 12px;font-size:12.5px;flex:none}.ts-row:nth-of-type(3) .tf-btn{flex:1}
+/* ===== 입력 내역 · 백업 시트 v4 (탭: 클라우드 / 내역) ===== */
+#tfManage{--brass:#2b2d36;--bk-mute:#a3a3a8;--bk-bds:rgba(60,64,80,.30);--bk-red:#b23b2e;--bk-blue:#2c64c8;--bk-green:#1e8f3e;--bk-amber:#a8680c;--bk-pill:#fff;--bk-line:rgba(120,120,130,.18)}
+html[data-theme="dark"] #tfManage{--brass:#f2f2f6;--bk-mute:#6b6b6e;--bk-bds:rgba(255,255,255,.24);--bk-red:#e0675a;--bk-blue:#6ea0f0;--bk-green:#4cc46a;--bk-amber:#e6a84a;--bk-pill:#3a3d48;--bk-line:rgba(255,255,255,.1)}
+#tfManage.tf-sheet{border-radius:32px 32px 0 0;padding:8px 12px calc(12px + env(safe-area-inset-bottom));overflow:hidden}
+#tfManage.tf-sheet.on{display:flex;flex-direction:column;height:min(640px,88vh)}
+#tfManage .tf-grab{width:38px;height:5px;margin:3px auto 9px;flex:none;background:var(--bk-mute);opacity:.55}
+#tfManage h3{font-size:15px;margin:0 2px 9px;flex:none}
+#tfManage .tf-x{width:26px;height:26px;font-size:12px}
+.bk-seg{display:flex;background:var(--g-soft);border-radius:999px;padding:3px;box-shadow:inset 0 1px 2px rgba(0,0,0,.06);margin-bottom:9px;flex:none}
+.bk-seg button{flex:1;border:0;background:transparent;font:700 12px Inter,'Noto Sans KR',sans-serif;color:var(--ink-soft);padding:7px 2px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.bk-seg button.on{color:var(--ink);background:var(--bk-pill);box-shadow:0 2px 8px -3px var(--g-shadow)}
+.bk-seg .n{font-size:9.5px;font-weight:800;background:var(--brass);color:var(--paper,#fff);border-radius:999px;padding:1px 6px}
+.bk-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.bk-dot.g{background:var(--bk-green);box-shadow:0 0 0 3px color-mix(in srgb,var(--bk-green) 25%,transparent)}
+.bk-dot.a{background:var(--bk-amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--bk-amber) 25%,transparent)}
+.bk-scroll{overflow:auto;flex:1;min-height:0;display:flex;flex-direction:column;gap:9px;scrollbar-width:none;padding-bottom:4px;overscroll-behavior:contain}.bk-scroll::-webkit-scrollbar{display:none}
+#tfManage svg.bk-i{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.bk-card{position:relative;background:var(--g-soft);border:1px solid var(--g-border);border-radius:22px;padding:12px;flex:none}
+.bk-ct{display:flex;align-items:center;gap:9px;cursor:pointer}
+.bk-ct .ic{width:28px;height:28px;border-radius:10px;background:color-mix(in srgb,var(--brass) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--brass);flex:none}
+.bk-ct h4{margin:0;font-size:13.5px;font-weight:800;line-height:1.2;color:var(--ink)}.bk-ct h4 small{display:block;font-size:10px;font-weight:600;color:var(--bk-mute);margin-top:1px}
+.bk-ct .rt{margin-left:auto;text-align:right;font-size:12.5px;font-weight:800;line-height:1.2;color:var(--ink)}
+.bk-ct .cv{color:var(--bk-mute);display:flex;transition:transform .2s;width:22px;justify-content:flex-end;margin-left:6px;flex:none}
+.bk-ct h4+.cv{margin-left:auto}
+.bk-card.col .cv{transform:rotate(180deg)}.bk-card.col .bd{display:none}
+.bk-card .bd{margin-top:11px;display:flex;flex-direction:column;gap:8px}
+@property --bkga{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes bkspin{to{--bkga:360deg}}
+.bk-card.glow{--gc:#2bb24c;box-shadow:0 0 20px -8px var(--gc);border-color:color-mix(in srgb,var(--gc) 28%,var(--g-border))}
+.bk-card.glow.amb{--gc:#e6a020}
+.bk-card.glow::before{content:"";position:absolute;inset:-1px;border-radius:23px;padding:1.6px;background:conic-gradient(from var(--bkga),transparent 0 52%,var(--gc) 80%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:bkspin 3.4s linear infinite;pointer-events:none}
+.bk-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;border-radius:999px;padding:3px 8px;background:rgba(30,143,62,.13);color:var(--bk-green)}
+.bk-chip.off{background:rgba(230,150,30,.15);color:var(--bk-amber)}
+.bk-chip i{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+.bk-pw{display:flex;align-items:center;gap:8px;background:var(--g-fill,var(--g-soft));border:1px solid var(--g-border);border-radius:12px;padding:8px 10px;font:600 12.5px ui-monospace,Menlo,monospace;letter-spacing:.5px;color:var(--ink)}
+.bk-pw span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bk-pw input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:600 16px Inter,'Noto Sans KR',sans-serif;letter-spacing:0;padding:2px 0;outline:0}
+.bk-ico{width:26px;height:26px;border-radius:50%;border:0;background:var(--g-soft);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.bk-btn{border-radius:999px;padding:9px 12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:1;color:var(--ink);background:var(--g-fill,var(--g-soft));border:1px solid var(--bk-bds)}
+.bk-btn.pri{background:var(--brass);color:var(--paper,#fff);border-color:transparent}.bk-btn.dng{background:rgba(192,57,43,.12);color:var(--bk-red);border-color:transparent}
+.bk-btn:disabled{opacity:.4;cursor:default}
+@keyframes bkrot{to{transform:rotate(360deg)}}.bk-btn.spin svg{animation:bkrot .9s linear infinite}
+.bk-row{display:flex;gap:7px}
+.bk-meta{font-size:10.5px;color:var(--ink-soft);display:flex;align-items:flex-start;gap:5px;margin:0 2px;line-height:1.45}.bk-meta i{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;margin-top:4px}
+.bk-hint{font-size:10.5px;line-height:1.55;color:var(--ink-soft);margin:0 2px}
+.bk-agree{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;margin:2px 2px 12px;cursor:pointer;color:var(--ink)}
+.bk-agree .bx{width:20px;height:20px;border-radius:7px;border:2px solid var(--bk-mute);display:flex;align-items:center;justify-content:center;flex:none}
+.bk-agree.on .bx{background:var(--ink);border-color:var(--ink);color:var(--paper,#fff)}.bk-agree .bx svg{width:12px;height:12px;stroke-width:3;opacity:0}.bk-agree.on .bx svg{opacity:1}
+.bk-agree.sm{margin:0 2px;font-size:11.5px}.bk-agree.sm .bx{width:18px;height:18px;border-radius:6px}
+.bk-meter{height:6px;background:var(--g-soft);border-radius:6px;overflow:hidden;margin:9px 0 2px}.bk-meter i{display:block;height:100%;border-radius:6px;background:var(--bk-green)}.bk-meter.off i{background:var(--bk-amber)}
+.bk-ck{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:12.5px;font-weight:700;color:var(--ink)}.bk-ck+.bk-ck{border-top:1px solid var(--bk-line)}
+.bk-ck .b{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;background:var(--g-soft);color:var(--bk-mute)}.bk-ck.ok .b{background:var(--bk-green);color:#fff}.bk-ck.ok .b svg{width:12px;height:12px;stroke-width:2.6}
+.bk-ck .t{flex:1}.bk-ck .t small{display:block;font-size:10px;font-weight:500;color:var(--ink-soft);margin-top:1px}
+.bk-ck .go{font-size:10.5px;font-weight:800;color:var(--brass);background:color-mix(in srgb,var(--brass) 12%,transparent);border-radius:999px;padding:4px 10px;border:0;font-family:inherit;cursor:pointer}
+.bk-steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;counter-reset:s}
+.bk-steps li{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.5;counter-increment:s;color:var(--ink)}
+.bk-steps li::before{content:counter(s);flex:none;width:18px;height:18px;border-radius:50%;background:var(--g-soft);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.bk-tiles{display:flex;gap:7px;flex:none}.bk-tile{flex:1;background:var(--g-soft);border:1px solid var(--g-border);border-radius:18px;padding:9px 11px}
+.bk-tile small{display:block;font-size:10px;color:var(--bk-mute);font-weight:700}.bk-tile b{display:block;font-size:15px;font-weight:800;margin-top:2px;letter-spacing:-.3px;color:var(--ink)}
+.bk-chips{display:flex;gap:6px;flex:none}.bk-fc{border:1px solid var(--bk-line);background:transparent;color:var(--ink-soft);border-radius:999px;padding:4px 11px;font:700 11px Inter,'Noto Sans KR',sans-serif;cursor:pointer}.bk-fc.on{background:var(--ink);color:var(--paper,#fff);border-color:transparent}
+.bk-tl{position:relative;padding-left:16px;flex:none}.bk-tl::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--bk-line);border-radius:2px}
+.bk-day{position:relative;font-size:10px;font-weight:800;color:var(--bk-mute);margin:8px 0 4px;display:flex;justify-content:space-between}.bk-day::before{content:"";position:absolute;left:-15px;top:2px;width:8px;height:8px;border-radius:50%;background:var(--bk-mute)}.bk-day em{font-style:normal;font-weight:700;margin-right:2px}
+.bk-it{position:relative;display:flex;align-items:center;gap:10px;background:var(--g-soft);border:1px solid var(--g-border);border-radius:18px;padding:9px 10px;margin-bottom:6px;cursor:pointer}
+.bk-it.opn{border-bottom-left-radius:8px;border-bottom-right-radius:8px;margin-bottom:2px}
+.bk-lg{width:30px;height:30px;flex:none}.bk-lg .hcard-lg{width:30px;height:30px}
+.bk-tag{display:inline-block;white-space:nowrap;flex:none;font-size:9.5px;font-weight:800;border-radius:5px;padding:2px 5px;margin-right:5px}
+.bk-tag.buy{background:rgba(178,59,46,.13);color:var(--bk-red)}.bk-tag.sell{background:rgba(44,100,200,.13);color:var(--bk-blue)}
+.bk-it .n{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;display:flex;align-items:center;color:var(--ink)}.bk-it .n .nm{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.bk-it .sy{font-size:9.5px;font-weight:800;color:var(--bk-green);display:flex;align-items:center;gap:3px;margin-top:3px}.bk-it .sy.off,.bk-it .sy.pend{color:var(--bk-amber)}.bk-it .sy svg{width:10px;height:10px;stroke-width:2.8}
+.bk-it .am{text-align:right;font-size:12px;font-weight:800}.bk-it .am small{display:block;font-size:10px;color:var(--ink-soft);font-weight:600;margin-top:2px}
+.bk-trash{width:26px;height:26px;border-radius:50%;border:0;background:rgba(192,57,43,.1);color:var(--bk-red);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.bk-dt{display:none;margin:-2px 0 8px;background:var(--g-fill,var(--g-soft));border:1px solid var(--g-border);border-radius:14px;padding:7px 12px}.bk-dt.on{display:block}
+.bk-dt div{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;color:var(--ink)}.bk-dt div+div{border-top:1px solid var(--bk-line)}.bk-dt span{color:var(--ink-soft)}.bk-dt b{font-weight:700}
+.bk-empty{text-align:center;padding:36px 10px;color:var(--ink-soft);font-size:12px;line-height:1.6}
+.bk-empty .big{width:54px;height:54px;border-radius:50%;background:var(--g-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:var(--bk-mute)}.bk-empty .big svg{width:24px;height:24px}
+.bk-empty b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:3px}
+.bk-dock{display:flex;gap:6px;margin-top:8px;padding-top:9px;border-top:1px solid var(--bk-line);flex:none}
+.bk-dock button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--bk-bds);background:var(--g-soft);color:var(--ink);border-radius:16px;padding:8px 4px;font:700 11px Inter,'Noto Sans KR',sans-serif;cursor:pointer}
+.bk-dock button svg{width:17px;height:17px}.bk-dock button.d{color:var(--bk-red);background:rgba(192,57,43,.08)}.bk-dock button:disabled{opacity:.4}
+.bk-ov{position:absolute;inset:0;z-index:5;display:none;align-items:flex-end;background:rgba(0,0,0,.35);border-radius:32px 32px 0 0}.bk-ov.on{display:flex}
+.bk-cs{width:100%;background:#fff;border-radius:26px 26px 0 0;padding:8px 14px calc(16px + env(safe-area-inset-bottom));border:1px solid var(--g-border);border-bottom:0;box-shadow:0 -10px 36px -8px var(--g-shadow)}
+html[data-theme="dark"] .bk-cs{background:#262830}
+.bk-cs .gr{width:38px;height:5px;border-radius:3px;background:var(--bk-mute);opacity:.55;margin:3px auto 10px}
+.bk-cs h4{margin:2px 2px 4px;font-size:15px;font-weight:800;color:var(--ink)}.bk-cs p{margin:0 2px 10px;font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+.bk-fx{background:var(--g-soft);border:1px solid var(--g-border);border-radius:16px;padding:4px 12px;margin-bottom:10px}
+.bk-fx .r{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:7px 0;color:var(--ink)}.bk-fx .r+.r{border-top:1px solid var(--bk-line)}.bk-fx .r span{color:var(--ink-soft)}.bk-fx .r b{font-weight:800;text-align:right}
+.bk-fx .r b i{font-style:normal;color:var(--bk-mute);font-weight:600;margin:0 4px}
+.bk-warn{display:flex;gap:9px;background:rgba(230,150,30,.13);border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.5;color:var(--bk-amber);margin-bottom:10px}.bk-warn b{color:var(--bk-amber)}.bk-warn svg{margin-top:2px}
 </style>
 <style id="hdrNew">
 /* ===== 헤더 개편: 상태 스트립 + 원형 아이콘 줄 + 시장 시계 ===== */
@@ -10102,19 +10186,18 @@ fetchIcons().catch(e=>console.warn('icons',e));
   <div class="tf-err" id="tfErr"></div>
   <div class="tf-btns"><button class="tf-btn soft" type="button" id="tfCancel">취소</button><button class="tf-btn w2" type="button" id="tfGo">반영하기</button></div>
 </div>
-<div class="tf-sheet" id="tfManage" role="dialog" aria-label="입력 내역">
+<div class="tf-sheet" id="tfManage" role="dialog" aria-label="입력 내역 · 백업">
   <div class="tf-grab"></div>
   <h3>입력 내역 · 백업<button class="tf-x" type="button" id="tfMClose" aria-label="닫기">✕</button></h3>
-  <div id="tfList"></div>
-  <div class="tf-sync" id="tfSync">
-    <div class="ts-h"><b>클라우드 자동 백업</b><span id="tsState" data-k="off">연결 안 됨</span></div>
-    <div class="ts-row"><input class="tf-in" id="tsTok" placeholder="백업 암호 (16자 이상)" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="tf-btn" type="button" id="tsSave">연결</button></div>
-    <div class="ts-row"><button class="tf-btn soft" type="button" id="tsGen">암호 생성</button><button class="tf-btn soft" type="button" id="tsNow">지금 동기화</button><button class="tf-btn soft" type="button" id="tsOff">연결 해제</button></div>
-    <div class="tf-note" style="margin:8px 0 0">거래를 입력·삭제하면 내 Cloudflare 저장소에 자동으로 백업돼요. 사파리 데이터를 지웠거나 기기를 바꿔도 <b>같은 암호</b>를 입력하면 복원돼요. 암호는 따로 메모해 두세요(분실 시 복구 불가).</div>
+  <div class="bk-seg" id="bkSeg"></div>
+  <div class="bk-scroll" id="bkScroll"></div>
+  <div class="bk-dock">
+    <button type="button" id="tfExp" data-a="exp"><svg class="bk-i" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>내보내기</button>
+    <button type="button" id="tfImp" data-a="imp"><svg class="bk-i" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>가져오기</button>
+    <button type="button" id="tfClr" class="d" data-a="clear"><svg class="bk-i" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>전체 비우기</button>
   </div>
-  <div class="tf-note" style="margin-top:4px">파일로 직접 백업하려면 내보내기/가져오기를 쓰세요. 거래를 파일(기본 데이터)에 반영하고 나면 "전체 비우기"로 중복을 막아 주세요.</div>
-  <div class="tf-btns" style="margin-bottom:10px"><button class="tf-btn soft" type="button" id="tfExp">내보내기</button><button class="tf-btn soft" type="button" id="tfImp">가져오기</button><button class="tf-btn soft" type="button" id="tfClr" style="color:#b23b2e">전체 비우기</button></div>
   <input type="file" id="tfFile" accept="application/json,.json" style="display:none">
+  <div class="bk-ov" id="bkOv"></div>
 </div>
 <div class="tf-toast" id="tfToast"></div>
 <script>
@@ -10237,28 +10320,7 @@ $('tfGo').onclick=()=>{
   toast(saved?'거래를 반영했어요 · 총자산 '+won0(grandTotal()):'반영했지만 저장에 실패했어요. 새로고침하면 사라져요');
 };
 function refreshCnt(){ const n=loadUserTx().length; $('tfCnt').textContent=n?String(n):''; }
-function renderList(){
-  const log=loadUserTx();
-  $('tfList').innerHTML=log.length?log.slice().reverse().map(t=>{
-    const i=log.indexOf(t), usd=t.cur==='USD';
-    return '<div class="tf-row"><div class="l"><div class="t1">'+t.d+' · '+t.n+' '+(t.side==='buy'?'매수':'매도')+' '+t.q+'주</div><div class="t2">'+t.tk+' @ '+(usd?'$'+t.p+' · 환율 '+t.fx:Number(t.p).toLocaleString('ko-KR')+'원')+' · '+({deduct:'예수금 차감',credit:'예수금 입금',none:'예수금 변동 없음'}[t.cash])+'</div></div><button class="tf-del" type="button" data-i="'+i+'">삭제</button></div>';
-  }).join(''):'<div class="tf-note" style="text-align:center;padding:14px 0">앱에서 입력한 거래가 아직 없어요.</div>';
-}
-$('tfManageOpen').onclick=()=>{ renderList(); open('tfManage'); };
-$('tfList').onclick=e=>{ const b=e.target.closest('.tf-del'); if(!b) return;
-  if(!confirm('이 거래를 삭제할까요? 삭제하면 보유·예수금·이력이 되돌려지고 화면이 새로고침돼요.')) return;
-  const log=loadUserTx(); log.splice(+b.dataset.i,1); saveUserTx(log); location.reload(); };
-$('tfClr').onclick=()=>{ if(!loadUserTx().length){ toast('비울 내역이 없어요'); return; }
-  if(!confirm('입력 내역을 모두 비울까요? 이 거래들이 기본 파일에 이미 반영된 경우에만 사용하세요. 아니면 보유·예수금이 되돌려져요.')) return;
-  saveUserTx([]); location.reload(); };
-$('tfExp').onclick=()=>{ const blob=new Blob([JSON.stringify(loadUserTx(),null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='portfolio-trades-'+localDateStr(new Date())+'.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); };
-$('tfImp').onclick=()=>$('tfFile').click();
-$('tfFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{
-    const a=JSON.parse(r.result); if(!Array.isArray(a)) throw 0;
-    a.forEach(t=>{ if(!t||!['buy','sell'].includes(t.side)||!(t.q>0)||!(t.p>0)||!t.d||!t.tk||!t.ac) throw 0; });
-    if(!confirm(a.length+'건을 가져올까요? 지금 입력 내역을 이 파일 내용으로 바꾸고 새로고침해요.')) return;
-    saveUserTx(a); location.reload();
-  }catch(err){ toast('올바른 백업 파일이 아니에요'); } }; r.readAsText(f); e.target.value=''; };
+$('tfManageOpen').onclick=()=>{ open('tfManage'); if(window.BK) BK.onOpen(); };
 refreshCnt();
 window.TF={applyOneTrade,loadUserTx};
 })();
@@ -10302,14 +10364,16 @@ const TOK_KEY='syncTokenV1', META_KEY='userTradesSyncV1', URL_=KIS_PROXY_URL+'/s
 const $=id=>document.getElementById(id);
 const getTok=()=>{ try{ return localStorage.getItem(TOK_KEY)||''; }catch(e){ return ''; } };
 const setTok=v=>{ try{ v?localStorage.setItem(TOK_KEY,v):localStorage.removeItem(TOK_KEY); }catch(e){} };
-const DEF={rev:0,dirty:false,force:false};
+const DEF={rev:0,dirty:false,force:false,ids:[],at:0};
 const getMeta=()=>{ try{ return Object.assign({},DEF,JSON.parse(localStorage.getItem(META_KEY)||'{}')); }catch(e){ return Object.assign({},DEF); } };
 const setMeta=m=>{ try{ localStorage.setItem(META_KEY,JSON.stringify(m)); }catch(e){} };
 const idNum=t=>parseInt(String(t.id).split('-')[0],10)||0;
 const merge=(a,b)=>{ const m=new Map(); a.concat(b).forEach(t=>{ if(t&&t.id&&!m.has(t.id)) m.set(t.id,t); }); return [...m.values()].sort((x,y)=>idNum(x)-idNum(y)); };
 const hhmm=ts=>{ const d=new Date(ts||Date.now()); return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
 let busy=false, lastRun=0, last={t:'연결 안 됨',k:'off'};
-function setState(t,k){ last={t,k}; const el=$('tsState'); if(el){ el.textContent=t; el.dataset.k=k||''; } }
+const listeners=[];
+function emit(){ listeners.forEach(f=>{ try{ f(); }catch(e){} }); }
+function setState(t,k){ last={t,k}; emit(); }
 function toast(m){ const t=$('tfToast'); if(!t) return; t.textContent=m; t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),3200); }
 async function api(method,body){
   const s=body?JSON.stringify(body):undefined;
@@ -10320,7 +10384,7 @@ async function api(method,body){
 function writeLocal(list){ try{ localStorage.setItem(USER_TX_KEY,JSON.stringify(list)); return true; }catch(e){ return false; } }
 function adopt(list,rev,label){
   if(!writeLocal(list)){ setState('이 브라우저에 저장하지 못했어요','err'); return; }
-  setMeta({rev,dirty:false,force:false});
+  setMeta({rev,dirty:false,force:false,ids:list.map(t=>t.id),at:Date.now()});
   try{ sessionStorage.setItem('tsToast',label+' · 거래 '+list.length+'건'); }catch(e){}
   location.reload();
 }
@@ -10338,7 +10402,7 @@ async function sync(){
     const rIds=new Set(remote.map(t=>t.id)), lIds=new Set(local.map(t=>t.id));
     const same=local.length===remote.length && local.every(t=>rIds.has(t.id));
     if(local.length===0 && remote.length>0 && !(meta.dirty&&meta.force)){ adopt(remote,rrev,'클라우드에서 복원'); return; }
-    if(same){ setMeta({rev:rrev,dirty:false,force:false}); setState('✓ 백업됨 · '+hhmm(g.j.updatedAt)+' · '+remote.length+'건','ok'); return; }
+    if(same){ setMeta({rev:rrev,dirty:false,force:false,ids:local.map(t=>t.id),at:g.j.updatedAt||Date.now()}); setState('✓ 백업됨 · '+hhmm(g.j.updatedAt)+' · '+remote.length+'건','ok'); return; }
     if(meta.rev>0 && rrev>meta.rev && !meta.dirty){ adopt(remote,rrev,'다른 기기 내역 반영'); return; }
     let push, force=false;
     if(meta.dirty && rrev===meta.rev && meta.rev>0){ push=local; force=(local.length===0&&!!meta.force); }
@@ -10346,26 +10410,158 @@ async function sync(){
     const r=await api('PUT',{baseRev:rrev,trades:push,force});
     if(r.status===409){ setState(r.j&&r.j.error==='empty_refused'?'빈 목록 덮어쓰기는 거부됐어요':'충돌 · 다시 동기화해 주세요','err'); return; }
     if(!r.j||!r.j.ok){ setState('백업 실패 · 잠시 후 다시 시도','err'); return; }
-    setMeta({rev:r.j.rev,dirty:false,force:false});
+    setMeta({rev:r.j.rev,dirty:false,force:false,ids:push.map(t=>t.id),at:r.j.updatedAt||Date.now()});
     const changed=push.length!==local.length||push.some(t=>!lIds.has(t.id));
     if(changed){ adopt(push,r.j.rev,'두 기기 내역을 합쳤어요'); return; }
     setState('✓ 백업됨 · '+hhmm(r.j.updatedAt)+' · '+push.length+'건','ok');
-  }catch(e){ setState('오프라인 · 연결되면 자동 백업돼요','err'); }
+  }catch(e){ setState('오프라인 · 연결되면 자동 백업돼요','net'); }
   finally{ busy=false; }
 }
 /* 저장 시마다 자동 백업 예약 (삭제 직후 새로고침돼도 dirty 표시가 남아 다음 접속에 올라감) */
 const _save=window.saveUserTx;
 window.saveUserTx=function(a){ const ok=_save(a); if(getTok()){ const m=getMeta(); m.dirty=true; m.force=(Array.isArray(a)&&a.length===0); setMeta(m); sync(); } return ok; };
-function ui(){ const t=$('tsTok'); if(t) t.value=getTok(); setState(last.t,last.k); const b=$('tsSave'); if(b) b.textContent=getTok()?'재연결':'연결'; }
-$('tsSave').onclick=()=>{ const v=($('tsTok').value||'').trim(); if(v.length<16){ setState('암호는 16자 이상이어야 해요','err'); return; } if(v!==getTok()){ setTok(v); setMeta(Object.assign({},DEF)); } ui(); sync(); };
-$('tsGen').onclick=()=>{ const A='abcdefghjkmnpqrstuvwxyz23456789', a=new Uint32Array(24); crypto.getRandomValues(a); const v=[...a].map(x=>A[x%A.length]).join(''); $('tsTok').value=v; setState('암호를 메모한 뒤 [연결]을 눌러 주세요','busy'); };
-$('tsNow').onclick=()=>{ if(!getTok()){ setState('먼저 암호를 입력하고 연결해 주세요','err'); return; } sync(); };
-$('tsOff').onclick=()=>{ if(!getTok()) return; if(!confirm('클라우드 자동 백업을 해제할까요? (클라우드에 저장된 내역은 그대로 남아요)')) return; setTok(''); setMeta(Object.assign({},DEF)); setState('연결 안 됨','off'); ui(); };
-$('tfManageOpen').addEventListener('click',ui);
+function view(){ const tok=getTok(), meta=getMeta(), local=loadUserTx(), ids=new Set(meta.ids||[]);
+  const pend=tok&&meta.dirty?local.filter(t=>!ids.has(t.id)).length:0;
+  const mode=!tok?'off':(last.k==='net'||last.k==='err')?'pend':'on';
+  return {tok,mode,busy:last.k==='busy',msg:last.t,k:last.k,pend,at:meta.at||0,ids,dirty:!!meta.dirty};
+}
+function gen(){ const A='abcdefghjkmnpqrstuvwxyz23456789', a=new Uint32Array(24); crypto.getRandomValues(a); return [...a].map(x=>A[x%A.length]).join(''); }
+function connect(v){ if(v.length<16){ setState('암호는 16자 이상이어야 해요','err'); return false; } if(v!==getTok()){ setTok(v); setMeta(Object.assign({},DEF)); } setState('동기화 중…','busy'); sync(); return true; }
+function disconnect(){ setTok(''); setMeta(Object.assign({},DEF)); setState('연결 안 됨','off'); }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&getTok()&&Date.now()-lastRun>30000) sync(); });
 try{ const m=sessionStorage.getItem('tsToast'); if(m){ sessionStorage.removeItem('tsToast'); setTimeout(()=>toast(m),600); } }catch(e){}
-setTimeout(()=>{ ui(); if(getTok()) sync(); },1200);
-window.TSYNC={sync};
+setTimeout(()=>{ if(getTok()) sync(); },1200);
+window.TSYNC={sync,view,gen,connect,disconnect,onChange:f=>listeners.push(f)};
+})();
+</script>
+<script>
+/* ===== 입력 내역 · 백업 시트 v4 UI (탭: 클라우드 / 내역) ===== */
+(function(){
+const $=id=>document.getElementById(id), S=window.TSYNC;
+if(!S||!$('tfManage')) return;
+const P={cloud:'<path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4 4 0 0 1-.5 8.5z"/>',sync:'<path d="M20 11a8 8 0 0 0-14-4.5L4 9M4 13a8 8 0 0 0 14 4.5L20 15M4 4v5h5M20 20v-5h-5"/>',up:'<path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/>',down:'<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12.5 20 4M16 8l3 3"/>',copy:'<rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/>',eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',unlink:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-.8.8M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l.8-.8M4 4l16 16"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>',check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',chev:'<path d="m6 15 6-6 6 6"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',shield:'<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2.2 2.2L15 10"/>',plus:'<path d="M12 5v14M5 12h14"/>',alert:'<path d="M12 4 2.5 20h19zM12 10v4M12 17h.01"/>',list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>'};
+const ic=n=>'<svg class="bk-i" viewBox="0 0 24 24" aria-hidden="true">'+P[n]+'</svg>';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const won=n=>'₩'+Math.round(Math.abs(n)).toLocaleString('ko-KR');
+const num=(n,d)=>Number(n).toLocaleString('en-US',{maximumFractionDigits:d==null?2:d});
+const PW_KEY='syncPwSavedV1', EXP_KEY='tradesExportedAtV1';
+const lsGet=k=>{ try{ return localStorage.getItem(k)||''; }catch(e){ return ''; } };
+const lsSet=(k,v)=>{ try{ v?localStorage.setItem(k,v):localStorage.removeItem(k); }catch(e){} };
+const st={tab:'cloud',ft:'all',openId:null,ov:null,agree:false,pwShow:false,delIdx:-1,imp:null,col:{cloud:false,safety:false,help:true}};
+const isOpen=()=>$('tfManage').classList.contains('on');
+function tmsg(m){ const t=$('tfToast'); if(!t) return; t.textContent=m; t.classList.add('on'); clearTimeout(tmsg._t); tmsg._t=setTimeout(()=>t.classList.remove('on'),2200); }
+function relTime(ts){ if(!ts) return '—'; const d=new Date(ts); if(isNaN(d)) return '—'; const df=Date.now()-d.getTime(); if(df<60000) return '방금 전'; if(df<3600000) return Math.floor(df/60000)+'분 전';
+  const hm=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); return d.toDateString()===new Date().toDateString()?'오늘 '+hm:(d.getMonth()+1)+'/'+d.getDate()+' '+hm; }
+function dayLabel(d){ const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||''); if(!m) return esc(d); const y=+m[1], base=(y!==new Date().getFullYear()?y+'년 ':''); return base+(+m[2])+'월 '+(+m[3])+'일'; }
+const pwSaved=v=>!!v.tok&&lsGet(PW_KEY)===v.tok;
+function fileInfo(){ const ts=+lsGet(EXP_KEY)||0; if(!ts) return {done:false,txt:'아직 내보낸 적 없어요'}; const days=Math.floor((Date.now()-ts)/86400000); return {done:days<=30,txt:days<=0?'오늘 내보냈어요':'마지막 내보내기 '+days+'일 전'}; }
+function acctName(a){ try{ return (ACCT_META[a]&&ACCT_META[a].name)||a; }catch(e){ return a; } }
+const gross=t=>{ const fx=t.cur==='USD'?(+t.fx||1):1; return Math.round(t.q*t.p*fx); };
+function cloudHTML(){
+  const v=S.view(), on=v.mode!=='off', saved=pwSaved(v), fi=fileInfo(), dn=[on,on&&saved,fi.done].filter(Boolean).length;
+  const cls='bk-card glow'+(v.mode==='on'?'':' amb')+(st.col.cloud?' col':'');
+  const chip=v.mode==='off'?'<span class="bk-chip off"><i></i>꺼짐</span>':v.busy?'<span class="bk-chip"><i></i>동기화 중</span>':v.mode==='on'?'<span class="bk-chip"><i></i>백업 중</span>':'<span class="bk-chip off"><i></i>'+(v.k==='net'?'업로드 대기':'확인 필요')+'</span>';
+  const n=loadUserTx().length;
+  let meta='';
+  if(on){ const dc=v.mode==='on'?'var(--bk-green)':'var(--bk-amber)';
+    const txt=v.busy?'동기화 중…':v.mode==='on'?'마지막 동기화 '+relTime(v.at)+' · 거래 '+n+'건':(v.k==='net'?(v.pend?'오프라인 · '+v.pend+'건이 업로드 대기 중이에요. 연결되면 자동으로 올라가요':'오프라인 · 연결되면 자동으로 백업돼요'):esc(v.msg));
+    meta='<div class="bk-meta" style="color:var(--ink-soft)"><i style="color:'+dc+'"></i><span>'+txt+'</span></div>'; }
+  const body=on?
+    '<div class="bk-pw"><span>'+(st.pwShow?esc(v.tok):'••••••••••••••••••••••••')+'</span><button class="bk-ico" data-a="eye" aria-label="암호 보기">'+ic('eye')+'</button><button class="bk-ico" data-a="copy" aria-label="암호 복사">'+ic('copy')+'</button></div>'
+    +'<div class="bk-agree sm '+(saved?'on':'')+'" data-a="pwsaved"><span class="bx">'+ic('check')+'</span>암호를 따로 보관했어요</div>'+meta
+    +'<div class="bk-row"><button class="bk-btn '+(v.busy?'spin':'')+'" data-a="sync">'+ic('sync')+(v.mode==='pend'&&!v.busy?'다시 시도':(v.busy?'동기화 중':'지금 동기화'))+'</button><button class="bk-btn" data-a="disc">'+ic('unlink')+'연결 해제</button></div>'
+  :'<div class="bk-pw"><input id="bkTok" placeholder="백업 암호 (16자 이상)" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="bk-ico" data-a="gen" aria-label="암호 생성">'+ic('key')+'</button></div>'
+    +'<div class="bk-row"><button class="bk-btn" data-a="gen">암호 생성</button><button class="bk-btn pri" data-a="connect">연결</button></div>'
+    +(v.k==='err'?'<div class="bk-meta" style="color:var(--bk-amber)"><i></i><span>'+esc(v.msg)+'</span></div>':'');
+  return '<div class="'+cls+'"><div class="bk-ct" data-a="cf" data-k="cloud"><span class="ic">'+ic('cloud')+'</span><h4>클라우드 자동 백업<small>Cloudflare 저장소</small></h4><span class="rt">'+chip+'</span><span class="cv">'+ic('chev')+'</span></div><div class="bd">'+body
+    +'<p class="bk-hint">거래를 입력·삭제하면 자동 백업돼요. 기기를 바꾸거나 사파리 데이터를 지워도 <b>같은 암호</b>로 연결하면 복원돼요. 암호는 따로 메모해 두세요(분실 시 복구 불가).</p></div></div>'
+  +'<div class="bk-card'+(st.col.safety?' col':'')+'"><div class="bk-ct" data-a="cf" data-k="safety"><span class="ic">'+ic('shield')+'</span><h4>백업 안전도<small>3단계 중 '+dn+'단계 완료</small></h4><span class="rt">'+Math.round(dn/3*100)+'%</span><span class="cv">'+ic('chev')+'</span></div><div class="bd" style="gap:0">'
+    +'<div class="bk-meter '+(dn===3||on?'':'off')+'"><i style="width:'+(dn/3*100)+'%"></i></div>'
+    +'<div class="bk-ck '+(on?'ok':'')+'"><span class="b">'+ic('check')+'</span><span class="t">클라우드 연결<small>'+(v.mode==='on'?'자동 백업 중':v.mode==='pend'?'연결됨 · 업로드 대기 중':'암호를 만들고 연결해요')+'</small></span>'+(on?'':'<button class="go" data-a="focustok">연결</button>')+'</div>'
+    +'<div class="bk-ck '+(on&&saved?'ok':'')+'"><span class="b">'+ic('check')+'</span><span class="t">백업 암호 따로 보관<small>'+(on&&saved?'보관했다고 확인했어요':on?'위 체크박스로 확인해 주세요':'연결 후 확인해요')+'</small></span></div>'
+    +'<div class="bk-ck '+(fi.done?'ok':'')+'"><span class="b">'+ic('check')+'</span><span class="t">파일 백업<small>'+fi.txt+'</small></span>'+(fi.done?'':'<button class="go" data-a="exp">내보내기</button>')+'</div></div></div>'
+  +'<div class="bk-card'+(st.col.help?' col':'')+'"><div class="bk-ct" data-a="cf" data-k="help"><span class="ic">'+ic('help')+'</span><h4>데이터가 지워졌다면?<small>복원 방법 3단계</small></h4><span class="cv">'+ic('chev')+'</span></div><div class="bd"><ol class="bk-steps"><li>앱을 열고 이 화면의 <b>클라우드</b> 탭으로 와요.</li><li>예전에 쓰던 <b>같은 암호</b>를 입력하고 <b>연결</b>을 눌러요.</li><li>이 기기가 비어 있으면 클라우드 내역이 자동으로 복원돼요.</li></ol></div></div>';
+}
+function histHTML(){
+  const log=loadUserTx(), v=S.view();
+  if(!log.length) return '<div class="bk-empty"><div class="big">'+ic('plus')+'</div><b>아직 입력한 거래가 없어요</b>앱에서 거래를 기록하면 이곳에 쌓이고<br>자동으로 클라우드에 백업돼요.<div class="bk-row" style="margin-top:14px;justify-content:center"><button class="bk-btn pri" data-a="addtrade" style="flex:none;padding:9px 18px">'+ic('plus')+'거래 추가</button><button class="bk-btn" data-a="howto" style="flex:none;padding:9px 14px">복원 방법</button></div></div>';
+  const buy=log.filter(t=>t.side==='buy').length, sell=log.length-buy;
+  let items=log.map((t,i)=>({t,i})).filter(x=>st.ft==='all'||x.t.side===st.ft).sort((a,b)=>(a.t.d<b.t.d?1:a.t.d>b.t.d?-1:0)||b.i-a.i);
+  const days=[...new Set(items.map(x=>x.t.d))];
+  const sy=t=>{ if(v.mode==='off') return '<div class="sy off">'+ic('cloud')+'이 기기에만 저장</div>'; if(v.dirty&&!v.ids.has(t.id)) return '<div class="sy pend">'+ic('cloud')+'업로드 대기</div>'; return '<div class="sy">'+ic('check')+'백업됨</div>'; };
+  const dtRows=t=>{ const usd=t.cur==='USD'; return [['계좌',acctName(t.ac)],[usd?'체결가 · 환율':'체결가',usd?'$'+num(t.p,4)+' · '+num(t.fx,2):won(t.p)],['수수료',+t.fee?(usd?'$'+num(t.fee,2):won(t.fee)):(usd?'$0.00':'₩0')],['예수금',{deduct:'차감',credit:'입금',none:'변동 없음'}[t.cash]||'변동 없음']]; };
+  return '<div class="bk-tiles"><div class="bk-tile"><small>입력 거래</small><b>'+log.length+'건</b></div><div class="bk-tile"><small>매수</small><b style="color:var(--bk-red)">'+buy+'건</b></div><div class="bk-tile"><small>매도</small><b style="color:var(--bk-blue)">'+sell+'건</b></div></div>'
+   +'<div class="bk-chips">'+[['all','전체'],['buy','매수'],['sell','매도']].map(([k,l])=>'<button class="bk-fc '+(st.ft===k?'on':'')+'" data-a="ft" data-v="'+k+'">'+l+'</button>').join('')+'</div>'
+   +'<div class="bk-tl">'+days.map(d=>'<div class="bk-day"><span>'+dayLabel(d)+'</span><em>'+items.filter(x=>x.t.d===d).length+'건</em></div>'+items.filter(x=>x.t.d===d).map(({t,i})=>{
+      const buyS=t.side==='buy', a=gross(t), op=st.openId===t.id;
+      const av=(typeof hcardAvatar==='function')?hcardAvatar(t.tk):'';
+      return '<div class="bk-it'+(op?' opn':'')+'" data-a="open" data-id="'+esc(t.id)+'"><div class="bk-lg">'+av+'</div><div style="flex:1;min-width:0"><div class="n"><span class="bk-tag '+t.side+'">'+(buyS?'매수':'매도')+'</span><span class="nm">'+esc(t.n)+' '+t.q+'주</span></div>'+sy(t)+'</div><div class="am" style="color:var(--bk-'+(buyS?'red':'blue')+')">'+(buyS?'−':'+')+won(a)+'<small>'+esc(acctName(t.ac))+'</small></div><button class="bk-trash" data-a="trash" data-i="'+i+'" aria-label="삭제">'+ic('trash')+'</button></div>'
+        +'<div class="bk-dt'+(op?' on':'')+'">'+dtRows(t).map(([k,x])=>'<div><span>'+k+'</span><b>'+esc(x)+'</b></div>').join('')+'</div>';
+    }).join('')).join('')+'</div>';
+}
+function ovHTML(){
+  const gr='<div class="gr"></div>';
+  if(st.ov==='del'){ const log=loadUserTx(), t=log[st.delIdx]; if(!t) return '';
+    const usd=t.cur==='USD', fx=usd?(+t.fx||1):1, fee=+t.fee||0, g=gross(t);
+    const h=(typeof HOLDINGS!=='undefined')?HOLDINGS.find(x=>x.ticker===t.tk&&x.acct===t.ac):null, cur=h?h.shares:0, aft=+(t.side==='buy'?cur-t.q:cur+t.q).toFixed(6);
+    let cash='변동 없음';
+    if(t.side==='buy'&&t.cash==='deduct') cash=usd?'+$'+num(t.q*t.p+fee/fx)+' 되돌아와요':'+'+won(g+fee)+' 되돌아와요';
+    if(t.side==='sell'&&t.cash==='credit') cash=usd?'−$'+num(t.q*t.p-fee/fx)+' 회수돼요':'−'+won(g-fee)+' 회수돼요';
+    return gr+'<h4>이 거래를 삭제할까요?</h4><p>삭제하면 보유·예수금·이력이 아래처럼 되돌려져요.</p><div class="bk-fx"><div class="r"><span>삭제할 거래</span><b><span class="bk-tag '+t.side+'" style="margin:0 4px 0 0">'+(t.side==='buy'?'매수':'매도')+'</span>'+esc(t.n)+' '+t.q+'주</b></div><div class="r"><span>'+esc(t.n)+' 보유</span><b>'+num(cur,6)+'주<i>→</i>'+num(aft,6)+'주</b></div><div class="r"><span>예수금</span><b>'+cash+'</b></div></div><p style="margin-bottom:12px">화면이 새로고침되고, 클라우드 백업에도 같이 반영돼요.</p><div class="bk-row"><button class="bk-btn" data-a="close">취소</button><button class="bk-btn dng" data-a="delgo">'+ic('trash')+'삭제</button></div>'; }
+  if(st.ov==='clear'){ const n=loadUserTx().length;
+    return gr+'<h4>입력 내역을 모두 비울까요?</h4><p>입력한 거래 '+n+'건이 지워지고 클라우드 백업도 비워져요.</p><div class="bk-warn">'+ic('alert')+'<div><b>이미 기본 파일에 반영한 거래만</b> 비우세요. 반영 전이면 보유 수량과 예수금이 원래대로 되돌아가요.</div></div><div class="bk-agree '+(st.agree?'on':'')+'" data-a="agree"><span class="bx">'+ic('check')+'</span>기본 파일에 반영한 걸 확인했어요</div><div class="bk-row" style="margin-bottom:8px"><button class="bk-btn" data-a="exp2">'+ic('up')+'먼저 내보내기</button></div><div class="bk-row"><button class="bk-btn" data-a="close">취소</button><button class="bk-btn dng" data-a="cleargo" '+(st.agree?'':'disabled')+'>'+ic('trash')+'전체 비우기</button></div>'; }
+  if(st.ov==='disc'){ return gr+'<h4>클라우드 연결을 해제할까요?</h4><p>이 기기에서만 연결이 끊어져요. 데이터는 지워지지 않아요.</p><div class="bk-fx"><div class="r"><span>이 기기의 입력 내역</span><b>그대로 유지</b></div><div class="r"><span>클라우드에 저장된 백업</span><b>그대로 남음</b></div><div class="r"><span>이후 새로 입력하는 거래</span><b>이 기기에만 저장</b></div></div><div class="bk-warn">'+ic('alert')+'<div>나중에 다시 연결하면 두 쪽 내역을 <b>합쳐요.</b> 그사이 삭제한 거래가 되살아날 수 있어요.</div></div><div class="bk-row"><button class="bk-btn" data-a="close">취소</button><button class="bk-btn dng" data-a="discgo">'+ic('unlink')+'연결 해제</button></div>'; }
+  if(st.ov==='imp'&&st.imp){ const a=st.imp.list, cur=loadUserTx(), cb=cur.filter(t=>t.side==='buy').length, ab=a.filter(t=>t.side==='buy').length;
+    return gr+'<h4>파일 '+a.length+'건을 가져올까요?</h4><p>'+esc(st.imp.name)+'</p><div class="bk-fx"><div class="r"><span>입력 거래</span><b>'+cur.length+'건<i>→</i>'+a.length+'건</b></div><div class="r"><span>매수</span><b>'+cb+'건<i>→</i>'+ab+'건</b></div><div class="r"><span>매도</span><b>'+(cur.length-cb)+'건<i>→</i>'+(a.length-ab)+'건</b></div></div><div class="bk-warn">'+ic('alert')+'<div>현재 내역은 파일 내용으로 <b>통째로 교체</b>돼요. 클라우드에도 그대로 반영돼요.</div></div><div class="bk-row" style="margin-bottom:8px"><button class="bk-btn" data-a="exp2">'+ic('up')+'먼저 현재 내역 내보내기</button></div><div class="bk-row"><button class="bk-btn" data-a="close">취소</button><button class="bk-btn pri" data-a="impgo">'+ic('down')+'가져오기</button></div>'; }
+  return '';
+}
+function render(){
+  const sc=$('bkScroll'), top=sc?sc.scrollTop:0, tokEl=$('bkTok'), draft=tokEl?tokEl.value:null, v=S.view(), n=loadUserTx().length;
+  $('bkSeg').innerHTML='<button data-a="tab" data-v="cloud" class="'+(st.tab==='cloud'?'on':'')+'">클라우드<i class="bk-dot '+(v.mode==='on'?'g':'a')+'"></i></button><button data-a="tab" data-v="hist" class="'+(st.tab==='hist'?'on':'')+'">내역'+(n?'<span class="n">'+n+'</span>':'')+'</button>';
+  sc.innerHTML=st.tab==='cloud'?cloudHTML():histHTML();
+  const t2=$('bkTok'); if(t2&&draft!=null) t2.value=draft;
+  sc.scrollTop=top;
+  const clr=$('tfClr'); if(clr) clr.disabled=!n;
+  const ov=$('bkOv'), html=ovHTML(); ov.classList.toggle('on',!!html); ov.innerHTML=html?'<div class="bk-cs">'+html+'</div>':'';
+}
+function doExport(){ const blob=new Blob([JSON.stringify(loadUserTx(),null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='portfolio-trades-'+localDateStr(new Date())+'.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); lsSet(EXP_KEY,String(Date.now())); tmsg('파일로 저장했어요'); render(); }
+function copyText(s){ try{ if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(s); }catch(e){} return new Promise((res,rej)=>{ const ta=document.createElement('textarea'); ta.value=s; ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy')?res():rej(); }catch(e){ rej(); } ta.remove(); }); }
+$('tfManage').addEventListener('click',e=>{
+  const a=e.target.closest('[data-a]'); if(!a||!$('tfManage').contains(a)) return; const act=a.dataset.a, v=S.view();
+  if(act==='tab'){ st.tab=a.dataset.v; st.ov=null; st.openId=null; }
+  else if(act==='cf'){ const k=a.dataset.k; st.col[k]=!st.col[k]; }
+  else if(act==='ft'){ st.ft=a.dataset.v; }
+  else if(act==='open'){ if(e.target.closest('.bk-trash')) return; const id=a.dataset.id; st.openId=st.openId===id?null:id; }
+  else if(act==='trash'){ e.stopPropagation(); st.delIdx=+a.dataset.i; st.ov='del'; }
+  else if(act==='delgo'){ const log=loadUserTx(); if(st.delIdx>=0&&st.delIdx<log.length){ log.splice(st.delIdx,1); saveUserTx(log); location.reload(); } return; }
+  else if(act==='clear'){ if(!loadUserTx().length){ tmsg('비울 내역이 없어요'); return; } st.ov='clear'; st.agree=false; }
+  else if(act==='agree'){ st.agree=!st.agree; }
+  else if(act==='cleargo'){ if(!st.agree) return; saveUserTx([]); location.reload(); return; }
+  else if(act==='close'){ st.ov=null; }
+  else if(act==='exp'||act==='exp2'){ if(act==='exp2') st.ov=null; doExport(); return; }
+  else if(act==='imp'){ $('tfFile').click(); return; }
+  else if(act==='impgo'){ if(st.imp){ saveUserTx(st.imp.list); location.reload(); } return; }
+  else if(act==='eye'){ st.pwShow=!st.pwShow; }
+  else if(act==='copy'){ copyText(v.tok).then(()=>tmsg('암호를 복사했어요'),()=>tmsg('복사하지 못했어요')); return; }
+  else if(act==='pwsaved'){ lsSet(PW_KEY,pwSaved(v)?'':v.tok); }
+  else if(act==='sync'){ S.sync(); return; }
+  else if(act==='disc'){ st.ov='disc'; }
+  else if(act==='discgo'){ S.disconnect(); st.ov=null; st.pwShow=false; tmsg('연결을 해제했어요'); }
+  else if(act==='gen'){ const g=S.gen(); render(); const t=$('bkTok'); if(t) t.value=g; tmsg('암호를 메모한 뒤 [연결]을 눌러 주세요'); return; }
+  else if(act==='connect'){ const t=$('bkTok'), val=t?(t.value||'').trim():''; if(val.length<16){ tmsg('암호는 16자 이상이어야 해요'); return; } S.connect(val); return; }
+  else if(act==='focustok'){ const t=$('bkTok'); if(t) t.focus(); return; }
+  else if(act==='addtrade'){ const b=$('tfOpen'); if(b){ $('tfMClose').click(); setTimeout(()=>b.click(),250); } return; }
+  else if(act==='howto'){ st.tab='cloud'; st.col.help=false; }
+  render();
+});
+$('tfFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{
+    const a=JSON.parse(r.result); if(!Array.isArray(a)) throw 0;
+    a.forEach(t=>{ if(!t||!['buy','sell'].includes(t.side)||!(t.q>0)||!(t.p>0)||!t.d||!t.tk||!t.ac) throw 0; });
+    st.imp={list:a,name:f.name}; st.ov='imp'; render();
+  }catch(err){ tmsg('올바른 백업 파일이 아니에요'); } }; r.readAsText(f); e.target.value=''; };
+S.onChange(()=>{ if(isOpen()) render(); });
+window.BK={onOpen(){ st.ov=null; st.openId=null; st.pwShow=false; render(); }};
+render();
 })();
 </script>
 </body></html>
