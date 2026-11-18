@@ -2172,6 +2172,69 @@ html[data-theme="dark"] .bk-cs{background:#262830}
 .bk-fx .r b i{font-style:normal;color:var(--bk-mute);font-weight:600;margin:0 4px}
 .bk-warn{display:flex;gap:9px;background:rgba(230,150,30,.13);border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.5;color:var(--bk-amber);margin-bottom:10px}.bk-warn b{color:var(--bk-amber)}.bk-warn svg{margin-top:2px}
 </style>
+<style id="planCss">
+/* ===== 분할매수 플랜 (리밸런싱 탭 카드 + 시트) ===== */
+#sec-rebal,#planSheet,#planAlertBanner{--pl-g:#1e8f3e;--pl-a:#b7790f;--pl-r:#c0392b;--pl-b:#2c64c8;--pl-acc:var(--stamp-blue);--pl-onacc:#fff;--pl-fill:var(--g-soft,rgba(120,130,150,.12))}
+html[data-theme="dark"] #sec-rebal,html[data-theme="dark"] #planSheet,html[data-theme="dark"] #planAlertBanner{--pl-g:#4cc46a;--pl-a:#e6a84a;--pl-r:#ff6f5e;--pl-b:#6d9eeb;--pl-acc:#5b8def}
+#plBd{z-index:398}
+#planSheet{z-index:399;display:none;flex-direction:column;height:min(720px,92vh);padding:8px 14px calc(12px + env(safe-area-inset-bottom));overflow:hidden;border-radius:32px 32px 0 0}
+#planSheet.on{display:flex}
+#planSheet h3{margin:0 0 10px}
+.pl-tabs{flex:none;display:flex;background:var(--pl-fill);border-radius:999px;padding:3px;margin-bottom:10px;position:relative}
+.pl-tabs button{flex:1;border:0;background:transparent;font:700 11.5px inherit;font-family:inherit;color:var(--ink-soft);padding:8px 0;border-radius:999px;cursor:pointer;position:relative}
+.pl-tabs button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px -3px rgba(0,0,0,.28)}
+.pl-tabs b{position:absolute;top:0;right:2px;background:var(--pl-r);color:#fff;border-radius:8px;font:800 8.5px Inter,sans-serif;padding:1px 4px}
+#plBody{flex:1;min-height:0;overflow-y:auto;padding-bottom:8px;scrollbar-width:none}#plBody::-webkit-scrollbar{display:none}
+.pl-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:14px;margin-bottom:10px}
+.pl-sh{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pl-ic{width:26px;height:26px;border-radius:9px;background:rgba(44,100,200,.12);color:var(--pl-b);display:flex;align-items:center;justify-content:center;flex:none}.pl-ic svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pl-sh .lb{font:800 10.5px Inter,sans-serif;letter-spacing:.07em;color:var(--ink-soft);text-transform:uppercase}.pl-sh .r{margin-left:auto;font-size:11px;color:var(--ink-soft);font-weight:700}
+.pl-row{display:flex;align-items:center;gap:10px}.pl-sp{margin-left:auto}
+.pl-sm{font-size:11px;color:var(--ink-soft)}.pl-b{font-weight:800}
+.pl-num{font-size:30px;font-weight:800;letter-spacing:-1.1px;margin:4px 0 12px;line-height:1.05}
+.pl-bar{display:flex;height:10px;border-radius:6px;overflow:hidden;background:var(--pl-fill);gap:2px}.pl-bar i{display:block;height:100%;border-radius:3px}
+.pl-leg{display:flex;gap:14px;margin-top:9px;font-size:11px;color:var(--ink-soft)}.pl-leg b{color:var(--ink);font-weight:800}.pl-leg i{display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:5px}
+.pl-kpis{display:flex;gap:8px;margin-top:12px}.pl-kpi{flex:1;background:var(--pl-fill);border-radius:16px;padding:10px 12px}.pl-kpi small{display:block;font-size:10px;color:var(--ink-soft);font-weight:700;opacity:.8}.pl-kpi b{display:block;font-size:14.5px;font-weight:800;margin-top:3px;letter-spacing:-.4px}
+.pl-alert{display:flex;align-items:center;gap:10px;border-radius:18px;padding:11px 13px;margin:10px 0;font-size:12px;line-height:1.45;border:1px solid transparent}
+.pl-alert .ai{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}.pl-alert .ai svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pl-alert.a{background:rgba(230,150,30,.12);border-color:rgba(230,150,30,.22)}.pl-alert.a .ai{background:rgba(230,150,30,.2);color:var(--pl-a)}
+.pl-alert.g{background:rgba(30,143,62,.09);border-color:rgba(30,143,62,.18)}.pl-alert.g .ai{background:rgba(30,143,62,.18);color:var(--pl-g)}
+.pl-alert.r{background:rgba(192,57,43,.09);border-color:rgba(192,57,43,.2)}.pl-alert.r .ai{background:rgba(192,57,43,.16);color:var(--pl-r)}
+.pl-alert.tap{cursor:pointer}
+.pl-plan{display:flex;gap:12px;align-items:center;padding:13px 0;cursor:pointer}.pl-plan+.pl-plan{border-top:1px solid var(--line)}
+.pl-lg{width:38px;height:38px;flex:none}.pl-lg .hcard-lg{width:100%;height:100%}.pl-lg.s{width:30px;height:30px}.pl-lg.x{width:44px;height:44px}
+.pl-m{flex:1;min-width:0}.pl-n{font-size:13.5px;font-weight:700;letter-spacing:-.2px;color:var(--ink)}.pl-s{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.45}
+.pl-pills{display:flex;gap:3px;margin-top:8px}.pl-pills i{flex:1;height:5px;border-radius:3px;background:var(--pl-fill);max-width:34px}.pl-pills i.pd{background:var(--pl-g)}.pl-pills i.pc{background:var(--pl-acc)}.pl-pills i.pk{background:var(--ink-soft);opacity:.45}
+.pl-tag{display:inline-block;font-size:10px;font-weight:800;border-radius:7px;padding:3px 7px;white-space:nowrap}
+.pl-tag.ok{background:rgba(30,143,62,.12);color:var(--pl-g)}.pl-tag.am{background:rgba(230,150,30,.15);color:var(--pl-a)}.pl-tag.bl{background:rgba(44,100,200,.12);color:var(--pl-b)}.pl-tag.gr{background:var(--pl-fill);color:var(--ink-soft)}
+.pl-cnt{font-size:15px;font-weight:800;letter-spacing:-.4px;color:var(--ink)}.pl-cnt small{font-size:10.5px;color:var(--ink-soft);font-weight:700}
+.pl-btn{border:0;background:var(--pl-fill);color:var(--ink);border-radius:999px;padding:10px 16px;font:800 12.5px inherit;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:5px;justify-content:center}
+.pl-btn:active{transform:scale(.97)}.pl-btn.pri{background:var(--pl-acc);color:var(--pl-onacc)}.pl-btn.blk{width:100%;padding:13px}.pl-btn.dim{opacity:.55}.pl-btn.s{padding:7px 12px;font-size:11.5px}.pl-btn:disabled{opacity:.4}
+.pl-ck{width:24px;height:24px;border-radius:8px;border:2px solid var(--ink-soft);opacity:.9;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;color:transparent}.pl-ck.on{background:var(--pl-g);border-color:var(--pl-g);color:#fff;opacity:1}.pl-ck.now{border-color:var(--pl-a);background:rgba(230,150,30,.1)}.pl-ck.lock{cursor:default}.pl-ck svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.pl-chk{display:flex;gap:12px;align-items:center;padding:12px 0}.pl-chk+.pl-chk{border-top:1px solid var(--line)}
+.pl-seg{display:flex;background:var(--pl-fill);border-radius:999px;padding:3px}.pl-seg button{flex:1;border:0;background:transparent;font:700 12px inherit;font-family:inherit;color:var(--ink-soft);padding:8px 2px;border-radius:999px;cursor:pointer}.pl-seg button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px -3px rgba(0,0,0,.28)}
+.pl-chips{display:flex;gap:6px;flex-wrap:wrap}.pl-chip{border:0;background:var(--pl-fill);color:var(--ink-soft);border-radius:999px;padding:7px 12px;font:700 12px inherit;font-family:inherit;cursor:pointer}.pl-chip.on{background:var(--pl-acc);color:var(--pl-onacc)}
+.pl-back{border:0;background:transparent;color:var(--ink-soft);font:700 13px inherit;font-family:inherit;cursor:pointer;padding:2px 4px 10px}
+.pl-note{border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.55;margin-top:10px}.pl-note.g{background:rgba(30,143,62,.1)}.pl-note.r{background:rgba(192,57,43,.1)}.pl-note.a{background:rgba(230,150,30,.12)}.pl-note.n{background:var(--pl-fill);color:var(--ink-soft)}
+.pl-f{padding:12px 0;border-top:1px solid var(--line)}.pl-f:first-of-type{border-top:0}.pl-f>label{display:block;font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:8px}
+.pl-step{display:flex;align-items:center;gap:8px}.pl-step button{width:32px;height:32px;border-radius:50%;border:0;background:var(--pl-fill);color:var(--ink);font-size:17px;cursor:pointer}.pl-step b{min-width:104px;text-align:center;font-size:15px;font-weight:800;letter-spacing:-.4px}
+.pl-sel{width:100%;border:1px solid var(--g-border,var(--line));background:var(--pl-fill);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:15px;font-family:inherit;min-height:46px}
+.pl-wbar{position:relative;height:12px;border-radius:7px;background:var(--pl-fill);margin:8px 0 22px}.pl-wbar i{position:absolute;top:0;bottom:0;border-radius:7px}.pl-wbar .tk{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:1px;background:var(--ink)}.pl-wbar .tl{position:absolute;top:18px;font-size:9.5px;color:var(--ink-soft);transform:translateX(-50%);white-space:nowrap}
+.pl-col{display:flex;align-items:flex-end;gap:9px;height:100px;margin:6px 2px 4px}.pl-col>div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;height:100%}.pl-col .st{width:100%;display:flex;flex-direction:column-reverse;border-radius:8px;overflow:hidden;gap:1px}
+.pl-slider{width:100%;accent-color:var(--pl-acc)}
+.pl-tbl{width:100%;border-collapse:collapse;font-size:12px}.pl-tbl th{font-size:10px;color:var(--ink-soft);font-weight:700;text-align:right;padding:4px 0}.pl-tbl th:first-child,.pl-tbl td:first-child{text-align:left}.pl-tbl td{padding:10px 0;border-top:1px solid var(--line);text-align:right;vertical-align:middle}
+.pl-ov{position:absolute;inset:0;background:rgba(10,12,20,.4);display:flex;align-items:flex-end;z-index:5;border-radius:32px 32px 0 0}
+.pl-cs{width:100%;max-height:92%;overflow-y:auto;background:#fff;border-radius:28px 28px 0 0;padding:12px 16px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -20px 50px -20px rgba(0,0,0,.4)}
+html[data-theme="dark"] .pl-cs{background:#262830}
+.pl-cs h4{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--ink)}
+.pl-st{margin-top:10px;font-size:11px;color:var(--ink-soft);display:flex;align-items:center;gap:6px}.pl-st i{width:8px;height:8px;border-radius:50%;background:var(--ink-soft)}.pl-st.ok i{background:var(--pl-g)}.pl-st.am i{background:var(--pl-a)}
+.pl-hint{font-size:11.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 10px}
+.pl-red{color:var(--pl-r)}.pl-green{color:var(--pl-g)}.pl-amber{color:var(--pl-a)}.pl-blue{color:var(--pl-b)}
+#plCard{padding:2px 0 0}
+#planAlertBanner{background:rgba(230,150,30,.12) !important;border-color:rgba(230,150,30,.25) !important}
+#planAlertBanner .alert-ic{background:rgba(230,150,30,.2);color:var(--pl-a)}
+</style>
+
 <style id="hdrNew">
 /* ===== 헤더 개편: 상태 스트립 + 원형 아이콘 줄 + 시장 시계 ===== */
 .livebar{padding:10px !important;gap:0 !important;overflow:hidden;height:var(--lbh,auto)}
@@ -2287,6 +2350,13 @@ html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="
     <button class="alert-close-btn" id="rebalAlertCloseBtn" aria-label="알림 닫기">
       <svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
     </button>
+  </div>
+
+  <div class="alert-banner" id="planAlertBanner" data-panel="home" style="display:none;">
+    <div class="alert-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 2h16zM10 21h4"/></svg></div>
+    <div class="alert-txt"><div class="alert-title" id="planAlertTitle">—</div><div class="alert-sub" id="planAlertSub">—</div></div>
+    <span class="alert-arrow">›</span>
+    <button class="alert-close-btn" id="planAlertClose" aria-label="오늘은 그만 보기"><svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
   </div>
 
   <!-- COVER -->
@@ -3033,16 +3103,8 @@ html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="
 
   <!-- REBALANCING -->
   <div class="page collapsible" id="sec-rebal" data-panel="rebal">
-    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>리밸런싱 제안</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">현재 → 목표</div></div>
-    <div class="rebal-head-note">자산군 기준 목표 배분. 막대는 <b style="color:#b7813f;">현재(갈색)</b> vs <b style="color:#8a9280;">목표(회녹색)</b>. 한 번에 옮기지 말고 수개월 분할 권장.</div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#b23b2e;"></span>고위험 테마주</span><span class="rebal-move cut">▼ 축소 −15%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:69.8%;"></div></div><span class="v">34.9%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:36%;"></div></div><span class="v">~18%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">PLTR·RKLB·KEEL·IONQ·IREN·SMR·TSLA · 약 ₩29M → ₩15M</div></div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#cf8a5c;"></span>대형 우량주</span><span class="rebal-move cut">▼ 소폭 −9%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:77.6%;"></div></div><span class="v">38.8%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:58%;"></div></div><span class="v">~29%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">AAPL·NVDA·GOOGL·MSFT·NFLX·SPYM·INTC · 승자 비중 10% 상한</div></div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#8a9280;"></span>지수 ETF (코어)</span><span class="rebal-move add">▲ 확대 +12%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:46%;"></div></div><span class="v">23.0%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:70%;"></div></div><span class="v">~35%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">ISA·연금 ETF 중심 · 선진국·신흥국 분산 검토</div></div>
-    <div class="rebal-row"><div class="rebal-top"><span class="rebal-cat"><span class="dot" style="background:#7d97c4;"></span>현금·단기채</span><span class="rebal-move add">▲ 확대 +6%p</span></div><div class="rebal-bars"><div class="rebal-bar-line"><span class="tag">현재</span><div class="rebal-track"><div class="fill cur" style="width:6.6%;"></div></div><span class="v">3.3%</span></div><div class="rebal-bar-line"><span class="tag">목표</span><div class="rebal-track"><div class="fill tgt" style="width:18%;"></div></div><span class="v">~9%</span></div></div><div class="note" style="border:none;padding:6px 0 0;">하락장 매수 실탄 · 약 ₩2.8M → ₩7.5M</div></div>
-    <div class="rule-chips">
-      <div class="rule-chip"><span class="num">1</span><span class="txt"><b>단일 종목 상한 10%</b> — PLTR 일부 익절로 10% 이하. 승자 축소는 손절이 아니라 리스크 관리.</span></div>
-      <div class="rule-chip"><span class="num">2</span><span class="txt"><b>테마주는 "잃어도 되는 돈"</b> — 7개 테마주 합계를 총자산의 15~20%로 캡.</span></div>
-    </div>
+    <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><rect x="4" y="4" width="16" height="17" rx="3"/><path d="M9 4v3h6V4M8 12h8M8 16h5"/></svg></span>분할매수 플랜</h2><div class="total" id="plHeadTotal" style="font-size:12px;color:var(--ink-soft);">—</div></div>
+    <div id="plCard"></div>
   </div>
 
   <div class="perf"></div>
@@ -10165,6 +10227,8 @@ initScrollReveal();
 initRipple();
 fetchIcons().catch(e=>console.warn('icons',e));
 </script>
+<div class="tf-bd" id="plBd"></div>
+<div class="tf-sheet" id="planSheet" role="dialog" aria-label="분할매수 플랜"><div class="tf-grab"></div><h3>분할매수 플랜<button class="tf-x" type="button" id="plClose" aria-label="닫기">✕</button></h3><div class="pl-tabs" id="plTabs"></div><div id="plBody"></div></div>
 <div class="tf-bd" id="tfBd"></div>
 <div class="tf-sheet" id="tfSheet" role="dialog" aria-label="거래 추가">
   <div class="tf-grab"></div>
@@ -10322,7 +10386,13 @@ $('tfGo').onclick=()=>{
 function refreshCnt(){ const n=loadUserTx().length; $('tfCnt').textContent=n?String(n):''; }
 $('tfManageOpen').onclick=()=>{ open('tfManage'); if(window.BK) BK.onOpen(); };
 refreshCnt();
-window.TF={applyOneTrade,loadUserTx};
+function openPrefill(ac,tk,q,p){
+  openForm(); const sel=$('tfTicker'); const v=ac+'|'+tk;
+  if([...sel.options].some(o=>o.value===v)) sel.value=v;
+  setCashDefault(); const c=ctx(); if(c.cur==='USD' && !$('tfFx').value) $('tfFx').value=FX.toFixed(2);
+  $('tfQty').value=q?String(q):''; $('tfPx').value=p?String(p):''; syncUi();
+}
+window.TF={applyOneTrade,loadUserTx,openPrefill};
 })();
 </script>
 
@@ -10358,19 +10428,287 @@ window.TF={applyOneTrade,loadUserTx};
 })();
 </script>
 <script>
+/* ===== 분할매수 플랜 (리밸런싱 탭) =====
+   플랜 설정은 localStorage 'splitPlansV1' ({at, list}) 에 저장되고, 클라우드 백업이 연결돼 있으면 거래 내역과 함께 올라간다(Worker plans 필드).
+   각 회차 "완료" 여부는 별도 저장 없이 입력된 거래(TXL)에서 매달·종목으로 자동 판정한다(직접 체크/건너뜀만 플랜에 기록). */
+(function(){
+const KEY='splitPlansV1';
+const $=id=>document.getElementById(id);
+const get=()=>{ try{ const d=JSON.parse(localStorage.getItem(KEY)||'null'); if(d&&Array.isArray(d.list)&&typeof d.at==='number') return d; }catch(e){} return {at:0,list:[]}; };
+let DOC=get();
+window.PLANS_DOC={get:()=>DOC, set:d=>{ DOC=d; try{ localStorage.setItem(KEY,JSON.stringify(DOC)); }catch(e){} try{ PLAN.refresh(); }catch(e){} }};
+function commit(){ DOC.at=Date.now(); try{ localStorage.setItem(KEY,JSON.stringify(DOC)); }catch(e){} if(window.TSYNC&&TSYNC.planChanged) TSYNC.planChanged(); }
+const P=()=>DOC.list;
+const won=n=>(n<0?'−':'')+'₩'+Math.round(Math.abs(n)).toLocaleString('ko-KR');
+const man=n=>Math.round(n/10000).toLocaleString('ko-KR')+'만';
+const addM=(y,i)=>{ let [a,b]=y.split('-').map(Number); b+=i; a+=Math.floor((b-1)/12); b=((b-1)%12+12)%12+1; return a+'-'+String(b).padStart(2,'0'); };
+const diffM=(y,z)=>{ const a=y.split('-').map(Number), b=z.split('-').map(Number); return (b[0]-a[0])*12+b[1]-a[1]; };
+const mLabel=y=>+y.slice(5)+'월';
+const today=()=>localDateStr(new Date());
+const curYm=()=>today().slice(0,7);
+const PAL=['#2c64c8','#2f9e8f','#c9853a','#8a5cc8','#cf5c7a','#7a8c3a'];
+const IC={bell:'<path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 2h16zM10 21h4"/>',check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',plan:'<rect x="4" y="4" width="16" height="17" rx="3"/><path d="M9 4v3h6V4M8 12h8M8 16h5"/>',wallet:'<path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><circle cx="16.5" cy="14.5" r="1.2"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M9 15l2 2 4-4"/>',pie:'<path d="M12 3v9h9a9 9 0 1 1-9-9z"/>',trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'};
+const ico=n=>`<svg viewBox="0 0 24 24">${IC[n]}</svg>`;
+const CK=ico('check');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ---- 데이터 도우미 ---- */
+const H=tk=>HOLDINGS.find(h=>h.ticker===tk);
+const nm=tk=>{ const h=H(tk); return h?h.nameKr:tk; };
+const usd=tk=>{ const h=H(tk); return !!(h&&h.cur==='USD'); };
+const pxN=tk=>{ const h=H(tk); return h?h.price:0; };
+const pxK=tk=>pxN(tk)*(usd(tk)?FX:1);
+const fmtPx=(tk,v)=>usd(tk)?'$'+Number(v).toFixed(2):'₩'+Math.round(v).toLocaleString('ko-KR');
+const cash=()=>cashKRW()+ISA_CASH;
+const lg=(tk,c='')=>`<span class="pl-lg ${c}">${hcardAvatar(tk)}</span>`;
+function tgt(tk){
+  if(typeof TARGET!=='undefined'&&TARGET[tk]!=null) return {tks:[tk],tg:TARGET[tk]};
+  const g=(typeof REBAL_ROWS!=='undefined'?REBAL_ROWS:[]).find(r=>r.group&&r.group.includes(tk));
+  if(g&&TARGET[g.id]!=null) return {tks:g.group,tg:TARGET[g.id],label:g.label};
+  return {tks:[tk],tg:null};
+}
+const wOf=tks=>{ const t=grandTotal(); return t>0?tks.reduce((a,k)=>{ const h=H(k); return a+(h?evalKRW(h):0); },0)/t*100:0; };
+/* ---- 플랜 계산 ---- */
+const extN=p=>Object.values(p.skips||{}).filter(s=>s.mode==='ext').length;
+const nM=p=>p.months+extN(p);
+function tradesIn(tk,y){ return TXL.filter(t=>t.tk===tk&&t.q>0&&String(t.d).slice(0,7)===y); }
+function stat(p,i){
+  const y=addM(p.start,i), tr=tradesIn(p.tk,y), a=tr.reduce((s,t)=>s+t.amt,0);
+  if(a>=p.amt*.5) return {k:'done',y,amt:a,qty:tr.reduce((s,t)=>s+t.q,0)};
+  if(p.manual&&p.manual[y]) return {k:'done',y,amt:p.amt,qty:0,man:true};
+  if(p.skips&&p.skips[y]) return {k:'skip',y,mode:p.skips[y].mode};
+  const c=curYm(); if(y<c) return {k:'miss',y}; if(y===c) return {k:'now',y}; return {k:'next',y};
+}
+const stats=p=>Array.from({length:nM(p)},(_,i)=>stat(p,i));
+const carryIn=(p,y)=>{ const s=p.skips&&p.skips[addM(y,-1)]; return s&&s.mode==='sum'?p.amt:0; };
+function condInfo(p){
+  const px=pxN(p.tk);
+  if(p.cond==='none') return {ok:true,mult:1,txt:'가격 조건 없음',tag:'진행 가능'};
+  if(p.cond==='limit'){ const ok=px<=p.lim; return {ok,mult:1,txt:`현재가 ${fmtPx(p.tk,px)} ${ok?'≤':'>'} ${fmtPx(p.tk,p.lim)}`+(ok?'':` (${((px/p.lim-1)*100).toFixed(1)}% 높음)`),tag:ok?'조건 충족':'가격 대기'}; }
+  const r=px/p.lim, m=r<.9?1.5:r<1?1:r<1.05?.5:0;
+  return {ok:m>0,mult:m,txt:`현재가 ${fmtPx(p.tk,px)} · 기준 ${fmtPx(p.tk,p.lim)} 대비 ${r>=1?'+':''}${((r-1)*100).toFixed(1)}%`,tag:m===0?'건너뛰기 권장':m>1?'많이 사기 ×'+m:m<1?'적게 사기 ×'+m:'기본 금액'};
+}
+const suggest=p=>Math.round((p.amt*condInfo(p).mult+carryIn(p,curYm()))/1000)*1000;
+const remOut=p=>stats(p).reduce((s,x)=>s+((x.k==='now'||x.k==='next')?p.amt+carryIn(p,x.y):0),0);
+const reservedAll=()=>P().reduce((a,p)=>a+remOut(p),0);
+const monthIdx=p=>diffM(p.start,curYm());
+const nowStat=p=>{ const i=monthIdx(p); return i>=0&&i<nM(p)?stat(p,i):null; };
+const pending=()=>P().filter(p=>{ const s=nowStat(p); return s&&s.k==='now'; });
+const outOf=(p,y)=>{ const k=diffM(p.start,y); if(k<0||k>=nM(p)) return 0; const s=stat(p,k); return (s.k==='now'||s.k==='next')?p.amt+carryIn(p,y):0; };
+/* ---- 상태 ---- */
+const S={open:false,tab:'plans',detail:null,form:null,dep:0,mon:2,rv:null,tid:1};
+const pills=ss=>`<div class="pl-pills">${ss.map(x=>`<i class="${x.k==='done'?'pd':x.k==='now'?'pc':x.k==='skip'||x.k==='miss'?'pk':''}"></i>`).join('')}</div>`;
+const sh=(i,l,r)=>`<div class="pl-sh"><span class="pl-ic">${ico(i)}</span><span class="lb">${l}</span>${r?`<span class="r">${r}</span>`:''}</div>`;
+const cashHero=()=>{ const c=cash(), res=reservedAll(), free=c-res;
+  return `<div class="pl-sm" style="font-weight:600">보유 예수금 (달러 포함)</div><div class="pl-num">${won(c)}</div>
+  <div class="pl-bar"><i style="width:${Math.min(100,res/Math.max(c,1)*100)}%;background:var(--pl-acc)"></i><i style="flex:1;background:${free<0?'var(--pl-r)':'var(--pl-g)'};opacity:.45"></i></div>
+  <div class="pl-leg"><span><i style="background:var(--pl-acc)"></i>계획 <b>${won(res)}</b></span><span class="pl-sp"><i style="background:${free<0?'var(--pl-r)':'var(--pl-g)'};opacity:.6"></i>${free<0?'부족':'자유'} <b>${won(free)}</b></span></div>`; };
+const syncLine=()=>{ const v=window.TSYNC?TSYNC.view():null; if(!v||!v.tok) return `<div class="pl-st am"><i></i>플랜은 이 기기에만 저장돼요 · 입력 내역·백업에서 클라우드를 연결하면 함께 백업돼요</div>`;
+  if(v.planSup===false) return `<div class="pl-st am"><i></i>클라우드 서버(Worker)를 업데이트하면 플랜도 백업돼요</div>`;
+  if(v.planSup===true) return `<div class="pl-st ok"><i></i>플랜도 클라우드에 자동 백업돼요${v.planDirty?' (업로드 대기)':''}</div>`;
+  return `<div class="pl-st"><i></i>클라우드 상태 확인 중…</div>`; };
+/* ---- 요약 카드 (리밸런싱 탭) ---- */
+function renderCard(){
+  const box=$('plCard'); if(!box) return;
+  const hd=$('plHeadTotal'); if(hd) hd.textContent=P().length?P().length+'개 진행':'새 기능';
+  if(!P().length){ box.innerHTML=`<p class="pl-hint" style="margin:0 0 12px">보유 예수금으로 몇 달에 걸쳐 꾸준히 살 종목을 정해 두고, 매달 체크하면서 비중·금액 변화를 확인해요.</p>
+    <div class="pl-kpis" style="margin:0 0 12px"><div class="pl-kpi"><small>보유 예수금</small><b>${won(cash())}</b></div></div>
+    <button class="pl-btn pri blk" data-pa="new">＋ 분할매수 플랜 만들기</button>`; return; }
+  const pend=pending();
+  const first=pend.slice().sort((a,b)=>a.day-b.day)[0];
+  box.innerHTML=`${cashHero()}
+  ${pend.length?`<div class="pl-alert a"><span class="ai">${ico('bell')}</span><div><b>이번 달 ${pend.length}건 남았어요</b><div class="pl-sm">가장 급한 건: ${esc(nm(first.tk))} · ${first.day}일</div></div></div>`:`<div class="pl-alert g"><span class="ai">${ico('check')}</span><div><b>이번 달 계획을 모두 처리했어요</b></div></div>`}
+  ${P().slice(0,3).map(p=>{ const d=stats(p).filter(x=>x.k==='done').length; return `<div class="pl-plan" style="cursor:default;padding:9px 0">${lg(p.tk,'s')}<div class="pl-n pl-m" style="font-size:12.5px">${esc(nm(p.tk))}</div><span class="pl-cnt" style="font-size:13px">${d}<small>/${nM(p)}</small></span></div>`; }).join('')}
+  <button class="pl-btn pri blk" style="margin-top:10px" data-pa="open">플랜 열기</button>`;
+}
+/* ---- 시트 화면 ---- */
+function vPlans(){
+  const thisM=P().reduce((a,p)=>{ const s=nowStat(p); return a+(s&&s.k==='now'?suggest(p):0); },0);
+  return `<div class="pl-card">${sh('wallet','Cash Plan Runway','')}${cashHero()}
+  <div class="pl-kpis"><div class="pl-kpi"><small>진행 중 플랜</small><b>${P().length}개</b></div><div class="pl-kpi"><small>이번 달 예정</small><b>${won(thisM)}</b></div></div></div>
+  <div class="pl-card">${sh('plan','My Plans',P().length+'개')}${P().length?P().map(p=>{ const ss=stats(p), d=ss.filter(x=>x.k==='done').length, ns=nowStat(p), c=condInfo(p);
+    const tag=!ns?'':ns.k==='done'?'<span class="pl-tag ok">이번 달 완료</span>':ns.k==='skip'?'<span class="pl-tag gr">건너뜀</span>':`<span class="pl-tag ${c.ok?'ok':'am'}">${c.tag}</span>`;
+    return `<div class="pl-plan" data-pa="detail" data-v="${esc(p.id)}">${lg(p.tk)}<div class="pl-m"><div class="pl-n">${esc(nm(p.tk))}</div><div class="pl-s">매월 ${p.day}일 · ${won(p.amt)} · ${p.cond==='none'?'조건 없음':p.cond==='limit'?'지정가 ≤ '+fmtPx(p.tk,p.lim):'구간 가중'}</div>${pills(ss)}</div><div style="text-align:right"><div class="pl-cnt">${d}<small>/${nM(p)}</small></div><div style="margin-top:5px">${tag}</div></div></div>`; }).join(''):'<p class="pl-hint">아직 플랜이 없어요.</p>'}
+  <button class="pl-btn pri blk" style="margin-top:12px" data-pa="new">＋ 플랜 추가</button></div>${syncLine()}`;
+}
+function vDetail(){
+  const p=P().find(x=>x.id===S.detail); if(!p){ S.detail=null; return vPlans(); }
+  const ss=stats(p), d=ss.filter(x=>x.k==='done'), inv=d.reduce((a,x)=>a+x.amt,0), qty=d.reduce((a,x)=>a+x.qty,0), c=condInfo(p), rem=remOut(p);
+  const avg=qty?inv/qty/(usd(p.tk)?FX:1):0, T=tgt(p.tk), w0=wOf(T.tks), t=grandTotal();
+  return `<button class="pl-back" data-pa="back">‹ 플랜 목록</button>
+  <div class="pl-card"><div class="pl-row" style="margin-bottom:12px">${lg(p.tk,'x')}<div><div class="pl-b" style="font-size:16px;letter-spacing:-.4px">${esc(nm(p.tk))}</div><div class="pl-sm" style="margin-top:2px">매월 ${p.day}일 · ${won(p.amt)} · ${nM(p)}개월</div></div><span class="pl-sp pl-cnt">${d.length}<small>/${nM(p)}</small></span></div>
+  <div style="margin:0 0 12px">${pills(ss).replace('class="pl-pills"','class="pl-pills" style="margin:0"')}</div>
+  ${p.cond!=='none'?`<div class="pl-row" style="margin-bottom:6px"><span class="pl-tag bl">${p.cond==='limit'?'지정가 ≤ '+fmtPx(p.tk,p.lim):'구간 가중 · 기준 '+fmtPx(p.tk,p.lim)}</span><span class="pl-sp pl-sm">현재가 ${fmtPx(p.tk,pxN(p.tk))}</span></div>`:''}
+  ${ss.map(x=>{ const on=x.k==='done', lock=on&&!x.man;
+    const sub=on?`${x.man?'직접 체크':fmtPx(p.tk,x.amt/x.qty/(usd(p.tk)?FX:1))+' · '+(+x.qty.toFixed(2))+'주'} · ${won(x.amt)}${x.man?'':` <span class="${x.amt<p.amt?'pl-blue':'pl-red'}">(계획 대비 ${((x.amt/p.amt-1)*100).toFixed(1)}%)</span>`}`
+      :x.k==='now'?`<span class="${c.ok?'pl-green':'pl-amber'} pl-b">${c.tag}</span> · 제안 ${won(suggest(p))}`
+      :x.k==='skip'?`건너뜀 (${{sum:'다음 달 합산',ext:'기간 연장',drop:'포기'}[x.mode]})`
+      :x.k==='miss'?'<span class="pl-amber">미실행</span> · 직접 체크하거나 월말 리뷰에서 처리':`예정 ${won(p.amt+carryIn(p,x.y))}`;
+    return `<div class="pl-chk"><div class="pl-ck ${on?'on':x.k==='now'?'now':''} ${lock?'lock':''}" ${lock?'':`data-pa="manual" data-v="${esc(p.id)}|${x.y}"`}>${CK}</div><div class="pl-m"><div class="pl-n" ${on?'style="opacity:.55"':''}>${mLabel(x.y)} ${p.day}일 ${x.k==='now'?'<span class="pl-tag am">이번 달</span>':''}${x.man?' <span class="pl-tag gr">수동</span>':''}</div><div class="pl-s">${sub}</div></div>${x.k==='now'?`<button class="pl-btn pri s" data-pa="trade" data-v="${esc(p.id)}">거래 입력</button>`:''}</div>`; }).join('')}
+  <div class="pl-kpis" style="margin-top:14px"><div class="pl-kpi"><small>누적 투입</small><b>${won(inv)}</b></div><div class="pl-kpi"><small>평균 매수가</small><b>${avg?fmtPx(p.tk,avg):'—'}</b></div></div>
+  <div class="pl-kpis" style="margin-top:8px"><div class="pl-kpi"><small>${T.label?esc(T.label)+' ':''}비중 (지금 → 끝나면)</small><b>${w0.toFixed(1)}% → ${(w0+rem/t*100).toFixed(1)}%${T.tg!=null?` <span class="pl-sm" style="font-weight:600">· 목표 ${T.tg}%</span>`:''}</b></div></div>
+  <button class="pl-btn blk" style="margin-top:14px" data-pa="del" data-v="${esc(p.id)}">플랜 삭제</button></div>`;
+}
+function vToday(){
+  const dd=+today().slice(8), y=curYm();
+  return `<div class="pl-card">${sh('cal',`${+today().slice(5,7)}월 ${dd}일 오늘`,'')}${P().length?P().map(p=>{ const s=nowStat(p);
+    if(!s) return `<div class="pl-plan" style="cursor:default">${lg(p.tk)}<div class="pl-m"><div class="pl-n">${esc(nm(p.tk))}</div><div class="pl-s">이번 달은 플랜 기간이 아니에요 (${mLabel(p.start)}~${mLabel(addM(p.start,nM(p)-1))})</div></div></div>`;
+    const c=condInfo(p), sg=suggest(p), wait=p.day-dd; let act;
+    if(s.k==='done') act=`<span class="pl-tag ok">✓ 거래 확인됨 · ${won(s.amt)}</span>`;
+    else if(s.k==='skip') act=`<span class="pl-tag gr">건너뜀</span> <button class="pl-btn s" data-pa="unskip" data-v="${esc(p.id)}">취소</button>`;
+    else act=`<div class="pl-row" style="gap:6px;margin-top:2px"><button class="pl-btn pri ${c.ok?'':'dim'}" data-pa="trade" data-v="${esc(p.id)}">거래 입력</button><button class="pl-btn" data-pa="skip" data-v="${esc(p.id)}">건너뛰기</button></div>`;
+    return `<div class="pl-plan" style="align-items:flex-start;cursor:default">${lg(p.tk)}<div class="pl-m"><div class="pl-n">${esc(nm(p.tk))}</div><div class="pl-s">${p.day}일 ${wait>0?`매수일까지 ${wait}일`:wait===0?'<b class="pl-green">오늘이 매수일</b>':`<span class="pl-amber">매수일이 ${-wait}일 지났어요</span>`} · 제안 <b style="color:var(--ink)">${won(sg)}</b>${carryIn(p,y)?` <span class="pl-tag bl">이월 포함</span>`:''}</div>
+    ${s.k==='done'?'':`<div class="pl-row" style="margin:8px 0 10px;gap:7px;flex-wrap:wrap"><span class="pl-tag ${c.ok?'ok':'am'}">${c.tag}</span><span class="pl-sm">${c.txt}</span></div>`}${act}</div></div>`; }).join(''):'<p class="pl-hint">플랜을 만들면 이번 달 할 일이 여기에 나와요.</p>'}
+  <div class="pl-note n">앱이 주문을 넣지는 않아요. 열었을 때(또는 ⟳ 갱신 후) 현재가가 조건에 맞는지 알려주고, 증권사에서 산 뒤 "거래 입력"으로 기록하면 자동으로 체크돼요.</div></div>`;
+}
+function vChange(){
+  const groups=[]; P().forEach(p=>{ const T=tgt(p.tk), key=T.tks.join('|'); let g=groups.find(x=>x.key===key); if(!g){ g={key,T,plans:[]}; groups.push(g); } g.plans.push(p); });
+  if(!groups.length) return `<div class="pl-card"><p class="pl-hint" style="margin:0">플랜을 만들면 비중·금액 변화를 미리 볼 수 있어요.</p></div>`;
+  const maxM=Math.max(1,...P().map(p=>stats(p).filter(x=>x.k==='now'||x.k==='next').length)), m=Math.min(S.mon,maxM), t=grandTotal();
+  const outBy=ps=>ps.reduce((a,p)=>a+stats(p).filter(x=>x.k==='now'||x.k==='next').slice(0,m).reduce((s,x)=>s+p.amt+carryIn(p,x.y),0),0);
+  const out=groups.reduce((a,g)=>a+outBy(g.plans),0), c=cash();
+  return `<div class="pl-card">${sh('pie','What-if','이번 달부터')}<div class="pl-row" style="margin-bottom:6px"><span class="pl-b" style="font-size:15px;letter-spacing:-.4px">${m===0?'지금':m+'개월 뒤'}</span><span class="pl-sp pl-sm">0 ~ ${maxM}개월</span></div>
+  <input class="pl-slider" type="range" min="0" max="${maxM}" step="1" value="${m}" data-pi="mon" style="margin-bottom:16px">
+  ${groups.map(g=>{ const w0=wOf(g.T.tks), w=w0+outBy(g.plans)/t*100, tg=g.T.tg, sc=Math.max(10,Math.max(w,tg||0)*1.2), col=(H(g.T.tks[0])||{}).color||'#8a8f98';
+    return `<div><div class="pl-row">${lg(g.plans[0].tk,'s')}<span class="pl-n">${esc(g.T.label||nm(g.plans[0].tk))}</span><span class="pl-sp pl-b" style="font-size:12.5px">${w0.toFixed(1)}% → ${w.toFixed(1)}%</span></div>
+    <div class="pl-wbar"><i style="left:0;width:${w0/sc*100}%;background:var(--pl-acc);opacity:.3"></i><i style="left:${w0/sc*100}%;width:${Math.max(0,w-w0)/sc*100}%;background:var(--pl-acc)"></i>${tg!=null?`<span class="tk" style="left:${tg/sc*100}%"></span><span class="tl" style="left:${tg/sc*100}%">목표 ${tg}%</span>`:''}</div></div>`; }).join('')}
+  <div class="pl-kpis"><div class="pl-kpi"><small>누적 투입</small><b>${won(out)}</b></div><div class="pl-kpi"><small>예수금 잔량</small><b>${won(c-out)}</b></div></div>
+  <div class="pl-kpis" style="margin-top:8px"><div class="pl-kpi"><small>예수금 비중${typeof TARGET!=='undefined'&&TARGET.CASH!=null?` (목표 ${TARGET.CASH}%)`:''}</small><b>${((c-out)/t*100).toFixed(1)}%</b></div></div></div>`;
+}
+function vRun(){
+  if(!P().length) return `<div class="pl-card"><p class="pl-hint" style="margin:0">플랜을 만들면 예수금이 언제 줄어드는지 보여줘요.</p></div>`;
+  const y0=curYm(), mos=Array.from({length:6},(_,i)=>addM(y0,i)), c=cash();
+  const out=mos.map(y=>P().reduce((a,p)=>a+outOf(p,y),0)); let bal=c; const bals=out.map(o=>(bal=bal-o+S.dep));
+  const mx=Math.max(1,...out), first=bals.findIndex(b=>b<0), last=P()[P().length-1];
+  return `<div class="pl-card">${sh('trend','Cash Runway',`현재 ${won(c)}`)}
+  <div class="pl-chips" style="margin-bottom:8px"><span class="pl-sm" style="align-self:center">매달 입금</span>${[0,500000,1000000].map(v=>`<button class="pl-chip ${S.dep===v?'on':''}" data-pa="dep" data-v="${v}">${v?man(v)+'원':'없음'}</button>`).join('')}</div>
+  <div class="pl-col">${mos.map((y,i)=>`<div><span class="pl-sm" style="font-size:9.5px">${out[i]?man(out[i]):'—'}</span><div class="st" style="height:${out[i]/mx*62}px">${P().map((p,pi)=>{ const o=outOf(p,y); return o?`<i style="height:${o/Math.max(out[i],1)*100}%;background:${PAL[pi%PAL.length]}"></i>`:''; }).join('')}</div></div>`).join('')}</div>
+  <div class="pl-row pl-sm" style="margin:0 2px 10px">${mos.map(y=>`<span style="flex:1;text-align:center">${mLabel(y)}</span>`).join('')}</div>
+  ${mos.map((y,i)=>`<div class="pl-row" style="padding:6px 0"><span class="pl-sm" style="width:30px">${mLabel(y)}</span><div class="pl-bar" style="flex:1;height:8px"><i style="width:${Math.max(0,bals[i])/Math.max(c,1)*100}%;background:${bals[i]<0?'var(--pl-r)':bals[i]<1500000?'var(--pl-a)':'var(--pl-g)'}"></i><i style="flex:1;background:transparent"></i></div><span class="pl-b" style="width:96px;text-align:right;font-size:12px;color:${bals[i]<0?'var(--pl-r)':'var(--ink)'}">${won(bals[i])}</span></div>`).join('')}
+  <div class="pl-note ${first>=0?'r':'g'}">${first>=0?`<b class="pl-red">${mLabel(mos[first])}</b>부터 예수금이 부족해요.${last?` 우선순위가 낮은 <b>${esc(nm(last.tk))}</b> 플랜을 한 달 미루거나 월 입금을 늘려 보세요.`:''}`:`<b class="pl-green">${mLabel(mos[5])}까지 예수금이 남아요.</b> 최저 잔량 ${won(Math.min(...bals))}`}</div></div>`;
+}
+function vReview(){
+  if(!P().length) return `<div class="pl-card"><p class="pl-hint" style="margin:0">플랜을 만들면 월말에 계획과 실제를 비교해 드려요.</p></div>`;
+  const y=S.rv||curYm();
+  const rows=P().map(p=>{ const i=diffM(p.start,y); if(i<0||i>=nM(p)) return null; return {p,s:stat(p,i),i}; }).filter(Boolean);
+  const plan=rows.reduce((a,r)=>a+r.p.amt,0), act=rows.reduce((a,r)=>a+(r.s.k==='done'?r.s.amt:0),0), dn=rows.filter(r=>r.s.k==='done').length;
+  const streak=p=>{ const ss=stats(p); let c=0; for(let i=Math.min(monthIdx(p),ss.length-1);i>=0;i--){ if(ss[i].k==='done') c++; else if(ss[i].k==='now') continue; else break; } return c; };
+  const best=P().map(p=>({p,c:streak(p)})).sort((a,b)=>b.c-a.c)[0];
+  return `${best&&best.c>=2?`<div class="pl-alert g" style="margin-top:0"><span class="ai">${ico('flag')}</span><div><b>${best.c}개월 연속 계획대로!</b><div class="pl-sm">${esc(nm(best.p.tk))}</div></div></div>`:''}
+  <div class="pl-card">${sh('flag','Monthly Review','')}<div class="pl-row" style="margin-bottom:10px"><button class="pl-chip" data-pa="rv" data-v="-1">‹</button><b class="pl-sp" style="flex:1;text-align:center;font-size:15px;color:var(--ink)">${+y.slice(0,4)}년 ${mLabel(y)}</b><button class="pl-chip" data-pa="rv" data-v="1">›</button></div>
+  ${rows.length?`<table class="pl-tbl"><tr><th>플랜</th><th>계획</th><th>실제</th></tr>${rows.map(r=>`<tr><td><div class="pl-row">${lg(r.p.tk,'s')}<div><div class="pl-n" style="font-size:12.5px">${esc(nm(r.p.tk))}</div><div style="margin-top:3px">${r.s.k==='done'?'<span class="pl-tag ok">완료</span>':r.s.k==='skip'?'<span class="pl-tag gr">건너뜀</span>':r.s.k==='next'?'<span class="pl-tag gr">예정</span>':r.s.k==='now'?'<span class="pl-tag am">진행 중</span>':'<span class="pl-tag am">미실행</span>'}</div></div></div></td><td>${won(r.p.amt)}</td><td class="pl-b ${r.s.k==='done'?'':'pl-amber'}">${r.s.k==='done'?won(r.s.amt):'—'}</td></tr>`).join('')}</table>
+  <div class="pl-kpis" style="margin-top:12px"><div class="pl-kpi"><small>계획</small><b>${won(plan)}</b></div><div class="pl-kpi"><small>실제</small><b>${won(act)}</b></div><div class="pl-kpi"><small>완료율</small><b>${dn}/${rows.length}</b></div></div>
+  ${rows.filter(r=>r.s.k==='miss'||r.s.k==='skip'||r.s.k==='now').map(r=>{ const cur=r.s.mode||((r.p.skips||{})[y]||{}).mode; return `<div class="pl-f" style="margin-top:12px"><label>${esc(nm(r.p.tk))} · 못 산 ${won(r.p.amt)}은 어떻게 할까요?</label><div class="pl-chips">${[['sum','다음 달 합산'],['ext','기간 1개월 연장'],['drop','이번엔 포기']].map(([k,l])=>`<button class="pl-chip ${cur===k?'on':''}" data-pa="carry" data-v="${esc(r.p.id)}|${y}|${k}">${l}</button>`).join('')}</div>${cur==='sum'?'<div class="pl-note n">다음 달 제안 금액에 더해져요</div>':cur==='ext'?'<div class="pl-note n">플랜이 1개월 늘어나요. 월 금액은 그대로예요</div>':cur==='drop'?'<div class="pl-note n">계획에서 빠져요</div>':''}</div>`; }).join('')}`:'<p class="pl-hint">이 달에 해당하는 플랜이 없어요.</p>'}</div>`;
+}
+/* ---- 새 플랜 폼 ---- */
+function newForm(){
+  const hs=HOLDINGS.slice().sort((a,b)=>a.nameKr.localeCompare(b.nameKr,'ko')); const tk=(hs.find(h=>h.ticker==='SPYM')||hs[0]).ticker;
+  S.form={tk,amt:500000,months:6,day:25,cond:'none',lim:pxN(tk)};
+}
+function formHtml(){
+  const d=S.form, free=cash()-reservedAll(), tot=d.amt*d.months, short=tot-free, u=usd(d.tk), T=tgt(d.tk), w0=wOf(T.tks), w1=w0+tot/grandTotal()*100;
+  const hs=HOLDINGS.slice().sort((a,b)=>a.nameKr.localeCompare(b.nameKr,'ko'));
+  const step=u?1:Math.max(10,Math.round(pxN(d.tk)*.01/10)*10);
+  return `<div class="pl-ov" data-pa="ovc"><div class="pl-cs"><div class="tf-grab"></div><h4>새 분할매수 플랜</h4>
+  <div class="pl-f"><label>종목</label><div class="pl-row">${lg(d.tk,'s')}<select class="pl-sel" data-pi="ntk">${hs.map(h=>`<option value="${esc(h.ticker)}" ${h.ticker===d.tk?'selected':''}>${esc(h.nameKr)} · ${esc(h.ticker)}</option>`).join('')}</select></div></div>
+  <div class="pl-f"><label>월 투입</label><div class="pl-step"><button data-pa="namt" data-d="-100000">−</button><b>${won(d.amt)}</b><button data-pa="namt" data-d="100000">＋</button></div></div>
+  <div class="pl-f"><label>기간</label><div class="pl-step"><button data-pa="nmon" data-d="-1">−</button><b>${d.months}개월</b><button data-pa="nmon" data-d="1">＋</button></div></div>
+  <div class="pl-f"><label>매수일</label><div class="pl-chips">${[5,15,25,28].map(x=>`<button class="pl-chip ${d.day===x?'on':''}" data-pa="nday" data-v="${x}">${x}일</button>`).join('')}</div></div>
+  <div class="pl-f"><label>가격 조건</label><div class="pl-seg">${[['none','제한 없음'],['limit','지정가 이하'],['band','구간 가중']].map(([k,l])=>`<button class="${d.cond===k?'on':''}" data-pa="ncond" data-v="${k}">${l}</button>`).join('')}</div>
+  ${d.cond!=='none'?`<div class="pl-row" style="margin-top:10px"><span class="pl-sm">${d.cond==='limit'?'지정가':'기준가'}</span><div class="pl-sp pl-step"><button data-pa="nlim" data-d="-${step}">−</button><b>${fmtPx(d.tk,d.lim)}</b><button data-pa="nlim" data-d="${step}">＋</button></div></div><div class="pl-sm" style="margin-top:6px">현재가 ${fmtPx(d.tk,pxN(d.tk))}${d.cond==='band'?' · 기준보다 10%+ 싸면 ×1.5, 비싸면 ×0.5, 5%+ 비싸면 건너뛰기':''}</div>`:''}</div>
+  <div class="pl-note n"><div class="pl-row"><span>총 투입</span><b class="pl-sp" style="color:var(--ink)">${won(tot)}</b></div><div class="pl-row" style="margin-top:4px"><span>${esc(T.label||nm(d.tk))} 비중</span><b class="pl-sp" style="color:var(--ink)">${w0.toFixed(1)}% → ${w1.toFixed(1)}%${T.tg!=null?` (목표 ${T.tg}%)`:''}</b></div></div>
+  ${short>0?`<div class="pl-note r">자유 예수금(${won(free)})보다 <b class="pl-red">${won(short)}</b> 부족해요. 월 금액이나 기간을 줄여 보세요. (그래도 저장은 돼요)</div>`:`<div class="pl-note g">자유 예수금 ${won(free)}으로 충분해요 · 남는 돈 ${won(free-tot)}</div>`}
+  <div class="pl-row" style="margin-top:14px"><button class="pl-btn" style="flex:1" data-pa="fclose">취소</button><button class="pl-btn pri" style="flex:1.6" data-pa="fsave">플랜 저장</button></div></div></div>`;
+}
+/* ---- 렌더 ---- */
+function renderSheet(){
+  const sheet=$('planSheet'); if(!sheet||!S.open) return;
+  const pn=pending().length, tabs=[['plans','플랜'],['today','이번 달'],['change','변화'],['run','런웨이'],['review','리뷰']];
+  const body=S.tab==='plans'?(S.detail?vDetail():vPlans()):S.tab==='today'?vToday():S.tab==='change'?vChange():S.tab==='run'?vRun():vReview();
+  const bodyEl=$('plBody'), top=bodyEl?bodyEl.scrollTop:0;
+  $('plTabs').innerHTML=tabs.map(([k,l])=>`<button data-pa="tab" data-v="${k}" class="${S.tab===k?'on':''}">${l}${k==='today'&&pn?`<b>${pn}</b>`:''}</button>`).join('');
+  bodyEl.innerHTML=body; bodyEl.scrollTop=top;
+  let ov=$('plOvWrap'); if(S.form){ if(!ov){ ov=document.createElement('div'); ov.id='plOvWrap'; sheet.appendChild(ov); } ov.innerHTML=formHtml(); } else if(ov) ov.remove();
+}
+function renderBanner(){
+  const b=$('planAlertBanner'); if(!b) return;
+  try{ const pend=pending(); let dis=''; try{ dis=localStorage.getItem('planAlertDismissed')||''; }catch(e){}
+    if(!pend.length||dis===today()){ b.style.display='none'; return; }
+    const first=pend.slice().sort((a,c)=>a.day-c.day)[0];
+    $('planAlertTitle').textContent=`이번 달 분할매수 ${pend.length}건 남았어요`;
+    $('planAlertSub').textContent=`가장 급한 건: ${nm(first.tk)} · ${first.day}일 — 탭해서 바로 실행`;
+    b.style.display='flex';
+  }catch(e){ b.style.display='none'; }
+}
+function openSheet(tab){ if(tab) S.tab=tab; S.open=true; S.detail=null; S.form=null; $('plBd').classList.add('on'); $('planSheet').classList.add('on'); renderSheet(); }
+function closeSheet(){ S.open=false; S.form=null; $('plBd').classList.remove('on'); $('planSheet').classList.remove('on'); const ov=$('plOvWrap'); if(ov) ov.remove(); }
+function refresh(){ try{ renderCard(); renderBanner(); renderSheet(); }catch(e){ console.error('plan render',e); } }
+const getP=id=>P().find(x=>x.id===id);
+function doTrade(id){
+  const p=getP(id), h=p&&H(p.tk); if(!h) return;
+  const sg=suggest(p), pk=pxK(p.tk), q=usd(p.tk)?Math.floor(sg/pk*100)/100:Math.floor(sg/pk);
+  if(window.TF&&TF.openPrefill) TF.openPrefill(h.acct,h.ticker,q>0?q:'',pxN(p.tk));
+}
+function act(a,v,el){
+  if(a==='tab'){ S.tab=v; S.detail=null; S.rv=null; }
+  else if(a==='detail') S.detail=v; else if(a==='back') S.detail=null;
+  else if(a==='new'){ if(!S.open) openSheet('plans'); newForm(); }
+  else if(a==='open') { openSheet('plans'); return; }
+  else if(a==='ovc') S.form=null;
+  else if(a==='fclose') S.form=null;
+  else if(a==='namt') S.form.amt=Math.max(100000,S.form.amt+(+el.dataset.d)); else if(a==='nmon') S.form.months=Math.max(1,Math.min(12,S.form.months+(+el.dataset.d)));
+  else if(a==='nday') S.form.day=+v; else if(a==='ncond') S.form.cond=v; else if(a==='nlim') S.form.lim=Math.max(usd(S.form.tk)?1:10,+(S.form.lim+(+el.dataset.d)).toFixed(2));
+  else if(a==='fsave'){ const d=S.form; P().push({id:'pl'+Date.now().toString(36)+Math.random().toString(36).slice(2,4),tk:d.tk,amt:d.amt,months:d.months,day:d.day,start:curYm(),cond:d.cond,lim:d.cond==='none'?null:d.lim,manual:{},skips:{}}); commit(); S.form=null; S.tab='plans'; S.detail=null; tmsg('플랜을 만들었어요'); }
+  else if(a==='trade') { doTrade(v); return; }
+  else if(a==='skip'){ const p=getP(v); p.skips=p.skips||{}; p.skips[curYm()]={mode:'sum'}; commit(); tmsg('건너뛰었어요 · 리뷰에서 처리 방법을 바꿀 수 있어요'); }
+  else if(a==='unskip'){ const p=getP(v); delete p.skips[curYm()]; commit(); }
+  else if(a==='manual'){ const [id,y]=v.split('|'), p=getP(id); p.manual=p.manual||{}; if(p.manual[y]) delete p.manual[y]; else p.manual[y]=true; if(p.skips) delete p.skips[y]; commit(); }
+  else if(a==='del'){ if(confirm('이 플랜을 삭제할까요? (입력한 거래 내역은 그대로예요)')){ DOC.list=DOC.list.filter(x=>x.id!==v); commit(); S.detail=null; } }
+  else if(a==='dep') S.dep=+v; else if(a==='rv') S.rv=addM(S.rv||curYm(),+v);
+  else if(a==='carry'){ const [id,y,m]=v.split('|'), p=getP(id); p.skips=p.skips||{}; p.manual=p.manual||{}; if(p.skips[y]&&p.skips[y].mode===m) delete p.skips[y]; else p.skips[y]={mode:m}; delete p.manual[y]; commit(); }
+  else return;
+  refresh();
+}
+function tmsg(m){ const t=$('tfToast'); if(!t) return; t.textContent=m; t.classList.add('on'); clearTimeout(tmsg._t); tmsg._t=setTimeout(()=>t.classList.remove('on'),2600); }
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-pa]'); if(!a) return;
+  const box=a.closest('#planSheet,#plCard'); if(!box) return;
+  if(a.dataset.pa==='ovc'&&e.target!==a) return;
+  act(a.dataset.pa,a.dataset.v,a);
+});
+document.addEventListener('input',e=>{
+  const t=e.target; if(!t.dataset||!t.dataset.pi||!t.closest('#planSheet')) return;
+  if(t.dataset.pi==='mon'){ S.mon=+t.value; renderSheet(); }
+  else if(t.dataset.pi==='ntk'){ S.form.tk=t.value; S.form.lim=pxN(t.value); renderSheet(); }
+});
+document.addEventListener('change',e=>{ const t=e.target; if(t.dataset&&t.dataset.pi==='ntk'&&t.closest('#planSheet')){ S.form.tk=t.value; S.form.lim=pxN(t.value); renderSheet(); } });
+$('plBd').addEventListener('click',closeSheet);
+$('plClose').addEventListener('click',closeSheet);
+const bn=$('planAlertBanner');
+if(bn){ bn.addEventListener('click',()=>{ const tab=document.querySelector('.tab-btn[data-tab="rebal"]'); if(tab) tab.click(); setTimeout(()=>openSheet('today'),120); });
+  $('planAlertClose').addEventListener('click',e=>{ e.stopPropagation(); try{ localStorage.setItem('planAlertDismissed',today()); }catch(err){} bn.style.display='none'; }); }
+const _ra=window.renderAll; if(typeof _ra==='function') window.renderAll=function(){ const r=_ra.apply(this,arguments); try{ refresh(); }catch(e){} return r; };
+window.PLAN={refresh,open:openSheet,close:closeSheet,pendingCount:()=>pending().length};
+refresh();
+if(window.TSYNC&&TSYNC.onChange) TSYNC.onChange(()=>{ try{ renderSheet(); }catch(e){} });
+else window.addEventListener('load',()=>{ if(window.TSYNC&&TSYNC.onChange) TSYNC.onChange(()=>{ try{ renderSheet(); }catch(e){} }); });
+})();
+</script>
+
+<script>
 /* ===== 거래 입력 내역 클라우드 자동 백업 (Cloudflare KV, Worker /sync/trades) ===== */
 (function(){
 const TOK_KEY='syncTokenV1', META_KEY='userTradesSyncV1', URL_=KIS_PROXY_URL+'/sync/trades';
 const $=id=>document.getElementById(id);
 const getTok=()=>{ try{ return localStorage.getItem(TOK_KEY)||''; }catch(e){ return ''; } };
 const setTok=v=>{ try{ v?localStorage.setItem(TOK_KEY,v):localStorage.removeItem(TOK_KEY); }catch(e){} };
-const DEF={rev:0,dirty:false,force:false,ids:[],at:0};
+const DEF={rev:0,dirty:false,force:false,ids:[],at:0,plansDirty:false};
 const getMeta=()=>{ try{ return Object.assign({},DEF,JSON.parse(localStorage.getItem(META_KEY)||'{}')); }catch(e){ return Object.assign({},DEF); } };
 const setMeta=m=>{ try{ localStorage.setItem(META_KEY,JSON.stringify(m)); }catch(e){} };
 const idNum=t=>parseInt(String(t.id).split('-')[0],10)||0;
 const merge=(a,b)=>{ const m=new Map(); a.concat(b).forEach(t=>{ if(t&&t.id&&!m.has(t.id)) m.set(t.id,t); }); return [...m.values()].sort((x,y)=>idNum(x)-idNum(y)); };
 const hhmm=ts=>{ const d=new Date(ts||Date.now()); return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
-let busy=false, lastRun=0, last={t:'연결 안 됨',k:'off'};
+let busy=false, again=false, lastRun=0, last={t:'연결 안 됨',k:'off'};
+const PS={sup:null};  /* 서버(Worker)가 분할매수 플랜 백업을 지원하는지 */
 const listeners=[];
 function emit(){ listeners.forEach(f=>{ try{ f(); }catch(e){} }); }
 function setState(t,k){ last={t,k}; emit(); }
@@ -10399,23 +10737,30 @@ async function sync(){
     if(g.status===403){ setState('허용되지 않은 주소예요','err'); return; }
     if(!g.j||!g.j.ok){ setState('연결 실패 · 잠시 후 다시 시도','err'); return; }
     const remote=g.j.trades||[], rrev=g.j.rev||0;
+    /* 분할매수 플랜: 최신(at)이 이긴다. 서버가 새 쪽이고 내가 안 고쳤으면 가져오고, 내가 새 쪽이면 이번 PUT에 실어 올린다 */
+    PS.sup=(g.j.plansV===1); let pushPlans;
+    if(PS.sup && window.PLANS_DOC){
+      const lp=PLANS_DOC.get(), rp=g.j.plans, rAt=(rp&&typeof rp.at==='number')?rp.at:0;
+      if(rAt>lp.at && !meta.plansDirty){ PLANS_DOC.set(rp); }
+      else if(lp.at>0 && lp.at!==rAt) pushPlans=lp;
+    }
     const rIds=new Set(remote.map(t=>t.id)), lIds=new Set(local.map(t=>t.id));
     const same=local.length===remote.length && local.every(t=>rIds.has(t.id));
     if(local.length===0 && remote.length>0 && !(meta.dirty&&meta.force)){ adopt(remote,rrev,'클라우드에서 복원'); return; }
-    if(same){ setMeta({rev:rrev,dirty:false,force:false,ids:local.map(t=>t.id),at:g.j.updatedAt||Date.now()}); setState('✓ 백업됨 · '+hhmm(g.j.updatedAt)+' · '+remote.length+'건','ok'); return; }
-    if(meta.rev>0 && rrev>meta.rev && !meta.dirty){ adopt(remote,rrev,'다른 기기 내역 반영'); return; }
+    if(same && !pushPlans){ setMeta({rev:rrev,dirty:false,force:false,ids:local.map(t=>t.id),at:g.j.updatedAt||Date.now(),plansDirty:false}); setState('✓ 백업됨 · '+hhmm(g.j.updatedAt)+' · '+remote.length+'건','ok'); return; }
+    if(!same && meta.rev>0 && rrev>meta.rev && !meta.dirty){ adopt(remote,rrev,'다른 기기 내역 반영'); return; }
     let push, force=false;
     if(meta.dirty && rrev===meta.rev && meta.rev>0){ push=local; force=(local.length===0&&!!meta.force); }
     else push=merge(remote,local);
-    const r=await api('PUT',{baseRev:rrev,trades:push,force});
+    const r=await api('PUT',{baseRev:rrev,trades:push,force,plans:pushPlans});
     if(r.status===409){ setState(r.j&&r.j.error==='empty_refused'?'빈 목록 덮어쓰기는 거부됐어요':'충돌 · 다시 동기화해 주세요','err'); return; }
     if(!r.j||!r.j.ok){ setState('백업 실패 · 잠시 후 다시 시도','err'); return; }
-    setMeta({rev:r.j.rev,dirty:false,force:false,ids:push.map(t=>t.id),at:r.j.updatedAt||Date.now()});
+    setMeta({rev:r.j.rev,dirty:false,force:false,ids:push.map(t=>t.id),at:r.j.updatedAt||Date.now(),plansDirty:false});
     const changed=push.length!==local.length||push.some(t=>!lIds.has(t.id));
     if(changed){ adopt(push,r.j.rev,'두 기기 내역을 합쳤어요'); return; }
     setState('✓ 백업됨 · '+hhmm(r.j.updatedAt)+' · '+push.length+'건','ok');
   }catch(e){ setState('오프라인 · 연결되면 자동 백업돼요','net'); }
-  finally{ busy=false; }
+  finally{ busy=false; if(again){ again=false; setTimeout(sync,300); } }
 }
 /* 저장 시마다 자동 백업 예약 (삭제 직후 새로고침돼도 dirty 표시가 남아 다음 접속에 올라감) */
 const _save=window.saveUserTx;
@@ -10423,7 +10768,7 @@ window.saveUserTx=function(a){ const ok=_save(a); if(getTok()){ const m=getMeta(
 function view(){ const tok=getTok(), meta=getMeta(), local=loadUserTx(), ids=new Set(meta.ids||[]);
   const pend=tok&&meta.dirty?local.filter(t=>!ids.has(t.id)).length:0;
   const mode=!tok?'off':(last.k==='net'||last.k==='err')?'pend':'on';
-  return {tok,mode,busy:last.k==='busy',msg:last.t,k:last.k,pend,at:meta.at||0,ids,dirty:!!meta.dirty};
+  return {tok,mode,busy:last.k==='busy',msg:last.t,k:last.k,pend,at:meta.at||0,ids,dirty:!!meta.dirty,planSup:PS.sup,planDirty:!!meta.plansDirty};
 }
 function gen(){ const A='abcdefghjkmnpqrstuvwxyz23456789', a=new Uint32Array(24); crypto.getRandomValues(a); return [...a].map(x=>A[x%A.length]).join(''); }
 function connect(v){ if(v.length<16){ setState('암호는 16자 이상이어야 해요','err'); return false; } if(v!==getTok()){ setTok(v); setMeta(Object.assign({},DEF)); } setState('동기화 중…','busy'); sync(); return true; }
@@ -10431,7 +10776,8 @@ function disconnect(){ setTok(''); setMeta(Object.assign({},DEF)); setState('연
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&getTok()&&Date.now()-lastRun>30000) sync(); });
 try{ const m=sessionStorage.getItem('tsToast'); if(m){ sessionStorage.removeItem('tsToast'); setTimeout(()=>toast(m),600); } }catch(e){}
 setTimeout(()=>{ if(getTok()) sync(); },1200);
-window.TSYNC={sync,view,gen,connect,disconnect,onChange:f=>listeners.push(f)};
+function planChanged(){ if(!getTok()){ emit(); return; } const m=getMeta(); m.plansDirty=true; setMeta(m); if(busy){ again=true; return; } sync(); }
+window.TSYNC={sync,view,gen,connect,disconnect,planChanged,onChange:f=>listeners.push(f)};
 })();
 </script>
 <script>
