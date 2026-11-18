@@ -2172,6 +2172,36 @@ html[data-theme="dark"] .bk-cs{background:#262830}
 .bk-fx .r b i{font-style:normal;color:var(--bk-mute);font-weight:600;margin:0 4px}
 .bk-warn{display:flex;gap:9px;background:rgba(230,150,30,.13);border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.5;color:var(--bk-amber);margin-bottom:10px}.bk-warn b{color:var(--bk-amber)}.bk-warn svg{margin-top:2px}
 </style>
+<style id="cpCss">
+#sec-checkpoint,#cpSheet{--cx-g:#15803d;--cx-a:#b7790f;--cx-acc:var(--stamp-blue);--cx-fill:var(--g-soft,rgba(120,130,150,.12))}
+html[data-theme="dark"] #sec-checkpoint,html[data-theme="dark"] #cpSheet{--cx-g:#4cc46a;--cx-a:#e6a84a;--cx-acc:#5b8def}
+#cpBd{z-index:398}
+#cpSheet{z-index:399;display:none;max-height:90vh;overflow-y:auto;scrollbar-width:none;padding:8px 16px calc(16px + env(safe-area-inset-bottom));border-radius:32px 32px 0 0}
+#cpSheet::-webkit-scrollbar{display:none}#cpSheet.on{display:block}#cpSheet h3{margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.cx-bandrow{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}.cx-bandrow .b{font-size:12px;font-weight:800}.cx-sm,.cx-bandrow .sm{font-size:11px;line-height:1.5;color:var(--ink-soft)}.cx-bandrow .sp{margin-left:auto}
+.cx-sub{font-size:11.5px;font-weight:800;margin:13px 2px 8px;display:flex;align-items:center;gap:6px}.cx-sub small{font-weight:600;color:var(--ink-soft);font-size:10.5px}
+.cx-chips{display:flex;gap:6px;flex-wrap:wrap}
+.cx-chip{border:0;background:var(--cx-fill);color:var(--ink-soft);border-radius:999px;padding:7px 12px;font-weight:700;font-size:12px;font-family:inherit;cursor:pointer}.cx-chip.on{background:var(--cx-acc);color:#fff}
+.cx-btn{border:0;background:var(--cx-fill);color:var(--ink);border-radius:999px;padding:8px 13px;font-weight:800;font-size:11.5px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}.cx-btn:active{transform:scale(.97)}
+.cx-btn.pri{background:var(--cx-acc);color:#fff}.cx-btn.s{padding:6px 11px;font-size:10.5px}.cx-btn.blk{width:100%;padding:13px;font-size:13px;margin-top:12px}
+.cx-card{cursor:pointer}.cx-card .cp-bottom{justify-content:flex-start}.cx-card .cp-act{flex:1;min-width:0}.cx-acts{margin-left:auto;display:flex;gap:6px}
+.cx-gap{position:relative;height:8px;border-radius:5px;background:var(--cx-fill);margin:12px 0 10px}.cx-gap i{position:absolute;top:0;bottom:0;border-radius:5px;opacity:.55}.cx-gap .tk{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:1px;background:var(--ink)}
+.cx-slr{display:flex;align-items:center;gap:9px;margin:4px 2px 8px}.cx-slr input{flex:1;min-width:0;accent-color:var(--brass)}.cx-slr .tv{font:700 11px Inter,sans-serif;color:var(--brass);width:40px;text-align:right}
+.cx-list{padding:4px 10px}.cx-mini{display:flex;align-items:center;gap:10px;padding:9px 2px;cursor:pointer}[data-cp=open]+[data-cp=open] .cx-mini,.cx-list>div+div .cx-mini{border-top:1px solid var(--line)}
+.cx-av{width:26px;height:26px;flex:none;display:block}.cx-av .cp-avatar{width:26px;height:26px}.cx-mini .n{font-size:12.5px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cx-mini .v{font:800 12px Inter,sans-serif;text-align:right;flex:none}.cx-mini .v small{color:var(--ink-soft);font-weight:600;font-size:10px}
+.cx-mb{width:64px;height:6px;border-radius:3px;background:var(--cx-fill);position:relative;flex:none}.cx-mb i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--ink-soft);opacity:.55}.cx-mb .tk{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.cx-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:6px;vertical-align:1px}.cx-dot.over{background:var(--stamp-blue)}.cx-dot.under{background:var(--stamp-red)}
+.cx-tag{font:700 9.5px Inter,sans-serif;background:var(--cx-fill);color:var(--ink-soft);border-radius:999px;padding:2px 7px;margin-left:6px}
+.cx-bar{display:flex;height:12px;border-radius:7px;overflow:hidden;gap:2px;background:var(--cx-fill)}.cx-bar i{display:block;height:100%;border-radius:3px}
+.cx-leg{display:flex;gap:12px;flex-wrap:wrap;margin:9px 0 0;font-size:10.5px;color:var(--ink-soft)}.cx-leg i{display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:4px}.cx-leg b{color:var(--ink)}
+.cx-al{display:flex;align-items:center;gap:10px;border-radius:16px;padding:10px 12px;font-size:11.5px;line-height:1.5;margin-top:8px}.cx-al.g{background:rgba(21,128,61,.1)}.cx-al.a{background:rgba(230,150,30,.13)}.cx-al.n{background:var(--cx-fill);color:var(--ink-soft)}
+.cx-save{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}.cx-sv{font-size:11px;color:var(--ink-soft);flex:1;min-width:0}.cx-sv.g{color:var(--cx-g);font-weight:700}
+.cx-strat{display:flex;gap:10px;align-items:center}.cx-strat .bar{width:4px;align-self:stretch;border-radius:2px;background:var(--cx-a)}.cx-strat .bar.bl{background:var(--stamp-blue)}.cx-strat .bar.rd{background:var(--stamp-red)}.cx-strat .bar.gr{background:var(--cx-g)}
+.cx-strat .b{font-size:12.5px;font-weight:800}.cx-strat .sm{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.55}
+.cx-tiles{display:flex;gap:8px}.cx-tile{flex:1;background:var(--paper);border-radius:16px;padding:10px 12px;cursor:pointer;border:2px solid transparent}.cx-tile.sel{border-color:var(--cx-acc)}.cx-tile small{display:block;font-size:10px;color:var(--ink-soft);font-weight:700}.cx-tile b{display:block;font-size:15px;font-weight:800;margin:3px 0;letter-spacing:-.4px}
+.cx-f{padding:12px 0 4px}.cx-f label{display:block;font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:8px}
+.cx-r{display:flex;align-items:center;gap:8px;font-size:12px;padding:3px 0}.cx-r span{color:var(--ink-soft)}.cx-r b{margin-left:auto}.cx-r.tot{margin-top:6px;padding-top:8px;border-top:1px solid var(--line)}.cx-r.tot span{color:var(--ink);font-weight:800}
+</style>
 <style id="planCss">
 /* ===== 분할매수 플랜 (리밸런싱 탭 카드 + 시트) ===== */
 #sec-rebal,#planSheet,#planAlertBanner{--pl-g:#1e8f3e;--pl-a:#b7790f;--pl-r:#c0392b;--pl-b:#2c64c8;--pl-acc:var(--stamp-blue);--pl-onacc:#fff;--pl-fill:var(--g-soft,rgba(120,130,150,.12))}
@@ -2296,6 +2326,9 @@ html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="
 </style>
 </head>
 <body>
+<div class="tf-bd" id="cpBd"></div>
+<div class="tf-sheet" id="cpSheet" role="dialog" aria-label="과대 종목 맞추기"></div>
+
 
 <!-- TOP BAR (live + tabs) -->
 <div class="topbar" id="topbar">
@@ -3112,15 +3145,7 @@ html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="
   <!-- REBAL CHECKPOINT (interactive) -->
   <div class="page collapsible" id="sec-checkpoint" data-panel="rebal">
     <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><path d="M12 3v18M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0zM3 7h18M8 7l4-4 4 4"/></svg></span>리밸런싱 체크포인트</h2><div class="total ok" id="rebalSum" style="font-size:12px;">목표 합계 —</div></div>
-    <div class="rebal-head-note">각 종목 <b>목표비중</b>을 슬라이더로 조절하면 현재비중과 비교해 <b style="color:var(--stamp-red)">과대</b>/<b style="color:var(--stamp-blue)">과소</b>를 판정하고, 총자산 100% 기준 <b>조정 금액·주수</b>를 계산합니다. 목표 합계를 100%에 맞춰보세요.</div>
-    <div class="cp-table" id="cpTable"></div>
-    <div class="cp-reset-row"><button class="cp-reset" id="cpReset">↺ 목표비중 기본값으로 초기화</button></div>
-    <div class="cp-summary">
-      <div class="cp-box"><div class="cp-box-h over">과대 비중 (비중 &gt; 목표)</div><div id="cpOver"></div></div>
-      <div class="cp-box"><div class="cp-box-h under">과소 비중 (비중 &lt; 목표)</div><div id="cpUnder"></div></div>
-    </div>
-    <h3 class="strat-title">투자 전략 요약</h3>
-    <div class="strat-grid" id="stratGrid"></div>
+    <div id="cpBody"></div>
     <div class="note">목표비중은 참고용 가이드이며 투자자문이 아닙니다. 조정 금액·주수는 현재가·환율 기준 추정 · 실제 매매는 세금·수수료 별도.</div>
   </div>
 
@@ -4872,7 +4897,10 @@ function renderTables(){
   initHcardGestures(cont);
 }
 
-const DX_TARGET={stock:60, cashLo:8, cashHi:10, pltr:10};
+const DX_TARGET={stock:60,
+  get cashLo(){ try{ return Math.max(0,TARGET.CASH-1); }catch(e){ return 8; } },
+  get cashHi(){ try{ return TARGET.CASH+1; }catch(e){ return 10; } },
+  get pltr(){ try{ return TARGET.PLTR; }catch(e){ return 10; } } };
 /* ===== 목표 vs 실제 비중 레이더 차트 (계좌 단위: 해외주식/ISA/연금저축/현금) ===== */
 /* ===== 리밸런싱 얼럿 배너(홈) — 계좌 단위 목표비중과 5%p 이상 벌어지면만 표시 =====
    renderAllocRadar()와 동일한 계좌 단위 카테고리(해외주식/ISA/연금저축/현금)를 재사용해서
@@ -4886,12 +4914,12 @@ function renderRebalAlert(){
     if(!(total>0)) { banner.style.display='none'; return; }
     const t=acctTotals();
     const cash=cashKRW()+ISA_CASH;
-    const stockTarget=Math.max(0, 100-REBAL_DEF.ISA-REBAL_DEF.PENSION-REBAL_DEF.CASH);
+    const stockTarget=Math.max(0, 100-TARGET.ISA-TARGET.PENSION-TARGET.CASH);
     const cats=[
       {label:'해외주식', actual:t.overseas.ev/total*100, target:stockTarget},
-      {label:'ISA', actual:t.isa.ev/total*100, target:REBAL_DEF.ISA},
-      {label:'연금저축', actual:t.pension.ev/total*100, target:REBAL_DEF.PENSION},
-      {label:'현금', actual:cash/total*100, target:REBAL_DEF.CASH},
+      {label:'ISA', actual:t.isa.ev/total*100, target:TARGET.ISA},
+      {label:'연금저축', actual:t.pension.ev/total*100, target:TARGET.PENSION},
+      {label:'현금', actual:cash/total*100, target:TARGET.CASH},
     ].filter(c=>c.label!=='ISA' || c.actual>0.05 || c.target>0);
     let worst=null;
     cats.forEach(c=>{
@@ -4934,12 +4962,12 @@ function renderAllocRadar(){
   const total=grandTotal();
   const t=acctTotals();
   const cash=cashKRW()+ISA_CASH;
-  const stockTarget=Math.max(0, 100-REBAL_DEF.ISA-REBAL_DEF.PENSION-REBAL_DEF.CASH);
+  const stockTarget=Math.max(0, 100-TARGET.ISA-TARGET.PENSION-TARGET.CASH);
   const cats=[
     {label:'해외주식', actual:t.overseas.ev/total*100, target:stockTarget},
-    {label:'ISA', actual:t.isa.ev/total*100, target:REBAL_DEF.ISA},
-    {label:'연금저축', actual:t.pension.ev/total*100, target:REBAL_DEF.PENSION},
-    {label:'현금', actual:cash/total*100, target:REBAL_DEF.CASH},
+    {label:'ISA', actual:t.isa.ev/total*100, target:TARGET.ISA},
+    {label:'연금저축', actual:t.pension.ev/total*100, target:TARGET.PENSION},
+    {label:'현금', actual:cash/total*100, target:TARGET.CASH},
   ].filter(c=>c.label!=='ISA' || c.actual>0.05 || c.target>0);
   const n=cats.length, cx=100, cy=95, R=66;
   const allVals=cats.flatMap(c=>[c.actual, c.target]);
@@ -7102,74 +7130,192 @@ function cpRowIcon(r){
   if(r.group) return `<div class="cp-avatar" style="background:${r.id==='ISA'?'#b23b2e':'#2c4a7c'};"><span>${r.id.slice(0,2)}</span></div>`;
   return txAvatar(r.id,'cp-avatar');
 }
-function cpActText(r,status,adjKRW){
-  if(status==='ok') return '—';
-  let sh='';
-  if(r.ticker){ const h=HOLDINGS.find(x=>x.ticker===r.id); const pxKRW=(h.cur==='USD')?h.price*FX:h.price; const n=Math.abs(adjKRW)/pxKRW; sh=` (${n<10?n.toFixed(1):Math.round(n)}주)`; }
-  return (adjKRW<0?'매도 ':'매수 ')+won(Math.abs(adjKRW))+sh;
+/* ===== 리밸런싱 체크포인트 v2 — 목표 저장·허용범위·손볼 곳·플랜 연결·희석/매도·자동 요약 ===== */
+const CP={band:2,open:null,sheet:null,man:1000000,mode:'dil',quiet:{}};
+let _cpSaveT=null;
+function cpTargetsDoc(){ return {tg:{...TARGET},band:CP.band,quiet:{...CP.quiet}}; }
+function cpSaveNow(){ try{ if(window.PLAN_TG) PLAN_TG.set(cpTargetsDoc()); }catch(e){} }
+function cpSave(){ clearTimeout(_cpSaveT); _cpSaveT=setTimeout(cpSaveNow,500); }
+window.CPT={
+  reload(){ try{ const t=window.PLAN_TG&&PLAN_TG.get(); TARGET={...REBAL_DEF,...((t&&t.tg)||{})}; CP.band=(t&&t.band)||2; CP.quiet=(t&&t.quiet)||{}; }catch(e){}
+    try{ renderRebalCheckpoint(); }catch(e){} try{ renderRebalAlert(); }catch(e){} try{ renderAllocRadar(); }catch(e){} try{ renderDiagnosis(); }catch(e){} }
+};
+function cpData(){
+  const total=grandTotal(); if(!(total>0)) return {total:0,rows:[]};
+  const rows=REBAL_ROWS.map(r=>{
+    const cur=rowCurrentKRW(r), w=cur/total*100, tg=TARGET[r.id]!=null?TARGET[r.id]:0, diff=tg-w;
+    const status=Math.abs(diff)<=CP.band?'ok':(diff<0?'over':'under');
+    return {r,cur,w,tg,diff,status,adj:diff/100*total};
+  });
+  return {total,rows};
 }
-function cpBoxLi(r,curW,tgt){ const nm=r.ticker?r.id:r.label; return `<div class="li"><span>${nm}</span><span><b>${curW.toFixed(1)}%</b> <span class="tgt">→ ${tgt.toFixed(1)}%</span></span></div>`; }
-function cpSumBoxes(sum, rows){
-  const si=document.getElementById('rebalSum'); const ok=Math.abs(sum-100)<=1.0;
-  si.className='total '+(ok?'ok':'warn'); si.textContent=`목표 합계 ${sum.toFixed(1)}% ${ok?'✓':'· 100% 권장'}`;
-  const over=rows.filter(x=>(x.curW-x.tgt)>0.5).sort((a,b)=>(b.curW-b.tgt)-(a.curW-a.tgt));
-  const under=rows.filter(x=>(x.tgt-x.curW)>0.5).sort((a,b)=>(b.tgt-b.curW)-(a.tgt-a.curW));
-  document.getElementById('cpOver').innerHTML = over.length?over.map(x=>cpBoxLi(x.r,x.curW,x.tgt)).join(''):'<div class="empty">없음 — 모두 목표 이하</div>';
-  document.getElementById('cpUnder').innerHTML = under.length?under.map(x=>cpBoxLi(x.r,x.curW,x.tgt)).join(''):'<div class="empty">없음 — 모두 목표 이상</div>';
+const cpName=r=>r.ticker?r.label:r.label;
+const cpSub=r=>r.ticker?r.id:(r.group?r.group.join(' · '):'예수금');
+function cpPx(r){ const h=HOLDINGS.find(x=>x.ticker===r.id); return h?(h.cur==='USD'?h.price*FX:h.price):0; }
+function cpActText(r,status,adj){
+  if(status==='ok') return '목표 범위 안';
+  const a=Math.abs(adj);
+  if(r.cash) return (adj<0?'예수금 여유 ':'예수금 부족 ')+won(a);
+  let sh=''; if(r.ticker){ const px=cpPx(r); if(px>0){ const n=a/px; sh=` (${n<10?n.toFixed(1):Math.round(n)}주)`; } }
+  return (adj<0?'초과 ':'부족 ')+won(a)+sh;
+}
+function cpPlanTk(r){ return r.ticker?r.id:(r.group&&r.group[0])||null; }
+function cpHasPlan(r){ try{ const tks=r.group||[r.id]; return PLANS_DOC.get().list.some(p=>tks.includes(p.tk)); }catch(e){ return false; } }
+function cpMakePlan(x){
+  const tk=cpPlanTk(x.r); if(!tk||!window.PLAN||!PLAN.openNew) return;
+  const gap=Math.max(0,x.adj), amt=Math.max(10000,Math.round(gap/6/10000)*10000);
+  PLAN.openNew(tk,amt,6);
+}
+function cpSumPct(){ return REBAL_ROWS.reduce((s,r)=>s+(TARGET[r.id]||0),0); }
+function cpSaveLabel(){
+  let saved=false, v=null; try{ saved=!!(window.PLAN_TG&&PLAN_TG.get()); v=window.TSYNC&&TSYNC.view&&TSYNC.view(); }catch(e){}
+  if(!saved) return {k:'n',t:'지금은 기본값이에요 · 목표를 바꾸면 자동 저장돼요'};
+  if(v&&v.tok&&v.planSup) return {k:'g',t:'저장됨 · 이 기기 + 클라우드 백업'+(v.planDirty?' (동기화 중)':'')};
+  return {k:'g',t:'저장됨 · 이 기기'+((v&&v.tok)?' (클라우드 백업은 Worker 업데이트 필요)':'')};
+}
+function cpBadge(){
+  const si=document.getElementById('rebalSum'); if(!si) return; const s=cpSumPct(), ok=Math.abs(s-100)<=1;
+  si.className='total '+(ok?'ok':'warn'); si.style.whiteSpace='nowrap'; si.style.fontSize='11px'; si.textContent=ok?`합계 ${s.toFixed(0)}% ✓`:`합계 ${s.toFixed(0)}% · ${s<100?(100-s).toFixed(0)+'%p 미배분':(s-100).toFixed(0)+'%p 초과'}`;
+}
+function cpGapBar(x){
+  const sc=Math.max(x.w,x.tg,1)*1.25, col=x.status==='under'?'var(--stamp-red)':'var(--stamp-blue)';
+  return `<div class="cx-gap"><i style="left:0;width:${Math.min(100,x.w/sc*100)}%;background:${col}"></i><span class="tk" style="left:${Math.min(100,x.tg/sc*100)}%"></span></div>`;
+}
+function cpSliderHtml(x){
+  return `<div class="cx-slr"><input type="range" min="0" max="${x.r.cash?30:25}" step="0.5" value="${x.tg}" data-cpsl="${x.r.id}"><span class="tv" data-tv="${x.r.id}">${x.tg.toFixed(1)}%</span></div>`;
+}
+function cpCard(x,under0){
+  const r=x.r, st=x.status, hasPlan=!under0&&cpHasPlan(r);
+  let acts='';
+  if(r.cash){ if(st==='over'&&under0) acts=`<button class="cx-btn pri s" data-cp="planFor" data-id="${under0.r.id}">플랜 만들기</button>`; }
+  else if(st==='under'){ acts=cpHasPlan(r)?`<button class="cx-btn s" data-cp="plans">플랜 진행 중 ›</button>`:`<button class="cx-btn pri s" data-cp="plan" data-id="${r.id}">플랜 만들기</button>`; }
+  else acts=`<button class="cx-btn pri s" data-cp="dilute" data-id="${r.id}">팔지 않고 맞추기</button>`;
+  return `<div class="cp-card cx-card" data-cp="open" data-id="${r.id}"><div class="cp-top">${cpRowIcon(r)}<div class="cp-mid"><b>${cpName(r)}</b><span>${cpSub(r)}</span></div><div class="cp-cur"><b>${x.w.toFixed(1)}%</b><span>목표 ${x.tg.toFixed(1)}%</span></div></div>
+  ${cpGapBar(x)}${CP.open===r.id?cpSliderHtml(x):''}
+  <div class="cp-bottom"><span class="cp-status ${st}">${st==='over'?'▼ 과대':'▲ 과소'}</span><span class="cp-act">${cpActText(r,st,x.adj)}</span><span class="cx-acts">${acts}</span></div></div>`;
+}
+function cpMini(x){
+  const r=x.r, sc=Math.max(x.w,x.tg,1)*1.3, quiet=!!CP.quiet[r.id]&&x.status==='over';
+  const dot=quiet?'<span class="cx-tag">희석 중</span>':(x.status==='ok'?'':`<span class="cx-dot ${x.status}"></span>`);
+  return `<div data-cp="open" data-id="${r.id}"><div class="cx-mini"><span class="cx-av">${cpRowIcon(r)}</span><div class="n">${cpName(r)}${dot}</div><div class="cx-mb"><i style="width:${Math.min(100,x.w/sc*100)}%"></i><span class="tk" style="left:${Math.min(100,x.tg/sc*100)}%"></span></div><div class="v">${x.w.toFixed(1)}<small> / ${x.tg.toFixed(1)}%</small></div></div>${CP.open===r.id?cpSliderHtml(x):''}</div>`;
+}
+function cpAllocHtml(){
+  const ETF=['SPYM','IQQ']; let stk=0,etf=0,cs=0;
+  REBAL_ROWS.forEach(r=>{ const t=TARGET[r.id]||0; if(r.cash) cs+=t; else if(r.group||ETF.includes(r.id)) etf+=t; else stk+=t; });
+  const s=stk+etf+cs, un=100-s, ok=Math.abs(un)<0.5;
+  const f=1; // 막대는 실제 목표 합계 기준(100 초과 시 비례 축소)
+  const k=s>100?100/s:1;
+  const alert=ok?`<div class="cx-al g"><span>✓ 목표 합계 100%</span></div>`:
+   `<div class="cx-al a"><span>합계가 <b>${s.toFixed(1)}%</b>예요. ${un>0?`남는 ${un.toFixed(1)}%p`:`넘치는 ${(-un).toFixed(1)}%p`}를 어떻게 할까요?</span></div>
+    <div class="cx-chips" style="margin-top:8px"><button class="cx-chip" data-cp="fit" data-v="prop">전체를 비례해서 100%로</button>${un>0?`<button class="cx-chip" data-cp="fit" data-v="cash">현금에 +${un.toFixed(1)}%p</button><button class="cx-chip" data-cp="fit" data-v="under">과소 종목에 나눠 주기</button>`:''}</div>`;
+  const sv=cpSaveLabel();
+  return `<div class="cx-sub">목표 배분 <small>· 합계가 100%가 되게 맞춰요</small></div>
+  <div class="cx-bar"><i style="width:${stk*k}%;background:#b7813f"></i><i style="width:${etf*k}%;background:var(--stamp-blue)"></i><i style="width:${cs*k}%;background:#64748b"></i>${un>0.05?`<i style="width:${un}%;background:var(--amber,#b7790f);opacity:.7"></i>`:''}</div>
+  <div class="cx-leg"><span><i style="background:#b7813f"></i>개별주 <b>${stk.toFixed(0)}%</b></span><span><i style="background:var(--stamp-blue)"></i>지수 ETF <b>${etf.toFixed(0)}%</b></span><span><i style="background:#64748b"></i>현금 <b>${cs.toFixed(0)}%</b></span>${un>0.5?`<span><i style="background:#b7790f"></i>미배분 <b>${un.toFixed(0)}%</b></span>`:''}</div>
+  ${alert}
+  <div class="cx-save"><span class="cx-sv ${sv.k}">${sv.k==='g'?'✓ ':''}${sv.t}</span><button class="cx-btn s" data-cp="reset">기본값으로 되돌리기</button></div>`;
+}
+function cpStratLines(d){
+  const L=[], rows=d.rows, cash=rows.find(x=>x.r.cash), T=d.total;
+  const over=rows.filter(x=>x.status==='over'&&!x.r.cash&&!CP.quiet[x.r.id]).sort((a,b)=>a.diff-b.diff);
+  const under=rows.filter(x=>x.status==='under'&&!x.r.cash).sort((a,b)=>b.diff-a.diff);
+  if(cash&&cash.status==='over') L.push({c:'am',h:`현금이 목표보다 ${(-cash.diff).toFixed(1)}%p 많아요`,t:under.length?`과소인 ${under.slice(0,2).map(x=>x.r.ticker?x.r.id:x.r.label).join('·')} 매수 재원으로 쓸 수 있어요 (여유 약 ${won(-cash.adj)})`:`예수금 여유 약 ${won(-cash.adj)}`,g:under[0]?'planFor:'+under[0].r.id:''});
+  else if(cash&&cash.status==='under') L.push({c:'am',h:`현금이 목표보다 ${cash.diff.toFixed(1)}%p 부족해요`,t:`예수금 약 ${won(cash.adj)}를 더 확보하면 목표에 가까워져요`,g:'cash'});
+  if(over.length){ const x=over[0], n=cpDiluteMonths(x); L.push({c:'bl',h:`${over.slice(0,2).map(x=>x.r.ticker?x.r.label:x.r.label).join('·')} 비중이 높아요`,t:n?`팔지 않고 월 ${man(CP.man)}원을 다른 곳에 넣으면 약 ${n}개월 뒤 ${x.r.ticker?x.r.id:x.r.label}가 목표 안으로 들어와요`:'신규 자금으로 희석하거나 일부 매도를 검토해 보세요',g:'dilute:'+x.r.id}); }
+  if(under.length){ const pc=under.filter(x=>cpHasPlan(x.r)).length; L.push({c:'rd',h:`${under.slice(0,2).map(x=>x.r.ticker?x.r.label:x.r.label).join('·')}이(가) 목표보다 낮아요`,t:pc?`분할매수 플랜 ${pc}건 진행 중 · 나머지는 플랜을 만들어 보세요`:'분할매수 플랜을 만들면 월 금액이 자동으로 채워져요',g:'plan:'+under[0].r.id}); }
+  const s=cpSumPct(); if(Math.abs(s-100)>=0.5) L.push({c:'am',h:`목표 합계가 ${s.toFixed(1)}%예요`,t:s<100?`남은 ${(100-s).toFixed(1)}%p 배분을 정해 주세요`:`${(s-100).toFixed(1)}%p를 줄여 주세요`,g:'alloc'});
+  if(!L.length) L.push({c:'gr',h:'모든 항목이 허용 범위 안이에요',t:`±${CP.band}%p 기준 · 지금은 손볼 곳이 없어요`,g:''});
+  return L;
+}
+const man=n=>Math.round(n/10000).toLocaleString('ko-KR')+'만';
+function cpDiluteMonths(x){
+  if(!(x.tg>0)) return 0; const need=x.cur/(x.tg/100)-x.cur/(x.w/100); const M=CP.man; if(!(need>0)) return 0; const n=Math.ceil(need/M); return n>120?0:n;
 }
 function renderRebalCheckpoint(){
-  const tbl=document.getElementById('cpTable'); if(!tbl) return;
-  const total=grandTotal(); let sum=0, html=''; const rows=[];
-  REBAL_ROWS.forEach(r=>{
-    const cur=rowCurrentKRW(r), curW=cur/total*100, tgt=TARGET[r.id]; sum+=tgt; rows.push({r,curW,tgt});
-    const diff=tgt-curW, status=Math.abs(diff)<=0.5?'ok':(diff<0?'over':'under'), adjKRW=diff/100*total;
-    const statusLbl=status==='over'?'▼ 과대':(status==='under'?'▲ 과소':'✓ 적정');
-    const name=r.ticker?r.label:r.label, sub=r.ticker?r.id:(r.group?r.group.join(' · '):'예수금');
-    html+=`<div class="cp-card">
-      <div class="cp-top">${cpRowIcon(r)}<div class="cp-mid"><b>${name}</b><span>${sub}</span></div><div class="cp-cur"><b>${curW.toFixed(1)}%</b><span>현재비중</span></div></div>
-      <div class="cp-slider-row"><input type="range" min="0" max="${r.cash?30:25}" step="0.5" value="${tgt}" data-id="${r.id}"><span class="tv" data-id="${r.id}">${tgt.toFixed(1)}%</span></div>
-      <div class="cp-bottom"><span class="cp-status ${status}" data-status-id="${r.id}">${statusLbl}</span><span class="cp-act" data-id="${r.id}">${cpActText(r,status,adjKRW)}</span></div>
-    </div>`;
+  const box=document.getElementById('cpBody'); if(!box) return;
+  const d=cpData(); if(!d.total){ box.innerHTML='<div class="empty">보유 데이터를 불러오는 중이에요</div>'; return; }
+  const rows=d.rows, focusAll=rows.filter(x=>x.status!=='ok'&&!(CP.quiet[x.r.id]&&x.status==='over')).sort((a,b)=>Math.abs(b.adj)-Math.abs(a.adj));
+  const top=focusAll.slice(0,3), rest=rows.filter(x=>!top.includes(x));
+  const under0=rows.filter(x=>x.status==='under'&&!x.r.cash).sort((a,b)=>b.adj-a.adj)[0];
+  box.innerHTML=`<div class="cx-bandrow"><span class="b">허용 범위</span><span class="sm">이 안이면 "적정"</span><div class="cx-chips sp">${[1,2,3].map(b=>`<button class="cx-chip ${CP.band===b?'on':''}" data-cp="band" data-v="${b}">±${b}%p</button>`).join('')}</div></div>
+  <div class="cx-sub" id="cpFocusHd">지금 손볼 곳 ${focusAll.length}개 <small>· 금액 차이 큰 순서</small></div>
+  ${top.length?top.map(x=>cpCard(x,under0)).join(''):'<div class="cx-al g"><span>✓ 모든 항목이 허용 범위 안이에요</span></div>'}
+  ${focusAll.length>3?`<div class="cx-sm" style="margin:2px 4px 6px">나머지 ${focusAll.length-3}개는 아래 목록에서 확인해요</div>`:''}
+  <div class="cx-sub">전체 목록 <small>· 행을 누르면 목표를 조절해요</small></div>
+  <div class="cp-card cx-list">${rest.map(cpMini).join('')||'<div class="empty">—</div>'}</div>
+  <div id="cpAlloc">${cpAllocHtml()}</div>
+  <div class="cx-sub">투자 전략 요약 <small>· 지금 데이터로 자동 생성</small></div>
+  <div id="cpStrat">${cpStratLines(d).map(l=>`<div class="cp-card cx-strat"><span class="bar ${l.c}"></span><div style="flex:1;min-width:0"><div class="b">${l.h}</div><div class="sm">${l.t}</div></div>${l.g?`<button class="cx-btn s" data-cp="go" data-v="${l.g}">보기</button>`:''}</div>`).join('')}</div>`;
+  cpBadge();
+}
+function cpApplyFit(mode){
+  const d=cpData(), s=cpSumPct(), un=100-s; const r5=v=>Math.round(v*2)/2;
+  if(mode==='cash'){ TARGET.CASH=Math.max(0,r5((TARGET.CASH||0)+un)); }
+  else if(mode==='under'&&un>0){
+    const us=d.rows.filter(x=>x.diff>0&&!x.r.cash); const sum=us.reduce((a,x)=>a+x.diff,0);
+    if(!us.length||!(sum>0)){ TARGET.CASH=r5((TARGET.CASH||0)+un); }
+    else{ let left=un; us.forEach(x=>{ const a=Math.min(left,r5(un*x.diff/sum)); TARGET[x.r.id]=r5(TARGET[x.r.id]+a); left-=a; }); if(left>0.01){ const big=us.sort((a,b)=>b.diff-a.diff)[0]; TARGET[big.r.id]=r5(TARGET[big.r.id]+left); } }
+  } else { const k=100/s; REBAL_ROWS.forEach(r=>{ TARGET[r.id]=r5((TARGET[r.id]||0)*k); }); const rest=100-cpSumPct(); TARGET.CASH=Math.max(0,r5(TARGET.CASH+rest)); }
+  cpSaveNow(); renderRebalCheckpoint(); CPT_refreshOthers();
+}
+function CPT_refreshOthers(){ try{ renderRebalAlert(); }catch(e){} try{ renderAllocRadar(); }catch(e){} try{ renderDiagnosis(); }catch(e){} }
+/* ---- 시트: 팔지 않고 맞추기 (희석 vs 매도) ---- */
+function cpSheetHtml(){
+  const d=cpData(), x=d.rows.find(y=>y.r.id===CP.sheet); if(!x) return '';
+  const r=x.r, T=d.total, tg=x.tg, sellK=Math.max(0,x.cur-tg/100*T), n=cpDiluteMonths(x), h=r.ticker?HOLDINGS.find(z=>z.ticker===r.id):null;
+  const quiet=!!CP.quiet[r.id];
+  let sellBox='';
+  if(h){ const gr=x.cur>0?Math.max(0,1-h.costKRW/x.cur):0, gain=sellK*gr, tax=Math.max(0,gain-2500000)*0.22, fee=sellK*0.0025, px=cpPx(r), sh=px>0?sellK/px:0;
+    sellBox=`<div class="cp-card" style="margin-top:10px"><div class="cx-r"><span>매도 금액</span><b>${won(sellK)} (${sh<10?sh.toFixed(1):Math.round(sh)}주)</b></div><div class="cx-r"><span>추정 양도차익</span><b>${won(gain)}</b></div><div class="cx-r"><span>추정 세금 (22%, 250만원 공제)</span><b style="color:var(--stamp-red)">${won(tax)}</b></div><div class="cx-r"><span>수수료 (0.25%)</span><b>${won(fee)}</b></div><div class="cx-r tot"><span>예수금으로 들어오는 돈</span><b>${won(sellK-tax-fee)}</b></div></div><div class="cx-al n"><span>올해 다른 매도 손익은 반영하지 않은 추정치예요. 정확한 세금은 증권사에서 확인하세요.</span></div><button class="cx-btn pri blk" data-cs="calc">매도 계산기 열기</button>`;
+  } else sellBox=`<div class="cx-al n" style="margin-top:10px"><span>연금·ISA 계좌는 이 앱에서 매도 세금을 따로 계산하지 않아요. 희석 방법을 추천해요.</span></div>`;
+  const dil=`<div class="cx-f"><label>다른 종목에 넣는 월 신규 자금</label><div class="cx-chips">${[500000,1000000,2000000].map(v=>`<button class="cx-chip ${CP.man===v?'on':''}" data-cs="man" data-v="${v}">${man(v)}원</button>`).join('')}</div></div>
+   <div class="cx-al g"><span>${n?`월 <b>${man(CP.man)}원</b>씩 다른 종목(분할매수 플랜 포함)에 넣으면, ${cpName(r)}은(는) 그대로 두고 총자산이 커져서 <b>약 ${n}개월 뒤</b> 목표 ${tg.toFixed(1)}% 안으로 들어와요.`:'목표가 0%이거나 10년 안에는 어려워서 희석 계산이 어려워요. 일부 매도를 함께 검토해 보세요.'}</span></div>
+   <div class="cx-al n"><span>시세가 오르면 더 걸릴 수 있어요. 가정: ${cpName(r)} 평가금액 변동 없음.</span></div>
+   <button class="cx-btn pri blk" data-cs="quiet">${quiet?'다시 손볼 곳으로 보기':'이 방법으로 두기 (손볼 곳에서 빼기)'}</button>`;
+  return `<div class="tf-grab"></div><h3>${cpName(r)} · 과대 ${Math.max(0,-x.diff).toFixed(1)}%p<button class="tf-x" type="button" data-cs="close">✕</button></h3>
+  <p class="cx-sm" style="margin:0 0 10px">초과분 <b style="color:var(--ink)">${won(sellK)}</b>을 어떻게 맞출까요? 두 방법을 비교해 보세요.</p>
+  <div class="cx-tiles"><div class="cx-tile ${CP.mode==='dil'?'sel':''}" data-cs="mode" data-v="dil"><small>신규 자금으로 희석</small><b>${n?n+'개월':'—'}</b><small>세금 ₩0 · 안 팔아도 돼요</small></div><div class="cx-tile ${CP.mode==='sell'?'sel':''}" data-cs="mode" data-v="sell"><small>일부 매도</small><b>지금 바로</b><small>${h?'세금 약 '+won(Math.max(0,(sellK*(x.cur>0?Math.max(0,1-h.costKRW/x.cur):0))-2500000)*0.22):'세금 계산 없음'}</small></div></div>
+  ${CP.mode==='dil'?dil:sellBox}`;
+}
+function cpOpenSheet(id){ CP.sheet=id; CP.mode='dil'; cpRenderSheet(); document.getElementById('cpBd').classList.add('on'); document.getElementById('cpSheet').classList.add('on'); }
+function cpCloseSheet(){ CP.sheet=null; document.getElementById('cpBd').classList.remove('on'); document.getElementById('cpSheet').classList.remove('on'); }
+function cpRenderSheet(){ const s=document.getElementById('cpSheet'); if(s&&CP.sheet) s.innerHTML=cpSheetHtml(); }
+function initCheckpoint(){
+  const sec=document.getElementById('sec-checkpoint'); if(!sec) return;
+  sec.addEventListener('click',e=>{
+    const b=e.target.closest('[data-cp]'); if(!b) return; const k=b.dataset.cp, id=b.dataset.id, v=b.dataset.v;
+    if(e.target.closest('input[type=range]')) return;
+    const isBtn=b.classList.contains('cx-btn')||b.classList.contains('cx-chip');
+    if(k==='open'){ if(e.target.closest('.cx-btn')) return; CP.open=CP.open===id?null:id; renderRebalCheckpoint(); return; }
+    e.stopPropagation();
+    const d=cpData(); const x=d.rows.find(y=>y.r.id===id);
+    if(k==='band'){ CP.band=+v; cpSaveNow(); renderRebalCheckpoint(); CPT_refreshOthers(); }
+    else if(k==='fit') cpApplyFit(v);
+    else if(k==='reset'){ if(!confirm('목표 비중을 기본값으로 되돌릴까요?')) return; TARGET={...REBAL_DEF}; CP.quiet={}; CP.band=2; cpSaveNow(); renderRebalCheckpoint(); CPT_refreshOthers(); }
+    else if(k==='plan'&&x) cpMakePlan(x);
+    else if(k==='planFor'&&x) cpMakePlan(x);
+    else if(k==='plans'){ if(window.PLAN) PLAN.open('plans'); }
+    else if(k==='dilute') cpOpenSheet(id);
+    else if(k==='go'){ const [a,i]=(v||'').split(':'); const xx=d.rows.find(y=>y.r.id===i);
+      if(a==='dilute') cpOpenSheet(i); else if((a==='plan'||a==='planFor')&&xx) cpMakePlan(xx); else if(a==='alloc'||a==='cash'){ const el=document.getElementById('cpAlloc'); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); } }
   });
-  tbl.innerHTML=html;
-  cpSumBoxes(sum, rows);
-  tbl.querySelectorAll('input[type=range]').forEach(el=>{
-    let wasSnapped=false;
-    el.oninput=e=>{
-      let v=parseFloat(e.target.value);
-      const nearest5=Math.round(v/5)*5;
-      const snapped = Math.abs(v-nearest5)<=0.75 && nearest5<=parseFloat(e.target.max) && nearest5>=0;
-      if(snapped){
-        v=nearest5; e.target.value=v;
-        if(!wasSnapped && navigator.vibrate) navigator.vibrate(8);
-        wasSnapped=true;
-      } else { wasSnapped=false; }
-      TARGET[e.target.dataset.id]=v;
-      updateRebalDynamic();
-    };
+  sec.addEventListener('input',e=>{
+    const el=e.target.closest('input[data-cpsl]'); if(!el) return; let v=parseFloat(el.value); const n5=Math.round(v/5)*5;
+    if(Math.abs(v-n5)<=0.75&&n5<=parseFloat(el.max)&&n5>=0){ v=n5; el.value=v; if(el._sn!==1&&navigator.vibrate) navigator.vibrate(8); el._sn=1; } else el._sn=0;
+    TARGET[el.dataset.cpsl]=v; const tv=sec.querySelector(`[data-tv="${el.dataset.cpsl}"]`); if(tv) tv.textContent=v.toFixed(1)+'%'; cpBadge(); cpSave();
+  });
+  sec.addEventListener('change',e=>{ if(e.target.closest('input[data-cpsl]')){ cpSaveNow(); renderRebalCheckpoint(); CPT_refreshOthers(); } });
+  const sh=document.getElementById('cpSheet'), bd=document.getElementById('cpBd');
+  bd.addEventListener('click',cpCloseSheet);
+  sh.addEventListener('click',e=>{
+    const b=e.target.closest('[data-cs]'); if(!b) return; const k=b.dataset.cs, v=b.dataset.v;
+    if(k==='close') cpCloseSheet();
+    else if(k==='mode'){ CP.mode=v; cpRenderSheet(); }
+    else if(k==='man'){ CP.man=+v; cpRenderSheet(); renderRebalCheckpoint(); }
+    else if(k==='quiet'){ if(CP.quiet[CP.sheet]) delete CP.quiet[CP.sheet]; else CP.quiet[CP.sheet]=true; cpSaveNow(); cpCloseSheet(); renderRebalCheckpoint(); }
+    else if(k==='calc'){ const id=CP.sheet; cpCloseSheet(); try{ const sel=document.getElementById('calcSel'); if(sel){ sel.value=id; calcTicker=id; calcMode='sell'; document.querySelectorAll('#calcModeToggle button').forEach(x=>x.classList.toggle('on',x.dataset.m==='sell')); renderCalcSim(true); const c=document.getElementById('sec-calc'); if(c){ c.classList.remove('collapsed'); c.scrollIntoView({behavior:'smooth',block:'start'}); } } }catch(err){} }
   });
 }
-function updateRebalDynamic(){
-  const total=grandTotal(); let sum=0; const rows=[];
-  REBAL_ROWS.forEach(r=>{
-    const cur=rowCurrentKRW(r), curW=cur/total*100, tgt=TARGET[r.id]; sum+=tgt; rows.push({r,curW,tgt});
-    const diff=tgt-curW, status=Math.abs(diff)<=0.5?'ok':(diff<0?'over':'under'), adjKRW=diff/100*total;
-    const statusLbl=status==='over'?'▼ 과대':(status==='under'?'▲ 과소':'✓ 적정');
-    const tv=document.querySelector(`.tv[data-id="${r.id}"]`); if(tv) tv.textContent=tgt.toFixed(1)+'%';
-    const st=document.querySelector(`.cp-status[data-status-id="${r.id}"]`); if(st){ st.className='cp-status '+status; st.textContent=statusLbl; }
-    const act=document.querySelector(`.cp-act[data-id="${r.id}"]`); if(act) act.textContent=cpActText(r,status,adjKRW);
-  });
-  cpSumBoxes(sum, rows);
-}
-const STRAT=[
-  'PLTR 비중 10~12%로 축소 — 단일 종목 최대 비중 관리',
-  '우주·양자·원자력 성장 테마는 규모 축소하되 보유 유지',
-  '지수 ETF(ISA·연금) 비중 확대 — 장기 안정성 확보',
-  '현금·CMA 비중 확보 → 하락장 매수 실탄 마련',
-  '대형 우량주(MSFT·SPYM) 목표비중까지 추가 매수',
-  '신규 자금은 연금(세액공제) → ISA 순으로 우선 납입',
-];
-function renderStrat(){ const g=document.getElementById('stratGrid'); if(g) g.innerHTML=STRAT.map(s=>`<div class="strat-item"><span class="ck">✓</span><span>${s}</span></div>`).join(''); }
 
 /* ===== 매수·매도 계산기 ===== */
 let calcTicker=null, calcMode='sell', calcCcy='krw';
@@ -10133,11 +10279,10 @@ initLongPress();
 renderAll();
 initTax();
 initWhatif();
-renderStrat();
 initCalcSim();
 initDiagnosisAcc(); initDxRefresh(); initDxAi();
 initKeyBar();
-document.getElementById('cpReset').onclick=()=>{ TARGET={...REBAL_DEF}; renderRebalCheckpoint(); };
+initCheckpoint();
 initPnlTabs();
 /* 스크롤 등장 효과: 각 섹션이 화면에 들어올 때 아래에서 위로 살짝 떠오르며 나타남 (1회성) */
 let scrollRevealIO=null;
@@ -10436,7 +10581,9 @@ const KEY='splitPlansV1';
 const $=id=>document.getElementById(id);
 const get=()=>{ try{ const d=JSON.parse(localStorage.getItem(KEY)||'null'); if(d&&Array.isArray(d.list)&&typeof d.at==='number') return d; }catch(e){} return {at:0,list:[]}; };
 let DOC=get();
-window.PLANS_DOC={get:()=>DOC, set:d=>{ DOC=d; try{ localStorage.setItem(KEY,JSON.stringify(DOC)); }catch(e){} try{ PLAN.refresh(); }catch(e){} }};
+window.PLANS_DOC={get:()=>DOC, set:d=>{ DOC=d; try{ localStorage.setItem(KEY,JSON.stringify(DOC)); }catch(e){} try{ PLAN.refresh(); }catch(e){} try{ window.CPT&&CPT.reload(); }catch(e){} }};
+window.PLAN_TG={get:()=>DOC.targets||null,set:t=>{ DOC.targets=t; commit(); }};
+try{ window.CPT&&CPT.reload(); }catch(e){}
 function commit(){ DOC.at=Date.now(); try{ localStorage.setItem(KEY,JSON.stringify(DOC)); }catch(e){} if(window.TSYNC&&TSYNC.planChanged) TSYNC.planChanged(); }
 const P=()=>DOC.list;
 const won=n=>(n<0?'−':'')+'₩'+Math.round(Math.abs(n)).toLocaleString('ko-KR');
@@ -10687,7 +10834,8 @@ const bn=$('planAlertBanner');
 if(bn){ bn.addEventListener('click',()=>{ const tab=document.querySelector('.tab-btn[data-tab="rebal"]'); if(tab) tab.click(); setTimeout(()=>openSheet('today'),120); });
   $('planAlertClose').addEventListener('click',e=>{ e.stopPropagation(); try{ localStorage.setItem('planAlertDismissed',today()); }catch(err){} bn.style.display='none'; }); }
 const _ra=window.renderAll; if(typeof _ra==='function') window.renderAll=function(){ const r=_ra.apply(this,arguments); try{ refresh(); }catch(e){} return r; };
-window.PLAN={refresh,open:openSheet,close:closeSheet,pendingCount:()=>pending().length};
+function openNew(tk,amt,months){ openSheet('plans'); newForm(); if(H(tk)){ S.form.tk=tk; S.form.lim=pxN(tk); } if(amt) S.form.amt=amt; if(months) S.form.months=months; renderSheet(); }
+window.PLAN={refresh,open:openSheet,openNew,close:closeSheet,pendingCount:()=>pending().length};
 refresh();
 if(window.TSYNC&&TSYNC.onChange) TSYNC.onChange(()=>{ try{ renderSheet(); }catch(e){} });
 else window.addEventListener('load',()=>{ if(window.TSYNC&&TSYNC.onChange) TSYNC.onChange(()=>{ try{ renderSheet(); }catch(e){} }); });
