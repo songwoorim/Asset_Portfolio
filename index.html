@@ -2172,6 +2172,37 @@ html[data-theme="dark"] .bk-cs{background:#262830}
 .bk-fx .r b i{font-style:normal;color:var(--bk-mute);font-weight:600;margin:0 4px}
 .bk-warn{display:flex;gap:9px;background:rgba(230,150,30,.13);border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.5;color:var(--bk-amber);margin-bottom:10px}.bk-warn b{color:var(--bk-amber)}.bk-warn svg{margin-top:2px}
 </style>
+<style id="wxCss">
+#sec-sim,#wxSheet{--wx-g:#15803d;--wx-acc:var(--stamp-blue);--wx-fill:var(--g-soft,rgba(120,130,150,.14))}
+html[data-theme="dark"] #sec-sim,html[data-theme="dark"] #wxSheet{--wx-g:#4cc46a;--wx-acc:#5b8def}
+#wxBd{z-index:398}
+#wxSheet{z-index:399;display:none;max-height:90vh;overflow-y:auto;scrollbar-width:none;padding:8px 16px calc(16px + env(safe-area-inset-bottom));border-radius:32px 32px 0 0}#wxSheet::-webkit-scrollbar{display:none}#wxSheet.on{display:block}#wxSheet h3{margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.wx-ic{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}.wx-ic.l{width:18px;height:18px}
+.wx-top{display:flex;align-items:center;margin-bottom:10px;font-size:11px;color:var(--ink-soft);font-weight:700}.wx-ccy{margin-left:auto;display:flex;background:var(--wx-fill);border-radius:999px;padding:3px}.wx-ccy button{border:0;background:transparent;font-weight:800;font-size:10.5px;font-family:inherit;color:var(--ink-soft);padding:5px 9px;border-radius:999px;cursor:pointer}.wx-ccy button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 6px -3px rgba(0,0,0,.3)}
+.wx-av{width:34px;height:34px;flex:none;display:block}.wx-av.s{width:26px;height:26px}.wx-av .cp-avatar{width:100%;height:100%;border-radius:50%}
+.wx-stock{display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:18px;padding:11px 12px;cursor:pointer}.wx-stock .m{flex:1;min-width:0}.wx-stock .m b{font-size:13.5px;font-weight:800;display:block}.wx-stock .m span{display:block;font:10.5px Inter,sans-serif;color:var(--ink-soft);margin-top:2px}.wx-stock .m i{font-style:normal;opacity:.75}.wx-stock .chev{width:28px;height:28px;border-radius:50%;background:var(--wx-fill);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);flex:none}
+.wx-pill{display:inline-flex;align-items:center;font:700 10px Inter,sans-serif;padding:3px 8px;border-radius:999px;background:var(--wx-fill);color:var(--ink-soft);white-space:nowrap}.wx-pill.ok{background:rgba(21,128,61,.12);color:var(--wx-g)}.wx-pill.under{background:rgba(192,57,43,.12);color:var(--stamp-red)}.wx-pill.over{background:rgba(44,74,124,.12);color:var(--stamp-blue)}
+.wx-ring{position:relative;width:196px;height:196px;margin:10px auto 4px}.wx-ring svg{width:100%;height:100%;transform:rotate(-90deg)}.wx-ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.wx-ring .s{font:700 10.5px Inter,sans-serif;color:var(--ink-soft)}.wx-ring .n{font:800 34px Inter,sans-serif;letter-spacing:-1.5px;line-height:1.1}.wx-ring .n small{font-size:16px}.wx-ring .t{font:700 10.5px Inter,sans-serif;margin-top:3px}
+.wx-leg{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 0 8px;font-size:10.5px;color:var(--ink-soft)}.wx-leg i{display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:4px}.wx-leg b{color:var(--ink)}
+.wx-seg{display:flex;background:var(--wx-fill);border-radius:999px;padding:3px;margin-top:6px}.wx-seg button{flex:1;border:0;background:transparent;font-weight:700;font-size:11.5px;font-family:inherit;color:var(--ink-soft);padding:8px 2px;border-radius:999px;cursor:pointer}.wx-seg button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px -3px rgba(0,0,0,.28)}
+.wx-stp{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0 2px}.wx-stp button{width:30px;height:30px;border-radius:50%;border:0;background:var(--wx-fill);color:var(--ink);font-size:16px;cursor:pointer}.wx-stp b{min-width:130px;text-align:center;font:800 20px Inter,sans-serif}.wx-stp b small{display:block;font:600 11.5px Inter,sans-serif;color:var(--ink-soft)}.wx-stp b small i{font-style:normal;opacity:.7}
+.wx-rng{width:100%;accent-color:var(--brass);margin:6px 0 2px}.wx-ticks{display:flex;justify-content:space-between;font:600 9.5px Inter,sans-serif;color:var(--ink-soft);margin:0 4px}
+.wx-qrow{display:flex;gap:6px;margin:10px 0 2px;overflow-x:auto;scrollbar-width:none}.wx-qrow::-webkit-scrollbar{display:none}.wx-qrow .wx-chip{flex:none}
+.wx-chips{display:flex;gap:6px;flex-wrap:wrap}.wx-chip{border:0;background:var(--wx-fill);color:var(--ink-soft);border-radius:999px;padding:7px 11px;font-weight:700;font-size:11.5px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.wx-chip.on{background:var(--wx-acc);color:#fff}
+.wx-sub{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;margin:14px 2px 8px}.wx-sub small{font-weight:600;color:var(--ink-soft);font-size:10.5px}.wx-sub em{font-style:normal;color:var(--ink-soft);font-size:11px}
+.wx-warn{display:flex;gap:8px;align-items:center;background:rgba(192,57,43,.1);color:var(--stamp-red);border-radius:14px;padding:9px 12px;font-size:11.5px;font-weight:700;margin-top:8px}
+.wx-cmp{display:grid;grid-template-columns:1fr 20px 1fr;background:var(--paper);border-radius:18px;padding:12px 12px 6px;align-items:start}.wx-cmp .h{font:700 10.5px Inter,sans-serif;color:var(--ink-soft);text-align:center;padding-bottom:6px}.wx-cmp .lb{grid-column:1/-1;display:flex;align-items:center;gap:5px;justify-content:center;font:700 10px Inter,sans-serif;color:var(--ink-soft);margin-top:10px}.wx-cmp .cl{text-align:center;min-width:0}.wx-cmp .cl b{font:800 15px Inter,sans-serif;letter-spacing:-.5px;white-space:nowrap}.wx-cmp .ar{color:var(--ink-soft);text-align:center;padding-top:2px;font-weight:800}.wx-cmp .dd{font:700 10.5px Inter,sans-serif;margin-top:2px}.wx-dz{color:var(--ink-soft);font-weight:600}
+.wx-kp{display:grid;grid-template-columns:1fr 1fr;gap:8px}.wx-kpi{background:var(--paper);border-radius:16px;padding:10px 12px;min-width:0}.wx-kpi .k{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--ink-soft);font-weight:700}.wx-kpi .v{font:800 14.5px Inter,sans-serif;margin-top:5px;letter-spacing:-.4px;white-space:nowrap}.wx-kpi .d{font:700 10.5px Inter,sans-serif;margin-top:3px;color:var(--ink-soft)}
+.wx-bar{display:flex;align-items:center;gap:10px;margin-top:14px;background:var(--paper);border-radius:22px;padding:10px 10px 10px 16px}.wx-bar .t{flex:1;min-width:0}.wx-bar .t small{display:block;font-size:10px;color:var(--ink-soft);font-weight:700}.wx-bar .t b{font:800 15px Inter,sans-serif;letter-spacing:-.4px}
+.wx-btn{border:0;background:var(--wx-fill);color:var(--ink);border-radius:999px;padding:9px 14px;font-weight:800;font-size:11.5px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:4px}.wx-btn.pri{background:var(--wx-acc);color:#fff}.wx-btn:active{transform:scale(.97)}
+.wx-bk{display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:18px;padding:10px 12px;margin-bottom:8px}.wx-bk b{font-size:12.5px;display:block}.wx-bk span{display:block;font:10.5px Inter,sans-serif;color:var(--ink-soft)}.wx-bk div:nth-of-type(2) b{font:800 12px Inter,sans-serif}.wx-bk .x,.wx-sr .x{width:26px;height:26px;border-radius:50%;background:var(--wx-fill);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);cursor:pointer;flex:none}
+.wx-cashbar{height:12px;border-radius:7px;background:var(--wx-fill);overflow:hidden}.wx-cashbar i{display:block;height:100%}.wx-r2{display:flex;justify-content:space-between;margin-top:6px;font:700 11px Inter,sans-serif;color:var(--ink-soft)}
+.wx-tiles{display:flex;gap:8px}.wx-tiles .t{flex:1;background:var(--paper);border-radius:16px;padding:10px 12px}.wx-tiles small{display:block;font-size:10px;color:var(--ink-soft);font-weight:700}.wx-tiles b{display:block;font:800 15px Inter,sans-serif;margin-top:3px}.wx-bt{display:flex;justify-content:flex-end;margin-top:10px}
+.wx-hint{display:flex;gap:6px;align-items:center;background:var(--wx-fill);color:var(--ink-soft);border-radius:14px;padding:8px 12px;font-size:11px;margin:0 0 6px}
+.wx-sr{display:flex;align-items:center;gap:10px;padding:10px 4px;cursor:pointer;border-radius:14px}.wx-sr+.wx-sr{border-top:1px solid var(--line)}.wx-sr.on{background:var(--wx-fill)}.wx-sr .m{flex:1;min-width:0}.wx-sr .m b{display:block;font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wx-sr .m span{display:block;font:10px Inter,sans-serif;color:var(--ink-soft);margin-top:1px}.wx-sr .r{text-align:right}.wx-sr .r b{font:800 12px Inter,sans-serif;display:block}.wx-sr .r span{font:600 10px Inter,sans-serif;color:var(--ink-soft);display:block;margin-top:3px}
+.wx-act{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:18px;padding:12px;margin-bottom:8px;cursor:pointer}.wx-act .ib{width:36px;height:36px;border-radius:12px;background:rgba(0,102,204,.12);color:var(--brass);display:flex;align-items:center;justify-content:center;flex:none}.wx-act .m b{display:block;font-size:13px;font-weight:800}.wx-act .m span{display:block;font-size:11px;color:var(--ink-soft);margin-top:2px;line-height:1.45}
+.wx-toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--ink);color:var(--paper);font:700 11.5px Inter,sans-serif;border-radius:999px;padding:8px 14px;z-index:500;transition:.2s;white-space:nowrap}.wx-toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
 <style id="cpCss">
 #sec-checkpoint,#cpSheet{--cx-g:#15803d;--cx-a:#b7790f;--cx-acc:var(--stamp-blue);--cx-fill:var(--g-soft,rgba(120,130,150,.12))}
 html[data-theme="dark"] #sec-checkpoint,html[data-theme="dark"] #cpSheet{--cx-g:#4cc46a;--cx-a:#e6a84a;--cx-acc:#5b8def}
@@ -2326,6 +2357,8 @@ html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="
 </style>
 </head>
 <body>
+<div class="tf-bd" id="wxBd"></div>
+<div class="tf-sheet" id="wxSheet" role="dialog" aria-label="What-if 시뮬레이터"></div>
 <div class="tf-bd" id="cpBd"></div>
 <div class="tf-sheet" id="cpSheet" role="dialog" aria-label="과대 종목 맞추기"></div>
 
@@ -3154,17 +3187,9 @@ html[data-theme="dark"] .hd-badge{box-shadow:0 0 0 2px #2b2d36}html[data-theme="
   <!-- WHAT-IF BUY SIM -->
   <div class="page collapsible collapsed" id="sec-sim" data-panel="rebal">
     <div class="page-head"><h2><span class="idx" style="background:rgba(21,128,61,.1);"><svg viewBox="0 0 24 24" style="stroke:#15803d;"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>What-if 매수 시뮬레이터</h2><div class="total" style="font-size:12px;color:var(--ink-soft);">추가 매수 가정</div></div>
-    <div class="rebal-head-note">종목과 매수 수량을 정하면 <b>예상 비중·목표 대비·신규 평단·총자산 변화</b>를 계산합니다. 리밸런싱 체크포인트의 실행 짝입니다.</div>
-    <div class="tax-ctrl">
-      <select id="wfSel"></select>
-      <div class="wf-toggle" id="wfFund"><button data-f="new" class="on">신규 자금 투입</button><button data-f="cash">예수금으로 매수</button></div>
-      <div class="tax-slider-row"><input type="range" id="wfRange" min="0" max="0" value="0"><span id="wfShares" class="tax-shares">0주</span></div>
-    </div>
-    <div class="wf-bar-lbls"><span>현재 <span id="wfCurW">—</span></span><span>목표 <span id="wfTgtW">—</span></span><span>예상 <span id="wfNewW">—</span></span></div>
-    <div class="wf-bar" id="wfBar"></div>
-    <div id="wfWarn"></div>
-    <div class="tax-out" id="wfOut"></div>
-    <div class="note">막대: <b style="color:#b7813f">현재 비중</b> + <b style="color:#c0564a">추가분</b> · 세로선 = 목표비중. 예상 비중은 총자산 대비 · 신규 평단은 원화 매입기준 가중평균 추정. 실제 체결가·환율·수수료 별도.</div>
+    <div class="rebal-head-note">종목과 수량(또는 금액)을 정하면 <b>예상 비중·평균 매수가·총자산·예수금 변화</b>를 지금과 비교해 보여줘요. 리밸런싱 체크포인트의 실행 짝입니다.</div>
+    <div id="wxBody"></div>
+    <div class="note">예상 비중은 총자산 대비 · 평균 매수가는 원화 매입기준 가중평균 추정(USD 표기는 현재 환율 환산). 실제 체결가·환율·수수료 별도 · 투자자문이 아닙니다.</div>
   </div>
 
   <div class="perf"></div>
@@ -7413,47 +7438,155 @@ function renderCalcSim(resetRange){
   document.getElementById('calcNote').textContent=noteHtml;
 }
 
-/* ===== WHAT-IF BUY ===== */
-let wfFund='new';
-function initWhatif(){
-  const sel=document.getElementById('wfSel'), range=document.getElementById('wfRange');
-  if(!sel) return;
-  sel.innerHTML=HOLDINGS.map(h=>`<option value="${h.ticker}">${h.nameKr} (${h.ticker})</option>`).join('');
-  function onSel(){ const h=HOLDINGS.find(x=>x.ticker===sel.value); const pxKRW=(h.cur==='USD')?h.price*FX:h.price; const maxSh=Math.max(h.shares*2, Math.ceil(15000000/pxKRW)); range.max=maxSh; range.value=Math.min((+range.value)||Math.ceil(maxSh/4), maxSh); computeWhatif(); }
-  sel.onchange=onSel; range.oninput=computeWhatif;
-  document.querySelectorAll('#wfFund button').forEach(b=>b.onclick=()=>{ wfFund=b.dataset.f; document.querySelectorAll('#wfFund button').forEach(x=>x.classList.toggle('on', x===b)); computeWhatif(); });
-  onSel();
+/* ===== What-if 매수 시뮬레이터 v2 — 링 · 지금→매수 후 비교 · ₩/$ · 종목 선택 · 담기 · 실행 연결 ===== */
+const WX={tk:null,qty:1,fund:'new',pm:0,stress:0,ccy:'krw',sort:'gap',basket:[],sheet:null,ready:false};
+const WX_PREF='wxPrefsV1', WX_SCN='wxScenariosV1';
+function wxLoadPrefs(){ try{ const p=JSON.parse(localStorage.getItem(WX_PREF)||'{}'); if(p.ccy==='usd'||p.ccy==='krw') WX.ccy=p.ccy; if(p.fund==='new'||p.fund==='cash') WX.fund=p.fund; }catch(e){} }
+function wxSavePrefs(){ try{ localStorage.setItem(WX_PREF,JSON.stringify({ccy:WX.ccy,fund:WX.fund})); }catch(e){} }
+function wxScns(){ try{ const a=JSON.parse(localStorage.getItem(WX_SCN)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function wxSaveScns(a){ try{ localStorage.setItem(WX_SCN,JSON.stringify(a.slice(0,5))); }catch(e){} }
+const wxUsd=()=>WX.ccy==='usd';
+function wxFm(n,d){ const a=Math.abs(n); if(wxUsd()){ const v=a/FX; return (n<0?'−':'')+'$'+v.toLocaleString('en-US',{minimumFractionDigits:d?2:0,maximumFractionDigits:d?2:0}); } return (n<0?'−':'')+'₩'+Math.round(a).toLocaleString('ko-KR'); }
+function wxFm2(n,d){ const a=Math.abs(n); if(wxUsd()) return '₩'+Math.round(a).toLocaleString('ko-KR'); return '$'+(a/FX).toLocaleString('en-US',{minimumFractionDigits:d?2:0,maximumFractionDigits:d?2:0}); }
+const wxMan=n=>Math.round(n/10000).toLocaleString('ko-KR')+'만';
+const wxBand=()=>{ try{ return CP.band; }catch(e){ return 2; } };
+const wxPxKRW=h=>h.cur==='USD'?h.price*FX:h.price;
+function wxRow(h){ return REBAL_ROWS.find(r=>r.id===h.ticker||(r.group&&r.group.includes(h.ticker))); }
+function wxInfo(h){ const r=wxRow(h), T=grandTotal(); const cur=r?rowCurrentKRW(r):evalKRW(h); const tg=(r&&TARGET[r.id]!=null)?TARGET[r.id]:null; const w=T?cur/T*100:0;
+  const st=tg==null?'':(Math.abs(tg-w)<=wxBand()?'ok':(tg-w<0?'over':'under')); return {r,cur,tg,w,st,gapKRW:tg==null?0:(tg-w)/100*T,group:!!(r&&r.group)}; }
+const wxStLbl={ok:'✓ 적정',under:'▲ 과소',over:'▼ 과대'};
+const wxPill=s=>s?`<span class="wx-pill ${s}">${wxStLbl[s]}</span>`:'';
+const wxAv=(h,c)=>`<span class="wx-av ${c||''}">${txAvatar(h.ticker,'cp-avatar')}</span>`;
+const wxMaxQ=h=>Math.max(h.shares*2,Math.ceil(15000000/wxPxKRW(h)),5);
+const wxIc=(p,c)=>`<svg class="wx-ic ${c||''}" viewBox="0 0 24 24">${WX_PATH[p]}</svg>`;
+const WX_PATH={tag:'<path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.2"/>',pie:'<path d="M21 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>',layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',coins:'<circle cx="9" cy="9" r="6"/><path d="M15 9a6 6 0 1 1-5.3 8.8"/>',trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',wallet:'<path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><circle cx="16.5" cy="14.5" r="1.2"/>',chev:'<path d="M6 9l6 6 6-6"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',cart:'<circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.7 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',bolt:'<path d="M13 2L3 14h8l-1 8 10-12h-8z"/>',flag:'<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>',alert:'<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',x:'<path d="M18 6L6 18M6 6l12 12"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'};
+function wxCalc(h,qty,o){
+  o=o||{}; const fund=o.fund||WX.fund, pm=o.pm!=null?o.pm:WX.pm, T=grandTotal(), I=wxInfo(h), pxK=wxPxKRW(h), p=pxK*(1+pm/100), buy=qty*p;
+  const nT=fund==='new'?T+buy:T, wOld=I.w, wNew=(I.cur+buy)/nT*100, cost=h.costKRW, avgOld=cost/h.shares, avgNew=(cost+buy)/(h.shares+qty);
+  const cash=cashKRW(); const band=wxBand();
+  const stN=I.tg==null?'':(Math.abs(I.tg-wNew)<=band?'ok':(I.tg-wNew<0?'over':'under'));
+  let needB=0; if(I.tg!=null){ const t=I.tg/100; needB=fund==='new'?Math.max(0,(t*T-I.cur)/(1-t)):Math.max(0,t*T-I.cur); }
+  const needQ=Math.max(0,Math.ceil(needB/p));
+  const evNow=evalKRW(h), evNew=(h.shares+qty)*pxK*(1+WX.stress/100);
+  return {h,I,T,p,buy,nT,wOld,wNew,tg:I.tg,stOld:I.st,stNew:stN,avgOld,avgNew,cash,cashAfter:cash-buy,needQ,shNew:h.shares+qty,evNow,evAfter:evNow+buy,plOld:evNow-cost,plNew:evNew-(cost+buy),portPL:(evNow+buy)*WX.stress/100};
 }
-function computeWhatif(){
-  const sel=document.getElementById('wfSel'), range=document.getElementById('wfRange');
-  if(!sel||!sel.value) return;
-  const h=HOLDINGS.find(x=>x.ticker===sel.value); if(!h) return;
-  const nBuy=parseInt(range.value)||0;
-  document.getElementById('wfShares').textContent=nBuy+'주';
-  const pxKRW=(h.cur==='USD')?h.price*FX:h.price, buyKRW=nBuy*pxKRW;
-  const total=grandTotal(), curEval=evalKRW(h), curW=curEval/total*100;
-  const newEval=curEval+buyKRW, newTotal=(wfFund==='new')?total+buyKRW:total, newW=newEval/newTotal*100;
-  const tgt=TARGET[h.ticker];
-  const oldAvg=h.costKRW/h.shares, newAvg=(h.costKRW+buyKRW)/(h.shares+nBuy);
-  const cashNow=cashKRW(), cashAfter=cashNow-buyKRW;
-  const scaleMax=(Math.max(curW,newW,(tgt||0))*1.25)||1;
-  const curPct=curW/scaleMax*100, addPct=Math.max(0,newW-curW)/scaleMax*100, tickPct=(tgt!=null)?tgt/scaleMax*100:null;
-  document.getElementById('wfBar').innerHTML=`<div class="cur" style="width:${curPct}%;"></div><div class="add" style="left:${curPct}%; width:${addPct}%;"></div>`+(tickPct!=null?`<div class="tick" style="left:${tickPct}%;"></div>`:'');
-  document.getElementById('wfCurW').innerHTML='<span>'+curW.toFixed(1)+'%</span>';
-  document.getElementById('wfTgtW').innerHTML='<span>'+(tgt!=null?tgt.toFixed(1)+'%':'—')+'</span>';
-  document.getElementById('wfNewW').innerHTML='<span>'+newW.toFixed(1)+'%</span>';
-  let tgtDist='목표 미설정';
-  if(tgt!=null){ const d=newW-tgt; tgtDist=Math.abs(d)<0.1?'목표 도달 ✓':(d>0?`목표 +${d.toFixed(1)}%p 초과`:`목표까지 ${(-d).toFixed(1)}%p`); }
-  const warn=document.getElementById('wfWarn');
-  warn.innerHTML=(wfFund==='cash'&&buyKRW>cashNow)?`<div class="wf-warn">⚠ 예수금 부족 · 매수 ${won(buyKRW)} &gt; 예수금 ${won(cashNow)} (부족분 ${won(buyKRW-cashNow)})</div>`:'';
-  const buyUsd = h.cur==='USD'?` ($${(nBuy*h.price).toLocaleString('en-US',{maximumFractionDigits:0})})`:'';
-  document.getElementById('wfOut').innerHTML=`
-    <div><div class="k">매수 금액</div><div class="v">${won(buyKRW)}${buyUsd}</div></div>
-    <div><div class="k">예상 비중 (현재→)</div><div class="v">${curW.toFixed(1)}% → ${newW.toFixed(1)}%</div></div>
-    <div><div class="k">목표 대비</div><div class="v">${tgtDist}</div></div>
-    <div><div class="k">평단 (원/주)</div><div class="v">${Math.round(oldAvg).toLocaleString()} → ${Math.round(newAvg).toLocaleString()}</div></div>
-    <div><div class="k">예상 총자산</div><div class="v">${won(newTotal)}</div></div>
-    <div><div class="k">${wfFund==='cash'?'매수 후 예수금':'투입 신규자금'}</div><div class="v ${(wfFund==='cash'&&cashAfter<0)?'down':''}">${wfFund==='cash'?won(cashAfter):won(buyKRW)}</div></div>`;
+const wxDl=(d,f)=>Math.abs(d)<1e-9?'<span class="wx-dz">변화 없음</span>':`<span class="${d>0?'up':'down'}">${d>0?'▲':'▼'} ${f(Math.abs(d))}</span>`;
+function wxRing(c){
+  const R=80,C=2*Math.PI*R, vals=[c.wNew,c.wOld,c.tg||0,1], sc=Math.max.apply(null,vals)*1.35;
+  const a1=c.wOld/sc,a2=Math.max(0,c.wNew-c.wOld)/sc, tick=c.tg!=null?(()=>{const g=(c.tg/sc*360-90)*Math.PI/180;return `<line x1="${100+Math.cos(g)*(R-13)}" y1="${100+Math.sin(g)*(R-13)}" x2="${100+Math.cos(g)*(R+13)}" y2="${100+Math.sin(g)*(R+13)}" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>`})():'';
+  const col=c.stNew==='ok'?'#15803d':c.stNew==='under'?'var(--stamp-red)':c.stNew==='over'?'var(--stamp-blue)':'var(--ink-soft)';
+  const msg=c.tg==null?'목표 미설정':(c.tg-c.wNew>=0?`목표까지 ${(c.tg-c.wNew).toFixed(1)}%p`:`목표 +${(c.wNew-c.tg).toFixed(1)}%p`);
+  return `<div class="wx-ring"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--g-soft,rgba(120,130,150,.15))" stroke-width="16"/><circle cx="100" cy="100" r="${R}" fill="none" stroke="#b7813f" stroke-width="16" stroke-linecap="round" stroke-dasharray="${Math.max(.1,a1*C-2)} ${C}"/><circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--stamp-red)" stroke-width="16" stroke-dasharray="${a2*C} ${C}" stroke-dashoffset="${-a1*C}" opacity=".85"/>${tick}</svg><div class="c"><div class="s">${c.I.group?'그룹 예상 비중':'예상 비중'}</div><div class="n">${c.wNew.toFixed(1)}<small>%</small></div><div class="t" style="color:${col}">${msg}</div></div></div>
+  <div class="wx-leg"><span><i style="background:#b7813f"></i>현재 <b>${c.wOld.toFixed(1)}%</b></span><span><i style="background:var(--stamp-red)"></i>추가 <b>+${(c.wNew-c.wOld).toFixed(1)}%p</b></span>${c.tg!=null?`<span><i style="background:var(--ink);width:3px;height:10px"></i>목표 <b>${c.tg.toFixed(1)}%</b></span>`:''}</div>`;
+}
+function wxStockCard(h){ const I=wxInfo(h), avg=h.costKRW/h.shares, px=wxPxKRW(h);
+  return `<div class="wx-stock" data-wx="pick">${wxAv(h)}<div class="m"><b>${h.nameKr}</b><span>${h.ticker} · 보유 ${h.shares}주 · 평균 매수가 ${wxFm(avg,1)}</span><span>현재가 ${wxFm(px,1)} <i>(${wxFm2(px,1)})</i></span></div>${wxPill(I.st)}<span class="chev">${wxIc('chev')}</span></div>`; }
+function wxCmp(c){ const h=c.h, cashMode=WX.fund==='cash';
+  const rows=[
+   ['pie',c.I.group?'그룹 보유 비중':'보유 비중',c.wOld.toFixed(1)+'%',c.wNew.toFixed(1)+'%',wxDl(c.wNew-c.wOld,v=>v.toFixed(1)+'%p'),c.wNew>c.wOld?'up':''],
+   ['tag','평균 매수가',wxFm(c.avgOld,1),wxFm(c.avgNew,1),wxDl(c.avgNew-c.avgOld,v=>wxFm(v,1)),c.avgNew>c.avgOld?'up':(c.avgNew<c.avgOld?'down':'')],
+   ['layers','보유 수량',h.shares+'주',c.shNew+'주',wxDl(WX_QTY(),v=>v+'주'),WX_QTY()?'up':''],
+   ['coins','보유 금액(평가)',wxFm(c.evNow),wxFm(c.evAfter),wxDl(c.buy,v=>wxFm(v)),c.buy?'up':''],
+   ['trend','총자산',wxFm(c.T),wxFm(c.nT),cashMode?'<span class="wx-dz">변화 없음 (예수금→주식)</span>':wxDl(c.buy,v=>wxFm(v)),cashMode?'':'up'],
+   ['wallet',cashMode?'예수금':'투입 신규자금',cashMode?wxFm(c.cash):wxFm(0),cashMode?wxFm(c.cashAfter):wxFm(c.buy),cashMode?wxDl(-c.buy,v=>wxFm(v)):'<span class="wx-dz">예수금 사용 안 함</span>',cashMode?(c.cashAfter<0?'up':'down'):'up']];
+  return `<div class="wx-cmp"><div class="h">지금</div><div></div><div class="h">매수 후</div>${rows.map(r=>`<div class="lb">${wxIc(r[0])}${r[1]}</div><div class="cl"><b>${r[2]}</b></div><div class="ar">›</div><div class="cl"><b class="${r[5]}">${r[3]}</b><div class="dd">${r[4]}</div></div>`).join('')}</div>`; }
+const WX_QTY=()=>WX.qty;
+function wxQuick(c){ const px=c.p;
+  const chips=[500000,1000000,2000000].map(v=>`<button class="wx-chip" data-wx="addamt" data-v="${v}">+${wxUsd()?'$'+Math.round(v/FX).toLocaleString('en-US'):wxMan(v)+'원'}</button>`).join('');
+  return `<div class="wx-qrow"><button class="wx-chip" data-wx="addq" data-v="1">+1주</button><button class="wx-chip" data-wx="addq" data-v="3">+3주</button>${chips}${c.tg!=null?`<button class="wx-chip on" data-wx="tgt">${wxIc('target')} 목표까지 ${c.needQ}주</button>`:''}<button class="wx-chip" data-wx="zero">초기화</button></div>`; }
+function wxBasketCalc(){
+  const T=grandTotal(), adds={}; let tot=0;
+  const items=WX.basket.map(b=>{ const h=HOLDINGS.find(x=>x.ticker===b.tk); if(!h) return null; const c=wxCalc(h,b.qty); tot+=c.buy; const r=wxRow(h); const rid=r?r.id:h.ticker; adds[rid]=(adds[rid]||0)+c.buy; return {b,h,c,rid}; }).filter(Boolean);
+  const nT=WX.fund==='new'?T+tot:T, band=wxBand(), before={under:0,over:0,ok:0}, after={under:0,over:0,ok:0};
+  REBAL_ROWS.forEach(r=>{ if(r.cash) return; const tg=TARGET[r.id]; if(tg==null) return; const cur=rowCurrentKRW(r); const f=w=>Math.abs(tg-w)<=band?'ok':(tg-w<0?'over':'under'); before[f(cur/T*100)]++; after[f((cur+(adds[r.id]||0))/nT*100)]++; });
+  return {items,tot,nT,before,after,adds};
+}
+function wxBasketHtml(){ if(!WX.basket.length) return '';
+  const B=wxBasketCalc(), cashLeft=cashKRW()-B.tot, cp=Math.min(100,B.tot/Math.max(1,cashKRW())*100), T=grandTotal();
+  return `<div class="wx-sub">${wxIc('cart')}담은 종목 ${B.items.length}개 <small>· 합산해서 계산해요</small></div>
+  ${B.items.map(({b,h,c,rid})=>{ const r=wxRow(h); const w0=c.wOld, w1=(c.I.cur+(B.adds[rid]||0))/B.nT*100; return `<div class="wx-bk">${wxAv(h,'s')}<div style="flex:1;min-width:0"><b>${h.nameKr}</b><span>${b.qty}주 · ${wxFm(c.buy)}</span></div><div style="text-align:right"><b class="up">${w0.toFixed(1)}→${w1.toFixed(1)}%</b><span>${c.tg!=null?'목표 '+c.tg.toFixed(1)+'%':'목표 미설정'}</span></div><span class="x" data-wx="rm" data-v="${h.ticker}">${wxIc('x')}</span></div>`; }).join('')}
+  <div class="wx-kp"><div class="wx-kpi"><div class="k">${wxIc('coins')}총 투입</div><div class="v">${wxFm(B.tot)}</div></div><div class="wx-kpi"><div class="k">${wxIc('trend')}예상 총자산</div><div class="v">${wxFm(B.nT)}</div></div></div>
+  ${WX.fund==='cash'?`<div class="wx-sub">${wxIc('wallet')}예수금 소진 <small>· ${wxFm(cashKRW())} 중</small></div><div class="wx-cashbar"><i style="width:${cp}%;background:${cashLeft<0?'var(--stamp-red)':'var(--stamp-blue)'}"></i></div><div class="wx-r2"><span>사용 ${wxFm(B.tot)}</span><b class="${cashLeft<0?'up':''}">${cashLeft<0?'부족 '+wxFm(-cashLeft):'남음 '+wxFm(cashLeft)}</b></div>`:''}
+  <div class="wx-sub">${wxIc('flag')}체크포인트 개수 변화</div>
+  <div class="wx-tiles">${[['under','과소','var(--stamp-red)'],['over','과대','var(--stamp-blue)'],['ok','적정','#15803d']].map(([k,l,col])=>`<div class="t"><small>${l}</small><b style="color:${col}">${B.before[k]} → ${B.after[k]}</b></div>`).join('')}</div>
+  <div class="wx-bt"><button class="wx-btn" data-wx="clearb">비우기</button></div>`; }
+function wxRenderA(){ const h=HOLDINGS.find(x=>x.ticker===WX.tk); if(!h) return; const c=wxCalc(h,WX.qty);
+  document.getElementById('wxA').innerHTML=`${wxStockCard(h)}${wxRing(c)}<div class="wx-seg"><button class="${WX.fund==='new'?'on':''}" data-wx="fund" data-v="new">신규 자금 투입</button><button class="${WX.fund==='cash'?'on':''}" data-wx="fund" data-v="cash">예수금으로 매수</button></div>
+  <div class="wx-stp"><button data-wx="addq" data-v="-1">−</button><b>${WX.qty}주<small>${wxFm(c.buy)} <i>· ${wxFm2(c.buy)}</i></small></b><button data-wx="addq" data-v="1">＋</button></div>`;
+  const rg=document.getElementById('wxRng'); const mx=wxMaxQ(h); if(+rg.max!==mx) rg.max=mx; if(document.activeElement!==rg||+rg.value!==WX.qty) rg.value=WX.qty;
+  document.getElementById('wxTicks').innerHTML=`<span>0</span><span>${Math.round(mx/2)}주</span><span>${mx}주</span>`;
+  return c; }
+function wxRenderB(c){ const h=c.h, warn=WX.fund==='cash'&&c.buy>c.cash?`<div class="wx-warn">${wxIc('alert')}예수금 부족 · ${wxFm(c.buy)} &gt; ${wxFm(c.cash)} (부족 ${wxFm(c.buy-c.cash)})</div>`:'';
+  document.getElementById('wxB').innerHTML=`${wxQuick(c)}${warn}
+  <div class="wx-sub">${wxIc('flag')}지금 → 매수 후 <span style="margin-left:auto">${wxPill(c.stOld)}${c.stOld||c.stNew?' <em>→</em> ':''}${wxPill(c.stNew)}</span></div>
+  ${wxCmp(c)}
+  <div class="wx-sub">${wxIc('tag')}매수 가격 가정</div>
+  <div class="wx-chips">${[[0,'현재가'],[-3,'−3%'],[-5,'−5%'],[-10,'−10%']].map(([v,l])=>`<button class="wx-chip ${WX.pm===v?'on':''}" data-wx="pm" data-v="${v}">${l}${v?' 지정가':''}</button>`).join('')}</div>
+  <div class="wx-sub">${wxIc('trend')}산 뒤 주가가 움직이면? <small>· 스트레스 테스트</small></div>
+  <div class="wx-chips">${[-20,-10,0,10,20].map(v=>`<button class="wx-chip ${WX.stress===v?'on':''}" data-wx="stress" data-v="${v}">${v>0?'+':''}${v}%</button>`).join('')}</div>
+  <div class="wx-kp" style="margin-top:8px"><div class="wx-kpi"><div class="k">${wxIc('coins')}이 종목 평가손익</div><div class="v ${c.plNew>=0?'up':'down'}">${(c.plNew>=0?'+':'−')+wxFm(Math.abs(c.plNew))}</div><div class="d">지금 ${(c.plOld>=0?'+':'−')+wxFm(Math.abs(c.plOld))}</div></div><div class="wx-kpi"><div class="k">${wxIc('pie')}포트 손익 영향</div><div class="v ${c.portPL>=0?'up':'down'}">${(c.portPL>=0?'+':'−')+wxFm(Math.abs(c.portPL))}</div><div class="d">총자산의 ${(c.portPL/c.nT*100).toFixed(2)}%</div></div></div>
+  <div class="wx-bar"><div class="t"><small>매수 금액</small><b>${wxFm(c.buy)}</b></div><button class="wx-btn" data-wx="addb">${wxIc('cart')} 담기${WX.basket.length?' '+WX.basket.length:''}</button><button class="wx-btn pri" data-wx="act">${wxIc('bolt')} 실행</button></div>
+  ${wxBasketHtml()}`; }
+function computeWhatif(){ if(!WX.ready||!document.getElementById('wxA')) return; const c=wxRenderA(); if(c) wxRenderB(c); document.getElementById('wxCcy').innerHTML=`<button class="${wxUsd()?'':'on'}" data-wx="ccy" data-v="krw">₩ KRW</button><button class="${wxUsd()?'on':''}" data-wx="ccy" data-v="usd">$ USD</button>`; if(WX.sheet) wxRenderSheet(); }
+/* ---- 시트 ---- */
+function wxRenderSheet(){ const s=document.getElementById('wxSheet'); if(!s) return; s.innerHTML=WX.sheet==='pick'?wxPickHtml():wxActHtml(); }
+function wxOpen(kind){ WX.sheet=kind; wxRenderSheet(); document.getElementById('wxBd').classList.add('on'); document.getElementById('wxSheet').classList.add('on'); }
+function wxClose(){ WX.sheet=null; document.getElementById('wxBd').classList.remove('on'); document.getElementById('wxSheet').classList.remove('on'); }
+function wxPickHtml(){ const T=grandTotal();
+  const rows=HOLDINGS.map(h=>({h,I:wxInfo(h)})).sort((a,b)=>WX.sort==='gap'?(b.I.tg==null?-1e9:b.I.gapKRW)-(a.I.tg==null?-1e9:a.I.gapKRW):WX.sort==='w'?b.I.w-a.I.w:evalKRW(b.h)-evalKRW(a.h));
+  return `<div class="tf-grab"></div><h3>종목 선택<button class="tf-x" type="button" data-wx="close">✕</button></h3>
+  <div class="wx-chips" style="margin-bottom:8px">${[['gap','부족한 순'],['w','비중 큰 순'],['v','금액 큰 순']].map(([k,l])=>`<button class="wx-chip ${WX.sort===k?'on':''}" data-wx="sort" data-v="${k}">${l}</button>`).join('')}</div>
+  <div class="wx-hint">${wxIc('target')}"부족한 순"은 리밸런싱 체크포인트 목표 대비 부족분이 큰 종목부터예요.</div>
+  ${rows.map(({h,I})=>`<div class="wx-sr ${h.ticker===WX.tk?'on':''}" data-wx="choose" data-v="${h.ticker}">${wxAv(h,'s')}<div class="m"><b>${h.nameKr}</b><span>${h.ticker} · ${I.w.toFixed(1)}%${I.tg!=null?' / 목표 '+I.tg.toFixed(1)+'%':' · 목표 미설정'}${I.group?' (그룹)':''}</span></div><div class="r">${wxPill(I.st)}<span>${I.st==='ok'||I.tg==null?(I.tg==null?'':'목표 범위 안'):(I.gapKRW>0?'부족 ':'초과 ')+wxFm(Math.abs(I.gapKRW))}</span></div></div>`).join('')}`; }
+function wxActHtml(){ const h=HOLDINGS.find(x=>x.ticker===WX.tk); if(!h) return ''; const c=wxCalc(h,WX.qty), n=6, per=Math.max(10000,Math.round(c.buy/n/10000)*10000), sc=wxScns();
+  const nat=h.cur==='USD'?(h.price*(1+WX.pm/100)).toFixed(2):Math.round(h.price*(1+WX.pm/100));
+  return `<div class="tf-grab"></div><h3>이 결과로 실행<button class="tf-x" type="button" data-wx="close">✕</button></h3>
+  <div class="wx-stock" style="cursor:default;margin-bottom:10px">${wxAv(h,'s')}<div class="m"><b>${h.nameKr} ${WX.qty}주 매수</b><span>${wxFm(c.buy)} · 비중 ${c.wOld.toFixed(1)}% → ${c.wNew.toFixed(1)}%</span></div>${wxPill(c.stNew)}</div>
+  <div class="wx-act" data-wx="toForm"><span class="ib">${wxIc('pen','l')}</span><div class="m"><b>매수 입력창에 채우기</b><span>${h.ticker} ${WX.qty}주 · ${h.cur==='USD'?'$'+nat:'₩'+Number(nat).toLocaleString('ko-KR')}로 입력 화면이 열려요${WX.qty<1?' (수량을 먼저 정해 주세요)':''}</span></div></div>
+  <div class="wx-act" data-wx="toPlan"><span class="ib">${wxIc('cal','l')}</span><div class="m"><b>분할매수 플랜으로 만들기</b><span>${n}개월 · 월 ${wxFm(per)} 로 자동 입력 (플랜 화면으로 이동)</span></div></div>
+  <div class="wx-act" data-wx="saveScn"><span class="ib">${wxIc('save','l')}</span><div class="m"><b>시나리오로 저장</b><span>${WX.basket.length?`담은 ${WX.basket.length}개 종목을`:'지금 종목을'} 저장해요 (최대 5개)</span></div></div>
+  <div class="wx-sub">${wxIc('save')}저장된 시나리오 <small>· ${sc.length}개</small></div>
+  ${sc.length?sc.map((s,i)=>`<div class="wx-sr" data-wx="loadScn" data-v="${i}"><div class="m"><b>${s.items.map(x=>x.tk+' '+x.qty+'주').join(' + ')}</b><span>${s.d} 저장 · ${s.fund==='cash'?'예수금':'신규 자금'}</span></div><div class="r"><b>${wxFm(s.tot||0)}</b><span>불러오기 ›</span></div><span class="x wx-x" data-wx="delScn" data-v="${i}">${wxIc('x')}</span></div>`).join(''):'<div class="wx-hint">아직 저장된 시나리오가 없어요.</div>'}`; }
+function wxToast(m){ let t=document.getElementById('wxToast'); if(!t){ t=document.createElement('div'); t.id='wxToast'; t.className='wx-toast'; document.body.appendChild(t); } t.textContent=m; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),1800); }
+function wxDefaultSel(){
+  const rows=HOLDINGS.map(h=>({h,I:wxInfo(h)})).filter(x=>x.I.tg!=null).sort((a,b)=>b.I.gapKRW-a.I.gapKRW);
+  const h=(rows[0]&&rows[0].h)||HOLDINGS[0]; WX.tk=h.ticker; WX.qty=Math.max(1,Math.round(1000000/wxPxKRW(h))); }
+function wxSelect(tk){ const h=HOLDINGS.find(x=>x.ticker===tk); if(!h) return; WX.tk=tk; WX.qty=Math.max(1,Math.min(wxMaxQ(h),Math.round(1000000/wxPxKRW(h)))); }
+function initWhatif(){
+  const box=document.getElementById('wxBody'); if(!box||!HOLDINGS.length) return;
+  wxLoadPrefs(); wxDefaultSel();
+  box.innerHTML=`<div class="wx-top"><span>추가 매수 가정</span><div class="wx-ccy" id="wxCcy"></div></div><div id="wxA"></div><input class="wx-rng" id="wxRng" type="range" min="0" max="10" value="1"><div class="wx-ticks" id="wxTicks"></div><div id="wxB"></div>`;
+  WX.ready=true;
+  const rg=document.getElementById('wxRng'); rg.addEventListener('input',()=>{ WX.qty=+rg.value; computeWhatif(); });
+  const onClick=e=>{ const a=e.target.closest('[data-wx]'); if(!a) return; const k=a.dataset.wx, v=a.dataset.v, h=HOLDINGS.find(x=>x.ticker===WX.tk); if(!h) return;
+    const c=wxCalc(h,WX.qty), mx=wxMaxQ(h), cl=()=>{ WX.qty=Math.max(0,Math.min(mx,WX.qty)); };
+    if(a.classList.contains('x')||a.closest('.x')){ if(k==='delScn'){ e.stopPropagation(); const s=wxScns(); s.splice(+v,1); wxSaveScns(s); wxRenderSheet(); return; } }
+    if(k==='ccy'){ WX.ccy=v; wxSavePrefs(); }
+    else if(k==='fund'){ WX.fund=v; wxSavePrefs(); }
+    else if(k==='addq'){ WX.qty+=+v; cl(); }
+    else if(k==='addamt'){ WX.qty+=Math.max(1,Math.round(+v/c.p)); cl(); }
+    else if(k==='tgt'){ WX.qty=c.needQ; cl(); }
+    else if(k==='zero'){ WX.qty=0; }
+    else if(k==='pm'){ WX.pm=+v; }
+    else if(k==='stress'){ WX.stress=+v; }
+    else if(k==='pick'){ wxOpen('pick'); return; }
+    else if(k==='act'){ wxOpen('act'); return; }
+    else if(k==='addb'){ const x=WX.basket.find(b=>b.tk===WX.tk); if(x) x.qty=WX.qty; else WX.basket.push({tk:WX.tk,qty:WX.qty}); wxToast(`${h.ticker} ${WX.qty}주를 담았어요`); }
+    else if(k==='rm'){ WX.basket=WX.basket.filter(b=>b.tk!==v); }
+    else if(k==='clearb'){ WX.basket=[]; }
+    else if(k==='close'){ wxClose(); return; }
+    else if(k==='sort'){ WX.sort=v; }
+    else if(k==='choose'){ wxSelect(v); wxClose(); }
+    else if(k==='toForm'){ wxClose(); if(window.TF&&TF.openPrefill){ const px=h.cur==='USD'?+(h.price*(1+WX.pm/100)).toFixed(2):Math.round(h.price*(1+WX.pm/100)); TF.openPrefill(h.acct,h.ticker,WX.qty>0?WX.qty:'',px); } return; }
+    else if(k==='toPlan'){ wxClose(); if(window.PLAN&&PLAN.openNew){ const per=Math.max(10000,Math.round(c.buy/6/10000)*10000); PLAN.openNew(h.ticker,per,6); } return; }
+    else if(k==='saveScn'){ const items=WX.basket.length?WX.basket.map(b=>({tk:b.tk,qty:b.qty})):[{tk:WX.tk,qty:WX.qty}]; const tot=items.reduce((s,it)=>{ const hh=HOLDINGS.find(x=>x.ticker===it.tk); return s+(hh?wxCalc(hh,it.qty).buy:0); },0); const d=new Date(), ds=(d.getMonth()+1)+'/'+d.getDate(); const sc=wxScns(); sc.unshift({d:ds,fund:WX.fund,items,tot}); wxSaveScns(sc); wxToast('시나리오를 저장했어요'); wxRenderSheet(); return; }
+    else if(k==='loadScn'){ const s=wxScns()[+v]; if(!s) return; WX.fund=s.fund==='cash'?'cash':'new'; WX.basket=s.items.filter(it=>HOLDINGS.some(x=>x.ticker===it.tk)).map(it=>({tk:it.tk,qty:it.qty})); if(WX.basket[0]){ WX.tk=WX.basket[0].tk; WX.qty=WX.basket[0].qty; } wxSavePrefs(); wxClose(); wxToast('시나리오를 불러왔어요'); }
+    else return;
+    computeWhatif(); };
+  box.addEventListener('click',onClick);
+  document.getElementById('wxSheet').addEventListener('click',onClick);
+  document.getElementById('wxBd').addEventListener('click',wxClose);
+  computeWhatif();
 }
 
 /* ============ 기간별 손익 (신규) ============ */
@@ -8054,7 +8187,7 @@ function renderAll(){
   RV_CACHE=null;
   try{ renderRvCards(); renderRvBars(); renderRvDetail(); }catch(e){}
   const ts=document.getElementById('taxSel'); if(ts && ts.options.length) computeTax();
-  const wf=document.getElementById('wfSel'); if(wf && wf.options.length) computeWhatif();
+  if(document.getElementById('wxBody')) computeWhatif();
 }
 
 /* ============ MODAL ============ */
