@@ -2088,6 +2088,10 @@ body{background-image:radial-gradient(420px 320px at 8% 4%,rgba(99,140,255,.11),
 html[data-theme="dark"] #tfManage{--brass:#f2f2f6;--bk-mute:#6b6b6e;--bk-bds:rgba(255,255,255,.24);--bk-red:#e0675a;--bk-blue:#6ea0f0;--bk-green:#4cc46a;--bk-amber:#e6a84a;--bk-pill:#3a3d48;--bk-line:rgba(255,255,255,.1)}
 #tfManage.tf-sheet{border-radius:32px 32px 0 0;padding:8px 12px calc(12px + env(safe-area-inset-bottom));overflow:hidden}
 #tfManage.tf-sheet.on{display:flex;flex-direction:column;height:min(640px,88vh)}
+#tfManage.tf-sheet.on{animation:tfUp .32s cubic-bezier(.2,.8,.2,1)}#tfManage.tf-sheet.out{animation:tfDown .24s ease-in forwards}
+@keyframes tfUp{from{transform:translateY(100%)}to{transform:none}}@keyframes tfDown{from{transform:none}to{transform:translateY(100%)}}
+.tf-bd.on{animation:tfFade .25s}@keyframes tfFade{from{opacity:0}to{opacity:1}}
+
 #tfManage .tf-grab{width:38px;height:5px;margin:3px auto 9px;flex:none;background:var(--bk-mute);opacity:.55}
 #tfManage h3{font-size:15px;margin:0 2px 9px;flex:none}
 #tfManage .tf-x{width:26px;height:26px;font-size:12px}
@@ -2366,7 +2370,7 @@ html .hd-strip .nt-bell.on{box-shadow:0 0 0 2px var(--brass)}
 .nt-bg.pop{animation:ntbp .5s ease}@keyframes ntbp{0%{transform:scale(.4)}60%{transform:scale(1.35)}100%{transform:scale(1)}}
 .nt-bg.hi{animation:ntpu 1.8s ease-out infinite}@keyframes ntpu{0%{box-shadow:0 0 0 0 rgba(229,72,58,.55)}80%,100%{box-shadow:0 0 0 8px rgba(229,72,58,0)}}
 .nt-bg[hidden]{display:none}
-#ntBd{position:fixed;inset:0;z-index:398;background:rgba(10,12,20,.42);opacity:0;pointer-events:none;transition:opacity .22s}#ntBd.on{opacity:1;pointer-events:auto}
+#ntBd{position:fixed;inset:0;z-index:398;background:rgba(10,12,20,.42);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s,visibility 0s .22s}#ntBd.on{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .22s}
 #ntSheet{--nr:#e5483a;--nrt:rgba(229,72,58,.10);--nb:var(--brass,#0066cc);--nbt:rgba(0,102,204,.10);--ng:#12a150;--ngt:rgba(18,161,80,.12);--na:#d98a00;--nat:rgba(217,138,0,.13);--ns:rgba(20,24,40,.06);--nl:rgba(20,24,40,.09);--pill:#fff;
  position:fixed;left:0;right:0;bottom:0;z-index:399;margin:0 auto;max-width:760px;height:min(86vh,860px);height:min(86dvh,860px);background:var(--card);border-radius:30px 30px 0 0;box-shadow:0 -12px 40px -10px rgba(0,0,0,.4);transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;font-family:'Inter','Noto Sans KR',-apple-system,sans-serif;color:var(--ink)}
 html[data-theme="dark"] #ntSheet{--nr:#ff6b5c;--nrt:rgba(255,107,92,.14);--nbt:rgba(64,156,255,.15);--ng:#43d17f;--ngt:rgba(67,209,127,.15);--na:#f1b240;--nat:rgba(241,178,64,.16);--ns:rgba(255,255,255,.07);--nl:rgba(255,255,255,.09);--pill:#3a3d48}
@@ -2476,16 +2480,6 @@ html[data-theme="dark"] #ntSheet{--nr:#ff6b5c;--nrt:rgba(255,107,92,.14);--nbt:r
 
 
 <div class="book">
-
-  <!-- REBAL ALERT (평소엔 숨겨져 있다가, 목표 비중과 5%p 이상 벌어지면만 표시) -->
-  <div class="alert-banner" id="rebalAlertBanner" data-panel="home" style="display:none;">
-    <div class="alert-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-    <div class="alert-txt"><div class="alert-title" id="rebalAlertTitle">—</div><div class="alert-sub" id="rebalAlertSub">—</div></div>
-    <span class="alert-arrow">›</span>
-    <button class="alert-close-btn" id="rebalAlertCloseBtn" aria-label="알림 닫기">
-      <svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-    </button>
-  </div>
 
   <div class="alert-banner" id="planAlertBanner" data-panel="home" style="display:none;">
     <div class="alert-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 2h16zM10 21h4"/></svg></div>
@@ -10618,8 +10612,8 @@ const S={side:'buy',cash:'deduct'};
 const won0=n=>'₩'+Math.round(Math.abs(n)).toLocaleString('ko-KR');
 const sgn=n=>(n<0?'−':'+')+won0(n);
 function toast(m){ const t=$('tfToast'); t.textContent=m; t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),2600); }
-function open(id){ $('tfBd').classList.add('on'); $(id).classList.add('on'); }
-function closeAll(){ ['tfBd','tfSheet','tfManage'].forEach(i=>$(i).classList.remove('on')); }
+function open(id){ $('tfBd').classList.add('on'); $(id).classList.remove('out'); $(id).classList.add('on'); }
+function closeAll(){ const m=$('tfManage'); ['tfBd','tfSheet'].forEach(i=>$(i).classList.remove('on')); if(m.classList.contains('on')&&!m.classList.contains('out')){ m.classList.add('out'); setTimeout(()=>m.classList.remove('on','out'),240); } else if(!m.classList.contains('out')) m.classList.remove('on'); }
 function holdOpts(){
   const hs=HOLDINGS.slice().sort((a,b)=>(a.acct>b.acct?1:a.acct<b.acct?-1:0)||a.nameKr.localeCompare(b.nameKr,'ko'));
   let o='', cur='';
